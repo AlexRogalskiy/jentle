@@ -9,7 +9,7 @@
   </parent>
   <groupId>com.wildbeeslabs.jentle</groupId>
   <artifactId>collections</artifactId>
-  <version>1.0-jentle-collections</version>
+  <version>1.0-jentle</version>
   <packaging>jar</packaging>
   <name>collections</name>
   <url>http://maven.apache.org</url>
@@ -80,7 +80,15 @@
 					    </execution>
 					</executions>
 		      </plugin>
-	     </plugins>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>2.3.2</version>
+	        <configuration>
+	          <showDeprecation>true</showDeprecation>
+	        </configuration>
+	      </plugin>
+	    </plugins>
     </build>
   
   <dependencies>
