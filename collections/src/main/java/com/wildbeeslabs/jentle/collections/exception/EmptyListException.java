@@ -1,24 +1,24 @@
 package com.wildbeeslabs.jentle.collections.exception;
 
 /**
- * 
- * Custom EmptyStackException implementation
+ *
+ * Custom EmptyListException implementation
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class EmptyStackException extends Exception {
-    public EmptyStackException() {}
+public class EmptyListException extends Exception {
+    public EmptyListException() {}
 
-    public EmptyStackException (String message) {
+    public EmptyListException (String message) {
         super(message);
     }
 
-    public EmptyStackException (Throwable cause) {
+    public EmptyListException (Throwable cause) {
         super(cause);
     }
 
-    public EmptyStackException (String message, Throwable cause) {
+    public EmptyListException (String message, Throwable cause) {
         super(message, cause);
     }
 

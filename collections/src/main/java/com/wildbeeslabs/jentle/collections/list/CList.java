@@ -1,34 +1,29 @@
-package com.wildbeeslabs.jentle.collections.queue;
+package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
+import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import java.util.Collection;
 import java.util.Queue;
 
 /**
  *
- * Custom Queue implementation
+ * Custom List implementation
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public class CQueue<T> implements IQueue<T> {
-	private static class CQueueNode<T> {
+public class CList<T> implements IList<T> {
+	private static class CListNode<T> {
 		private final T data;
-		private CQueueNode<T> next;
+		private CListNode<T> next;
 
-		public CQueueNode(T data) {
+		public CListNode(T data) {
                     this.data = data;
-		}
-                
-                public CQueueNode(final T data, final CQueueNode<T> next) {
-                    this.data = data;
-                    this.next = next;
 		}
 
 		@Override
 		public String toString() {
-                    return String.format("CQueueNode {data: %s, next: %s}", this.data, this.next);
+                    return String.format("CListNode {data: %s, next: %s}", this.data, this.next);
                 }
 
 		@Override
@@ -39,9 +34,9 @@ public class CQueue<T> implements IQueue<T> {
                     if(null == obj || obj.getClass() != this.getClass()) {
                             return false;
                     }
-                    CQueueNode<T> another = (CQueueNode<T>) obj;
-                    return (null != this.data && this.data.equals(another.data)) &&
-                           (null != this.next && this.next.equals(another.next));
+                    CListNode<T> another = (CListNode<T>) obj;
+                        return (null != this.data && this.data.equals(another.data)) &&
+                               (null != this.next && this.next.equals(another.next));
 		}
 
 		@Override 
@@ -54,16 +49,16 @@ public class CQueue<T> implements IQueue<T> {
                 }
         }
 
-	private CQueueNode<T> first = null;
-	private CQueueNode<T> last = null;
+	private CListNode<T> first = null;
+	private CListNode<T> last = null;
         private int size;
         
-        public CQueue() {
+        public CList() {
             this.size = 0;
         }
 
-	public void enqueue(T item) {
-		CQueueNode<T> temp = new CQueueNode<T>(item);
+	public void add(T item) {
+		CListNode<T> temp = new CListNode<>(item);
 		if(null != last) {
 			last.next = temp;
 		}
@@ -74,13 +69,13 @@ public class CQueue<T> implements IQueue<T> {
                 this.size++;
 	}
 
-	public T dequeue() throws EmptyQueueException {
+	public T remove() throws EmptyListException {
 		if(this.isEmpty()) {
-			throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+			throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size));
 		}
 		T data = first.data;
 		first = first.next;
-		if(null == first) {
+		if(this.isEmpty()) {
 			this.last = null;
 		}
                 this.size--;
@@ -88,20 +83,15 @@ public class CQueue<T> implements IQueue<T> {
 	}
 
         @Override
-	public T peek() throws EmptyQueueException {
+	public T peek() throws EmptyListException {
 		if(this.isEmpty()) {
-			throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+			throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size));
 		}
 		return first.data;
 	}
-        
-        @Override
-        public int size() {
-		return this.size;
-        }
 
 	public boolean isEmpty() {
-		return (0 == this.size());
+		return (null == first);
 	}
         
         @Override
@@ -126,6 +116,11 @@ public class CQueue<T> implements IQueue<T> {
 
         @Override
         public boolean contains(T value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public int size() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 

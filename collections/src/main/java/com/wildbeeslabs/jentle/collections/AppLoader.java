@@ -2,7 +2,10 @@ package com.wildbeeslabs.jentle.collections;
 
 /**
  *
+ * Initial Application Class Loader
  * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
 public class AppLoader {
 

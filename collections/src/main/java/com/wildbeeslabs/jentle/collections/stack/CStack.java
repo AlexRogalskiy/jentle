@@ -1,20 +1,29 @@
 package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import java.util.Collection;
+import java.util.Queue;
 
 /**
  *
- * Custom Stack implementation
+ * Custom stack implementation
  * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  * @param <T>
  */
-public class CStack<T> {
+public class CStack<T> implements IStack<T> {
 	private static class CStackNode<T> {
 		private final T data;
 		private CStackNode<T> next;
 
-		public CStackNode(T data) {
+		public CStackNode(final T data) {
 			this.data = data;
+		}
+                
+                public CStackNode(final T data, final CStackNode<T> next) {
+			this.data = data;
+                        this.next = next;
 		}
 
 		@Override
@@ -32,7 +41,7 @@ public class CStack<T> {
                     }
 		    CStackNode<T> another = (CStackNode<T>) obj;
 		    return (null != this.data && this.data.equals(another.data)) &&
-                            (null != this.next && this.next.equals(another.next));
+                           (null != this.next && this.next.equals(another.next));
 		}
 
 		@Override 
@@ -45,31 +54,75 @@ public class CStack<T> {
                 }
 	}
 
-	private CStackNode<T> top;
+	private CStackNode<T> top = null;
+        private int size;
+        
+        public CStack() {
+            this.size = 0;
+        }
 
+        @Override
 	public T pop() throws EmptyStackException {
 		if(this.isEmpty()) {
-			throw new EmptyStackException();
+			throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
 		}
 		T item = top.data;
 		top = top.next;
+                this.size--;
 		return item;
 	}
 
+        @Override
 	public void push(T item) {
-		CStackNode<T> temp = new CStackNode<>(item);
-		temp.next = top;
+		CStackNode<T> temp = new CStackNode<T>(item, top);
+                this.size++;
 		top = temp;
 	}
 
+        @Override
 	public T peek() throws EmptyStackException {
 		if(this.isEmpty()) {
-			throw new EmptyStackException();
+			throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
 		}
 		return top.data;
 	}
+        
+        @Override
+        public int size() {
+		return this.size;
+        }
 
 	public boolean isEmpty() {
-		return (null == top);
+		return (0 == this.size());
 	}
+
+        @Override
+        public void clear() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+        @Override
+        public boolean remove(T value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public boolean contains(T value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public boolean validate() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public Queue<T> toLifoQueue() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public Collection<T> toCollection() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 }
