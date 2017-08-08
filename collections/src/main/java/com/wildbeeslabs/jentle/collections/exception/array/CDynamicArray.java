@@ -187,7 +187,7 @@ public class CDynamicArray<T> implements IArray<T> {
 
     private void checkRange(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CDynamicArray (index=%i is out of bounds [0, %i])", index, this.size-1));
+            throw new IndexOutOfBoundsException(String.format("ERROR: CDynamicArray (index=%i is out of bounds [0, %i])", index, this.size - 1));
         }
     }
 
