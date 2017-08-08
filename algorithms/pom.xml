@@ -8,18 +8,18 @@
         <version>1.0-jentle</version>
     </parent>
     <groupId>com.wildbeeslabs.jentle</groupId>
-    <artifactId>collections</artifactId>
+    <artifactId>algorithms</artifactId>
     <version>1.0-jentle</version>
     <packaging>jar</packaging>
-    <name>collections</name>
+    <name>algorithms</name>
     <url>http://maven.apache.org</url>
-    <description>Java collection framework</description>
+    <description>Java algorithms framework</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-  
+    
     <build>
         <plugins>
             <plugin>
@@ -30,7 +30,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.wildbeeslabs.jentle.collections.AppLoader</mainClass>
+                            <mainClass>com.wildbeeslabs.jentle.algorithms.AppLoader</mainClass>
                             <classpathPrefix>dependency-jars/</classpathPrefix>
                         </manifest>
                     </archive>
@@ -63,7 +63,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.wildbeeslabs.jentle.collections.AppLoader</mainClass>
+                            <mainClass>com.wildbeeslabs.jentle.algorithms.AppLoader</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -90,7 +90,7 @@
             </plugin>
         </plugins>
     </build>
-  
+    
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

@@ -31,7 +31,7 @@ public class CStack<T> implements IStack<T> {
         private CStackNode<T> next;
 
         public CStackNode(final T data) {
-            this.data = data;
+            this(data, null);
         }
 
         public CStackNode(final T data, final CStackNode<T> next) {
@@ -82,7 +82,8 @@ public class CStack<T> implements IStack<T> {
     @Override
     public T pop() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
+            //throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
+            return null;
         }
         T removed = this.top.data;
         this.top = this.top.next;
@@ -101,7 +102,8 @@ public class CStack<T> implements IStack<T> {
     @Override
     public T peek() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
+            //throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
+            return null;
         }
         return top.data;
     }

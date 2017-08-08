@@ -32,7 +32,7 @@ public class CList<T> implements IList<T> {
         private CListNode<T> next;
 
         public CListNode(final T data) {
-            this.data = data;
+            this(data, null);
         }
 
         public CListNode(final T data, final CListNode<T> next) {
@@ -77,16 +77,15 @@ public class CList<T> implements IList<T> {
     private int size;
 
     public CList() {
-        this.first = null;
-        this.last = null;
+        this.first = this.last = null;
         this.size = 0;
     }
 
     public CList(final CList<T> source) {
-        this.addLast(source);
+        this.addList(source);
     }
 
-    public final void addLast(final CList<T> source) {
+    public final void addList(final CList<T> source) {
         for (CListNode<T> current = source.first; current != null; current = current.next) {
             this.addLast(current.data);
         }
@@ -114,9 +113,10 @@ public class CList<T> implements IList<T> {
         this.size++;
     }
 
-    public T removeAtFirst() throws EmptyListException {
+    public T removeFirst() throws EmptyListException {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
+            //throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
+            return null;
         }
         T removed = this.first.data;
         this.first = this.first.next;
@@ -124,23 +124,48 @@ public class CList<T> implements IList<T> {
         return removed;
     }
 
-    @Override
-    public boolean remove(T item) {
-        CListNode<T> previous = null, current = this.first;
-        boolean found = false;
-        for (; null != current; current = current.next) {
-            if (Objects.equals(item, current.data)) {
-                found = true;
-                this.size--;
-                if (null != previous) {
-                    previous.next = current.next;
-                }
-            } else {
-                previous = current;
-            }
+    public T removeLast() throws EmptyListException {
+        if (this.isEmpty()) {
+            //throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
+            return null;
+        }
+        CListNode<T> previous = null, next = this.first;
+        while (null != next.next) {
+            previous = next;
+            next = next.next;
+        }
+        if (null == previous) {
+            this.first = null;
+        } else {
+            previous.next = null;
         }
         this.last = previous;
-        return found;
+        this.size--;
+        return next.data;
+    }
+
+    @Override
+    public boolean remove(T item) throws EmptyListException {
+        if (this.isEmpty()) {
+            //hrow new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
+            return false;
+        }
+        CListNode<T> previous = null, next = this.first;
+        boolean removed = false;
+        while (null != next) {
+            if (Objects.equals(item, next.data)) {
+                removed = true;
+                this.size--;
+                if (null != previous) {
+                    previous.next = next.next;
+                }
+            } else {
+                previous = next;
+            }
+            next = next.next;
+        }
+        this.last = previous;
+        return removed;
     }
 
     public void insertAt(T item, int index) {
@@ -163,6 +188,23 @@ public class CList<T> implements IList<T> {
         this.size++;
     }
 
+    public T getFirst() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.first.data;
+    }
+
+    @Override
+    public boolean contains(T item) {
+        for (Iterator<T> i = this.iterator(); i.hasNext();) {
+            if (Objects.equals(i.next(), item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void checkRange(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= this.size()) {
             throw new IndexOutOfBoundsException(String.format("ERROR: CList (index=%i is out of bounds [0, %i])", index, this.size - 1));
@@ -177,7 +219,7 @@ public class CList<T> implements IList<T> {
         for (Iterator<T> i = this.iterator(); i.hasNext();) {
             T item = i.next();
             for (Iterator<T> j = this.iterator(); j.hasNext();) {
-                if (!j.next().equals(item)) {
+                if (Objects.equals(j.next(), item)) {
                     return false;
                 }
             }
@@ -197,12 +239,7 @@ public class CList<T> implements IList<T> {
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean contains(T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.first = this.last = null;
     }
 
     @Override

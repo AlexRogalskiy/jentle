@@ -31,7 +31,7 @@ public class CQueue<T> implements IQueue<T> {
         private CQueueNode<T> next;
 
         public CQueueNode(final T data) {
-            this.data = data;
+            this(data, null);
         }
 
         public CQueueNode(final T data, final CQueueNode<T> next) {
@@ -96,7 +96,8 @@ public class CQueue<T> implements IQueue<T> {
 
     public T dequeue() throws EmptyQueueException {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+            //throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+            return null;
         }
         T data = first.data;
         first = first.next;
@@ -110,7 +111,8 @@ public class CQueue<T> implements IQueue<T> {
     @Override
     public T peek() throws EmptyQueueException {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+            //throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+            return null;
         }
         return this.first.data;
     }

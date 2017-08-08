@@ -20,5 +20,6 @@
     </build>
     <modules>
     <module>collections</module>
+    <module>algorithms</module>
   </modules>
 </project>

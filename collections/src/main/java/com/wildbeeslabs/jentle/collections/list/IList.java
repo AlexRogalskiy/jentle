@@ -1,5 +1,7 @@
 package com.wildbeeslabs.jentle.collections.list;
 
+import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
+
 /**
  *
  * Custom list interface declaration
@@ -29,8 +31,9 @@ public interface IList<T> {
      * 
      * @param value to remove from the queue.
      * @return True if the value was removed from the queue.
+     * @throws com.wildbeeslabs.jentle.collections.exception.EmptyListException
      */
-    public boolean remove(T value);
+    public boolean remove(T value) throws EmptyListException;
 
     /**
      * Clear the entire queue.
