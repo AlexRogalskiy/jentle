@@ -2,6 +2,7 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 import com.wildbeeslabs.jentle.collections.interfaces.Visitor;
+import java.util.Arrays;
 import java.util.Objects;
 
 import org.apache.log4j.LogManager;
@@ -141,4 +142,30 @@ public class CTree<T> implements ITree<T> {
         }
     }
 
+    @Override
+    public String toString() {
+        return String.format("CTree {root: %s}", this.root);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final CTree<T> other = (CTree<T>) obj;
+        if (!Objects.equals(this.root, other.root)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 13 * hash + Objects.hashCode(this.root);
+        return hash;
+    }
 }
