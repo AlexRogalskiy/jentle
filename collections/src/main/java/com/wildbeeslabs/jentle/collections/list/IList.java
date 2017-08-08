@@ -1,7 +1,5 @@
 package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
-
 /**
  *
  * Custom list interface declaration
@@ -25,14 +23,6 @@ public interface IList<T> {
      * @return value from the tail of the queue.
      */
     public T poll();
-
-    /**
-     * Get but do not remove tail of the queue.
-     * 
-     * @return value from the tail of the queue.
-     * @throws com.wildbeeslabs.jentle.collections.exception.EmptyListException
-     */
-    public T peek() throws EmptyListException;
 
     /**
      * Remove the value from the queue.

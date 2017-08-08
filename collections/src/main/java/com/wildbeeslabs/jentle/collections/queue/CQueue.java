@@ -1,146 +1,201 @@
 package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
+
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Queue;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
  * Custom Queue implementation
+ *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
 public class CQueue<T> implements IQueue<T> {
-	private static class CQueueNode<T> {
-		private final T data;
-		private CQueueNode<T> next;
 
-		public CQueueNode(T data) {
-                    this.data = data;
-		}
-                
-                public CQueueNode(final T data, final CQueueNode<T> next) {
-                    this.data = data;
-                    this.next = next;
-		}
+    /**
+     * Default Logger instance
+     */
+    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-		@Override
-		public String toString() {
-                    return String.format("CQueueNode {data: %s, next: %s}", this.data, this.next);
-                }
+    private static class CQueueNode<T> {
 
-		@Override
-                public boolean equals(Object obj) {
-                    if(this == obj) {
-                            return true;
-                    }
-                    if(null == obj || obj.getClass() != this.getClass()) {
-                            return false;
-                    }
-                    CQueueNode<T> another = (CQueueNode<T>) obj;
-                    return (null != this.data && this.data.equals(another.data)) &&
-                           (null != this.next && this.next.equals(another.next));
-		}
+        private final T data;
+        private CQueueNode<T> next;
 
-		@Override 
-                public int hashCode() {
-                    final int prime = 31;
-                    int result = 1;
-                    result = prime * result + ((null == this.data) ? 0 : this.data.hashCode());
-                    result = prime * result + ((null == this.next) ? 0 : this.next.hashCode());
-                    return result;
-                }
+        public CQueueNode(final T data) {
+            this.data = data;
         }
 
-	private CQueueNode<T> first = null;
-	private CQueueNode<T> last = null;
-        private int size;
-        
-        public CQueue() {
-            this.size = 0;
-        }
-
-	public void enqueue(T item) {
-		CQueueNode<T> temp = new CQueueNode<T>(item);
-		if(null != last) {
-			last.next = temp;
-		}
-		last = temp;
-		if(null == first) {
-			first = last;
-		}
-                this.size++;
-	}
-
-	public T dequeue() throws EmptyQueueException {
-		if(this.isEmpty()) {
-			throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
-		}
-		T data = first.data;
-		first = first.next;
-		if(null == first) {
-			this.last = null;
-		}
-                this.size--;
-		return data;
-	}
-
-        @Override
-	public T peek() throws EmptyQueueException {
-		if(this.isEmpty()) {
-			throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
-		}
-		return first.data;
-	}
-        
-        @Override
-        public int size() {
-		return this.size;
-        }
-
-	public boolean isEmpty() {
-		return (0 == this.size());
-	}
-        
-        @Override
-        public boolean offer(T value) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public CQueueNode(final T data, final CQueueNode<T> next) {
+            this.data = data;
+            this.next = next;
         }
 
         @Override
-        public T poll() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public String toString() {
+            return String.format("CQueueNode {data: %s, next: %s}", this.data, this.next);
         }
 
         @Override
-        public boolean remove(T value) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (null == obj || obj.getClass() != this.getClass()) {
+                return false;
+            }
+            final CQueueNode<T> other = (CQueueNode<T>) obj;
+            if (!Objects.equals(this.data, other.data)) {
+                return false;
+            }
+            if (!Objects.equals(this.next, other.next)) {
+                return false;
+            }
+            return true;
         }
 
         @Override
-        public void clear() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public int hashCode() {
+            int hash = 7;
+            hash = 67 * hash + Objects.hashCode(this.data);
+            hash = 67 * hash + Objects.hashCode(this.next);
+            return hash;
         }
+    }
 
-        @Override
-        public boolean contains(T value) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    private CQueueNode<T> first;
+    private CQueueNode<T> last;
+    private int size;
 
-        @Override
-        public boolean validate() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    public CQueue() {
+        this.first = null;
+        this.last = null;
+        this.size = 0;
+    }
 
-        @Override
-        public Queue<T> toQueue() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void enqueue(T item) {
+        @SuppressWarnings("Convert2Diamond")
+        CQueueNode<T> temp = new CQueueNode<T>(item);
+        if (null != last) {
+            last.next = temp;
         }
+        last = temp;
+        if (null == first) {
+            first = last;
+        }
+        this.size++;
+    }
 
-        @Override
-        public Collection<T> toCollection() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public T dequeue() throws EmptyQueueException {
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
         }
+        T data = first.data;
+        first = first.next;
+        if (null == first) {
+            this.last = null;
+        }
+        this.size--;
+        return data;
+    }
+
+    @Override
+    public T peek() throws EmptyQueueException {
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+        }
+        return this.first.data;
+    }
+
+    @Override
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return (0 == this.size());
+    }
+
+    @Override
+    public boolean offer(T value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public T poll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean remove(T value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean contains(T value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean validate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Queue<T> toQueue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<T> toCollection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String toString() {
+        return String.format("CQueue {first: %s, last: %s, size: %i}", this.first, this.last, this.size);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final CQueue<T> other = (CQueue<T>) obj;
+        if (!Objects.equals(this.first, other.first)) {
+            return false;
+        }
+        if (!Objects.equals(this.last, other.last)) {
+            return false;
+        }
+        if (this.size != other.size) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.first);
+        hash = 53 * hash + Objects.hashCode(this.last);
+        hash = 53 * hash + this.size;
+        return hash;
+    }
 }
