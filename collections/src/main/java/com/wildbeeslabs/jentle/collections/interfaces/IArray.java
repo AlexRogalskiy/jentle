@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.exception.array;
+package com.wildbeeslabs.jentle.collections.interfaces;
 
 import java.util.RandomAccess;
 

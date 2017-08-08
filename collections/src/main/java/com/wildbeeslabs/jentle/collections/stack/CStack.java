@@ -1,5 +1,6 @@
 package com.wildbeeslabs.jentle.collections.stack;
 
+import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 
 import java.util.Collection;
@@ -25,7 +26,7 @@ public class CStack<T> implements IStack<T> {
      */
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    private static class CStackNode<T> {
+    protected static class CStackNode<T> {
 
         private final T data;
         private CStackNode<T> next;

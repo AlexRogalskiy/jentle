@@ -16,7 +16,7 @@ public class CSort {
     /**
      * Default sort comparator
      */
-    private static final CSortComparator DEFAULT_SORT_COMPARATOR = new CSortComparator();
+    public static final CSortComparator DEFAULT_SORT_COMPARATOR = new CSortComparator();
 
     protected static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
 

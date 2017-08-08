@@ -1,5 +1,6 @@
 package com.wildbeeslabs.jentle.collections.queue;
 
+import com.wildbeeslabs.jentle.collections.interfaces.IQueue;
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 
 import java.util.Collection;
@@ -25,7 +26,7 @@ public class CQueue<T> implements IQueue<T> {
      */
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    private static class CQueueNode<T> {
+    protected static class CQueueNode<T> {
 
         private final T data;
         private CQueueNode<T> next;

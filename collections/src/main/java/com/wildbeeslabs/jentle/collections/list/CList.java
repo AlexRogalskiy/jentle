@@ -1,8 +1,12 @@
 package com.wildbeeslabs.jentle.collections.list;
 
+import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
+import com.wildbeeslabs.jentle.collections.interfaces.Visitor;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
@@ -28,7 +32,8 @@ public class CList<T> implements IList<T> {
 
     protected static class CListNode<T> {
 
-        private final T data;
+        private T data;
+        private final Comparator<? super T> cmp;
         private CListNode<T> next;
 
         public CListNode(final T data) {
@@ -36,8 +41,13 @@ public class CList<T> implements IList<T> {
         }
 
         public CListNode(final T data, final CListNode<T> next) {
+            this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
+        }
+
+        public CListNode(final T data, final CListNode<T> next, final Comparator<? super T> cmp) {
             this.data = data;
             this.next = next;
+            this.cmp = cmp;
         }
 
         @Override
@@ -225,6 +235,12 @@ public class CList<T> implements IList<T> {
             }
         }
         return true;
+    }
+
+    public void each(final Visitor visitor) {
+        for (Iterator<T> current = this.iterator(); current.hasNext();) {
+            visitor.visit(current.next());
+        }
     }
 
     @Override

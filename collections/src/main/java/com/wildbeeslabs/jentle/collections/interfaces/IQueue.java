@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.queue;
+package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 

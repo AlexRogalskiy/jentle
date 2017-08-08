@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.stack;
+package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 

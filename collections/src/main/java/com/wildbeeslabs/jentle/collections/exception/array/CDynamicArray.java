@@ -1,5 +1,6 @@
 package com.wildbeeslabs.jentle.collections.exception.array;
 
+import com.wildbeeslabs.jentle.collections.interfaces.IArray;
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
 
 import java.lang.reflect.Array;
@@ -37,19 +38,19 @@ public class CDynamicArray<T> implements IArray<T> {
     private int capacity;
     private T[] array;
 
-    public CDynamicArray(Class<T[]> clazz) throws InvalidDimensionException {
+    public CDynamicArray(final Class<T[]> clazz) throws InvalidDimensionException {
         this(clazz, 0);
     }
 
-    public CDynamicArray(Class<T[]> clazz, final int size) throws InvalidDimensionException {
+    public CDynamicArray(final Class<T[]> clazz, int size) throws InvalidDimensionException {
         this(clazz, size, size);
     }
 
-    public CDynamicArray(Class<T[]> clazz, final int size, final int capacity) throws InvalidDimensionException {
+    public CDynamicArray(final Class<T[]> clazz, int size, int capacity) throws InvalidDimensionException {
         this(clazz, size, capacity, null);
     }
 
-    public CDynamicArray(Class<T[]> clazz, final int size, final int capacity, final T[] array) throws InvalidDimensionException {
+    public CDynamicArray(final Class<T[]> clazz, int size, int capacity, final T[] array) throws InvalidDimensionException {
         if (size < 0) {
             throw new InvalidDimensionException(String.format("ERROR: CDynamicArray (invalid intial size=%i)", size));
         }
@@ -86,7 +87,7 @@ public class CDynamicArray<T> implements IArray<T> {
         this.addAt(item, this.size);
     }
 
-    public void addAt(T item, int index) {
+    public void addAt(T item, int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
         this.resize(1);
         System.arraycopy(this.array, index, this.array, index + 1, this.size - index);
