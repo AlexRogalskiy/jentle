@@ -54,13 +54,15 @@ public class CBitSet implements ISet<Integer> {
         this(bitset.min, bitset.max, bitset.array);
     }
 
-    public boolean has(int item) throws IndexOutOfBoundsException {
+    @Override
+    public boolean has(Integer item) throws IndexOutOfBoundsException {
         this.checkRange(item);
         int bit = item - this.min;
         return (this.array[bit / DEFAULT_BLOCK_SIZE] & (1 << (bit % DEFAULT_BLOCK_SIZE))) != 0;
     }
 
-    public CBitSet disjunct(int item) throws IndexOutOfBoundsException {
+    @Override
+    public ISet<Integer> disjunct(Integer item) throws IndexOutOfBoundsException {
         this.checkRange(item);
         int bit = item - this.min;
         this.array[bit / DEFAULT_BLOCK_SIZE] |= (1 << (bit % DEFAULT_BLOCK_SIZE));
@@ -71,7 +73,7 @@ public class CBitSet implements ISet<Integer> {
         if (bitset.min != this.min || bitset.max != this.max) {
             throw new IndexOutOfBoundsException(String.format("ERROR: CBitSet (incompatible size bounds [%i, %i])", bitset.min, bitset.max));
         }
-        for (int i = 0; i < bitset.size(); i++) {
+        for (int i = 0; i < bitset.capacity(); i++) {
             this.array[i] |= bitset.array[i];
         }
         return this;
@@ -81,31 +83,32 @@ public class CBitSet implements ISet<Integer> {
         if (bitset.min != this.min || bitset.max != this.max) {
             throw new IndexOutOfBoundsException(String.format("ERROR: CBitSet (incompatible size bounds [%i, %i])", bitset.min, bitset.max));
         }
-        for (int i = 0; i < bitset.size(); i++) {
+        for (int i = 0; i < bitset.capacity(); i++) {
             this.array[i] &= bitset.array[i];
         }
         return this;
     }
 
-    public CBitSet remove(int item) throws IndexOutOfBoundsException {
+    @Override
+    public ISet<Integer> remove(Integer item) throws IndexOutOfBoundsException {
         this.checkRange(item);
         int bit = item - this.min;
         this.array[bit / DEFAULT_BLOCK_SIZE] &= ~(1 << (bit % DEFAULT_BLOCK_SIZE));
         return this;
     }
 
-    public CBitSet remove(final CBitSet bitset) throws IndexOutOfBoundsException {
+    public ISet<Integer> remove(final CBitSet bitset) throws IndexOutOfBoundsException {
         if (this.min != bitset.min || this.max != bitset.max) {
             throw new IndexOutOfBoundsException(String.format("ERROR: CBitSet (incompatible size bounds [%i, %i])", bitset.min, bitset.max));
         }
-        for (int i = 0; i < this.size(); i++) {
+        for (int i = 0; i < this.capacity(); i++) {
             this.array[i] &= ~bitset.array[i];
         }
         return this;
     }
 
     public CBitSet inverse() {
-        for (int i = 0; i < this.size(); i++) {
+        for (int i = 0; i < this.capacity(); i++) {
             this.array[i] = ~this.array[i];
         }
         return this;
@@ -125,7 +128,7 @@ public class CBitSet implements ISet<Integer> {
         return this.conjunct(bitset);
     }
 
-    public CBitSet diff(final CBitSet bitset) throws IndexOutOfBoundsException {
+    public ISet<Integer> diff(final CBitSet bitset) throws IndexOutOfBoundsException {
         if (this.min != bitset.min || this.max != bitset.max) {
             throw new IndexOutOfBoundsException(String.format("ERROR: CBitSet (incompatible size bounds [%i, %i])", bitset.min, bitset.max));
         }
@@ -142,8 +145,20 @@ public class CBitSet implements ISet<Integer> {
         }
     }
 
-    public int size() {
+    public int capacity() {
         return this.array.length;
+    }
+    
+    @Override
+    public int size() {
+        int sum = 0;
+        for(int i=0; i<this.capacity(); i++) {
+            int b = this.array[i];
+            b = b - ((b >>> 1) & 0x55555555);
+            b = (b & 0x33333333) + ((b >>> 2) & 0x33333333);
+            sum += (((b + (b >>> 4)) & 0x0F0F0F0F) * 0x01010101) >>> 24;
+        }
+        return sum;
     }
 
     @Override

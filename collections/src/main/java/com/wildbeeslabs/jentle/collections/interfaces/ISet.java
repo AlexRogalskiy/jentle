@@ -9,5 +9,11 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  * @param <T>
  */
 public interface ISet<T> {
+    public boolean has(T item);
+
+    public ISet<T> disjunct(T item);
+
+    public ISet<T> remove(T b);
     
+    public int size();
 }
