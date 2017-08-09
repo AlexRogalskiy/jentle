@@ -23,9 +23,13 @@ public class CBitSet implements ISet<Integer> {
     protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     /**
-     * Default block size
+     * Default block size (in bits)
      */
     private static final int DEFAULT_BLOCK_SIZE = 32;
+    /**
+     * Default number size (in bits)
+     */
+    private static final int DEFAULT_NUMBER_SIZE = 32;
     private int min;
     private int max;
     private int[] array;
@@ -43,8 +47,8 @@ public class CBitSet implements ISet<Integer> {
             this.max = min;
         }
         int size = (max - min + 1);
-        int sizeOfBytes = (size + DEFAULT_BLOCK_SIZE - 1) / DEFAULT_BLOCK_SIZE;
-        this.array = new int[sizeOfBytes];
+        int numOfBlocks = (size * DEFAULT_NUMBER_SIZE + DEFAULT_BLOCK_SIZE - 1) / DEFAULT_BLOCK_SIZE;
+        this.array = new int[numOfBlocks];
         if (null != bitset) {
             System.arraycopy(bitset, 0, this.array, 0, bitset.length);
         }

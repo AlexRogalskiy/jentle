@@ -1,9 +1,8 @@
 package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
-import com.wildbeeslabs.jentle.collections.interfaces.ISet;
-import com.wildbeeslabs.jentle.collections.set.CBitSet;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import org.apache.log4j.LogManager;
@@ -11,44 +10,49 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Custom set-graph implementation
+ * Custom matrix-graph implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CSGraph implements IGraph<Integer> {
+public class CMGraph<T> implements IGraph<T> {
 
     /**
      * Default Logger instance
      */
     protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    protected ISet<Integer>[] graph;
+    protected T[][] graph;
 
-    public CSGraph(int numOfVertex) {
-        this.graph = new CBitSet[numOfVertex];
-        for (int i = 0; i < numOfVertex; i++) {
-            this.graph[i] = new CBitSet(0, numOfVertex - 1);
-        }
+    public CMGraph(final Class<? extends T> clazz, int numOfVertex) {
+        this.graph = this.newArray(clazz, numOfVertex);
+    }
+
+    private T[][] newArray(Class<? extends T> type, int size) {
+        return (T[][]) Array.newInstance(type, size, size);
     }
 
     public boolean has(int a, int b) {
-        this.checkRange(a);
-        this.checkRange(b);
-        return this.graph[a-1].has(b);
+        return (null != this.get(a, b));
     }
 
-    public void set(int a, int b) {
+    public void set(int a, int b, final T data) {
         this.checkRange(a);
         this.checkRange(b);
-        this.graph[a-1].disjunct(b);
+        this.graph[a - 1][b - 1] = data;
     }
 
     public void remove(int a, int b) {
         this.checkRange(a);
         this.checkRange(b);
-        this.graph[a-1].remove(b);
+        this.graph[a - 1][b - 1] = null;
+    }
+
+    public T get(int a, int b) {
+        this.checkRange(a);
+        this.checkRange(b);
+        return this.graph[a - 1][b - 1];
     }
 
     public int cardIn(int a) {
@@ -64,7 +68,13 @@ public class CSGraph implements IGraph<Integer> {
 
     public int cardOut(int a) {
         this.checkRange(a);
-        return this.graph[a-1].size();
+        int s = 0;
+        for (int i = 0; i < this.graph[a].length; i++) {
+            if (this.has(a, i)) {
+                s++;
+            }
+        }
+        return s;
     }
 
     public int size() {
@@ -79,7 +89,7 @@ public class CSGraph implements IGraph<Integer> {
 
     @Override
     public String toString() {
-        return String.format("CSGraph {graph: %s}", Arrays.toString(this.graph));
+        return String.format("CMGraph {graph: %s}", Arrays.toString(this.graph));
     }
 
     @Override
@@ -90,7 +100,7 @@ public class CSGraph implements IGraph<Integer> {
         if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
-        final CSGraph other = (CSGraph) obj;
+        final CMGraph other = (CMGraph) obj;
         if (!Arrays.deepEquals(this.graph, other.graph)) {
             return false;
         }
@@ -99,8 +109,8 @@ public class CSGraph implements IGraph<Integer> {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Arrays.deepHashCode(this.graph);
+        int hash = 7;
+        hash = 29 * hash + Arrays.deepHashCode(this.graph);
         return hash;
     }
 }
