@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.exception.array;
+package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IArray;
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;

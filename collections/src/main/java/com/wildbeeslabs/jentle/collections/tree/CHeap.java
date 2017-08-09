@@ -2,9 +2,13 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.exception.NoSpaceAvailableException;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,6 +20,11 @@ import java.util.Comparator;
  * @param <T>
  */
 public class CHeap<T> {
+
+    /**
+     * Default Logger instance
+     */
+    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     private int size;
     private int capacity;

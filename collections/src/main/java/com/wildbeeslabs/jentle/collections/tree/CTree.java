@@ -1,8 +1,9 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
+import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 import com.wildbeeslabs.jentle.collections.interfaces.Visitor;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 
 import org.apache.log4j.LogManager;
@@ -26,9 +27,9 @@ public class CTree<T> implements ITree<T> {
 
     protected static class CTreeNode<T> {
 
-        private T data;
-        private CTreeNode<T> left;
-        private CTreeNode<T> right;
+        protected T data;
+        protected CTreeNode<T> left;
+        protected CTreeNode<T> right;
 
         public CTreeNode(final T data) {
             this(data, null, null);
@@ -77,9 +78,17 @@ public class CTree<T> implements ITree<T> {
     }
 
     private CTreeNode<T> root;
+    private int size;
+    private final Comparator<? super T> cmp;
 
     public CTree() {
+        this(CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
+    public CTree(final Comparator<? super T> cmp) {
         this.root = null;
+        this.size = 0;
+        this.cmp = cmp;
     }
 
     public int height() {
@@ -110,8 +119,7 @@ public class CTree<T> implements ITree<T> {
 
     //@Override
     public int size() {
-        //return this.size;
-        return 0;
+        return this.size;
     }
 
     public boolean isEmpty() {
