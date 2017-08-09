@@ -221,6 +221,7 @@ public class CList<T> implements IList<T> {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return (0 == this.size());
     }
@@ -256,6 +257,7 @@ public class CList<T> implements IList<T> {
     @Override
     public void clear() {
         this.first = this.last = null;
+        this.size = 0;
     }
 
     @Override
@@ -326,14 +328,17 @@ public class CList<T> implements IList<T> {
         if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
-        CList<T> another = (CList<T>) obj;
-        boolean equal = true;
-        Iterator<T> list1 = this.iterator();
-        Iterator<T> list2 = another.iterator();
-        for (; equal && list1.hasNext() && list2.hasNext();) {
-            equal = list1.next().equals(list2.next());
+        final CList<T> other = (CList<T>) obj;
+        if (!Objects.equals(this.first, other.first)) {
+            return false;
         }
-        return equal && !list1.hasNext() && !list2.hasNext();
+        if (!Objects.equals(this.last, other.last)) {
+            return false;
+        }
+        if (this.size != other.size) {
+            return false;
+        }
+        return true;
     }
 
     @Override
