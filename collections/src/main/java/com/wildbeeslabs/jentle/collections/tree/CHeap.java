@@ -24,12 +24,12 @@ public class CHeap<T> {
     /**
      * Default Logger instance
      */
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    private int size;
-    private int capacity;
-    private final Comparator<? super T> cmp;
-    private T[] array;
+    protected int size;
+    protected int capacity;
+    protected final Comparator<? super T> cmp;
+    protected T[] array;
 
     public CHeap(final Class<T[]> clazz, int capacity) {
         this(clazz, capacity, CSort.DEFAULT_SORT_COMPARATOR);

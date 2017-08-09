@@ -213,9 +213,8 @@ public class CDynamicArray<T> implements IArray<T> {
     }
 
     @Override
-    @SuppressWarnings("Convert2Diamond")
     public Iterator<T> iterator() {
-        return new CDynamicArrayIterator<T>(this);
+        return new CDynamicArrayIterator<>(this);
     }
 
     protected static class CDynamicArrayIterator<T> implements Iterator<T> {

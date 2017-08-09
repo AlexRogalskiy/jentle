@@ -51,9 +51,9 @@ public interface IList<T> {
     public boolean contains(T value);
 
     /**
-     * Get the size of the queue.
+     * Get the size of the list.
      *
-     * @return size of the queue.
+     * @return size of the list.
      */
     public int size();
 

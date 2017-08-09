@@ -3,6 +3,7 @@ package com.wildbeeslabs.jentle.collections.tree;
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 import com.wildbeeslabs.jentle.collections.interfaces.Visitor;
+
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class CTree<T> implements ITree<T> {
     /**
      * Default Logger instance
      */
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected static class CTreeNode<T> {
 
@@ -77,9 +78,9 @@ public class CTree<T> implements ITree<T> {
         }
     }
 
-    private CTreeNode<T> root;
-    private int size;
-    private final Comparator<? super T> cmp;
+    protected CTreeNode<T> root;
+    protected int size;
+    protected final Comparator<? super T> cmp;
 
     public CTree() {
         this(CSort.DEFAULT_SORT_COMPARATOR);
@@ -117,11 +118,16 @@ public class CTree<T> implements ITree<T> {
         return this.nodesOnLevel(node.left, level - 1) + this.nodesOnLevel(node.right, level - 1);
     }
 
-    //@Override
+    public CTreeNode<T> getRoot() {
+        return this.root;
+    }
+
+    @Override
     public int size() {
         return this.size;
     }
 
+    @Override
     public boolean isEmpty() {
         return (0 == this.size());
     }

@@ -86,9 +86,9 @@ public class CLinkedList<T> implements IList<T> {
         }
     }
 
-    private CLinkedListNode<T> first;
-    private CLinkedListNode<T> last;
-    private int size;
+    protected CLinkedListNode<T> first;
+    protected CLinkedListNode<T> last;
+    protected int size;
 
     public CLinkedList() {
         this.first = this.last = null;
@@ -160,13 +160,13 @@ public class CLinkedList<T> implements IList<T> {
             return false;
         }
         final CLinkedList<T> other = (CLinkedList<T>) obj;
+        if (this.size != other.size) {
+            return false;
+        }
         if (!Objects.equals(this.first, other.first)) {
             return false;
         }
         if (!Objects.equals(this.last, other.last)) {
-            return false;
-        }
-        if (this.size != other.size) {
             return false;
         }
         return true;

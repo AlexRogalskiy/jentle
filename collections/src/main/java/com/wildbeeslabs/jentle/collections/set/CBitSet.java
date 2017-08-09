@@ -4,6 +4,9 @@ import com.wildbeeslabs.jentle.collections.interfaces.ISet;
 
 import java.util.Arrays;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 /**
  *
  * Custom bit-set implementation
@@ -13,6 +16,11 @@ import java.util.Arrays;
  * @since 2017-08-07
  */
 public class CBitSet implements ISet<Integer> {
+
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     /**
      * Default block size
@@ -34,7 +42,7 @@ public class CBitSet implements ISet<Integer> {
             this.min = max;
             this.max = min;
         }
-        int size = max - min + 1;
+        int size = (max - min + 1);
         int sizeOfBytes = (size + DEFAULT_BLOCK_SIZE - 1) / DEFAULT_BLOCK_SIZE;
         this.array = new int[sizeOfBytes];
         if (null != bitset) {

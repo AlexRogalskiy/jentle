@@ -40,13 +40,13 @@ public class CTree2<T> {
     public void insertInOrder(final T item) {
         if (cmp.compare(item, this.data) <= 0) {
             if (null == this.left) {
-                this.setLeftChild(new CTree2<T>(item));
+                this.setLeftChild(new CTree2<>(item));
             } else {
                 this.left.insertInOrder(item);
             }
         } else {
             if (null == this.right) {
-                this.setRightChild(new CTree2<T>(item));
+                this.setRightChild(new CTree2<>(item));
             } else {
                 this.right.insertInOrder(item);
             }

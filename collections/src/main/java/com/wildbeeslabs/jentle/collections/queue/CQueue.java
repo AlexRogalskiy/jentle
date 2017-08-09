@@ -24,7 +24,7 @@ public class CQueue<T> implements IQueue<T> {
     /**
      * Default Logger instance
      */
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected static class CQueueNode<T> {
 
@@ -72,9 +72,9 @@ public class CQueue<T> implements IQueue<T> {
         }
     }
 
-    private CQueueNode<T> first;
-    private CQueueNode<T> last;
-    private int size;
+    protected CQueueNode<T> first;
+    protected CQueueNode<T> last;
+    protected int size;
 
     public CQueue() {
         this.first = null;
@@ -83,8 +83,7 @@ public class CQueue<T> implements IQueue<T> {
     }
 
     public void enqueue(T item) {
-        @SuppressWarnings("Convert2Diamond")
-        CQueueNode<T> temp = new CQueueNode<T>(item);
+        CQueueNode<T> temp = new CQueueNode<>(item);
         if (null != last) {
             last.next = temp;
         }
@@ -97,8 +96,7 @@ public class CQueue<T> implements IQueue<T> {
 
     public T dequeue() throws EmptyQueueException {
         if (this.isEmpty()) {
-            //throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
-            return null;
+            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
         }
         T data = first.data;
         first = first.next;
@@ -112,8 +110,7 @@ public class CQueue<T> implements IQueue<T> {
     @Override
     public T peek() throws EmptyQueueException {
         if (this.isEmpty()) {
-            //throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
-            return null;
+            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
         }
         return this.first.data;
     }
@@ -181,13 +178,13 @@ public class CQueue<T> implements IQueue<T> {
             return false;
         }
         final CQueue<T> other = (CQueue<T>) obj;
+        if (this.size != other.size) {
+            return false;
+        }
         if (!Objects.equals(this.first, other.first)) {
             return false;
         }
         if (!Objects.equals(this.last, other.last)) {
-            return false;
-        }
-        if (this.size != other.size) {
             return false;
         }
         return true;

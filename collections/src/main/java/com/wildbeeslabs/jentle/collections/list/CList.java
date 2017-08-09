@@ -28,7 +28,7 @@ public class CList<T> implements IList<T> {
     /**
      * Default Logger instance
      */
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected static class CListNode<T> {
 
@@ -82,9 +82,9 @@ public class CList<T> implements IList<T> {
         }
     }
 
-    private CListNode<T> first;
-    private CListNode<T> last;
-    private int size;
+    protected CListNode<T> first;
+    protected CListNode<T> last;
+    protected int size;
 
     public CList() {
         this.first = this.last = null;
@@ -95,15 +95,14 @@ public class CList<T> implements IList<T> {
         this.addList(source);
     }
 
-    public final void addList(final CList<T> source) {
+    public void addList(final CList<T> source) {
         for (CListNode<T> current = source.first; current != null; current = current.next) {
             this.addLast(current.data);
         }
     }
 
     public void addFirst(T item) {
-        @SuppressWarnings("Convert2Diamond")
-        CListNode<T> temp = new CListNode<T>(item, this.first);
+        CListNode<T> temp = new CListNode<>(item, this.first);
         if (null == this.first) {
             this.last = temp;
         }
@@ -112,8 +111,7 @@ public class CList<T> implements IList<T> {
     }
 
     public void addLast(T item) {
-        @SuppressWarnings("Convert2Diamond")
-        CListNode<T> temp = new CListNode<T>(item, null);
+        CListNode<T> temp = new CListNode<>(item, null);
         if (null == this.last) {
             this.first = temp;
         } else {
@@ -157,8 +155,7 @@ public class CList<T> implements IList<T> {
     @Override
     public boolean remove(T item) throws EmptyListException {
         if (this.isEmpty()) {
-            //hrow new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
-            return false;
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
         }
         CListNode<T> previous = null, next = this.first;
         boolean removed = false;
@@ -185,8 +182,7 @@ public class CList<T> implements IList<T> {
             previous = next;
             next = next.next;
         }
-        @SuppressWarnings("Convert2Diamond")
-        CListNode<T> temp = new CListNode<T>(item, next);
+        CListNode<T> temp = new CListNode<>(item, next);
         if (null == next) {
             this.last = temp;
         }
@@ -281,9 +277,8 @@ public class CList<T> implements IList<T> {
     }
 
     //@Override
-    @SuppressWarnings("Convert2Diamond")
     public Iterator<T> iterator() {
-        return new CListIterator<T>(this);
+        return new CListIterator<>(this);
     }
 
     protected static class CListIterator<T> implements Iterator<T> {
@@ -329,13 +324,13 @@ public class CList<T> implements IList<T> {
             return false;
         }
         final CList<T> other = (CList<T>) obj;
+        if (this.size != other.size) {
+            return false;
+        }
         if (!Objects.equals(this.first, other.first)) {
             return false;
         }
         if (!Objects.equals(this.last, other.last)) {
-            return false;
-        }
-        if (this.size != other.size) {
             return false;
         }
         return true;

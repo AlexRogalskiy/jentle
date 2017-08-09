@@ -25,19 +25,17 @@ public class CHashMapList<T, E> {
     /**
      * Default Logger instance
      */
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    private final Map<T, ArrayList<E>> map;
+    protected final Map<T, ArrayList<E>> map;
 
-    @SuppressWarnings("Convert2Diamond")
     public CHashMapList() {
-        this.map = new HashMap<T, ArrayList<E>>();
+        this.map = new HashMap<>();
     }
 
-    @SuppressWarnings("Convert2Diamond")
     public void put(final T key, final E item) {
         if (!this.containsKey(key)) {
-            this.map.put(key, new ArrayList<E>());
+            this.map.put(key, new ArrayList<>());
         }
         this.map.get(key).add(item);
     }

@@ -24,7 +24,7 @@ public class CStack<T> implements IStack<T> {
     /**
      * Default Logger instance
      */
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected static class CStackNode<T> {
 
@@ -72,8 +72,8 @@ public class CStack<T> implements IStack<T> {
         }
     }
 
-    private CStackNode<T> top;
-    private int size;
+    protected CStackNode<T> top;
+    protected int size;
 
     public CStack() {
         this.top = null;
@@ -83,8 +83,7 @@ public class CStack<T> implements IStack<T> {
     @Override
     public T pop() throws EmptyStackException {
         if (this.isEmpty()) {
-            //throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
-            return null;
+            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
         }
         T removed = this.top.data;
         this.top = this.top.next;
@@ -94,8 +93,7 @@ public class CStack<T> implements IStack<T> {
 
     @Override
     public void push(T item) {
-        @SuppressWarnings("Convert2Diamond")
-        CStackNode<T> temp = new CStackNode<T>(item, top);
+        CStackNode<T> temp = new CStackNode<>(item, top);
         this.size++;
         this.top = temp;
     }
@@ -103,8 +101,7 @@ public class CStack<T> implements IStack<T> {
     @Override
     public T peek() throws EmptyStackException {
         if (this.isEmpty()) {
-            //throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
-            return null;
+            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
         }
         return top.data;
     }
@@ -162,10 +159,10 @@ public class CStack<T> implements IStack<T> {
             return false;
         }
         final CStack<T> other = (CStack<T>) obj;
-        if (!Objects.equals(this.top, other.top)) {
+        if (this.size != other.size) {
             return false;
         }
-        if (this.size != other.size) {
+        if (!Objects.equals(this.top, other.top)) {
             return false;
         }
         return true;
