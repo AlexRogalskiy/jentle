@@ -39,12 +39,12 @@ public class CSGraph implements IGraph<Integer> {
         this.checkRange(to);
         return this.graph[from - 1].has(new Integer(to));
     }
-    
+
     @Override
     public void add(int from, int to, final Integer data) {
         this.add(from, to);
     }
-    
+
     public void add(int from, int to) {
         this.checkRange(from);
         this.checkRange(to);

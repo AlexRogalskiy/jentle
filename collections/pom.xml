@@ -8,16 +8,16 @@
         <version>1.0-jentle</version>
     </parent>
     <groupId>com.wildbeeslabs.jentle</groupId>
-    <artifactId>collections</artifactId>
+    <artifactId>jentle-collections</artifactId>
     <version>1.0-jentle</version>
     <packaging>jar</packaging>
-    <name>collections</name>
-    <url>http://maven.apache.org</url>
+    <name>jentle-collections</name>
+    <url>http://maven.apache.org/</url>
     <description>Java collection framework</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>${project.parent.maven.compiler.source}</maven.compiler.source>
+        <maven.compiler.target>${project.parent.maven.compiler.target}</maven.compiler.target>
     </properties>
   
     <build>
