@@ -6,6 +6,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IList;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -34,6 +35,10 @@ public class CLinkedList<T> implements IList<T> {
         private CLinkedListNode<T> previous;
         private CLinkedListNode<T> next;
         private final Comparator<? super T> cmp;
+        
+        public CLinkedListNode() {
+            this(null);
+        }
 
         public CLinkedListNode(final T data) {
             this(data, null, null);
@@ -109,6 +114,11 @@ public class CLinkedList<T> implements IList<T> {
     @Override
     public int size() {
         return this.size;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

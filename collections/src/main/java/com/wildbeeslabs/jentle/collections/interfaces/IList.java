@@ -1,6 +1,7 @@
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
+import java.util.Iterator;
 
 /**
  *
@@ -87,4 +88,6 @@ public interface IList<T> {
     
     public void addLast(T item);
     public T getAt(int index);
+    
+    public Iterator<T> iterator();
 }

@@ -5,6 +5,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.ISet;
 import com.wildbeeslabs.jentle.collections.set.CBitSet;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -33,42 +34,57 @@ public class CSGraph implements IGraph<Integer> {
         }
     }
 
-    public boolean has(int a, int b) {
-        this.checkRange(a);
-        this.checkRange(b);
-        return this.graph[a - 1].has(b);
+    public boolean has(int from, int to) {
+        this.checkRange(from);
+        this.checkRange(to);
+        return this.graph[from - 1].has(new Integer(to));
+    }
+    
+    @Override
+    public void add(int from, int to, final Integer data) {
+        this.add(from, to);
+    }
+    
+    public void add(int from, int to) {
+        this.checkRange(from);
+        this.checkRange(to);
+        this.graph[from - 1].disjunct(new Integer(to));
     }
 
-    public void add(int a, int b) {
-        this.checkRange(a);
-        this.checkRange(b);
-        this.graph[a - 1].disjunct(b);
+    public void remove(int from, int to) {
+        this.checkRange(from);
+        this.checkRange(to);
+        this.graph[from - 1].remove(new Integer(to));
     }
 
-    public void remove(int a, int b) {
-        this.checkRange(a);
-        this.checkRange(b);
-        this.graph[a - 1].remove(b);
-    }
-
-    public int cardIn(int a) {
-        this.checkRange(a);
+    public int cardIn(int to) {
+        this.checkRange(to);
         int s = 0;
         for (int i = 0; i < this.graph.length; i++) {
-            if (this.has(i, a)) {
+            if (this.has(i, to)) {
                 s++;
             }
         }
         return s;
     }
 
-    public int cardOut(int a) {
-        this.checkRange(a);
-        return this.graph[a - 1].size();
+    public int cardOut(int from) {
+        this.checkRange(from);
+        return this.graph[from - 1].size();
     }
 
     public int size() {
         return this.graph.length;
+    }
+
+    public IGraph<Integer> toCMGraph() {
+        IGraph<Integer> mGraph = new CMGraph<>((Class<? extends Integer>) this.graph.getClass().getComponentType(), this.size());
+        for (int i = 0; i < this.size(); i++) {
+            for (Iterator<Integer> it = this.graph[i].iterator(); it.hasNext();) {
+                mGraph.add(i, it.next().intValue(), 1);
+            }
+        }
+        return mGraph;
     }
 
     private void checkRange(int index) throws IndexOutOfBoundsException {

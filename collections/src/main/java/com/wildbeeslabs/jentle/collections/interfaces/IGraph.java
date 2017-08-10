@@ -11,4 +11,6 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  */
 public interface IGraph<T> {
 
+    public void add(int from, int to, final T data);
+
 }

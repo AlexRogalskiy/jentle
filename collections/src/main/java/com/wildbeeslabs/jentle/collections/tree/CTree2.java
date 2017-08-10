@@ -23,6 +23,10 @@ public class CTree2<T> {
 
     protected final Comparator<? super T> cmp;
     protected int size;
+    
+    public CTree2() {
+        this(null);
+    }
 
     public CTree2(final T data) {
         this(data, null, null, CSort.DEFAULT_SORT_COMPARATOR);
@@ -38,7 +42,7 @@ public class CTree2<T> {
     }
 
     public void insertInOrder(final T item) {
-        if (cmp.compare(item, this.data) <= 0) {
+        if (Objects.compare(item, this.data, this.cmp) <= 0) {
             if (null == this.left) {
                 this.setLeftChild(new CTree2<>(item));
             } else {
@@ -59,11 +63,11 @@ public class CTree2<T> {
     }
 
     public CTree2<T> find(final T item) {
-        if (cmp.compare(item, data) == 0) {
+        if (Objects.compare(item, data, this.cmp) == 0) {
             return this;
-        } else if (cmp.compare(item, data) <= 0) {
+        } else if (Objects.compare(item, data, cmp) <= 0) {
             return null != this.left ? this.left.find(item) : null;
-        } else if (cmp.compare(item, data) > 0) {
+        } else if (Objects.compare(item, data, cmp) > 0) {
             return null != this.right ? this.right.find(item) : null;
         }
         return null;

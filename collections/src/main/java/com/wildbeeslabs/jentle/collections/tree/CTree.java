@@ -31,6 +31,10 @@ public class CTree<T> implements ITree<T> {
         protected T data;
         protected CTreeNode<T> left;
         protected CTreeNode<T> right;
+        
+        public CTreeNode() {
+            this(null);
+        }
 
         public CTreeNode(final T data) {
             this(data, null, null);

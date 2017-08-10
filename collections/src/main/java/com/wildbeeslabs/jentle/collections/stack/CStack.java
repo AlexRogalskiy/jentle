@@ -31,6 +31,10 @@ public class CStack<T> implements IStack<T> {
         private final T data;
         private CStackNode<T> next;
 
+        public CStackNode() {
+            this(null);
+        }
+
         public CStackNode(final T data) {
             this(data, null);
         }

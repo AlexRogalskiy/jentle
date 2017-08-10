@@ -3,6 +3,7 @@ package com.wildbeeslabs.jentle.collections.set;
 import com.wildbeeslabs.jentle.collections.interfaces.ISet;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -198,5 +199,10 @@ public class CBitSet implements ISet<Integer> {
         hash = 61 * hash + this.max;
         hash = 61 * hash + Arrays.hashCode(this.array);
         return hash;
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

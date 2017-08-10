@@ -35,6 +35,10 @@ public class CList<T> implements IList<T> {
         private T data;
         private final Comparator<? super T> cmp;
         private CListNode<T> next;
+        
+        public CListNode() {
+            this(null);
+        }
 
         public CListNode(final T data) {
             this(data, null);

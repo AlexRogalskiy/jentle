@@ -6,6 +6,7 @@ import com.wildbeeslabs.jentle.collections.exception.NoSpaceAvailableException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -47,7 +48,7 @@ public class CHeap<T> {
             throw new NoSpaceAvailableException(String.format("ERROR: CHeap (no more space available size=%i, capacity=%i)", this.size(), this.capacity()));
         }
         int currentIndex = this.size++, parentIndex;
-        while (currentIndex > 0 && this.cmp.compare(item, (this.array[parentIndex = currentIndex / 2])) < 0) {
+        while (currentIndex > 0 && Objects.compare(item, (this.array[parentIndex = currentIndex / 2]), this.cmp) < 0) {
             this.array[currentIndex] = this.array[parentIndex];
             currentIndex = parentIndex;
         }

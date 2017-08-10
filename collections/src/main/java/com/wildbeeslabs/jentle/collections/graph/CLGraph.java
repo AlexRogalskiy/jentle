@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Objects;
 
 import org.apache.log4j.LogManager;
@@ -88,38 +89,39 @@ public class CLGraph<T> implements IGraph<T> {
         this.cmp = cmp;
     }
 
-    public void add(int a, int b, final T data) {
-        this.checkRange(a);
-        this.checkRange(b);
-        this.graph[a - 1].addLast(new CLGraphArc<>(b, data));
+    @Override
+    public void add(int from, int to, final T data) {
+        this.checkRange(from);
+        this.checkRange(to);
+        this.graph[from - 1].addLast(new CLGraphArc<>(to, data));
     }
 
-    public void add(int a, int b) {
-        this.add(a, b, null);
+    public void add(int from, int to) {
+        this.add(from, to, null);
     }
 
-    public void remove(int a, int b) throws EmptyListException {
-        this.checkRange(a);
-        this.checkRange(b);
-        this.graph[a - 1].remove(new CLGraphArc<>(b));
+    public void remove(int from, int to) throws EmptyListException {
+        this.checkRange(from);
+        this.checkRange(to);
+        this.graph[from - 1].remove(new CLGraphArc<>(to));
     }
 
-    private CLGraphArc<T> getItem(int a, int b) {
-        this.checkRange(a);
-        this.checkRange(b);
-        return this.graph[a - 1].getAt(b);
+    private CLGraphArc<T> getItem(int from, int to) {
+        this.checkRange(from);
+        this.checkRange(to);
+        return this.graph[from - 1].getAt(to);
     }
 
-    public T get(int a, int b) {
-        CLGraphArc<T> temp = this.getItem(a, b);
+    public T get(int from, int to) {
+        CLGraphArc<T> temp = this.getItem(from, to);
         if (null != temp) {
             return temp.data;
         }
         return null;
     }
 
-    public boolean set(int a, int b, final T data) {
-        CLGraphArc<T> temp = this.getItem(a, b);
+    public boolean set(int from, int to, final T data) {
+        CLGraphArc<T> temp = this.getItem(from, to);
         if (null != temp) {
             temp.data = data;
             return true;
@@ -127,9 +129,9 @@ public class CLGraph<T> implements IGraph<T> {
         return false;
     }
 
-    public int cardOut(int a) {
-        this.checkRange(a);
-        return this.graph[a-1].size();
+    public int cardOut(int from) {
+        this.checkRange(from);
+        return this.graph[from - 1].size();
     }
 
     private IList<CLGraphArc<T>>[] newArray(Class<? extends IList<CLGraphArc<T>>[]> type, int size) {
@@ -140,10 +142,25 @@ public class CLGraph<T> implements IGraph<T> {
         return this.graph.length;
     }
 
+    public void clear() {
+        this.graph = this.newArray((Class<? extends IList<CLGraphArc<T>>[]>) this.graph.getClass(), this.size());
+    }
+
     private void checkRange(int index) throws IndexOutOfBoundsException {
         if (index <= 0 || index > this.size()) {
             throw new IndexOutOfBoundsException(String.format("ERROR: CLGraph (vertex=%i is out of bounds [1, %i])", index, this.size()));
         }
+    }
+
+    public IGraph<Integer> toCSGraph() {
+        IGraph<Integer> sGraph = new CSGraph(this.size());
+        for (int i = 0; i < this.size(); i++) {
+            for (Iterator<CLGraphArc<T>> it = this.graph[i].iterator(); it.hasNext();) {
+                CLGraphArc<T> node = it.next();
+                sGraph.add(i, node.end, null);
+            }
+        }
+        return sGraph;
     }
 
     @Override

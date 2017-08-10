@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ * @param <T>
  */
 public class CMGraph<T> implements IGraph<T> {
 
@@ -33,48 +34,61 @@ public class CMGraph<T> implements IGraph<T> {
         return (T[][]) Array.newInstance(type, size, size);
     }
 
-    public boolean has(int a, int b) {
-        return (null != this.get(a, b));
-    }
-    
-    public void set(int a, int b, final T data) {
-        this.add(a, b, data);
+    public boolean has(int from, int to) {
+        return (null != this.get(from, to));
     }
 
-    public void add(int a, int b, final T data) {
-        this.checkRange(a);
-        this.checkRange(b);
-        this.graph[a - 1][b - 1] = data;
+    public void set(int from, int to, final T data) {
+        this.add(from, to, data);
     }
 
-    public void remove(int a, int b) {
-        this.checkRange(a);
-        this.checkRange(b);
-        this.graph[a - 1][b - 1] = null;
+    private T getDataByDefault() {
+        try {
+            return (T) this.graph.getClass().getComponentType().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            return null;
+        }
     }
 
-    public T get(int a, int b) {
-        this.checkRange(a);
-        this.checkRange(b);
-        return this.graph[a - 1][b - 1];
+    public void add(int from, int to) {
+        this.add(from, to, this.getDataByDefault());
     }
 
-    public int cardIn(int a) {
-        this.checkRange(a);
+    @Override
+    public void add(int from, int to, final T data) {
+        this.checkRange(from);
+        this.checkRange(to);
+        this.graph[from - 1][to - 1] = data;
+    }
+
+    public void remove(int from, int to) {
+        this.checkRange(from);
+        this.checkRange(to);
+        this.graph[from - 1][to - 1] = null;
+    }
+
+    public T get(int from, int to) {
+        this.checkRange(from);
+        this.checkRange(to);
+        return this.graph[from - 1][to - 1];
+    }
+
+    public int cardIn(int to) {
+        this.checkRange(to);
         int s = 0;
         for (int i = 0; i < this.graph.length; i++) {
-            if (this.has(i, a)) {
+            if (this.has(i, to)) {
                 s++;
             }
         }
         return s;
     }
 
-    public int cardOut(int a) {
-        this.checkRange(a);
+    public int cardOut(int from) {
+        this.checkRange(from);
         int s = 0;
-        for (int i = 0; i < this.graph[a].length; i++) {
-            if (this.has(a, i)) {
+        for (int i = 0; i < this.graph[from - 1].length; i++) {
+            if (this.has(from, i)) {
                 s++;
             }
         }
@@ -83,6 +97,19 @@ public class CMGraph<T> implements IGraph<T> {
 
     public int size() {
         return this.graph.length;
+    }
+
+    public IGraph<T> toCLGraph() {
+        IGraph<T> lGraph = new CLGraph<>(this.size());
+        for (int i = 0; i < this.size(); i++) {
+            for (int j = 0; j < this.graph[i].length; j++) {
+                T temp = this.get(i, j);
+                if (null != temp) {
+                    lGraph.add(i, j, temp);
+                }
+            }
+        }
+        return lGraph;
     }
 
     private void checkRange(int index) throws IndexOutOfBoundsException {

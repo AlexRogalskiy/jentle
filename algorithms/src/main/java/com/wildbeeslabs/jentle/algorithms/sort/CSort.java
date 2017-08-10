@@ -1,7 +1,9 @@
 package com.wildbeeslabs.jentle.algorithms.sort;
 
+import com.wildbeeslabs.jentle.algorithms.utils.CComparator;
 import java.lang.reflect.Array;
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  *
@@ -22,7 +24,7 @@ public class CSort {
 
         @Override
         public int compare(T first, T last) {
-            return first.compareTo(last);
+            return CComparator.compareTo(first, last);
         }
     }
 
@@ -34,9 +36,9 @@ public class CSort {
         int low = 0, high = array.length - 1, middle;
         while (low <= high) {
             middle = (int) Math.floor((low + high) / 2);
-            if (cmp.compare(array[middle], value) < 0) {
+            if (Objects.compare(array[middle], value, cmp) < 0) {
                 low = middle + 1;
-            } else if (cmp.compare(array[middle], value) > 0) {
+            } else if (Objects.compare(array[middle], value, cmp) > 0) {
                 high = middle - 1;
             } else {
                 return middle;
@@ -54,9 +56,9 @@ public class CSort {
             return -1;
         }
         int middle = (int) Math.floor((low + high) / 2);
-        if (cmp.compare(array[middle], value) < 0) {
+        if (Objects.compare(array[middle], value, cmp) < 0) {
             return binarySearchRecursive(array, value, middle + 1, high, cmp);
-        } else if (cmp.compare(array[middle], value) > 0) {
+        } else if (Objects.compare(array[middle], value, cmp) > 0) {
             return binarySearchRecursive(array, value, low, middle - 1, cmp);
         } else {
             return middle;
@@ -90,10 +92,10 @@ public class CSort {
     private static <T> int partition(T[] array, int left, int right, Comparator<? super T> cmp) {
         T pivot = array[(int) Math.floor((left + right) / 2)];
         while (left <= right) {
-            while (cmp.compare(array[left], pivot) < 0) {
+            while (Objects.compare(array[left], pivot, cmp) < 0) {
                 left++;
             }
-            while (cmp.compare(array[right], pivot) > 0) {
+            while (Objects.compare(array[right], pivot, cmp) > 0) {
                 right--;
             }
 
@@ -125,7 +127,7 @@ public class CSort {
     }
 
     public static <T> void mergeSort(T[] array, Comparator<? super T> cmp) {
-        T[] temp = newArray((Class<T[]>) array.getClass(), array.length);
+        T[] temp = CSort.newArray((Class<? extends T>) array.getClass(), array.length);
         mergeSort(array, temp, 0, array.length - 1, cmp);
     }
 
@@ -148,7 +150,7 @@ public class CSort {
         int current = low;
 
         while (tempLeft <= middle && tempRight <= high) {
-            if (cmp.compare(temp[tempLeft], temp[tempRight]) <= 0) {
+            if (Objects.compare(temp[tempLeft], temp[tempRight], cmp) <= 0) {
                 array[current] = temp[tempLeft];
                 tempLeft++;
             } else {
@@ -163,8 +165,8 @@ public class CSort {
             array[current + i] = temp[tempLeft + i];
         }
     }
-
-    private static <T> T[] newArray(Class<T[]> type, int size) {
-        return type.cast(Array.newInstance(type.getComponentType(), size));
+    
+    private static <T> T[] newArray(Class<? extends T> type, int size) {
+        return (T[]) Array.newInstance(type, size);
     }
 }

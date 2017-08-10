@@ -30,6 +30,10 @@ public class CQueue<T> implements IQueue<T> {
 
         private final T data;
         private CQueueNode<T> next;
+        
+        public CQueueNode() {
+            this(null);
+        }
 
         public CQueueNode(final T data) {
             this(data, null);
