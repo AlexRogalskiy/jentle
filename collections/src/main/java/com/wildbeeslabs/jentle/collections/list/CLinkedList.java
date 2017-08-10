@@ -152,6 +152,16 @@ public class CLinkedList<T> implements IList<T> {
     }
 
     @Override
+    public void addLast(T item) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public T getAt(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

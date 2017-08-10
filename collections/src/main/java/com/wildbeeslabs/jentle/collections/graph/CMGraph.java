@@ -36,8 +36,12 @@ public class CMGraph<T> implements IGraph<T> {
     public boolean has(int a, int b) {
         return (null != this.get(a, b));
     }
-
+    
     public void set(int a, int b, final T data) {
+        this.add(a, b, data);
+    }
+
+    public void add(int a, int b, final T data) {
         this.checkRange(a);
         this.checkRange(b);
         this.graph[a - 1][b - 1] = data;

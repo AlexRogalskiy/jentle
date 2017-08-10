@@ -110,6 +110,7 @@ public class CList<T> implements IList<T> {
         this.size++;
     }
 
+    @Override
     public void addLast(T item) {
         CListNode<T> temp = new CListNode<>(item, null);
         if (null == this.last) {
@@ -123,8 +124,7 @@ public class CList<T> implements IList<T> {
 
     public T removeFirst() throws EmptyListException {
         if (this.isEmpty()) {
-            //throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
-            return null;
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
         }
         T removed = this.first.data;
         this.first = this.first.next;
@@ -134,8 +134,7 @@ public class CList<T> implements IList<T> {
 
     public T removeLast() throws EmptyListException {
         if (this.isEmpty()) {
-            //throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
-            return null;
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
         }
         CListNode<T> previous = null, next = this.first;
         while (null != next.next) {
@@ -178,7 +177,7 @@ public class CList<T> implements IList<T> {
     public void insertAt(T item, int index) {
         this.checkRange(index);
         CListNode<T> previous = null, next = this.first;
-        while (null != next && index-- > 0) {
+        while (null != next && --index > 0) {
             previous = next;
             next = next.next;
         }
@@ -192,6 +191,18 @@ public class CList<T> implements IList<T> {
             previous.next = temp;
         }
         this.size++;
+    }
+
+    public T getAt(int index) {
+        this.checkRange(index);
+        CListNode<T> current = this.first;
+        while (null != current && --index > 0) {
+            current = current.next;
+        }
+        if(null != current) {
+            return current.data;
+        }
+        return null;
     }
 
     public T getFirst() {
@@ -212,8 +223,8 @@ public class CList<T> implements IList<T> {
     }
 
     private void checkRange(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CList (index=%i is out of bounds [0, %i])", index, this.size - 1));
+        if (index <= 0 || index > this.size()) {
+            throw new IndexOutOfBoundsException(String.format("ERROR: CList (index=%i is out of bounds [1, %i])", index, this.size));
         }
     }
 

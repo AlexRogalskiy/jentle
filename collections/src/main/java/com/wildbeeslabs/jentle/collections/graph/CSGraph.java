@@ -36,19 +36,19 @@ public class CSGraph implements IGraph<Integer> {
     public boolean has(int a, int b) {
         this.checkRange(a);
         this.checkRange(b);
-        return this.graph[a-1].has(b);
+        return this.graph[a - 1].has(b);
     }
 
-    public void set(int a, int b) {
+    public void add(int a, int b) {
         this.checkRange(a);
         this.checkRange(b);
-        this.graph[a-1].disjunct(b);
+        this.graph[a - 1].disjunct(b);
     }
 
     public void remove(int a, int b) {
         this.checkRange(a);
         this.checkRange(b);
-        this.graph[a-1].remove(b);
+        this.graph[a - 1].remove(b);
     }
 
     public int cardIn(int a) {
@@ -64,7 +64,7 @@ public class CSGraph implements IGraph<Integer> {
 
     public int cardOut(int a) {
         this.checkRange(a);
-        return this.graph[a-1].size();
+        return this.graph[a - 1].size();
     }
 
     public int size() {

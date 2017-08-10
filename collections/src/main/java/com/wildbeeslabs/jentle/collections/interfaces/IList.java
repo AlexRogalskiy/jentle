@@ -84,4 +84,7 @@ public interface IList<T> {
      * @return Java compatible Collection
      */
     public java.util.Collection<T> toCollection();
+    
+    public void addLast(T item);
+    public T getAt(int index);
 }
