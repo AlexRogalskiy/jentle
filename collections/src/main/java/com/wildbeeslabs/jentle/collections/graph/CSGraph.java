@@ -23,7 +23,7 @@ public class CSGraph implements IGraph<Integer> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CSGraph.class);
 
     protected ISet<Integer>[] graph;
 

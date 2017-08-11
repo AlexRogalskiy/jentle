@@ -24,7 +24,7 @@ public class CQueue<T> implements IQueue<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CQueue.class);
 
     protected static class CQueueNode<T> {
 

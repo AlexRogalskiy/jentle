@@ -24,7 +24,7 @@ public class CDynamicArray<T> implements IArray<T> {
     /**
      * Default Logger instance
      */
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    private static final Logger LOGGER = LogManager.getLogger(CDynamicArray.class);
     /**
      * Default array enlarge capacity coefficient
      */

@@ -26,7 +26,7 @@ public class CTrie implements ITree<String> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CTrie.class);
 
     protected static class CTrieNode<T> {
 

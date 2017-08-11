@@ -21,7 +21,7 @@ public class CBitSet implements ISet<Integer> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CBitSet.class);
 
     /**
      * Default block size (in bits)

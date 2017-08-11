@@ -28,7 +28,7 @@ public class CList<T> implements IList<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CList.class);
 
     protected static class CListNode<T> {
 

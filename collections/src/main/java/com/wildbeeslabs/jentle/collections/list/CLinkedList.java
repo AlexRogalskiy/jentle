@@ -27,7 +27,7 @@ public class CLinkedList<T> implements IList<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CLinkedList.class);
 
     protected static class CLinkedListNode<T> {
 

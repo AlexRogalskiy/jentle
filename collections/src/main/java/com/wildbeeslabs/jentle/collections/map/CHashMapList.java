@@ -25,7 +25,7 @@ public class CHashMapList<T, E> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CHashMapList.class);
 
     protected final Map<T, ArrayList<E>> map;
 

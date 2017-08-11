@@ -29,7 +29,7 @@ public class CLGraph<T> implements IGraph<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CLGraph.class);
 
     protected static class CLGraphArc<T> {
 

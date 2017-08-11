@@ -24,7 +24,7 @@ public class CTree<T> implements ITree<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CTree.class);
 
     protected static class CTreeNode<T> {
 

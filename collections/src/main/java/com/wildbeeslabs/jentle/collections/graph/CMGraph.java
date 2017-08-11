@@ -22,7 +22,7 @@ public class CMGraph<T> implements IGraph<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CMGraph.class);
 
     protected T[][] graph;
 

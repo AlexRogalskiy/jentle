@@ -24,7 +24,7 @@ public class CStack<T> implements IStack<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected static final Logger LOGGER = LogManager.getLogger(CStack.class);
 
     protected static class CStackNode<T> {
 
