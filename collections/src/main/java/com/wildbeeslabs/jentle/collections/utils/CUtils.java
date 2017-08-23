@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.ArrayUtils.toArray;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CollectionUtils {
+public class CUtils {
 
     public static Object[] mergeObjects(final Object o1, final Object o2) {
         if (!o1.getClass().isArray() && !o2.getClass().isArray()) {
