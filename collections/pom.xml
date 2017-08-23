@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.wildbeeslabs</groupId>
         <artifactId>jentle</artifactId>
-        <version>1.0-jentle</version>
+        <version>1.0.0</version>
     </parent>
     <groupId>com.wildbeeslabs.jentle</groupId>
     <artifactId>jentle-collections</artifactId>
-    <version>1.0-jentle</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>jentle-collections</name>
     <url>http://maven.apache.org/</url>
@@ -19,6 +19,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <apache.commons.version>3.5</apache.commons.version>
+        
+        <jentle.algorithms.version>1.0.0</jentle.algorithms.version>
         <java.version>1.8</java.version>
     </properties>
   
@@ -108,8 +110,8 @@
         </dependency>
         <dependency>
             <groupId>com.wildbeeslabs.jentle</groupId>
-            <artifactId>algorithms</artifactId>
-            <version>1.0-jentle</version>
+            <artifactId>jentle-algorithms</artifactId>
+            <version>${jentle.algorithms.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

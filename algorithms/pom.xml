@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.wildbeeslabs</groupId>
         <artifactId>jentle</artifactId>
-        <version>1.0-jentle</version>
+        <version>1.0.0</version>
     </parent>
     <groupId>com.wildbeeslabs.jentle</groupId>
     <artifactId>jentle-algorithms</artifactId>
-    <version>1.0-jentle</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>jentle-algorithms</name>
     <url>http://maven.apache.org/</url>
