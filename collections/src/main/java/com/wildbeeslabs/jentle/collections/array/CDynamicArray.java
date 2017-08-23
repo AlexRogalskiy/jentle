@@ -6,6 +6,7 @@ import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -52,12 +53,12 @@ public class CDynamicArray<T> implements IArray<T> {
 
     public CDynamicArray(final Class<T[]> clazz, int size, int capacity, final T[] array) throws InvalidDimensionException {
         if (size < 0) {
-            throw new InvalidDimensionException(String.format("ERROR: CDynamicArray (invalid intial size=%i)", size));
+            throw new InvalidDimensionException(String.format("ERROR: CDynamicArray (invalid intial size=%d)", size));
         }
         this.size = size;
         this.capacity = (capacity < size ? size : capacity);
         this.array = this.newArray(clazz, this.capacity);
-        if (null != array) {
+        if (Objects.nonNull(array)) {
             System.arraycopy(array, 0, this.array, 0, Math.min(this.size, array.length));
         }
     }
@@ -75,7 +76,7 @@ public class CDynamicArray<T> implements IArray<T> {
     }
 
     public void add(T[] items) {
-        if (null != items) {
+        if (Objects.nonNull(items)) {
             this.resize(items.length);
             for (T item : items) {
                 this.add(item);
@@ -127,7 +128,7 @@ public class CDynamicArray<T> implements IArray<T> {
     private void enlargeCapacity(int delta) {
         if ((this.size + delta) > this.capacity) {
             this.capacity = (int) Math.floor((this.size + delta) * DEFAULT_ENLARGE_CAPACITY_FACTOR);
-            LOGGER.info(String.format("CDynamicArray (enlarged capacity=%i)", this.capacity));
+            LOGGER.info(String.format("CDynamicArray (enlarged capacity=%d)", this.capacity));
             this.changeCapacity();
         }
     }
@@ -136,7 +137,7 @@ public class CDynamicArray<T> implements IArray<T> {
         this.size = (delta > this.size ? 0 : this.size - delta);
         if ((int) Math.floor(this.size * DEFAULT_SHRINK_CAPACITY_FACTOR) < this.capacity) {
             this.capacity = (int) Math.floor(this.size * DEFAULT_ENLARGE_CAPACITY_FACTOR);
-            LOGGER.info(String.format("CDynamicArray (shrinked capacity=%i)", this.capacity));
+            LOGGER.info(String.format("CDynamicArray (shrinked capacity=%d)", this.capacity));
             this.changeCapacity();
         }
     }
@@ -152,7 +153,7 @@ public class CDynamicArray<T> implements IArray<T> {
     }
 
     public int indexOf(T item) {
-        if (null == item) {
+        if (Objects.isNull(item)) {
             for (int i = 0; i < this.size(); i++) {
                 if (null == this.array[i]) {
                     return i;
@@ -160,7 +161,7 @@ public class CDynamicArray<T> implements IArray<T> {
             }
         } else {
             for (int i = 0; i < this.size(); i++) {
-                if (item.equals(this.array[i])) {
+                if (Objects.equals(item, this.array[i])) {
                     return i;
                 }
             }
@@ -188,7 +189,7 @@ public class CDynamicArray<T> implements IArray<T> {
 
     private void checkRange(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CDynamicArray (index=%i is out of bounds [0, %i])", index, this.size - 1));
+            throw new IndexOutOfBoundsException(String.format("ERROR: CDynamicArray (index=%d is out of bounds [0, %d])", index, this.size - 1));
         }
     }
 
@@ -251,7 +252,7 @@ public class CDynamicArray<T> implements IArray<T> {
 
     @Override
     public String toString() {
-        return String.format("CDynamicArray {data: %s, size: %i, capacity: %i}", this.array, this.size, this.capacity);
+        return String.format("CDynamicArray {data: %s, size: %d, capacity: %d}", this.array, this.size, this.capacity);
     }
 
     @Override

@@ -87,7 +87,7 @@ public class CStack<T> implements IStack<T> {
     @Override
     public T pop() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
+            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%d)", this.size));
         }
         T removed = this.top.data;
         this.top = this.top.next;
@@ -96,7 +96,7 @@ public class CStack<T> implements IStack<T> {
     }
 
     @Override
-    public void push(T item) {
+    public void push(final T item) {
         CStackNode<T> temp = new CStackNode<>(item, top);
         this.size++;
         this.top = temp;
@@ -105,7 +105,7 @@ public class CStack<T> implements IStack<T> {
     @Override
     public T peek() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%i)", this.size));
+            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%d)", this.size));
         }
         return top.data;
     }
@@ -125,12 +125,12 @@ public class CStack<T> implements IStack<T> {
     }
 
     @Override
-    public boolean remove(T value) {
+    public boolean remove(final T value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean contains(T value) {
+    public boolean contains(final T value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -151,7 +151,7 @@ public class CStack<T> implements IStack<T> {
 
     @Override
     public String toString() {
-        return String.format("CStack {top: %s, size: %i}", this.top, this.size);
+        return String.format("CStack {top: %s, size: %d}", this.top, this.size);
     }
 
     @Override

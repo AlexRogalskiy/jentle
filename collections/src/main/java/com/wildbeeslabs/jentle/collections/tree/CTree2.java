@@ -23,7 +23,7 @@ public class CTree2<T> {
 
     protected final Comparator<? super T> cmp;
     protected int size;
-    
+
     public CTree2() {
         this(null);
     }
@@ -43,13 +43,13 @@ public class CTree2<T> {
 
     public void insertInOrder(final T item) {
         if (Objects.compare(item, this.data, this.cmp) <= 0) {
-            if (null == this.left) {
+            if (Objects.isNull(this.left)) {
                 this.setLeftChild(new CTree2<>(item));
             } else {
                 this.left.insertInOrder(item);
             }
         } else {
-            if (null == this.right) {
+            if (Objects.isNull(this.right)) {
                 this.setRightChild(new CTree2<>(item));
             } else {
                 this.right.insertInOrder(item);
@@ -66,23 +66,23 @@ public class CTree2<T> {
         if (Objects.compare(item, data, this.cmp) == 0) {
             return this;
         } else if (Objects.compare(item, data, cmp) <= 0) {
-            return null != this.left ? this.left.find(item) : null;
+            return Objects.nonNull(this.left) ? this.left.find(item) : null;
         } else if (Objects.compare(item, data, cmp) > 0) {
-            return null != this.right ? this.right.find(item) : null;
+            return Objects.nonNull(this.right) ? this.right.find(item) : null;
         }
         return null;
     }
 
     public void setLeftChild(final CTree2<T> left) {
         this.left = left;
-        if (null != left) {
+        if (Objects.nonNull(left)) {
             left.parent = this;
         }
     }
 
     public void setRightChild(final CTree2<T> right) {
         this.right = right;
-        if (null != right) {
+        if (Objects.nonNull(right)) {
             right.parent = this;
         }
     }

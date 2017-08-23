@@ -4,6 +4,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Objects;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -104,7 +105,7 @@ public class CMGraph<T> implements IGraph<T> {
         for (int i = 0; i < this.size(); i++) {
             for (int j = 0; j < this.graph[i].length; j++) {
                 T temp = this.get(i, j);
-                if (null != temp) {
+                if (Objects.nonNull(temp)) {
                     lGraph.add(i, j, temp);
                 }
             }

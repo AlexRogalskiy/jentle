@@ -31,7 +31,7 @@ public class CTree<T> implements ITree<T> {
         protected T data;
         protected CTreeNode<T> left;
         protected CTreeNode<T> right;
-        
+
         public CTreeNode() {
             this(null);
         }
@@ -100,8 +100,8 @@ public class CTree<T> implements ITree<T> {
         return this.height(this.root);
     }
 
-    private int height(CTreeNode<T> node) {
-        if (null == node) {
+    private int height(final CTreeNode<T> node) {
+        if (Objects.isNull(node)) {
             return 0;
         } else {
             return Math.max(this.height(node.left), this.height(node.right)) + 1;
@@ -112,8 +112,8 @@ public class CTree<T> implements ITree<T> {
         return this.nodesOnLevel(this.root, level);
     }
 
-    private int nodesOnLevel(CTreeNode<T> node, int level) {
-        if (null == node) {
+    private int nodesOnLevel(final CTreeNode<T> node, int level) {
+        if (Objects.isNull(node)) {
             return 0;
         }
         if (1 == level) {
@@ -137,7 +137,7 @@ public class CTree<T> implements ITree<T> {
     }
 
     public void inOrderTraversal(final CTreeNode<T> node, final Visitor<T> visitor) {
-        if (null != node) {
+        if (Objects.nonNull(node)) {
             inOrderTraversal(node.left, visitor);
             visitor.visit(node.data);
             inOrderTraversal(node.right, visitor);
@@ -145,7 +145,7 @@ public class CTree<T> implements ITree<T> {
     }
 
     public void preOrderTraversal(final CTreeNode<T> node, final Visitor<T> visitor) {
-        if (null != node) {
+        if (Objects.nonNull(node)) {
             visitor.visit(node.data);
             preOrderTraversal(node.left, visitor);
             preOrderTraversal(node.right, visitor);
@@ -153,7 +153,7 @@ public class CTree<T> implements ITree<T> {
     }
 
     public void postOrderTraversal(final CTreeNode<T> node, final Visitor<T> visitor) {
-        if (null != node) {
+        if (Objects.nonNull(node)) {
             postOrderTraversal(node.left, visitor);
             postOrderTraversal(node.right, visitor);
             visitor.visit(node.data);

@@ -20,7 +20,7 @@ package com.wildbeeslabs.jentle.algorithms.bitwise;
  # x | x = x
  * 
  */
-public class CBitwise {
+public final class CBitwise {
 
     public static boolean getBit(int num, int i) {
         return ((num & (1 << i)) != 0);

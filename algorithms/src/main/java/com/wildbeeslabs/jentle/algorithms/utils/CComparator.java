@@ -12,7 +12,7 @@ import java.util.Objects;
  * @since 2017-08-07
  * @param <T>
  */
-public class CComparator<T> {
+public final class CComparator<T> {
 
     /**
      * Integer null safe comparison

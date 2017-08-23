@@ -35,7 +35,7 @@ public class CList<T> implements IList<T> {
         private T data;
         private final Comparator<? super T> cmp;
         private CListNode<T> next;
-        
+
         public CListNode() {
             this(null);
         }
@@ -100,14 +100,16 @@ public class CList<T> implements IList<T> {
     }
 
     public void addList(final CList<T> source) {
-        for (CListNode<T> current = source.first; current != null; current = current.next) {
-            this.addLast(current.data);
+        if (Objects.nonNull(source)) {
+            for (CListNode<T> current = source.first; current != null; current = current.next) {
+                this.addLast(current.data);
+            }
         }
     }
 
-    public void addFirst(T item) {
+    public void addFirst(final T item) {
         CListNode<T> temp = new CListNode<>(item, this.first);
-        if (null == this.first) {
+        if (Objects.isNull(this.first)) {
             this.last = temp;
         }
         this.first = temp;
@@ -115,9 +117,9 @@ public class CList<T> implements IList<T> {
     }
 
     @Override
-    public void addLast(T item) {
+    public void addLast(final T item) {
         CListNode<T> temp = new CListNode<>(item, null);
-        if (null == this.last) {
+        if (Objects.isNull(this.last)) {
             this.first = temp;
         } else {
             this.last.next = temp;
@@ -128,7 +130,7 @@ public class CList<T> implements IList<T> {
 
     public T removeFirst() throws EmptyListException {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
         }
         T removed = this.first.data;
         this.first = this.first.next;
@@ -138,14 +140,14 @@ public class CList<T> implements IList<T> {
 
     public T removeLast() throws EmptyListException {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
         }
         CListNode<T> previous = null, next = this.first;
-        while (null != next.next) {
+        while (Objects.nonNull(next.next)) {
             previous = next;
             next = next.next;
         }
-        if (null == previous) {
+        if (Objects.isNull(previous)) {
             this.first = null;
         } else {
             previous.next = null;
@@ -156,17 +158,17 @@ public class CList<T> implements IList<T> {
     }
 
     @Override
-    public boolean remove(T item) throws EmptyListException {
+    public boolean remove(final T item) throws EmptyListException {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: CList (empty size=%i)", this.size()));
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
         }
         CListNode<T> previous = null, next = this.first;
         boolean removed = false;
-        while (null != next) {
+        while (Objects.nonNull(next)) {
             if (Objects.equals(item, next.data)) {
                 removed = true;
                 this.size--;
-                if (null != previous) {
+                if (Objects.nonNull(previous)) {
                     previous.next = next.next;
                 }
             } else {
@@ -178,18 +180,18 @@ public class CList<T> implements IList<T> {
         return removed;
     }
 
-    public void insertAt(T item, int index) {
+    public void insertAt(final T item, int index) {
         this.checkRange(index);
         CListNode<T> previous = null, next = this.first;
-        while (null != next && --index > 0) {
+        while (Objects.nonNull(next) && --index > 0) {
             previous = next;
             next = next.next;
         }
         CListNode<T> temp = new CListNode<>(item, next);
-        if (null == next) {
+        if (Objects.isNull(next)) {
             this.last = temp;
         }
-        if (null == previous) {
+        if (Objects.isNull(previous)) {
             this.first = temp;
         } else {
             previous.next = temp;
@@ -200,10 +202,10 @@ public class CList<T> implements IList<T> {
     public T getAt(int index) {
         this.checkRange(index);
         CListNode<T> current = this.first;
-        while (null != current && --index > 0) {
+        while (Objects.nonNull(current) && --index > 0) {
             current = current.next;
         }
-        if(null != current) {
+        if (Objects.nonNull(current)) {
             return current.data;
         }
         return null;
@@ -217,7 +219,7 @@ public class CList<T> implements IList<T> {
     }
 
     @Override
-    public boolean contains(T item) {
+    public boolean contains(final T item) {
         for (Iterator<T> i = this.iterator(); i.hasNext();) {
             if (Objects.equals(i.next(), item)) {
                 return true;
@@ -228,7 +230,7 @@ public class CList<T> implements IList<T> {
 
     private void checkRange(int index) throws IndexOutOfBoundsException {
         if (index <= 0 || index > this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CList (index=%i is out of bounds [1, %i])", index, this.size));
+            throw new IndexOutOfBoundsException(String.format("ERROR: CList (index=%d is out of bounds [1, %d])", index, this.size));
         }
     }
 
@@ -327,7 +329,7 @@ public class CList<T> implements IList<T> {
 
     @Override
     public String toString() {
-        return String.format("CList {first: %s, last: %s, size: %i}", this.first, this.last, this.size);
+        return String.format("CList {first: %s, last: %s, size: %d}", this.first, this.last, this.size);
     }
 
     @Override

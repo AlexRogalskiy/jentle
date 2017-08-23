@@ -114,7 +114,7 @@ public class CLGraph<T> implements IGraph<T> {
 
     public T get(int from, int to) {
         CLGraphArc<T> temp = this.getItem(from, to);
-        if (null != temp) {
+        if (Objects.nonNull(temp)) {
             return temp.data;
         }
         return null;
@@ -122,7 +122,7 @@ public class CLGraph<T> implements IGraph<T> {
 
     public boolean set(int from, int to, final T data) {
         CLGraphArc<T> temp = this.getItem(from, to);
-        if (null != temp) {
+        if (Objects.nonNull(temp)) {
             temp.data = data;
             return true;
         }
@@ -148,7 +148,7 @@ public class CLGraph<T> implements IGraph<T> {
 
     private void checkRange(int index) throws IndexOutOfBoundsException {
         if (index <= 0 || index > this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CLGraph (vertex=%i is out of bounds [1, %i])", index, this.size()));
+            throw new IndexOutOfBoundsException(String.format("ERROR: CLGraph (vertex=%d is out of bounds [1, %d])", index, this.size()));
         }
     }
 

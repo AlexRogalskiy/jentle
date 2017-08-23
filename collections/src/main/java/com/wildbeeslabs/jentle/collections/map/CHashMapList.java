@@ -54,7 +54,7 @@ public class CHashMapList<T, E> {
 
     public boolean containsKeyValue(final T key, final E value) {
         ArrayList<E> items = this.get(key);
-        if (null == items) {
+        if (Objects.isNull(items)) {
             return false;
         }
         return items.contains(value);

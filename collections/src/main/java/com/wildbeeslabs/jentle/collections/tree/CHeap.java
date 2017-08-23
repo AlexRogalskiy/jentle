@@ -45,7 +45,7 @@ public class CHeap<T> {
 
     public void insert(final T item) throws NoSpaceAvailableException {
         if (this.size >= this.capacity) {
-            throw new NoSpaceAvailableException(String.format("ERROR: CHeap (no more space available size=%i, capacity=%i)", this.size(), this.capacity()));
+            throw new NoSpaceAvailableException(String.format("ERROR: CHeap (no more space available size=%d, capacity=%d)", this.size(), this.capacity()));
         }
         int currentIndex = this.size++, parentIndex;
         while (currentIndex > 0 && Objects.compare(item, (this.array[parentIndex = currentIndex / 2]), this.cmp) < 0) {
@@ -80,7 +80,7 @@ public class CHeap<T> {
 
     @Override
     public String toString() {
-        return String.format("CHeap {data: %s, size: %i, capacity: %i}", this.array, this.size, this.capacity);
+        return String.format("CHeap {data: %s, size: %d, capacity: %d}", this.array, this.size, this.capacity);
     }
 
     @Override

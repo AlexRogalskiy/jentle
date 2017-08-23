@@ -108,13 +108,13 @@ public class CTrie implements ITree<String> {
     }
 
     protected void init(final List<String> list) {
-        if (null != list) {
-            list.stream().filter((item) -> (null != item && !item.isEmpty())).map((String item) -> {
+        if (Objects.nonNull(list)) {
+            list.stream().filter((item) -> (Objects.nonNull(item) && !item.isEmpty())).map((String item) -> {
                 CTrieNode current = CTrie.this.root;
                 for (int i = 0; i < item.length(); i++) {
                     Character letter = item.charAt(i);
                     CTrieNode child = current.getChild(letter.toString());
-                    if (null == child) {
+                    if (Objects.isNull(child)) {
                         child = new CTrieNode<>(letter.toString());
                         current.children.put(letter.toString(), child);
                         CTrie.this.size++;
@@ -133,7 +133,7 @@ public class CTrie implements ITree<String> {
         for (int i = 0; i < prefix.length(); i++) {
             Character letter = prefix.charAt(i);
             current = current.getChild(letter.toString());
-            if (null == current) {
+            if (Objects.isNull(current)) {
                 return false;
             }
         }

@@ -30,7 +30,7 @@ public class CQueue<T> implements IQueue<T> {
 
         private final T data;
         private CQueueNode<T> next;
-        
+
         public CQueueNode() {
             this(null);
         }
@@ -86,13 +86,13 @@ public class CQueue<T> implements IQueue<T> {
         this.size = 0;
     }
 
-    public void enqueue(T item) {
+    public void enqueue(final T item) {
         CQueueNode<T> temp = new CQueueNode<>(item);
-        if (null != last) {
+        if (Objects.nonNull(last)) {
             last.next = temp;
         }
         last = temp;
-        if (null == first) {
+        if (Objects.isNull(first)) {
             first = last;
         }
         this.size++;
@@ -104,7 +104,7 @@ public class CQueue<T> implements IQueue<T> {
         }
         T data = first.data;
         first = first.next;
-        if (null == first) {
+        if (Objects.isNull(first)) {
             this.last = null;
         }
         this.size--;
@@ -129,7 +129,7 @@ public class CQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public boolean offer(T value) {
+    public boolean offer(final T value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -139,7 +139,7 @@ public class CQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public boolean remove(T value) {
+    public boolean remove(final T value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -149,7 +149,7 @@ public class CQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public boolean contains(T value) {
+    public boolean contains(final T value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -170,7 +170,7 @@ public class CQueue<T> implements IQueue<T> {
 
     @Override
     public String toString() {
-        return String.format("CQueue {first: %s, last: %s, size: %i}", this.first, this.last, this.size);
+        return String.format("CQueue {first: %s, last: %s, size: %d}", this.first, this.last, this.size);
     }
 
     @Override
