@@ -1,10 +1,11 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  *
- * Custom comparing (null-safe) implementations
+ * Custom comparators with null-safe implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -22,7 +23,7 @@ public class CComparator<T> {
      * @return
      */
     public static <T extends Number> int intCompareTo(final T n1, final T n2) {
-        return compareTo(n1 != null ? n1.intValue() : null, n2 != null ? n2.intValue() : null);
+        return compareTo(Objects.nonNull(n1) ? n1.intValue() : null, Objects.nonNull(n2) ? n2.intValue() : null);
     }
 
     /**
@@ -34,7 +35,7 @@ public class CComparator<T> {
      * @return
      */
     public static <T extends Number> int longCompareTo(final T n1, final T n2) {
-        return compareTo(n1 != null ? n1.longValue() : null, n2 != null ? n2.longValue() : null);
+        return compareTo(Objects.nonNull(n1) ? n1.longValue() : null, Objects.nonNull(n2) ? n2.longValue() : null);
     }
 
     /**
@@ -46,7 +47,7 @@ public class CComparator<T> {
      * @return
      */
     public static <T extends Number> int floatCompareTo(final T n1, final T n2) {
-        return compareTo(n1 != null ? n1.floatValue() : null, n2 != null ? n2.floatValue() : null);
+        return compareTo(Objects.nonNull(n1) ? n1.floatValue() : null, Objects.nonNull(n2) ? n2.floatValue() : null);
     }
 
     /**
@@ -58,7 +59,7 @@ public class CComparator<T> {
      * @return
      */
     public static <T extends Number> int doubleCompareTo(final T n1, final T n2) {
-        return compareTo(n1 != null ? n1.doubleValue() : null, n2 != null ? n2.doubleValue() : null);
+        return compareTo(Objects.nonNull(n1) ? n1.doubleValue() : null, Objects.nonNull(n2) ? n2.doubleValue() : null);
     }
 
     /**
@@ -70,7 +71,7 @@ public class CComparator<T> {
      * @return
      */
     public static <T extends Number> int bigDecimalCompareTo(final T n1, final T n2) {
-        return bigDecimalCompareTo(n1 != null ? new BigDecimal(n1.toString()) : null, n2 != null ? new BigDecimal(n2.toString()) : null);
+        return bigDecimalCompareTo(Objects.nonNull(n1) ? new BigDecimal(n1.toString()) : null, Objects.nonNull(n2) ? new BigDecimal(n2.toString()) : null);
     }
 
     /**
@@ -94,7 +95,7 @@ public class CComparator<T> {
      * @return
      */
     public static <T> int stringCompareTo(final T obj1, final T obj2) {
-        return stringCompareTo((String) (obj1 != null ? obj1.toString() : null), (String) (obj2 != null ? obj2.toString() : null));
+        return stringCompareTo(String.valueOf(obj1), String.valueOf(obj2));
     }
 
     /**
@@ -106,7 +107,7 @@ public class CComparator<T> {
      */
     public static int stringCompareTo(final String str1, final String str2) {
         final boolean f1, f2;
-        return (f1 = str1 == null) ^ (f2 = str2 == null) ? f1 ? -1 : 1 : f1 && f2 ? 0 : str1.compareToIgnoreCase(str2);
+        return (f1 = Objects.isNull(str1)) ^ (f2 = Objects.isNull(str2)) ? f1 ? -1 : 1 : f1 && f2 ? 0 : str1.compareToIgnoreCase(str2);
     }
 
     /**
@@ -119,6 +120,6 @@ public class CComparator<T> {
      */
     public static <T extends Comparable<? super T>> int compareTo(final T c1, final T c2) {
         final boolean f1, f2;
-        return (f1 = c1 == null) ^ (f2 = c2 == null) ? f1 ? -1 : 1 : f1 && f2 ? 0 : c1.compareTo(c2);
+        return (f1 = Objects.isNull(c1)) ^ (f2 = Objects.isNull(c2)) ? f1 ? -1 : 1 : f1 && f2 ? 0 : c1.compareTo(c2);
     }
 }
