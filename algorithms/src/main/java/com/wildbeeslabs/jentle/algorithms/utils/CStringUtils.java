@@ -1,8 +1,10 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -14,8 +16,12 @@ import java.util.Set;
  */
 public class CStringUtils {
 
+    private CStringUtils() {
+        // PRIVATE EMPTY CONSTRUCTOR
+    }
+
     /**
-     * Check whether string consists of unique characters
+     * Check whether string consists of unique set of characters
      *
      * @param value - input string
      * @return true - if string is unique, false - otherwise
@@ -24,14 +30,15 @@ public class CStringUtils {
         if (Objects.isNull(value) || value.isEmpty()) {
             return false;
         }
-        Set<Integer> set = new HashSet();
-        for (int i = 0; i < value.length(); i++) {
-            int ch = value.charAt(i);
-            if (set.contains(ch)) {
-                return false;
-            }
-            set.add(ch);
+        return value.codePoints().allMatch(new HashSet<>()::add);
+    }
+
+    public static boolean permutation(final String first, final String last) {
+        if (Objects.isNull(first) || Objects.isNull(last) || first.length() != last.length()) {
+            return false;
         }
-        return true;
+        Map<Character, Long> firstMap = first.codePoints().mapToObj(ch -> (char) ch).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        Map<Character, Long> secondMap = last.codePoints().mapToObj(ch -> (char) ch).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        return firstMap.equals(secondMap);
     }
 }
