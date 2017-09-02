@@ -48,8 +48,7 @@ public class CStringUtils {
             return false;
         }
         final AtomicInteger count = new AtomicInteger();
-        Map<Character, Long> valueMap = value.codePoints().mapToObj(ch -> (char) ch).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        valueMap.forEach((k, v) -> {
+        value.codePoints().mapToObj(ch -> (char) ch).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).forEach((k, v) -> {
             if (v % 2 == 1) {
                 if (count.get() > 1) {
                     return;
