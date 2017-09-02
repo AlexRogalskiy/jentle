@@ -15,38 +15,31 @@ import java.util.stream.Stream;
  * @author Alex
  * @version 1.0.0
  * @since 2017-09-01
- * 
- * @see 
- * 
- * List<String> items = Arrays.asList("A", "B", "C");
- * long permutations = Permutations.factorial(items.size());
- * 
- * LongStream.range(0, permutations).forEachOrdered(i -> {
-        System.out.println(i + ": " + Permutations.permutation(i, items));
-    });
- * 
- * Permutations.of("A", "B", "C")
-        .map(s -> s.collect(toList()))
-        .forEachOrdered(System.out::println);
- * 
- * Permutations.of("A", "B", "C")
-        .flatMap(Function.identity())
-        .forEachOrdered(System.out::print);
- * 
- * Permutations.of("A", "B", "C")
-        .parallel()
-        .flatMap(Function.identity())
-        .forEachOrdered(System.out::print);
+ *
+ * @see
+ *
+ * List<String> items = Arrays.asList("A", "B", "C"); long permutations =
+ * Permutations.factorial(items.size());
+ *
+ * LongStream.range(0, permutations).forEachOrdered(i -> { System.out.println(i
+ * + ": " + Permutations.permutation(i, items)); });
+ *
+ * Permutations.of("A", "B", "C") .map(s -> s.collect(toList()))
+ * .forEachOrdered(System.out::println);
+ *
+ * Permutations.of("A", "B", "C") .flatMap(Function.identity())
+ * .forEachOrdered(System.out::print);
+ *
+ * Permutations.of("A", "B", "C") .parallel() .flatMap(Function.identity())
+ * .forEachOrdered(System.out::print);
  *
  * Permutations.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-        .findFirst()
-        .get()                
-        .collect(toList())
+ * .findFirst() .get() .collect(toList())
  *
  */
-public class CPermutations {
+public final class CPermutation {
 
-    private CPermutations() {
+    private CPermutation() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 

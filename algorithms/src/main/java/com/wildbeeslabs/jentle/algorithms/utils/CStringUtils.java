@@ -101,4 +101,15 @@ public class CStringUtils {
         }
         return compStr.length() < len ? compStr.toString() : value;
     }
+
+    public static boolean isRotation(final String first, final String last) {
+        if (Objects.isNull(first) || Objects.isNull(last)) {
+            return false;
+        }
+        int len = first.length();
+        if (len == last.length() && len > 0) {
+            return (first + first).contains(last);
+        }
+        return false;
+    }
 }
