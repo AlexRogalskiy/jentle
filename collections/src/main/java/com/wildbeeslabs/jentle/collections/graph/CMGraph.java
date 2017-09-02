@@ -100,7 +100,7 @@ public class CMGraph<T> implements IGraph<T> {
         return this.graph.length;
     }
 
-    public IGraph<T> toCLGraph() {
+    public IGraph<? extends T> toCLGraph() {
         IGraph<T> lGraph = new CLGraph<>(this.size());
         for (int i = 0; i < this.size(); i++) {
             for (int j = 0; j < this.graph[i].length; j++) {
@@ -132,7 +132,7 @@ public class CMGraph<T> implements IGraph<T> {
         if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
-        final CMGraph other = (CMGraph) obj;
+        final CMGraph<T> other = (CMGraph<T>) obj;
         if (!Arrays.deepEquals(this.graph, other.graph)) {
             return false;
         }

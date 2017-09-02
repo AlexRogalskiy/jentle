@@ -39,19 +39,19 @@ public class CDynamicArray<T> implements IArray<T> {
     private int capacity;
     private T[] array;
 
-    public CDynamicArray(final Class<T[]> clazz) throws InvalidDimensionException {
+    public CDynamicArray(final Class<? extends T[]> clazz) throws InvalidDimensionException {
         this(clazz, 0);
     }
 
-    public CDynamicArray(final Class<T[]> clazz, int size) throws InvalidDimensionException {
+    public CDynamicArray(final Class<? extends T[]> clazz, int size) throws InvalidDimensionException {
         this(clazz, size, size);
     }
 
-    public CDynamicArray(final Class<T[]> clazz, int size, int capacity) throws InvalidDimensionException {
+    public CDynamicArray(final Class<? extends T[]> clazz, int size, int capacity) throws InvalidDimensionException {
         this(clazz, size, capacity, null);
     }
 
-    public CDynamicArray(final Class<T[]> clazz, int size, int capacity, final T[] array) throws InvalidDimensionException {
+    public CDynamicArray(final Class<? extends T[]> clazz, int size, int capacity, final T[] array) throws InvalidDimensionException {
         if (size < 0) {
             throw new InvalidDimensionException(String.format("ERROR: CDynamicArray (invalid intial size=%d)", size));
         }
@@ -143,12 +143,12 @@ public class CDynamicArray<T> implements IArray<T> {
     }
 
     private void changeCapacity() {
-        T[] temp = this.newArray((Class<T[]>) this.array.getClass(), this.capacity);
+        T[] temp = this.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity);
         System.arraycopy(this.array, 0, temp, 0, this.size);
         this.array = temp;
     }
 
-    private T[] newArray(Class<T[]> type, int size) {
+    private T[] newArray(Class<? extends T[]> type, int size) {
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
@@ -220,10 +220,10 @@ public class CDynamicArray<T> implements IArray<T> {
 
     protected static class CDynamicArrayIterator<T> implements Iterator<T> {
 
-        private final CDynamicArray<T> source;
+        private final CDynamicArray<? extends T> source;
         private int cursor;
 
-        public CDynamicArrayIterator(final CDynamicArray<T> source) {
+        public CDynamicArrayIterator(final CDynamicArray<? extends T> source) {
             this.source = source;
             this.cursor = 0;
         }
