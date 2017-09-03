@@ -402,6 +402,16 @@ public class CList<T> implements IList<T> {
         return p2.data;
     }
 
+    public boolean delete(final CListNode<T> node) {
+        if (this.isEmpty() || Objects.isNull(node) || Objects.isNull(node.next)) {
+            return false;
+        }
+        CListNode<T> current = node.next;
+        node.data = current.data;
+        node.next = current.next;
+        return true;
+    }
+
     @Override
     public String toString() {
         return String.format("CList {first: %s, last: %s, size: %d}", this.first, this.last, this.size);

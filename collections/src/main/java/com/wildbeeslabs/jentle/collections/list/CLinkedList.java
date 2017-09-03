@@ -253,6 +253,16 @@ public class CLinkedList<T> implements IList<T> {
         return p2.data;
     }
 
+    public boolean delete(final CLinkedListNode<T> node) {
+        if (this.isEmpty() || Objects.isNull(node) || Objects.isNull(node.next)) {
+            return false;
+        }
+        CLinkedListNode<T> current = node.next;
+        node.data = current.data;
+        node.next = current.next;
+        return true;
+    }
+
     @Override
     public String toString() {
         return String.format("CLinkedList {first: %s, last: %s, size: %i}", this.first, this.last, this.size);
