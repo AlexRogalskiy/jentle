@@ -178,6 +178,10 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
         return (CLinkedListNode<T>) this.partition(this.first, value);
     }
 
+    public boolean isPalindrome() {
+        return this.isPalindrome(this.first);
+    }
+
     @Override
     public String toString() {
         return String.format("CLinkedList {first: %s, last: %s, size: %i}", this.first, this.last, this.size);
