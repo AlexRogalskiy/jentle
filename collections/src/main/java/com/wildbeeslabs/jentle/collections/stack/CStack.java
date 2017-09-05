@@ -97,7 +97,7 @@ public class CStack<T> implements IStack<T> {
 
     @Override
     public void push(final T item) {
-        CStackNode<T> temp = new CStackNode<>(item, top);
+        CStackNode<T> temp = new CStackNode<>(item, this.top);
         this.size++;
         this.top = temp;
     }

@@ -89,11 +89,11 @@ public class CQueue<T> implements IQueue<T> {
     public void enqueue(final T item) {
         CQueueNode<T> temp = new CQueueNode<>(item);
         if (Objects.nonNull(last)) {
-            last.next = temp;
+            this.last.next = temp;
         }
-        last = temp;
+        this.last = temp;
         if (Objects.isNull(first)) {
-            first = last;
+            this.first = this.last;
         }
         this.size++;
     }
@@ -102,8 +102,8 @@ public class CQueue<T> implements IQueue<T> {
         if (this.isEmpty()) {
             throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
         }
-        T data = first.data;
-        first = first.next;
+        T data = this.first.data;
+        this.first = this.first.next;
         if (Objects.isNull(first)) {
             this.last = null;
         }

@@ -2,6 +2,7 @@ package com.wildbeeslabs.jentle.collections.utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
@@ -62,5 +63,9 @@ public final class CUtils {
      */
     public static <T, U> U[] convertArray(final T[] from, final Function<T, U> func, final IntFunction<U[]> generator) {
         return Arrays.stream(from).map(func).toArray(generator);
+    }
+
+    public static <T> T safeCast(final Object o, final Class<T> clazz) {
+        return (Objects.nonNull(clazz) && clazz.isInstance(o)) ? clazz.cast(o) : null;
     }
 }

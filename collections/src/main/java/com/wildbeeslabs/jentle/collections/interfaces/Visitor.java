@@ -13,5 +13,5 @@ public interface Visitor<T> {
      * Process item in collection
      * @param item 
      */
-    public void visit(T item);
+    public void visit(final T item);
 }

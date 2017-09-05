@@ -32,11 +32,11 @@ public class CHeap<T> {
     protected final Comparator<? super T> cmp;
     protected T[] array;
 
-    public CHeap(final Class<T[]> clazz, int capacity) {
+    public CHeap(final Class<? extends T[]> clazz, int capacity) {
         this(clazz, capacity, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CHeap(final Class<T[]> clazz, int capacity, final Comparator<? super T> cmp) {
+    public CHeap(final Class<? extends T[]> clazz, int capacity, final Comparator<? super T> cmp) {
         this.size = 0;
         this.capacity = capacity;
         this.cmp = cmp;
@@ -58,7 +58,7 @@ public class CHeap<T> {
     //@Override
     public void clear() {
         this.size = 0;
-        this.array = this.newArray((Class<T[]>) this.array.getClass(), this.capacity());
+        this.array = this.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity());
     }
 
     public int size() {
@@ -74,7 +74,7 @@ public class CHeap<T> {
         return (0 == this.size());
     }
 
-    private T[] newArray(Class<T[]> type, int size) {
+    private T[] newArray(Class<? extends T[]> type, int size) {
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
