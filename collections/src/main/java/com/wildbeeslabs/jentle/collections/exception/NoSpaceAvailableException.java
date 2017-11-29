@@ -1,5 +1,9 @@
 package com.wildbeeslabs.jentle.collections.exception;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 /**
  *
  * Custom NoSpaceAvailableException implementation
@@ -8,20 +12,20 @@ package com.wildbeeslabs.jentle.collections.exception;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class NoSpaceAvailableException extends Exception {
 
-    public NoSpaceAvailableException() {
-    }
-
-    public NoSpaceAvailableException(String message) {
+    public NoSpaceAvailableException(final String message) {
         super(message);
     }
 
-    public NoSpaceAvailableException(Throwable cause) {
+    public NoSpaceAvailableException(final Throwable cause) {
         super(cause);
     }
 
-    public NoSpaceAvailableException(String message, Throwable cause) {
+    public NoSpaceAvailableException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

@@ -2,11 +2,16 @@ package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IArray;
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
+import java.io.Serializable;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -20,12 +25,15 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  * @param <T>
  */
-public class CDynamicArray<T> implements IArray<T> {
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class CDynamicArray<T extends Serializable> implements IArray<T> {
 
     /**
      * Default Logger instance
      */
-    private static final Logger LOGGER = LogManager.getLogger(CDynamicArray.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
     /**
      * Default array enlarge capacity coefficient
      */
@@ -53,7 +61,7 @@ public class CDynamicArray<T> implements IArray<T> {
 
     public CDynamicArray(final Class<? extends T[]> clazz, int size, int capacity, final T[] array) throws InvalidDimensionException {
         if (size < 0) {
-            throw new InvalidDimensionException(String.format("ERROR: CDynamicArray (invalid intial size=%d)", size));
+            throw new InvalidDimensionException(String.format("ERROR: CDynamicArray (invalid initial size=%d)", size));
         }
         this.size = size;
         this.capacity = (capacity < size ? size : capacity);
@@ -155,7 +163,7 @@ public class CDynamicArray<T> implements IArray<T> {
     public int indexOf(T item) {
         if (Objects.isNull(item)) {
             for (int i = 0; i < this.size(); i++) {
-                if (null == this.array[i]) {
+                if (Objects.isNull(this.array[i])) {
                     return i;
                 }
             }

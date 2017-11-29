@@ -5,6 +5,9 @@ import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,12 +21,15 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  * @param <T>
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CMGraph<T> implements IGraph<T> {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CMGraph.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     protected T[][] graph;
 

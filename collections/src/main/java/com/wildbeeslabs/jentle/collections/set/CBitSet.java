@@ -2,9 +2,12 @@ package com.wildbeeslabs.jentle.collections.set;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ISet;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -17,6 +20,9 @@ import org.apache.log4j.Logger;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CBitSet implements ISet<Integer> {
 
     /**
@@ -165,41 +171,6 @@ public class CBitSet implements ISet<Integer> {
             sum += (((b + (b >>> 4)) & 0x0F0F0F0F) * 0x01010101) >>> 24;
         }
         return sum;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CBitSet {data: %s, min: %d, max: %d}", this.array, this.min, this.max);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final CBitSet other = (CBitSet) obj;
-        if (this.min != other.min) {
-            return false;
-        }
-        if (this.max != other.max) {
-            return false;
-        }
-        if (!Arrays.equals(this.array, other.array)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 61 * hash + this.min;
-        hash = 61 * hash + this.max;
-        hash = 61 * hash + Arrays.hashCode(this.array);
-        return hash;
     }
 
     @Override

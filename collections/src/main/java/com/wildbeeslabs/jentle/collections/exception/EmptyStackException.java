@@ -1,5 +1,9 @@
 package com.wildbeeslabs.jentle.collections.exception;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 /**
  *
  * Custom EmptyStackException implementation
@@ -8,20 +12,20 @@ package com.wildbeeslabs.jentle.collections.exception;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class EmptyStackException extends Exception {
 
-    public EmptyStackException() {
-    }
-
-    public EmptyStackException(String message) {
+    public EmptyStackException(final String message) {
         super(message);
     }
 
-    public EmptyStackException(Throwable cause) {
+    public EmptyStackException(final Throwable cause) {
         super(cause);
     }
 
-    public EmptyStackException(String message, Throwable cause) {
+    public EmptyStackException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

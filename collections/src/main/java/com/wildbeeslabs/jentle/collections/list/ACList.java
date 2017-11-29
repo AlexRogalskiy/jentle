@@ -12,6 +12,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -25,14 +29,20 @@ import org.apache.log4j.Logger;
  * @param <T>
  * @param <E>
  */
-abstract public class ACList<T, E extends ACListNode<T, E>> implements IList<T> {
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> {
 
     /**
      * Default Logger instance
      */
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
-    abstract protected static class ACListNode<T, E extends ACListNode<T, E>> {
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    protected abstract static class ACListNode<T, E extends ACListNode<T, E>> {
 
         protected T data;
         protected E next;
@@ -54,37 +64,6 @@ abstract public class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             this.data = data;
             this.next = next;
             this.cmp = cmp;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("ACListNode {data: %s, next: %s}", this.data, this.next);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (null == obj || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            final ACListNode<T, E> other = (ACListNode<T, E>) obj;
-            if (!Objects.equals(this.data, other.data)) {
-                return false;
-            }
-            if (!Objects.equals(this.next, other.next)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 11 * hash + Objects.hashCode(this.data);
-            hash = 11 * hash + Objects.hashCode(this.next);
-            return hash;
         }
     }
 

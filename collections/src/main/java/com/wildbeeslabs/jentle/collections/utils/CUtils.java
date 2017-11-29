@@ -68,4 +68,14 @@ public final class CUtils {
     public static <T> T safeCast(final Object o, final Class<T> clazz) {
         return (Objects.nonNull(clazz) && clazz.isInstance(o)) ? clazz.cast(o) : null;
     }
+
+    public static <T> List<T> removeDuplicates(final List<T> list) {
+        return list.stream().distinct().collect(Collectors.toList());
+    }
+
+    public static <T> List<T> removeNulls(final List<T> list) {
+        return list.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
+        //CollectionUtils.filter(list, PredicateUtils.notNullPredicate());
+        //list.removeAll(Collections.singleton(null));
+    }
 }

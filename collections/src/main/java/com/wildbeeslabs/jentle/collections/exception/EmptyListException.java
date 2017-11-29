@@ -1,5 +1,9 @@
 package com.wildbeeslabs.jentle.collections.exception;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 /**
  *
  * Custom EmptyListException implementation
@@ -8,20 +12,20 @@ package com.wildbeeslabs.jentle.collections.exception;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class EmptyListException extends Exception {
 
-    public EmptyListException() {
-    }
-
-    public EmptyListException(String message) {
+    public EmptyListException(final String message) {
         super(message);
     }
 
-    public EmptyListException(Throwable cause) {
+    public EmptyListException(final Throwable cause) {
         super(cause);
     }
 
-    public EmptyListException(String message, Throwable cause) {
+    public EmptyListException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

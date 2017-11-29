@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -21,6 +25,9 @@ import org.apache.log4j.Logger;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CTrie implements ITree<String> {
 
     /**
@@ -28,6 +35,9 @@ public class CTrie implements ITree<String> {
      */
     protected static final Logger LOGGER = LogManager.getLogger(CTrie.class);
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
     protected static class CTrieNode<T> {
 
         protected final Map<T, CTrieNode<T>> children;
@@ -46,41 +56,6 @@ public class CTrie implements ITree<String> {
 
         public CTrieNode<T> getChild(final T data) {
             return this.children.get(data);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("CTrieNode {data: %s, isTerminated: %s, children: %s}", this.data, this.isTerminated, this.children);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (null == obj || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            final CTrieNode<T> other = (CTrieNode<T>) obj;
-            if (this.isTerminated != other.isTerminated) {
-                return false;
-            }
-            if (!Objects.equals(this.children, other.children)) {
-                return false;
-            }
-            if (!Objects.equals(this.data, other.data)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 5;
-            hash = 71 * hash + Objects.hashCode(this.children);
-            hash = 71 * hash + (this.isTerminated ? 1 : 0);
-            hash = 71 * hash + Objects.hashCode(this.data);
-            return hash;
         }
     }
 
@@ -156,31 +131,5 @@ public class CTrie implements ITree<String> {
     @Override
     public boolean isEmpty() {
         return (0 == this.size());
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final CTrie other = (CTrie) obj;
-        if (this.size != other.size) {
-            return false;
-        }
-        if (!Objects.equals(this.root, other.root)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.root);
-        hash = 23 * hash + this.size;
-        return hash;
     }
 }

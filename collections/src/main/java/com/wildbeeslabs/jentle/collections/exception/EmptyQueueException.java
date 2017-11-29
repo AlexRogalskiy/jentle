@@ -1,5 +1,9 @@
 package com.wildbeeslabs.jentle.collections.exception;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 /**
  *
  * Custom EmptyQueueException implementation
@@ -8,20 +12,20 @@ package com.wildbeeslabs.jentle.collections.exception;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class EmptyQueueException extends Exception {
 
-    public EmptyQueueException() {
-    }
-
-    public EmptyQueueException(String message) {
+    public EmptyQueueException(final String message) {
         super(message);
     }
 
-    public EmptyQueueException(Throwable cause) {
+    public EmptyQueueException(final Throwable cause) {
         super(cause);
     }
 
-    public EmptyQueueException(String message, Throwable cause) {
+    public EmptyQueueException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

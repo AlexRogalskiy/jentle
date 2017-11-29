@@ -16,7 +16,7 @@ public interface IStack<T> {
      * 
      * @param value to push on the stack.
      */
-    public void push(T value);
+    public void push(final T value);
 
     /**
      * Pop the value from the top of stack.
@@ -40,7 +40,7 @@ public interface IStack<T> {
      * @param value to remove from stack.
      * @return True if value was removed.
      */
-    public boolean remove(T value);
+    public boolean remove(final T value);
 
     /**
      * Clear the entire stack.
@@ -53,7 +53,7 @@ public interface IStack<T> {
      * @param value object to find in stack.
      * @return True is stack contains object.
      */
-    public boolean contains(T value);
+    public boolean contains(final T value);
 
     /**
      * Size of the stack.
@@ -74,12 +74,12 @@ public interface IStack<T> {
      * 
      * @return Java compatible Queue
      */
-    public java.util.Queue<T> toLifoQueue();
+    public java.util.Queue<? extends T> toLifoQueue();
 
     /**
      * Get this Stack as a Java compatible Collection
      * 
      * @return Java compatible Collection
      */
-    public java.util.Collection<T> toCollection();
+    public java.util.Collection<? extends T> toCollection();
 }

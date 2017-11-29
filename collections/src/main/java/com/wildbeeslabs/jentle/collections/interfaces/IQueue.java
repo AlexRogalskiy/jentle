@@ -17,7 +17,7 @@ public interface IQueue<T> {
      * @param value to add to queue.
      * @return True if added to queue.
      */
-    public boolean offer(T value);
+    public boolean offer(final T value);
 
     /**
      * Remove a value from the tail of the queue.
@@ -40,7 +40,7 @@ public interface IQueue<T> {
      * @param value to remove from the queue.
      * @return True if the value was removed from the queue.
      */
-    public boolean remove(T value);
+    public boolean remove(final T value);
 
     /**
      * Clear the entire queue.
@@ -53,7 +53,7 @@ public interface IQueue<T> {
      * @param value to find in the queue.
      * @return True if the queue contains the value.
      */
-    public boolean contains(T value);
+    public boolean contains(final T value);
 
     /**
      * Get the size of the queue.
@@ -74,12 +74,12 @@ public interface IQueue<T> {
      * 
      * @return Java compatible Queue
      */
-    public java.util.Queue<T> toQueue();
+    public java.util.Queue<? extends T> toQueue();
 
     /**
      * Get this Queue as a Java compatible Collection
      * 
      * @return Java compatible Collection
      */
-    public java.util.Collection<T> toCollection();
+    public java.util.Collection<? extends T> toCollection();
 }

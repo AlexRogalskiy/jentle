@@ -11,6 +11,10 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /**
  *
  * Custom linked list implementation
@@ -20,8 +24,14 @@ import java.util.Queue;
  * @since 2017-08-07
  * @param <T>
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements IList<T> {
 
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @ToString
     protected static class CLinkedListNode<T> extends ACList.ACListNode<T, CLinkedListNode<T>> {
 
         protected CLinkedListNode<T> previous;
@@ -41,31 +51,6 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
         public CLinkedListNode(final T data, final CLinkedListNode<T> previous, final CLinkedListNode<T> next, final Comparator<? super T> cmp) {
             super(data, next, cmp);
             this.previous = previous;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("CLinkedListNode {data: %s, previous: %s, next: %s}", this.data, this.previous, this.next);
-        }
-
-        @Override
-        @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
-        public boolean equals(Object obj) {
-            if (!super.equals(obj)) {
-                return false;
-            }
-            final CLinkedListNode<T> other = (CLinkedListNode<T>) obj;
-            if (!Objects.equals(this.previous, other.previous)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = super.hashCode();
-            hash = 37 * hash + Objects.hashCode(this.previous);
-            return hash;
         }
     }
 
@@ -180,40 +165,5 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
 
     public boolean isPalindrome() {
         return this.isPalindrome(this.first);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CLinkedList {first: %s, last: %s, size: %i}", this.first, this.last, this.size);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final CLinkedList<T> other = (CLinkedList<T>) obj;
-        if (this.size != other.size) {
-            return false;
-        }
-        if (!Objects.equals(this.first, other.first)) {
-            return false;
-        }
-        if (!Objects.equals(this.last, other.last)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.first);
-        hash = 41 * hash + Objects.hashCode(this.last);
-        hash = 41 * hash + this.size;
-        return hash;
     }
 }

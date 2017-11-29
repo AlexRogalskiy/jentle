@@ -7,6 +7,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -20,12 +25,16 @@ import org.apache.log4j.Logger;
  * @param <E>
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@ToString
 public class CHashMapList<T, E> {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CHashMapList.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     protected final Map<T, ArrayList<E>> map;
 
@@ -66,32 +75,5 @@ public class CHashMapList<T, E> {
 
     public Collection<ArrayList<E>> values() {
         return this.map.values();
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CHashMapList {map: %s}", this.map.toString());
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final CHashMapList<T, E> other = (CHashMapList<T, E>) obj;
-        if (!Objects.equals(this.map, other.map)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 23 * hash + Objects.hashCode(this.map);
-        return hash;
     }
 }

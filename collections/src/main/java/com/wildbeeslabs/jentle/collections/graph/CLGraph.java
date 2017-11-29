@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -24,13 +28,20 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  * @param <T>
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CLGraph<T> implements IGraph<T> {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CLGraph.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
     protected static class CLGraphArc<T> {
 
         private int end;
@@ -38,42 +49,6 @@ public class CLGraph<T> implements IGraph<T> {
 
         public CLGraphArc(int end) {
             this(end, null);
-        }
-
-        public CLGraphArc(int end, final T data) {
-            this.end = end;
-            this.data = data;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("CLGraphArc {data: %s, end: %s}", this.data, this.end);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (null == obj || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            final CLGraphArc<T> other = (CLGraphArc<T>) obj;
-            if (this.end != other.end) {
-                return false;
-            }
-            if (!Objects.equals(this.data, other.data)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 67 * hash + this.end;
-            hash = 67 * hash + Objects.hashCode(this.data);
-            return hash;
         }
     }
 
@@ -155,7 +130,7 @@ public class CLGraph<T> implements IGraph<T> {
     public IGraph<Integer> toCSGraph() {
         IGraph<Integer> sGraph = new CSGraph(this.size());
         for (int i = 0; i < this.size(); i++) {
-            for (Iterator<CLGraphArc<T>> it = this.graph[i].iterator(); it.hasNext();) {
+            for (Iterator<? extends CLGraphArc<T>> it = this.graph[i].iterator(); it.hasNext();) {
                 CLGraphArc<T> node = it.next();
                 sGraph.add(i, node.end, null);
             }

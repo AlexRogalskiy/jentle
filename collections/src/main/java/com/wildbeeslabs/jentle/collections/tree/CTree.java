@@ -6,6 +6,11 @@ import com.wildbeeslabs.jentle.collections.interfaces.Visitor;
 
 import java.util.Comparator;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,6 +24,9 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  * @param <T>
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CTree<T> implements ITree<T> {
 
     /**
@@ -26,6 +34,10 @@ public class CTree<T> implements ITree<T> {
      */
     protected static final Logger LOGGER = LogManager.getLogger(CTree.class);
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
     protected static class CTreeNode<T> {
 
         protected T data;
@@ -38,47 +50,6 @@ public class CTree<T> implements ITree<T> {
 
         public CTreeNode(final T data) {
             this(data, null, null);
-        }
-
-        public CTreeNode(final T data, final CTreeNode<T> left, final CTreeNode<T> right) {
-            this.data = data;
-            this.left = left;
-            this.right = right;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("CTreeNode {data: %s, left: %s, right: %s}", this.data, this.left, this.right);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (null == obj || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            final CTreeNode<T> other = (CTreeNode<T>) obj;
-            if (!Objects.equals(this.data, other.data)) {
-                return false;
-            }
-            if (!Objects.equals(this.left, other.left)) {
-                return false;
-            }
-            if (!Objects.equals(this.right, other.right)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 47 * hash + Objects.hashCode(this.data);
-            hash = 47 * hash + Objects.hashCode(this.left);
-            hash = 47 * hash + Objects.hashCode(this.right);
-            return hash;
         }
     }
 
@@ -158,32 +129,5 @@ public class CTree<T> implements ITree<T> {
             postOrderTraversal(node.right, visitor);
             visitor.visit(node.data);
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CTree {root: %s}", this.root);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final CTree<T> other = (CTree<T>) obj;
-        if (!Objects.equals(this.root, other.root)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 13 * hash + Objects.hashCode(this.root);
-        return hash;
     }
 }

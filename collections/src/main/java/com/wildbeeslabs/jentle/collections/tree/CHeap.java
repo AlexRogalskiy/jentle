@@ -8,6 +8,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -20,6 +24,9 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  * @param <T>
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CHeap<T> {
 
     /**

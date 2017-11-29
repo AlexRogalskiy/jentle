@@ -12,7 +12,7 @@ package com.wildbeeslabs.jentle.collections.interfaces;
 public interface ITree<T> {
 
     /**
-     * Get the size of the tree.F
+     * Get the size of the tree.
      *
      * @return size of the tree.
      */

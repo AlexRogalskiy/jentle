@@ -4,8 +4,12 @@ import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Queue;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,13 +23,20 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  * @param <T>
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CStack<T> implements IStack<T> {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CStack.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
     protected static class CStackNode<T> {
 
         private final T data;
@@ -37,42 +48,6 @@ public class CStack<T> implements IStack<T> {
 
         public CStackNode(final T data) {
             this(data, null);
-        }
-
-        public CStackNode(final T data, final CStackNode<T> next) {
-            this.data = data;
-            this.next = next;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("CStackNode {data: %s, next: %s}", this.data, this.next);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (null == obj || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            final CStackNode<T> other = (CStackNode<T>) obj;
-            if (!Objects.equals(this.data, other.data)) {
-                return false;
-            }
-            if (!Objects.equals(this.next, other.next)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 29 * hash + Objects.hashCode(this.data);
-            hash = 29 * hash + Objects.hashCode(this.next);
-            return hash;
         }
     }
 
@@ -147,36 +122,5 @@ public class CStack<T> implements IStack<T> {
     @Override
     public Collection<T> toCollection() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CStack {top: %s, size: %d}", this.top, this.size);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final CStack<T> other = (CStack<T>) obj;
-        if (this.size != other.size) {
-            return false;
-        }
-        if (!Objects.equals(this.top, other.top)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 23 * hash + Objects.hashCode(this.top);
-        hash = 23 * hash + this.size;
-        return hash;
     }
 }

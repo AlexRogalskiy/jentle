@@ -5,6 +5,10 @@ import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import java.util.Comparator;
 import java.util.Objects;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /**
  *
  * Custom tree2 implementation
@@ -14,6 +18,9 @@ import java.util.Objects;
  * @since 2017-08-07
  * @param <T>
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CTree2<T> {
 
     protected T data;
@@ -85,47 +92,5 @@ public class CTree2<T> {
         if (Objects.nonNull(right)) {
             right.parent = this;
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CTree2 {data: %s, left: %s, right: %s, parent: %s}", this.data, this.left, this.right, this.parent);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        final CTree2<T> other = (CTree2<T>) obj;
-        if (!Objects.equals(this.data, other.data)) {
-            return false;
-        }
-        if (!Objects.equals(this.left, other.left)) {
-            return false;
-        }
-        if (!Objects.equals(this.right, other.right)) {
-            return false;
-        }
-        if (!Objects.equals(this.parent, other.parent)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.data);
-        hash = 17 * hash + Objects.hashCode(this.left);
-        hash = 17 * hash + Objects.hashCode(this.right);
-        hash = 17 * hash + Objects.hashCode(this.parent);
-        return hash;
     }
 }

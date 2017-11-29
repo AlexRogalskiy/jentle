@@ -6,6 +6,9 @@ import com.wildbeeslabs.jentle.collections.set.CBitSet;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,12 +21,15 @@ import org.apache.log4j.Logger;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class CSGraph implements IGraph<Integer> {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CSGraph.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     protected ISet<Integer>[] graph;
 
@@ -80,7 +86,7 @@ public class CSGraph implements IGraph<Integer> {
     public IGraph<Integer> toCMGraph() {
         IGraph<Integer> mGraph = new CMGraph<>((Class<? extends Integer>) this.graph.getClass().getComponentType(), this.size());
         for (int i = 0; i < this.size(); i++) {
-            for (Iterator<Integer> it = this.graph[i].iterator(); it.hasNext();) {
+            for (Iterator<? extends Integer> it = this.graph[i].iterator(); it.hasNext();) {
                 mGraph.add(i, it.next().intValue(), 1);
             }
         }

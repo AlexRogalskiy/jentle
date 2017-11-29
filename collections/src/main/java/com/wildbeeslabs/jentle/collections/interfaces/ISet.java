@@ -13,13 +13,13 @@ import java.util.Iterator;
  */
 public interface ISet<T> {
 
-    public boolean has(T item);
+    public boolean has(final T item);
 
-    public ISet<T> disjunct(T item);
+    public ISet<T> disjunct(final T item);
 
-    public ISet<T> remove(T item);
+    public ISet<T> remove(final T item);
 
     public int size();
 
-    public Iterator<T> iterator();
+    public Iterator<? extends T> iterator();
 }
