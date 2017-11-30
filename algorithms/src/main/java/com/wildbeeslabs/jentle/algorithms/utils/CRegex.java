@@ -23,10 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -36,24 +34,19 @@ import org.apache.log4j.Logger;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CPoolUtils {
+public class CRegex {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
-    /**
-     * Default fork join pool
-     */
-    public static final ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();//new ForkJoinPool(2);
-
-    private CPoolUtils() {
+    private CRegex() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <R> R execute(final ForkJoinTask<R> task) {
-        CPoolUtils.forkJoinPool.execute(task);
-        return task.join();
-        //CPoolUtils.forkJoinPool.invoke(task);
+    public static int execute(final String regex, final String text) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        int matches = 0;
+        while (matcher.find()) {
+            matches++;
+        }
+        return matches;
     }
 }
