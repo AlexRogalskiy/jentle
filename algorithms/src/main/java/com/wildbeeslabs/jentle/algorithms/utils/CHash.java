@@ -22,56 +22,45 @@
  * THE SOFTWARE.
  */
 
-package com.wildbeeslabs.jentle.algorithms.bitwise;
+package com.wildbeeslabs.jentle.algorithms.utils;
 
-/*
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import javax.xml.bind.DatatypeConverter;
+
+/**
  *
- * Custom bitwise implementation
+ * Custom hash utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @see
- * 
- # x ^ 0s = x
- # x & 0s = 0
- # x | 0s = x
- # x ^ 1s = ~x
- # x & 1s = x
- # x | 1s = 1s
- # x ^ x = 0
- # x & x = x
- # x | x = x
- * 
  */
-public final class CBitwise {
+public final class CHash {
 
-    public static boolean getBit(int num, int i) {
-        return ((num & (1 << i)) != 0);
+    private static final String DEFAULT_HASH_MD5 = "MD5";
+
+    private CHash() {
+        // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static int setBit(int num, int i) {
-        return num | (1 << i);
+    public static String md5(final String value) throws NoSuchAlgorithmException {
+        return md5(value.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static int clearBit(int num, int i) {
-        int mask = ~(1 << i);
-        return num & mask;
+    public static String md5sum(final String filename) throws NoSuchAlgorithmException, IOException {
+        return md5(Files.readAllBytes(Paths.get(filename)));
     }
 
-    public static int clearBitsMSBthroughI(int num, int i) {
-        int mask = (1 << i) - 1;
-        return num & mask;
-    }
-
-    public static int clearBithsIthrough0(int num, int i) {
-        int mask = ~(-1 >>> (31 - i));
-        return num & mask;
-    }
-
-    public static int updateBit(int num, int i, boolean flag) {
-        int value = flag ? 1 : 0;
-        int mask = ~(1 << i);
-        return (num & mask) | (value << i);
+    public static String md5(byte[] bArray) throws NoSuchAlgorithmException {
+        final MessageDigest md = MessageDigest.getInstance(DEFAULT_HASH_MD5);
+        md.update(bArray);
+        byte[] digest = md.digest();
+        return DatatypeConverter.printHexBinary(digest);
+        //DigestUtils.md5Hex(password)
     }
 }

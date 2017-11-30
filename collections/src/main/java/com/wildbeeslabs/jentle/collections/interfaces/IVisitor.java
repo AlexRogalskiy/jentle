@@ -22,56 +22,20 @@
  * THE SOFTWARE.
  */
 
-package com.wildbeeslabs.jentle.algorithms.bitwise;
+package com.wildbeeslabs.jentle.collections.interfaces;
 
-/*
+/**
  *
- * Custom bitwise implementation
- *
+ * IVisitor interface declaration
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @see
- * 
- # x ^ 0s = x
- # x & 0s = 0
- # x | 0s = x
- # x ^ 1s = ~x
- # x & 1s = x
- # x | 1s = 1s
- # x ^ x = 0
- # x & x = x
- # x | x = x
- * 
+ * @param <T>
  */
-public final class CBitwise {
-
-    public static boolean getBit(int num, int i) {
-        return ((num & (1 << i)) != 0);
-    }
-
-    public static int setBit(int num, int i) {
-        return num | (1 << i);
-    }
-
-    public static int clearBit(int num, int i) {
-        int mask = ~(1 << i);
-        return num & mask;
-    }
-
-    public static int clearBitsMSBthroughI(int num, int i) {
-        int mask = (1 << i) - 1;
-        return num & mask;
-    }
-
-    public static int clearBithsIthrough0(int num, int i) {
-        int mask = ~(-1 >>> (31 - i));
-        return num & mask;
-    }
-
-    public static int updateBit(int num, int i, boolean flag) {
-        int value = flag ? 1 : 0;
-        int mask = ~(1 << i);
-        return (num & mask) | (value << i);
-    }
+public interface IVisitor<T> {
+    /**
+     * Process item in collection
+     * @param item 
+     */
+    public void visit(final T item);
 }
