@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.algorithms.calc;
-
-import java.util.Objects;
 
 /**
  *
@@ -34,7 +31,11 @@ import java.util.Objects;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CCalc {
+public class CCalculation {
+
+    private CCalculation() {
+        // PRIVATE EMPTY CONSTRUCTOR
+    }
 
     // downward dynamic
     public static int fibonacci1(int n) {

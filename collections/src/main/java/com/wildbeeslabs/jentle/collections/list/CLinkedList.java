@@ -94,6 +94,7 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
         this(source, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public CLinkedList(final CLinkedList<? extends T> source, final Comparator<? super T> cmp) {
         super(cmp);
         this.first = this.last = null;

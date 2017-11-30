@@ -56,7 +56,7 @@ public class CHeap<T> {
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CHeap.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     protected int size;
     protected int capacity;

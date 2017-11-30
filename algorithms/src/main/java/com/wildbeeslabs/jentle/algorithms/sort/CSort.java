@@ -38,6 +38,10 @@ import java.util.Objects;
  */
 public class CSort {
 
+    private CSort() {
+        // PRIVATE EMPTY CONSTRUCTOR
+    }
+
     /**
      * Default sort comparator
      */
@@ -46,12 +50,12 @@ public class CSort {
     protected static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
 
         @Override
-        public int compare(T first, T last) {
+        public int compare(final T first, final T last) {
             return CComparator.compareTo(first, last);
         }
     }
 
-    public static <T> int binarySearch(T[] array, T value) {
+    public static <T> int binarySearch(final T[] array, T value) {
         return CSort.binarySearch(array, value, DEFAULT_SORT_COMPARATOR);
     }
 
@@ -71,12 +75,12 @@ public class CSort {
         return -1;
     }
 
-    public static <T> int binarySearchRecursive(T[] array, T value, int low, int high) {
+    public static <T> int binarySearchRecursive(final T[] array, final T value, int low, int high) {
         return CSort.binarySearchRecursive(array, value, low, high, DEFAULT_SORT_COMPARATOR);
     }
 
-    public static <T> int binarySearchRecursive(T[] array, T value, int low, int high, Comparator<? super T> cmp) {
-        assert (Objects.nonNull(array));
+    public static <T> int binarySearchRecursive(final T[] array, final T value, int low, int high, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
         if (low > high) {
             return -1;
         }
@@ -100,12 +104,12 @@ public class CSort {
      *
      * average - O(n*log(n)) /worst - O(n*n) / memory - O(log(n))
      */
-    public static <T> void quickSort(T[] array, int left, int right) {
+    public static <T> void quickSort(final T[] array, int left, int right) {
         CSort.quickSort(array, left, right, DEFAULT_SORT_COMPARATOR);
     }
 
-    public static <T> void quickSort(T[] array, int left, int right, Comparator<? super T> cmp) {
-        assert (Objects.nonNull(array));
+    public static <T> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
         int index = partition(array, left, right, cmp);
         if (left < index - 1) {
             quickSort(array, left, index - 1, cmp);
@@ -115,7 +119,7 @@ public class CSort {
         }
     }
 
-    private static <T> int partition(T[] array, int left, int right, Comparator<? super T> cmp) {
+    private static <T> int partition(final T[] array, int left, int right, final Comparator<? super T> cmp) {
         T pivot = array[(int) Math.floor((left + right) / 2)];
         while (left <= right) {
             while (Objects.compare(array[left], pivot, cmp) < 0) {
@@ -134,8 +138,8 @@ public class CSort {
         return left;
     }
 
-    private static <T> void swap(T[] array, int left, int right) {
-        T temp = array[left];
+    private static <T> void swap(final T[] array, int left, int right) {
+        final T temp = array[left];
         array[left] = array[right];
         array[right] = temp;
     }
@@ -148,17 +152,17 @@ public class CSort {
      *
      * worst - O(n*log(n)) / average - O(n*log(n)) / memory - O(n)
      */
-    public static <T> void mergeSort(T[] array) {
+    public static <T> void mergeSort(final T[] array) {
         CSort.mergeSort(array, DEFAULT_SORT_COMPARATOR);
     }
 
-    public static <T> void mergeSort(T[] array, Comparator<? super T> cmp) {
-        assert (Objects.nonNull(array));
+    public static <T> void mergeSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
         T[] temp = CSort.newArray((Class<? extends T>) array.getClass(), array.length);
         mergeSort(array, temp, 0, array.length - 1, cmp);
     }
 
-    private static <T> void mergeSort(T[] array, T[] temp, int low, int high, Comparator<? super T> cmp) {
+    private static <T> void mergeSort(final T[] array, final T[] temp, int low, int high, final Comparator<? super T> cmp) {
         if (low < high) {
             int middle = (int) Math.floor((low + high) / 2);
             mergeSort(array, temp, low, middle, cmp);
@@ -167,7 +171,7 @@ public class CSort {
         }
     }
 
-    private static <T> void merge(T[] array, T[] temp, int low, int middle, int high, Comparator<? super T> cmp) {
+    private static <T> void merge(final T[] array, final T[] temp, int low, int middle, int high, final Comparator<? super T> cmp) {
         for (int i = low; i <= high; i++) {
             temp[i] = array[i];
         }
@@ -193,7 +197,7 @@ public class CSort {
         }
     }
 
-    private static <T> T[] newArray(Class<? extends T> type, int size) {
+    private static <T> T[] newArray(final Class<? extends T> type, int size) {
         return (T[]) Array.newInstance(type, size);
     }
 }

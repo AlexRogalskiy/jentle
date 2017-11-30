@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
@@ -39,6 +38,9 @@ import java.util.Queue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -92,6 +94,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         this(source, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public CList(final CList<? extends T> source, final Comparator<? super T> cmp) {
         super(cmp);
         this.first = this.last = null;

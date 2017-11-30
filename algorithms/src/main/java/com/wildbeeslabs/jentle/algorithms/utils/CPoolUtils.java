@@ -21,60 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.bitwise;
+package com.wildbeeslabs.jentle.algorithms.utils;
 
-/*
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+/**
  *
- * Custom bitwise implementation
+ * Custom pool utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @see
- * 
- # x ^ 0s = x
- # x & 0s = 0
- # x | 0s = x
- # x ^ 1s = ~x
- # x & 1s = x
- # x | 1s = 1s
- # x ^ x = 0
- # x & x = x
- # x | x = x
- * 
  */
-public class CBitwise {
+public class CPoolUtils {
 
-    private CBitwise() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
-    public static boolean getBit(int num, int i) {
-        return ((num & (1 << i)) != 0);
-    }
+    public static final ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();//new ForkJoinPool(2);
 
-    public static int setBit(int num, int i) {
-        return num | (1 << i);
-    }
-
-    public static int clearBit(int num, int i) {
-        int mask = ~(1 << i);
-        return num & mask;
-    }
-
-    public static int clearBitsMSBthroughI(int num, int i) {
-        int mask = (1 << i) - 1;
-        return num & mask;
-    }
-
-    public static int clearBithsIthrough0(int num, int i) {
-        int mask = ~(-1 >>> (31 - i));
-        return num & mask;
-    }
-
-    public static int updateBit(int num, int i, boolean flag) {
-        int value = flag ? 1 : 0;
-        int mask = ~(1 << i);
-        return (num & mask) | (value << i);
+    public static <R> R execute(final ForkJoinTask<R> task) {
+        CPoolUtils.forkJoinPool.execute(task);
+        return task.join();
+        //CPoolUtils.forkJoinPool.invoke(task);
     }
 }

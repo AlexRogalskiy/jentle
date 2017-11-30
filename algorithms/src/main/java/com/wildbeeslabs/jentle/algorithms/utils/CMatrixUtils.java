@@ -41,13 +41,13 @@ public final class CMatrixUtils<T> {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    private static <T> void updateColumn(T[][] matrix, int col, T value) {
+    private static <T> void updateColumn(final T[][] matrix, int col, final T value) {
         for (T[] row : matrix) {
             row[col] = value;
         }
     }
 
-    private static <T> void updateRow(T[][] matrix, int row, T value) {
+    private static <T> void updateRow(final T[][] matrix, int row, final T value) {
         for (int j = 0; j < matrix[row].length; j++) {
             matrix[row][j] = value;
         }

@@ -52,7 +52,7 @@ public class CBitSet implements ISet<Integer> {
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CBitSet.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     /**
      * Default block size (in bits)

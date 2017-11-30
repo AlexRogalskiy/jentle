@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
@@ -32,6 +31,8 @@ import java.util.Objects;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -46,6 +47,11 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public class CTree2<T> {
+
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     protected T data;
     protected CTree2<T> left;

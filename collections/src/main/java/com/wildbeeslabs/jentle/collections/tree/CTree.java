@@ -56,7 +56,7 @@ public class CTree<T> implements ITree<T> {
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CTree.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Data
     @EqualsAndHashCode(callSuper = false)

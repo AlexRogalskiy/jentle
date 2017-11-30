@@ -57,7 +57,7 @@ public class CTrie implements ITree<String> {
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CTrie.class);
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Data
     @EqualsAndHashCode(callSuper = false)
