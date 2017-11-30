@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.utils;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 import static org.apache.commons.lang3.ArrayUtils.toArray;
+import org.apache.commons.lang3.SerializationUtils;
 
 /**
  *
@@ -195,8 +197,50 @@ public final class CUtils {
 
     public static <T> T random(final List<? extends T> list) {
         assert (Objects.nonNull(list));
-        int randomElementIndex = ThreadLocalRandom.current().nextInt(list.size()) % list.size();
-        return list.get(randomElementIndex);
+        int randomIndex = randomIndex(list.size());
+        return list.get(randomIndex);
+    }
+
+    public static <T> List<? extends T> randomWithRepetitions(final List<? extends T> list, int numOfElements) {
+        assert (Objects.nonNull(list));
+        assert (numOfElements > 0);
+        final List<T> result = new ArrayList<>(numOfElements);
+        for (int i = 0; i < numOfElements; i++) {
+            result.add(random(list));
+        }
+        return result;
+    }
+
+    public static <T extends Serializable> List<? extends T> randomWithoutRepetitions(final List<? extends T> list, int numOfElements) {
+        assert (Objects.nonNull(list));
+        assert (numOfElements > 0);
+        final List<? extends T> clone = CUtils.cloneList(list);
+        final List<T> result = new ArrayList<>(numOfElements);
+        for (int i = 0; i < numOfElements; i++) {
+            int randomIndex = randomIndex(clone.size());
+            result.add(clone.get(randomIndex));
+            clone.remove(randomIndex);
+        }
+        return result;
+    }
+
+    public static <T> List<? extends T> randomSeries(final List<? extends T> list, int numOfElements) {
+        //final List<? extends T> clone = CUtils.cloneList(list);
+        Collections.shuffle(list);
+        return list.subList(0, numOfElements);
+    }
+
+    private static int randomIndex(int size) {
+        assert (size > 0);
+        return ThreadLocalRandom.current().nextInt(size) % size;
+    }
+
+    private static <T extends Serializable> List<? extends T> cloneList(final List<? extends T> list) {
+        final List<T> clonedList = new ArrayList<>(list.size());
+        list.stream().forEach((value) -> {
+            clonedList.add(SerializationUtils.clone(value));
+        });
+        return clonedList;
     }
 
     private static <T> T[] newArray(final Class<? extends T[]> type, int size) {
