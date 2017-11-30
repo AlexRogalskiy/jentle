@@ -84,20 +84,22 @@
             
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
-                    <configuration>
-                        <layout>JAR</layout>
-                        <executable>true</executable>
-                        <showDeprecation>true</showDeprecation>
-                        <downloadSources>true</downloadSources>
-                        <downloadJavadocs>true</downloadJavadocs>
-                        <addResources>false</addResources>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <compilerArgument>-parameters</compilerArgument>
-                        <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
-                    </configuration>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <shadedArtifactAttached>true</shadedArtifactAttached>
+                                <transformers>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <mainClass>com.wildbeeslabs.jentle.collections.AppLoader</mainClass>
+                                    </transformer>
+                                </transformers>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

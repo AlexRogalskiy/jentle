@@ -89,6 +89,7 @@
                 <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
+        
         <pluginManagement>
             <plugins>
                 <plugin>

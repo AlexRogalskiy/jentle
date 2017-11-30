@@ -76,14 +76,14 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         return this.array[index];
     }
 
-    public T setElementAt(T item, int index) throws IndexOutOfBoundsException {
+    public T setElementAt(final T item, int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
         T removed = this.array[index];
         this.array[index] = item;
         return removed;
     }
 
-    public void add(T[] items) {
+    public void add(final T[] items) {
         if (Objects.nonNull(items)) {
             this.resize(items.length);
             for (T item : items) {
@@ -92,11 +92,11 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         }
     }
 
-    public void add(T item) {
+    public void add(final T item) {
         this.addAt(item, this.size);
     }
 
-    public void addAt(T item, int index) throws IndexOutOfBoundsException {
+    public void addAt(final T item, int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
         this.resize(1);
         System.arraycopy(this.array, index, this.array, index + 1, this.size - index);
@@ -104,7 +104,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         this.size++;
     }
 
-    public boolean remove(T item) {
+    public boolean remove(final T item) {
         int index = this.indexOf(item);
         if (index < 0) {
             return false;
@@ -156,11 +156,11 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         this.array = temp;
     }
 
-    private T[] newArray(Class<? extends T[]> type, int size) {
+    private T[] newArray(final Class<? extends T[]> type, int size) {
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
-    public int indexOf(T item) {
+    public int indexOf(final T item) {
         if (Objects.isNull(item)) {
             for (int i = 0; i < this.size(); i++) {
                 if (Objects.isNull(this.array[i])) {
@@ -177,6 +177,17 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         return -1;
     }
 
+    public void fill(final T value) {
+        this.fill(value, 0, this.size() - 1);
+    }
+
+    public void fill(final T value, int startIndex, int endIndex) {
+        this.checkRange(startIndex);
+        this.checkRange(endIndex);
+        assert (startIndex + endIndex < this.size());
+        Arrays.fill(this.array, startIndex, endIndex, value);
+    }
+
     public void clear() {
         for (int i = 0; i < this.size(); i++) {
             this.array[i] = null;
@@ -184,7 +195,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         this.size = 0;
     }
 
-    public boolean contains(T item) {
+    public boolean contains(final T item) {
         return (this.indexOf(item) >= 0);
     }
 
@@ -205,8 +216,8 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         return Arrays.copyOf(this.array, this.size);
     }
 
-    public T[] toArray(T[] items) {
-        return (T[]) Arrays.copyOf(this.array, this.size, items.getClass());
+    public T[] toArray(final T[] items) {
+        return (T[]) Arrays.copyOf(this.array, this.size, items.getClass());//SerializationUtils.clone(items);
     }
 
     public int size() {

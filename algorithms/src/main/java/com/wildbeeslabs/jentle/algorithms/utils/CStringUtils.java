@@ -3,8 +3,10 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -110,5 +112,30 @@ public class CStringUtils {
             return (first + first).contains(last);
         }
         return false;
+    }
+
+    public static long countOccurences(final String value, final String searchValue) {
+        if (Objects.isNull(value) || Objects.isNull(searchValue)) {
+            return -1;
+        }
+        return value.codePoints().filter(ch -> Objects.equals(ch, searchValue)).count();
+        //return StringUtils.countMatches(value, searchValue);
+    }
+
+    public static String[] splitByRegex(final String value, final String regex) {
+        return split(value, Pattern.quote(regex));
+    }
+
+    public static String[] split(final String value, final String delimeter) {
+        if (Objects.isNull(value) || Objects.isNull(delimeter)) {
+            return null;
+        }
+        return Optional.ofNullable(value).filter(str -> str.length() != 0).map(str -> str.split(delimeter)).orElse(null);//"\\s+|,\\s*|\\.\\s*"
+        //StringUtils.split(value, delimeter);
+    }
+
+    public static String removeLastCharacter(final String value) {
+        return Optional.ofNullable(value).filter(str -> str.length() != 0).map(str -> str.substring(0, str.length() - 1)).orElse(value);
+        //return StringUtils.chop(value);
     }
 }
