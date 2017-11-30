@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -60,22 +61,26 @@ public final class CNumericUtils {
     }
 
     public static long generateRandomLong(long bottomLimit, long upLimit) {
+        assert (bottomLimit <= upLimit);
         return (bottomLimit + (long) (Math.random() * (upLimit - bottomLimit)));
         //new RandomDataGenerator().nextLong(bottomLimit, upLimit);
     }
 
     public static int generateRandomInt(int bottomLimit, int upLimit) {
+        assert (bottomLimit <= upLimit);
         return (bottomLimit + (int) (new Random().nextFloat() * (upLimit - bottomLimit)));
         //new RandomDataGenerator().nextInt(bottomLimit, upLimit);
     }
 
     public static float generateRandomFloat(float bottomLimit, float upLimit) {
+        assert (bottomLimit <= upLimit);
         return (bottomLimit + new Random().nextFloat() * (upLimit - bottomLimit));
         //float randomFloat = new RandomDataGenerator().getRandomGenerator().nextFloat();
         //bottomLimit + randomFloat * (upLimit - bottomLimit);
     }
 
     public static double generateRandomDouble(double bottomLimit, double upLimit) {
+        assert (bottomLimit <= upLimit);
         return (bottomLimit + new Random().nextDouble() * (upLimit - bottomLimit));
         //new RandomDataGenerator().nextUniform(bottomLimit, upLimit);
     }

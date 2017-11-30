@@ -24,6 +24,8 @@
 
 package com.wildbeeslabs.jentle.algorithms.calc;
 
+import java.util.Objects;
+
 /**
  *
  * Custom calculation implementations
@@ -40,6 +42,7 @@ public class CCalc {
     }
 
     public static int fibonacci2(int i, int[] memo) {
+        assert (i >= 0);
         if (0 == i || 1 == i) {
             return i;
         }
@@ -51,6 +54,7 @@ public class CCalc {
 
     //upward dynamic
     public static int fibonacci3(int n) {
+        assert (n >= 0);
         if (0 == n) {
             return 0;
         } else if (1 == n) {
@@ -67,6 +71,7 @@ public class CCalc {
     }
 
     public static int fibonacci4(int n) {
+        assert (n >= 0);
         if (0 == n) {
             return 0;
         }

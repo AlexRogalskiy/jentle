@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.algorithms.sort;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CComparator;
@@ -57,6 +56,7 @@ public class CSort {
     }
 
     public static <T> int binarySearch(T[] array, T value, Comparator<? super T> cmp) {
+        assert (Objects.nonNull(array));
         int low = 0, high = array.length - 1, middle;
         while (low <= high) {
             middle = (int) Math.floor((low + high) / 2);
@@ -76,6 +76,7 @@ public class CSort {
     }
 
     public static <T> int binarySearchRecursive(T[] array, T value, int low, int high, Comparator<? super T> cmp) {
+        assert (Objects.nonNull(array));
         if (low > high) {
             return -1;
         }
@@ -104,6 +105,7 @@ public class CSort {
     }
 
     public static <T> void quickSort(T[] array, int left, int right, Comparator<? super T> cmp) {
+        assert (Objects.nonNull(array));
         int index = partition(array, left, right, cmp);
         if (left < index - 1) {
             quickSort(array, left, index - 1, cmp);
@@ -151,6 +153,7 @@ public class CSort {
     }
 
     public static <T> void mergeSort(T[] array, Comparator<? super T> cmp) {
+        assert (Objects.nonNull(array));
         T[] temp = CSort.newArray((Class<? extends T>) array.getClass(), array.length);
         mergeSort(array, temp, 0, array.length - 1, cmp);
     }
@@ -189,7 +192,7 @@ public class CSort {
             array[current + i] = temp[tempLeft + i];
         }
     }
-    
+
     private static <T> T[] newArray(Class<? extends T> type, int size) {
         return (T[]) Array.newInstance(type, size);
     }

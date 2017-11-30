@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.io.IOException;
@@ -30,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -49,14 +49,17 @@ public final class CHash {
     }
 
     public static String md5(final String value) throws NoSuchAlgorithmException {
+        assert (Objects.nonNull(value));
         return md5(value.getBytes(StandardCharsets.UTF_8));
     }
 
     public static String md5sum(final String filename) throws NoSuchAlgorithmException, IOException {
+        assert (Objects.nonNull(filename));
         return md5(Files.readAllBytes(Paths.get(filename)));
     }
 
     public static String md5(byte[] bArray) throws NoSuchAlgorithmException {
+        assert (Objects.nonNull(bArray));
         final MessageDigest md = MessageDigest.getInstance(DEFAULT_HASH_MD5);
         md.update(bArray);
         byte[] digest = md.digest();
