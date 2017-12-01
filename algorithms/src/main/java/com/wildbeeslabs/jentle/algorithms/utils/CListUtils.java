@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -139,5 +140,12 @@ public class CListUtils {
         Objects.requireNonNull(list);
         return Collections.unmodifiableList(list);
         //ListUtils.unmodifiableList(list);
+    }
+
+    public static <T> List<? extends T> flattenListOfListsImperatively(final List<List<? extends T>> list) {
+        //final List<? extends T> ls = new ArrayList<>();
+        //list.forEach(ls::addAll);
+        //return ls;
+        return list.stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 }

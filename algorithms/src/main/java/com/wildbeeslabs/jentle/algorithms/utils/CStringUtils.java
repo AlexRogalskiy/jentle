@@ -21,13 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -174,5 +176,9 @@ public final class CStringUtils {
 
     public static String generateAlphaNumericRandom(int length) {
         return RandomStringUtils.randomAlphanumeric(10);
+    }
+
+    public static <T> List<? extends T> getTokens(final String value, final String delimeter, boolean returnDelims) {
+        return Collections.list(new StringTokenizer(value, delimeter, returnDelims)).stream().map(token -> (T) token).collect(Collectors.toList());
     }
 }

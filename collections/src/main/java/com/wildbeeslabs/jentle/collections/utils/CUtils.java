@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.utils;
 
+import java.util.Collection;
 import java.util.Objects;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -58,7 +59,7 @@ public final class CUtils {
         return (clazz.isInstance(o)) ? clazz.cast(o) : null;
     }
 
-    public static <T> Iterable<? extends T> union(final Iterable<? extends T> first, final Iterable<? extends T> second) {
+    public static <T> Collection<? extends T> union(final Iterable<? extends T> first, final Iterable<? extends T> second) {
         return CollectionUtils.union(first, second);
         //IterableUtils.chainedIterable(collectionA, collectionB);
         //Stream<? extends T> combinedStream = Stream.of(first, second).flatMap(Collection::stream).collect(Collectors.toList());
