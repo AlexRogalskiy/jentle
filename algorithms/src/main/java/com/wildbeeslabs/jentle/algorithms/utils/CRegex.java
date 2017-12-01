@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,12 +42,23 @@ public class CRegex {
     }
 
     public static int execute(final String regex, final String text) {
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(text);
+        return execute(regex, text, 0);
+    }
+
+    public static int execute(final String regex, final String text, int flags) {
+        Matcher matcher = matcher(regex, text, flags);
         int matches = 0;
         while (matcher.find()) {
             matches++;
         }
         return matches;
+    }
+
+    public static Matcher matcher(final String regex, final String text, int flags) {
+        Objects.requireNonNull(regex);
+        Objects.requireNonNull(text);
+        assert (flags >= 0);
+        Pattern pattern = Pattern.compile(regex, flags);
+        return pattern.matcher(text);
     }
 }

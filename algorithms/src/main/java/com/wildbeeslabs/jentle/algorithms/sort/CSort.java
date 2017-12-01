@@ -25,8 +25,17 @@ package com.wildbeeslabs.jentle.algorithms.sort;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CComparator;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  *
@@ -45,7 +54,7 @@ public class CSort {
     /**
      * Default sort comparator
      */
-    public static final CSortComparator DEFAULT_SORT_COMPARATOR = new CSortComparator();
+    public static final CSort.CSortComparator DEFAULT_SORT_COMPARATOR = new CSort.CSortComparator();
 
     protected static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
 
@@ -55,12 +64,17 @@ public class CSort {
         }
     }
 
-    public static <T> int binarySearch(final T[] array, T value) {
-        return CSort.binarySearch(array, value, DEFAULT_SORT_COMPARATOR);
+    public static <T extends Comparable<? super T>> CSort.CSortComparator<T> getDefaultSortComparator() {
+        return new CSort.CSortComparator<>();
     }
 
-    public static <T> int binarySearch(T[] array, T value, Comparator<? super T> cmp) {
-        assert (Objects.nonNull(array));
+    public static <T extends Comparable<? super T>> int binarySearch(final T[] array, T value) {
+        return CSort.binarySearch(array, value, CSort.<T>getDefaultSortComparator());
+    }
+
+    public static <T extends Comparable<? super T>> int binarySearch(final T[] array, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        Objects.requireNonNull(cmp);
         int low = 0, high = array.length - 1, middle;
         while (low <= high) {
             middle = (int) Math.floor((low + high) / 2);
@@ -75,12 +89,14 @@ public class CSort {
         return -1;
     }
 
-    public static <T> int binarySearchRecursive(final T[] array, final T value, int low, int high) {
-        return CSort.binarySearchRecursive(array, value, low, high, DEFAULT_SORT_COMPARATOR);
+    public static <T extends Comparable<? super T>> int binarySearchRecursive(final T[] array, final T value, int low, int high) {
+        return CSort.binarySearchRecursive(array, value, low, high, CSort.<T>getDefaultSortComparator());
     }
 
-    public static <T> int binarySearchRecursive(final T[] array, final T value, int low, int high, final Comparator<? super T> cmp) {
+    public static <T extends Comparable<? super T>> int binarySearchRecursive(final T[] array, final T value, int low, int high, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
+        Objects.requireNonNull(cmp);
+        assert (low >= 0 && high >= 0);
         if (low > high) {
             return -1;
         }
@@ -104,12 +120,14 @@ public class CSort {
      *
      * average - O(n*log(n)) /worst - O(n*n) / memory - O(log(n))
      */
-    public static <T> void quickSort(final T[] array, int left, int right) {
-        CSort.quickSort(array, left, right, DEFAULT_SORT_COMPARATOR);
+    public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right) {
+        CSort.quickSort(array, left, right, CSort.<T>getDefaultSortComparator());
     }
 
-    public static <T> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+    public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
+        Objects.requireNonNull(cmp);
+        assert (left >= 0 && right >= 0 && left <= right);
         int index = partition(array, left, right, cmp);
         if (left < index - 1) {
             quickSort(array, left, index - 1, cmp);
@@ -152,13 +170,14 @@ public class CSort {
      *
      * worst - O(n*log(n)) / average - O(n*log(n)) / memory - O(n)
      */
-    public static <T> void mergeSort(final T[] array) {
-        CSort.mergeSort(array, DEFAULT_SORT_COMPARATOR);
+    public static <T extends Comparable<? super T>> void mergeSort(final T[] array) {
+        CSort.mergeSort(array, CSort.<T>getDefaultSortComparator());
     }
 
-    public static <T> void mergeSort(final T[] array, final Comparator<? super T> cmp) {
+    public static <T extends Comparable<? super T>> void mergeSort(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
-        T[] temp = CSort.newArray((Class<? extends T>) array.getClass(), array.length);
+        Objects.requireNonNull(cmp);
+        final T[] temp = ArrayUtils.clone(array);//CSort.newArray((Class<? extends T[]>) array.getClass(), array.length);
         mergeSort(array, temp, 0, array.length - 1, cmp);
     }
 
@@ -197,7 +216,78 @@ public class CSort {
         }
     }
 
-    private static <T> T[] newArray(final Class<? extends T> type, int size) {
-        return (T[]) Array.newInstance(type, size);
+//    private static <T> T[] newArray(final Class<? extends T> type, int size) {
+//        Objects.requireNonNull(type);
+//        assert (size >= 0);
+//        return (T[]) Array.newInstance(type, size);
+//    }
+//    private static <T> T[] newArray(final Class<? extends T[]> type, int size) {
+//        Objects.requireNonNull(type);
+//        assert (size >= 0);
+//        return type.cast(Array.newInstance(type.getComponentType(), size));
+//    }
+    public static <T extends Comparable<? super T>> void sort(final T[] array, int low, int high) {
+        sort(array, low, high, CSort.<T>getDefaultSortComparator());
+    }
+
+    public static <T extends Comparable<? super T>> void sort(final T[] array, int low, int high, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        Objects.requireNonNull(cmp);
+        assert (low >= 0 && high >= 0 && low <= high);
+        Arrays.parallelSort(array, low, high, cmp);
+    }
+
+    public static <T extends Comparable<? super T>> void sort(final List<? extends T> list) {
+        sort(list, CSort.<T>getDefaultSortComparator());
+    }
+
+    public static <T extends Comparable<? super T>> void sort(final List<? extends T> list, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(list);
+        Objects.requireNonNull(cmp);
+        Collections.sort(list, cmp);
+    }
+
+    public static <T extends Comparable<? super T>> Set<? extends T> sort(final Set<? extends T> set, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(set);
+        Objects.requireNonNull(cmp);
+        final List<? extends T> list = new ArrayList<>(set);
+        sort(list, cmp);
+        return new LinkedHashSet<>(list);
+    }
+
+    public static <T extends Comparable<? super T>> Set<? extends T> sort(final Set<? extends T> set) {
+        return sort(set, CSort.<T>getDefaultSortComparator());
+    }
+
+    public static <T extends Comparable<? super T>, U> Map<? extends T, ? extends U> sortByKeys(final Map<T, U> map, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(map);
+        Objects.requireNonNull(cmp);
+        final List<Map.Entry<T, U>> entries = new ArrayList<>(map.entrySet());
+        Collections.sort(entries, Map.Entry.<T, U>comparingByKey(cmp));
+        final Map<T, U> sortedMap = new LinkedHashMap<>();
+        entries.stream().forEach((entry) -> {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        });
+        return sortedMap;
+    }
+
+    public static <T extends Comparable<? super T>, U> Map<? extends T, ? extends U> sortByKeys(final Map<? extends T, ? extends U> map) {
+        return sortByKeys(map, CSort.<T>getDefaultSortComparator());
+    }
+
+    public static <T, U extends Comparable<? super U>> Map<? extends T, ? extends U> sortByValues(final Map<T, U> map, final Comparator<? super U> cmp) {
+        Objects.requireNonNull(map);
+        Objects.requireNonNull(cmp);
+        final List<Map.Entry<T, U>> entries = new ArrayList<>(map.entrySet());
+        Collections.sort(entries, Map.Entry.<T, U>comparingByValue(cmp));
+        final Map<T, U> sortedMap = new LinkedHashMap<>();
+        entries.stream().forEach((entry) -> {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        });
+        return sortedMap;
+    }
+
+    public static <T, U extends Comparable<? super U>> Map<? extends T, ? extends U> sortByValues(final Map<T, U> map) {
+        return sortByValues(map, CSort.<U>getDefaultSortComparator());
     }
 }
