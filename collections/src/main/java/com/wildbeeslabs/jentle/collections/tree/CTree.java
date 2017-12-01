@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
@@ -154,4 +153,34 @@ public class CTree<T> implements ITree<T> {
             visitor.visit(node.data);
         }
     }
+
+//    public TreeNode createTreeFromArray(int[] array) {
+//        if (array.length > 0) {
+//            TreeNode root = new TreeNode(array[0]);
+//            java.util.Queue<TreeNode> queue = new java.util.LinkedList<TreeNode>();
+//            queue.add(root);
+//            boolean done = false;
+//            int i = 1;
+//            while (!done) {
+//                TreeNode r = (TreeNode) queue.element();
+//                if (r.left == null) {
+//                    r.left = new TreeNode(array[i]);
+//                    i++;
+//                    queue.add(r.left);
+//                } else if (r.right == null) {
+//                    r.right = new TreeNode(array[i]);
+//                    i++;
+//                    queue.add(r.right);
+//                } else {
+//                    queue.remove();
+//                }
+//                if (i == array.length) {
+//                    done = true;
+//                }
+//            }
+//            return root;
+//        } else {
+//            return null;
+//        }
+//    }
 }

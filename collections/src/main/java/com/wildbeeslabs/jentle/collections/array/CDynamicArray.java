@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IArray;
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import com.wildbeeslabs.jentle.collections.utils.CConverterUtils;
 import java.io.Serializable;
 
 import java.lang.reflect.Array;
@@ -256,11 +255,11 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
 //    }
 
     public Set<? extends T> toSet() {
-        return CUtils.convertArrayToSet(this.array);
+        return CConverterUtils.convertArrayToSet(this.array);
     }
 
     public List<? extends T> toList() {
-        return CUtils.convertArrayToList(this.array);
+        return CConverterUtils.convertArrayToList(this.array);
     }
 
     public int size() {

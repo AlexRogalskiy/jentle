@@ -29,7 +29,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -73,7 +73,7 @@ public class CTrie implements ITree<String> {
         }
 
         public CTrieNode(final T data) {
-            this.children = new HashMap<>();
+            this.children = new LinkedHashMap<>();
             this.isTerminated = false;
             this.data = data;
         }
@@ -99,6 +99,7 @@ public class CTrie implements ITree<String> {
         this(Arrays.asList(array), CSort.DEFAULT_SORT_COMPARATOR);
     }
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public CTrie(final List<String> list, final Comparator<?> cmp) {
         this.root = new CTrieNode<>();
         this.size = 0;

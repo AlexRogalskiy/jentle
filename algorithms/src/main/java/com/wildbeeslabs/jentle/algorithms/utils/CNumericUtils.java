@@ -23,7 +23,6 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -83,5 +82,10 @@ public final class CNumericUtils {
         assert (bottomLimit <= upLimit);
         return (bottomLimit + new Random().nextDouble() * (upLimit - bottomLimit));
         //new RandomDataGenerator().nextUniform(bottomLimit, upLimit);
+    }
+
+    public static boolean generateRandomBoolean() {
+        return new Random().nextBoolean();
+        //new RandomDataGenerator().getRandomGenerator().nextBoolean();
     }
 }
