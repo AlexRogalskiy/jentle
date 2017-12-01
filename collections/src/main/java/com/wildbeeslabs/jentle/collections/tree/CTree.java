@@ -168,11 +168,11 @@ public class CTree<T> implements ITree<T> {
             int i = 1;
             while (!done) {
                 CTreeNode<T> r = queue.element();
-                if (Objects.isNull(r.left) && Objects.compare(array[i], r.data, this.cmp) < 0) {
+                if (Objects.isNull(r.left)) {//&& Objects.compare(array[i], r.data, this.cmp) < 0
                     r.left = new CTreeNode<>(array[i]);
                     i++;
                     queue.add(r.left);
-                } else if (Objects.isNull(r.right) && Objects.compare(array[i], r.data, this.cmp) >= 0) {
+                } else if (Objects.isNull(r.right)) {//Objects.compare(array[i], r.data, this.cmp) >= 0
                     r.right = new CTreeNode<>(array[i]);
                     i++;
                     queue.add(r.right);
