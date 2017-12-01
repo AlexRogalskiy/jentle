@@ -105,7 +105,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
 
     public T setElementAt(final T item, int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
-        T removed = this.array[index];
+        final T removed = this.array[index];
         this.array[index] = item;
         return removed;
     }
@@ -113,7 +113,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
     public void add(final T[] items) {
         if (Objects.nonNull(items)) {
             this.resize(items.length);
-            for (T item : items) {
+            for (final T item : items) {
                 this.add(item);
             }
         }
@@ -143,7 +143,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
     public T removeAt(int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
         this.resize(-1);
-        T removed = this.array[index];
+        final T removed = this.array[index];
         int itemsToShift = this.size - index - 1;
         if (itemsToShift > 0) {
             System.arraycopy(this.array, index + 1, this.array, index, itemsToShift);

@@ -28,7 +28,9 @@ import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 import lombok.AllArgsConstructor;
 
 import lombok.Data;
@@ -77,7 +79,6 @@ public class CTree<T> implements ITree<T> {
     }
 
     protected CTreeNode<T> root;
-    protected int size;
     protected final Comparator<? super T> cmp;
 
     public CTree() {
@@ -85,8 +86,11 @@ public class CTree<T> implements ITree<T> {
     }
 
     public CTree(final Comparator<? super T> cmp) {
-        this.root = null;
-        this.size = 0;
+        this(null, cmp);
+    }
+
+    public CTree(final CTreeNode<T> root, final Comparator<? super T> cmp) {
+        this.root = root;
         this.cmp = cmp;
     }
 
@@ -122,7 +126,7 @@ public class CTree<T> implements ITree<T> {
 
     @Override
     public int size() {
-        return this.size;
+        return 0;
     }
 
     @Override
@@ -154,33 +158,33 @@ public class CTree<T> implements ITree<T> {
         }
     }
 
-//    public TreeNode createTreeFromArray(int[] array) {
-//        if (array.length > 0) {
-//            TreeNode root = new TreeNode(array[0]);
-//            java.util.Queue<TreeNode> queue = new java.util.LinkedList<TreeNode>();
-//            queue.add(root);
-//            boolean done = false;
-//            int i = 1;
-//            while (!done) {
-//                TreeNode r = (TreeNode) queue.element();
-//                if (r.left == null) {
-//                    r.left = new TreeNode(array[i]);
-//                    i++;
-//                    queue.add(r.left);
-//                } else if (r.right == null) {
-//                    r.right = new TreeNode(array[i]);
-//                    i++;
-//                    queue.add(r.right);
-//                } else {
-//                    queue.remove();
-//                }
-//                if (i == array.length) {
-//                    done = true;
-//                }
-//            }
-//            return root;
-//        } else {
-//            return null;
-//        }
-//    }
+    public CTree<T> fromArray(final T[] array) {
+        Objects.requireNonNull(array);
+        if (array.length > 0) {
+            final CTreeNode<T> root = new CTreeNode<>(array[0]);
+            final Queue<CTreeNode<T>> queue = new LinkedList<>();
+            queue.add(root);
+            boolean done = false;
+            int i = 1;
+            while (!done) {
+                CTreeNode<T> r = queue.element();
+                if (Objects.isNull(r.left) && Objects.compare(array[i], r.data, this.cmp) < 0) {
+                    r.left = new CTreeNode<>(array[i]);
+                    i++;
+                    queue.add(r.left);
+                } else if (Objects.isNull(r.right) && Objects.compare(array[i], r.data, this.cmp) >= 0) {
+                    r.right = new CTreeNode<>(array[i]);
+                    i++;
+                    queue.add(r.right);
+                } else {
+                    queue.remove();
+                }
+                if (i == array.length) {
+                    done = true;
+                }
+            }
+            return new CTree<>(root, this.cmp);
+        }
+        return null;
+    }
 }
