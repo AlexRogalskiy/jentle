@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.RandomStringUtils;
 
 /**
@@ -180,5 +181,13 @@ public final class CStringUtils {
 
     public static <T> List<? extends T> getTokens(final String value, final String delimeter, boolean returnDelims) {
         return Collections.list(new StringTokenizer(value, delimeter, returnDelims)).stream().map(token -> (T) token).collect(Collectors.toList());
+    }
+
+    public static Stream<String> streamOfStrings(final String value) {
+        return value.codePoints().mapToObj(c -> String.valueOf((char) c));
+    }
+
+    public static Stream<Character> streamOfChars(final String value) {
+        return value.codePoints().mapToObj(c -> (char) c);
     }
 }

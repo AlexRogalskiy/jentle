@@ -32,6 +32,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -147,5 +149,15 @@ public class CListUtils {
         //list.forEach(ls::addAll);
         //return ls;
         return list.stream().flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    //List<String> result = list.stream().collect(CListUtils.toImmutableList(LinkedList::new));
+    public static <T, A extends List<T>> Collector<T, A, List<T>> toImmutableList(final Supplier<A> supplier) {
+        return Collector.of(
+                supplier,
+                List::add, (left, right) -> {
+                    left.addAll(right);
+                    return left;
+                }, Collections::unmodifiableList);
     }
 }

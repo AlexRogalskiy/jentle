@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 /**
@@ -87,5 +89,13 @@ public final class CNumericUtils {
     public static boolean generateRandomBoolean() {
         return new Random().nextBoolean();
         //new RandomDataGenerator().getRandomGenerator().nextBoolean();
+    }
+
+    public static double round(double value, int places) {
+        assert (places > 0);
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+        //Precision.round(PI, 3);
     }
 }
