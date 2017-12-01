@@ -25,7 +25,11 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.IntPredicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -73,5 +77,14 @@ public final class CArrayUtils {
         T temp = array[m];
         array[m] = array[n];
         array[n] = temp;
+    }
+
+    public static <T> List<? extends T> getEvenIndexedStrings(final T[] array, final IntPredicate predicate) {
+        List<? extends T> result = IntStream
+                .range(0, array.length)
+                .filter(predicate)
+                .mapToObj(i -> array[i])
+                .collect(Collectors.toList());
+        return result;
     }
 }

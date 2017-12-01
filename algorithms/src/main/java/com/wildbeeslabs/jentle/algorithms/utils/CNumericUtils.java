@@ -98,4 +98,9 @@ public final class CNumericUtils {
         return bd.doubleValue();
         //Precision.round(PI, 3);
     }
+
+    public static int numOfDigits(int value) {
+        assert (value > 0);
+        return (int) (Math.log10(value) + 1);
+    }
 }
