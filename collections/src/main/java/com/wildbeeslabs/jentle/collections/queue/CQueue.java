@@ -62,7 +62,7 @@ public class CQueue<T> implements IQueue<T> {
     @EqualsAndHashCode(callSuper = false)
     @AllArgsConstructor
     @ToString
-    protected static class CQueueNode<T> {
+    public static class CQueueNode<T> {
 
         private final T data;
         private CQueueNode<T> next;

@@ -26,12 +26,12 @@ package com.wildbeeslabs.jentle.collections.tree;
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
-import lombok.AllArgsConstructor;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,7 +52,7 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CTree<T> implements ITree<T> {
+public abstract class CTree<T> implements ITree<T> {
 
     /**
      * Default Logger instance
@@ -60,14 +60,9 @@ public class CTree<T> implements ITree<T> {
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
+    @EqualsAndHashCode(callSuper = true)
     @ToString
-    protected static class CTreeNode<T> {
-
-        protected T data;
-        protected CTreeNode<T> left;
-        protected CTreeNode<T> right;
+    public static class CTreeNode<T> extends ACTreeNode<T, CTreeNode<T>> {
 
         public CTreeNode() {
             this(null);
@@ -75,6 +70,10 @@ public class CTree<T> implements ITree<T> {
 
         public CTreeNode(final T data) {
             this(data, null, null);
+        }
+
+        public CTreeNode(final T data, final CTreeNode<T> left, final CTreeNode<T> right) {
+            super(data, left, right);
         }
     }
 
@@ -102,7 +101,7 @@ public class CTree<T> implements ITree<T> {
         if (Objects.isNull(node)) {
             return 0;
         } else {
-            return Math.max(this.height(node.left), this.height(node.right)) + 1;
+            return Math.max(this.height(node.getLeft()), this.height(node.getRight())) + 1;
         }
     }
 
@@ -117,7 +116,7 @@ public class CTree<T> implements ITree<T> {
         if (1 == level) {
             return 1;
         }
-        return this.nodesOnLevel(node.left, level - 1) + this.nodesOnLevel(node.right, level - 1);
+        return this.nodesOnLevel(node.getLeft(), level - 1) + this.nodesOnLevel(node.getRight(), level - 1);
     }
 
     public CTreeNode<T> getRoot() {
@@ -136,25 +135,25 @@ public class CTree<T> implements ITree<T> {
 
     public void inOrderTraversal(final CTreeNode<T> node, final IVisitor<T> visitor) {
         if (Objects.nonNull(node)) {
-            inOrderTraversal(node.left, visitor);
-            visitor.visit(node.data);
-            inOrderTraversal(node.right, visitor);
+            inOrderTraversal(node.getLeft(), visitor);
+            visitor.visit(node.getData());
+            inOrderTraversal(node.getRight(), visitor);
         }
     }
 
     public void preOrderTraversal(final CTreeNode<T> node, final IVisitor<T> visitor) {
         if (Objects.nonNull(node)) {
-            visitor.visit(node.data);
-            preOrderTraversal(node.left, visitor);
-            preOrderTraversal(node.right, visitor);
+            visitor.visit(node.getData());
+            preOrderTraversal(node.getLeft(), visitor);
+            preOrderTraversal(node.getRight(), visitor);
         }
     }
 
     public void postOrderTraversal(final CTreeNode<T> node, final IVisitor<T> visitor) {
         if (Objects.nonNull(node)) {
-            postOrderTraversal(node.left, visitor);
-            postOrderTraversal(node.right, visitor);
-            visitor.visit(node.data);
+            postOrderTraversal(node.getLeft(), visitor);
+            postOrderTraversal(node.getRight(), visitor);
+            visitor.visit(node.getData());
         }
     }
 
@@ -168,14 +167,14 @@ public class CTree<T> implements ITree<T> {
             int i = 1;
             while (!done) {
                 CTreeNode<T> r = queue.element();
-                if (Objects.isNull(r.left)) {//&& Objects.compare(array[i], r.data, this.cmp) < 0
-                    r.left = new CTreeNode<>(array[i]);
+                if (Objects.isNull(r.getLeft())) {//&& Objects.compare(array[i], r.data, this.cmp) < 0
+                    r.setLeft(new CTreeNode<>(array[i]));
                     i++;
-                    queue.add(r.left);
-                } else if (Objects.isNull(r.right)) {//Objects.compare(array[i], r.data, this.cmp) >= 0
-                    r.right = new CTreeNode<>(array[i]);
+                    queue.add(r.getLeft());
+                } else if (Objects.isNull(r.getRight())) {//Objects.compare(array[i], r.data, this.cmp) >= 0
+                    r.setRight(new CTreeNode<>(array[i]));
                     i++;
-                    queue.add(r.right);
+                    queue.add(r.getRight());
                 } else {
                     queue.remove();
                 }

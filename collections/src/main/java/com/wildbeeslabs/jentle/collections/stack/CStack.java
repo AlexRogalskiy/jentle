@@ -61,7 +61,7 @@ public class CStack<T> implements IStack<T> {
     @EqualsAndHashCode(callSuper = false)
     @AllArgsConstructor
     @ToString
-    protected static class CStackNode<T> {
+    public static class CStackNode<T> {
 
         private final T data;
         private CStackNode<T> next;

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
@@ -39,6 +38,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 /**
  *
  * Custom linked list implementation
@@ -53,10 +55,15 @@ import lombok.ToString;
 @ToString
 public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements IList<T> {
 
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
+
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    protected static class CLinkedListNode<T> extends ACList.ACListNode<T, CLinkedListNode<T>> {
+    public static class CLinkedListNode<T> extends ACList.ACListNode<T, CLinkedListNode<T>> {
 
         protected CLinkedListNode<T> previous;
 

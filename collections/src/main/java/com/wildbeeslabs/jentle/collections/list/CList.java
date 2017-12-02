@@ -56,10 +56,15 @@ import org.apache.log4j.Logger;
 @ToString
 public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
 
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
+
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    protected static class CListNode<T> extends ACList.ACListNode<T, CListNode<T>> {
+    public static class CListNode<T> extends ACList.ACListNode<T, CListNode<T>> {
 
         public CListNode() {
             this(null);

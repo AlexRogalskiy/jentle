@@ -24,9 +24,10 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.collections.interfaces.ITreeExtended;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 import java.util.Comparator;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -46,7 +47,7 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CBinaryTree<T> {
+public abstract class CBinaryTree<T> implements ITreeExtended<T> {
 
     /**
      * Default Logger instance
@@ -55,25 +56,36 @@ public class CBinaryTree<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
     @ToString
-    protected static class CBinaryTreeNode<T> {
+    public static class CBinaryTreeNode<T> extends ACTreeNode<T, CBinaryTreeNode<T>> {
 
-        protected T data;
-        protected CBinaryTreeNode<T> left;
-        protected CBinaryTreeNode<T> right;
         protected CBinaryTreeNode<T> parent;
+
+        public void setLeft(final CBinaryTreeNode<T> left) {
+            this.left = left;
+            this.left.parent = this;
+        }
+
+        public void setRight(final CBinaryTreeNode<T> right) {
+            this.right = right;
+            this.right.parent = this;
+        }
 
         public CBinaryTreeNode() {
             this(null);
         }
 
         public CBinaryTreeNode(final T data) {
-            this(data, null, null, null);
+            this(data, null, null);
         }
 
         public CBinaryTreeNode(final T data, final CBinaryTreeNode<T> left, final CBinaryTreeNode<T> right) {
             this(data, left, right, null);
+        }
+
+        public CBinaryTreeNode(final T data, final CBinaryTreeNode<T> left, final CBinaryTreeNode<T> right, final CBinaryTreeNode<T> parent) {
+            super(data, left, right);
+            this.parent = parent;
         }
     }
 

@@ -21,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.tree;
 
+import com.wildbeeslabs.jentle.collections.interfaces.ITrie;
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -48,11 +47,12 @@ import org.apache.log4j.Logger;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CTrie implements ITree<String> {
+public abstract class CTrie<T extends CharSequence> implements ITrie<T> {
 
     /**
      * Default Logger instance
@@ -62,7 +62,7 @@ public class CTrie implements ITree<String> {
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
-    protected static class CTrieNode<T> {
+    public static class CTrieNode<T> {
 
         protected final Map<T, CTrieNode<T>> children;
         protected boolean isTerminated;
@@ -83,41 +83,41 @@ public class CTrie implements ITree<String> {
         }
     }
 
-    protected CTrieNode root;
+    protected CTrieNode<T> root;
     protected int size;
-    protected final Comparator<?> cmp;
+    protected final Comparator<? super T> cmp;
 
     public CTrie() {
         this(null, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final List<String> list) {
+    public CTrie(final List<? extends T> list) {
         this(list, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final String[] array) {
+    public CTrie(final T[] array) {
         this(Arrays.asList(array), CSort.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CTrie(final List<String> list, final Comparator<?> cmp) {
+    public CTrie(final List<? extends T> list, final Comparator<? super T> cmp) {
         this.root = new CTrieNode<>();
         this.size = 0;
         this.cmp = cmp;
         this.init(list);
     }
 
-    protected void init(final List<String> list) {
+    protected void init(final List<? extends T> list) {
         if (Objects.nonNull(list)) {
-            list.stream().filter((item) -> (Objects.nonNull(item) && !item.isEmpty())).map((String item) -> {
-                CTrieNode current = CTrie.this.root;
+            list.stream().filter((item) -> (Objects.nonNull(item) && !String.valueOf(item).isEmpty())).map((T item) -> {
+                CTrieNode current = this.root;
                 for (int i = 0; i < item.length(); i++) {
                     Character letter = item.charAt(i);
                     CTrieNode child = current.getChild(letter.toString());
                     if (Objects.isNull(child)) {
                         child = new CTrieNode<>(letter.toString());
                         current.children.put(letter.toString(), child);
-                        CTrie.this.size++;
+                        this.size++;
                     }
                     current = child;
                 }
@@ -128,7 +128,7 @@ public class CTrie implements ITree<String> {
         }
     }
 
-    public boolean contains(final String prefix, boolean isExact) {
+    public boolean contains(final T prefix, boolean isExact) {
         CTrieNode current = this.root;
         for (int i = 0; i < prefix.length(); i++) {
             Character letter = prefix.charAt(i);
@@ -140,11 +140,11 @@ public class CTrie implements ITree<String> {
         return !isExact || current.isTerminated;
     }
 
-    public boolean contains(final String prefix) {
+    public boolean contains(final T prefix) {
         return this.contains(prefix, false);
     }
 
-    public CTrieNode<?> getRoot() {
+    public CTrieNode<T> getRoot() {
         return this.root;
     }
 

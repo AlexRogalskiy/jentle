@@ -66,7 +66,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
-    protected abstract static class ACListNode<T, E extends ACListNode<T, E>> {
+    public abstract static class ACListNode<T, E extends ACListNode<T, E>> {
 
         protected T data;
         protected E next;
