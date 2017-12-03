@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ANode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
 
 /**
  *
@@ -33,8 +33,9 @@ import com.wildbeeslabs.jentle.collections.tree.node.ANode;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <U>
  */
-public interface ITreeExtended<T> extends ITree<T> {
+public interface ITreeExtended<T, U extends ACExtendedTreeNode<T, U>> extends ITree<T, U> {
 
     /**
      * Checks if current node has parent node
@@ -42,23 +43,7 @@ public interface ITreeExtended<T> extends ITree<T> {
      * @param node - current node
      * @return true - if current node has parent node, false - otherwise
      */
-    boolean hasParent(final ANode<T> node);
-
-    /**
-     * Checks if current node is external node
-     *
-     * @param node - current node
-     * @return true - if current node is external node, false - otherwise
-     */
-    boolean isExternal(final ANode<T> node);
-
-    /**
-     * Checks if current node is internal node
-     *
-     * @param node - current node
-     * @return true - if current node is internal node, false - otherwise
-     */
-    boolean isInternal(final ANode<T> node);
+    boolean hasParent(final U node);
 
     /**
      * Returns parent node of the current node
@@ -66,5 +51,5 @@ public interface ITreeExtended<T> extends ITree<T> {
      * @param node - current node
      * @return parent node
      */
-    ANode<T> getParent(final ANode<T> node);
+    U getParent(final U node);
 }

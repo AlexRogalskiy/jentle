@@ -23,39 +23,27 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.node;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract tree node implementation
+ * Custom abstract node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <U>
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T> {
+public abstract class ACNode<T> {
 
-    protected U left;
-    protected U right;
-
-    public ACTreeNode() {
-        this(null);
-    }
-
-    public ACTreeNode(final T data) {
-        this(data, null, null);
-    }
-
-    public ACTreeNode(final T data, final U left, final U right) {
-        super(data);
-        this.left = left;
-        this.right = right;
-    }
+    protected T data;
 }

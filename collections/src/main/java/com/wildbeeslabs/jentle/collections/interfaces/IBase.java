@@ -21,29 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.tree.node;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+package com.wildbeeslabs.jentle.collections.interfaces;
+
+import com.wildbeeslabs.jentle.collections.tree.node.ACNode;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom base interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <U>
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public abstract class ANode<T> {
-
-    protected T data;
+public interface IBase<T, U extends ACNode<T>> {
+    
 }

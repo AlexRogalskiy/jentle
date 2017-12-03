@@ -29,7 +29,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom abstract tree node implementation
+ * Custom abstract binary tree node implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -40,22 +40,34 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T> {
+public abstract class ACExtendedTreeNode<T, U extends ACExtendedTreeNode<T, U>> extends ACTreeNode<T, U> {
 
-    protected U left;
-    protected U right;
+    protected U parent;
 
-    public ACTreeNode() {
+    public void setLeft(final U left) {
+        this.left = left;
+        this.left.parent = (U) this;
+    }
+
+    public void setRight(final U right) {
+        this.right = right;
+        this.right.parent = (U) this;
+    }
+
+    public ACExtendedTreeNode() {
         this(null);
     }
 
-    public ACTreeNode(final T data) {
+    public ACExtendedTreeNode(final T data) {
         this(data, null, null);
     }
 
-    public ACTreeNode(final T data, final U left, final U right) {
-        super(data);
-        this.left = left;
-        this.right = right;
+    public ACExtendedTreeNode(final T data, final U left, final U right) {
+        this(data, left, right, null);
+    }
+
+    public ACExtendedTreeNode(final T data, final U left, final U right, final U parent) {
+        super(data, left, right);
+        this.parent = parent;
     }
 }

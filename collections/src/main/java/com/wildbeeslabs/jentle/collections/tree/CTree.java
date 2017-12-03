@@ -52,7 +52,7 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class CTree<T> implements ITree<T> {
+public abstract class CTree<T> implements ITree<T, CTree.CTreeNode<T>> {
 
     /**
      * Default Logger instance

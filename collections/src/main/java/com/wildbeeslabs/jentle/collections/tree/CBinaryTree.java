@@ -25,8 +25,10 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.interfaces.ITreeExtended;
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
+
 import java.util.Comparator;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,7 +49,7 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class CBinaryTree<T> implements ITreeExtended<T> {
+public class CBinaryTree<T> implements ITreeExtended<T, CBinaryTree.CBinaryTreeNode<T>> {
 
     /**
      * Default Logger instance
@@ -57,19 +59,7 @@ public abstract class CBinaryTree<T> implements ITreeExtended<T> {
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
-    public static class CBinaryTreeNode<T> extends ACTreeNode<T, CBinaryTreeNode<T>> {
-
-        protected CBinaryTreeNode<T> parent;
-
-        public void setLeft(final CBinaryTreeNode<T> left) {
-            this.left = left;
-            this.left.parent = this;
-        }
-
-        public void setRight(final CBinaryTreeNode<T> right) {
-            this.right = right;
-            this.right.parent = this;
-        }
+    public static class CBinaryTreeNode<T> extends ACExtendedTreeNode<T, CBinaryTreeNode<T>> {
 
         public CBinaryTreeNode() {
             this(null);
@@ -84,12 +74,12 @@ public abstract class CBinaryTree<T> implements ITreeExtended<T> {
         }
 
         public CBinaryTreeNode(final T data, final CBinaryTreeNode<T> left, final CBinaryTreeNode<T> right, final CBinaryTreeNode<T> parent) {
-            super(data, left, right);
-            this.parent = parent;
+            super(data, left, right, parent);
         }
     }
 
     protected CBinaryTreeNode<T> root;
+    protected int size;
     protected final Comparator<? super T> cmp;
 
     public CBinaryTree() {
@@ -100,8 +90,179 @@ public abstract class CBinaryTree<T> implements ITreeExtended<T> {
         this(null, cmp);
     }
 
+    public CBinaryTree(final CBinaryTreeNode<T> root) {
+        this(root, CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
     public CBinaryTree(final CBinaryTreeNode<T> root, final Comparator<? super T> cmp) {
         this.root = root;
         this.cmp = cmp;
+        this.size = 0;
+    }
+
+    @Override
+    public void setRoot(final T value) {
+        if (this.isEmpty()) {
+            this.root = new CBinaryTreeNode<>(value);
+            this.size++;
+        }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
+    }
+
+    @Override
+    public CBinaryTreeNode<T> getRoot() {
+//        if (this.isEmpty()) {
+//            return null;
+//        }
+        return this.root;
+    }
+
+    @Override
+    public boolean isRoot(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        return (this.root == node);
+    }
+
+    @Override
+    public boolean hasParent(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getParent()));
+    }
+
+    @Override
+    public boolean isExternal(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        return (Objects.isNull(node.getLeft()) && Objects.isNull(node.getRight()));
+    }
+
+    @Override
+    public boolean isInternal(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getLeft()) || Objects.nonNull(node.getRight()));
+    }
+
+    @Override
+    public CBinaryTreeNode<T> getParent(final CBinaryTreeNode<T> node) {
+        if (this.hasParent(node)) {
+            return node.getParent();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasLeftChild(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getLeft()));
+    }
+
+    @Override
+    public boolean hasRightChild(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getRight()));
+    }
+
+    @Override
+    public boolean isLeftChild(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        if (Objects.isNull(node.getParent())) {
+            return false;
+        }
+        return (node.getParent().getLeft() == node);
+    }
+
+    @Override
+    public boolean isRightChild(final CBinaryTreeNode<T> node) {
+        Objects.requireNonNull(node);
+        if (Objects.isNull(node.getParent())) {
+            return false;
+        }
+        return (node.getParent().getRight() == node);
+    }
+
+    @Override
+    public void insertLeft(final CBinaryTreeNode<T> node, final T value) {
+        Objects.requireNonNull(node);
+        if (Objects.nonNull(node.getLeft())) {
+            LOGGER.debug("Node has already left child");
+            return;
+        }
+        CBinaryTreeNode<T> newNode = new CBinaryTreeNode<>(value);
+        node.setLeft(newNode);
+        this.size++;
+    }
+
+    @Override
+    public void insertRight(final CBinaryTreeNode<T> node, final T value) {
+        Objects.requireNonNull(node);
+        if (Objects.nonNull(node.getRight())) {
+            LOGGER.debug("Node has already right child");
+            return;
+        }
+        CBinaryTreeNode<T> newNode = new CBinaryTreeNode<>(value);
+        node.setRight(newNode);
+        this.size++;
+    }
+
+    @Override
+    public CBinaryTreeNode<T> getLeftChild(final CBinaryTreeNode<T> node) {
+        if (this.hasLeftChild(node)) {
+            return node.getLeft();
+        }
+        return null;
+    }
+
+    @Override
+    public CBinaryTreeNode<T> getRightChild(final CBinaryTreeNode<T> node) {
+        if (this.hasRightChild(node)) {
+            return node.getRight();
+        }
+        return null;
+    }
+
+    @Override
+    public T replaceElement(final CBinaryTreeNode<T> node, final T newValue) {
+        Objects.requireNonNull(node);
+        final T value = node.getData();
+        node.setData(newValue);
+        return value;
+    }
+
+    @Override
+    public void swapElements(final CBinaryTreeNode<T> first, final CBinaryTreeNode<T> last) {
+        Objects.requireNonNull(first);
+        Objects.requireNonNull(last);
+        final T value = this.replaceElement(first, last.getData());
+        last.setData(value);
+    }
+
+    @Override
+    public int depth(final CBinaryTreeNode<T> node) {
+        if (this.isRoot(node)) {
+            return 0;
+        } else {
+            return 1 + this.depth(node.getParent());
+        }
+    }
+
+    @Override
+    public int nodeSize(final CBinaryTreeNode<T> node) {
+        if (this.hasLeftChild(node) && this.hasRightChild(node)) {
+            return 1 + this.nodeSize(node.getLeft()) + this.nodeSize(node.getRight());
+        } else if (this.hasLeftChild(node) && !this.hasRightChild(node)) {
+            return 1 + this.nodeSize(node.getLeft());
+        } else if (!this.hasLeftChild(node) && this.hasRightChild(node)) {
+            return 1 + this.nodeSize(node.getRight());
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public int size() {
+        return this.size;
     }
 }

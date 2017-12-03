@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ANode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 /**
  *
@@ -33,8 +33,9 @@ import com.wildbeeslabs.jentle.collections.tree.node.ANode;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <U>
  */
-public interface ITree<T> {
+public interface ITree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
 
     /**
      * Get the size of the tree.
@@ -62,7 +63,7 @@ public interface ITree<T> {
      *
      * @return - current root node
      */
-    ANode<T> getRoot();
+    U getRoot();
 
     /**
      * Checks if current node is root
@@ -70,7 +71,7 @@ public interface ITree<T> {
      * @param node - current node
      * @return true - if current node is root, false - otherwise
      */
-    boolean isRoot(final ANode<T> node);
+    boolean isRoot(final U node);
 
     /**
      * Checks if current node has left child
@@ -78,7 +79,7 @@ public interface ITree<T> {
      * @param node - current node
      * @return true - if current node has left child node, false - otherwise
      */
-    boolean hasLeftChild(final ANode<T> node);
+    boolean hasLeftChild(final U node);
 
     /**
      * Checks if current node has right child
@@ -86,7 +87,7 @@ public interface ITree<T> {
      * @param node - current node
      * @return true - if current node has right child node, false - otherwise
      */
-    boolean hasRightChild(final ANode<T> node);
+    boolean hasRightChild(final U node);
 
     /**
      * Checks if current node is left child
@@ -94,7 +95,7 @@ public interface ITree<T> {
      * @param node - current node
      * @return true - if current node is left child node, false - otherwise
      */
-    boolean isLeftChild(final ANode<T> node);
+    boolean isLeftChild(final U node);
 
     /**
      * Checks if current node is right child
@@ -102,7 +103,23 @@ public interface ITree<T> {
      * @param node - current node
      * @return true - if current node is right child node, false - otherwise
      */
-    boolean isRightChild(final ANode<T> node);
+    boolean isRightChild(final U node);
+
+    /**
+     * Checks if current node is external node
+     *
+     * @param node - current node
+     * @return true - if current node is external node, false - otherwise
+     */
+    boolean isExternal(final U node);
+
+    /**
+     * Checks if current node is internal node
+     *
+     * @param node - current node
+     * @return true - if current node is internal node, false - otherwise
+     */
+    boolean isInternal(final U node);
 
     /**
      * Creates new node as a left child of the current node
@@ -110,7 +127,7 @@ public interface ITree<T> {
      * @param node - current node
      * @param value - node value
      */
-    void insertLeft(final ANode<T> node, final T value);
+    void insertLeft(final U node, final T value);
 
     /**
      * Creates new node as a right child of the current node
@@ -118,7 +135,7 @@ public interface ITree<T> {
      * @param node - current node
      * @param value - node value
      */
-    void insertRight(final ANode<T> node, final T value);
+    void insertRight(final U node, final T value);
 
     /**
      * Returns left child node of the current node
@@ -126,7 +143,7 @@ public interface ITree<T> {
      * @param node - current node
      * @return left child node
      */
-    ANode<T> getLeftChild(final ANode<T> node);
+    U getLeftChild(final U node);
 
     /**
      * Returns right child node of the current node
@@ -134,7 +151,7 @@ public interface ITree<T> {
      * @param node - current node
      * @return right child node
      */
-    ANode<T> getRightChild(final ANode<T> node);
+    U getRightChild(final U node);
 
     /**
      * Replaces current node with a new value
@@ -143,7 +160,7 @@ public interface ITree<T> {
      * @param newValue - new node value
      * @return previous value of current node
      */
-    T replaceElement(final ANode<T> node, final T newValue);
+    T replaceElement(final U node, final T newValue);
 
     /**
      * Swaps elements of first and last nodes
@@ -151,7 +168,7 @@ public interface ITree<T> {
      * @param first - first node to replace
      * @param last - last node to be replaced with
      */
-    void swapElements(final ANode<T> first, final ANode<T> last);
+    void swapElements(final U first, final U last);
 
     /**
      * Returns the depth of the current node
@@ -159,7 +176,7 @@ public interface ITree<T> {
      * @param node - current node
      * @return number of nodes in parent hierarchy
      */
-    int depth(final ANode<T> node);
+    int depth(final U node);
 
     /**
      * Returns the size of the current node
@@ -167,5 +184,5 @@ public interface ITree<T> {
      * @param node - current node
      * @return number of nodes in the child hierarchy
      */
-    int nodeSize(final ANode<T> node);
+    int nodeSize(final U node);
 }
