@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.ITree;
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.interfaces.ITreeExtended;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -36,7 +36,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom abstract tree implementation
+ * Custom abstract extended tree implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -47,49 +47,34 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACTree<T, U extends ACTreeNode<T, U>> extends ACBaseTree<T, U> implements ITree<T, U> {
+public class ACTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACBaseTreeExtended<T, U> implements ITreeExtended<T, U> {
 
-    public ACTree(final U root, final Comparator<? super T> cmp) {
+    public ACTreeExtended(final U root, final Comparator<? super T> cmp) {
         super(root, cmp);
     }
 
     @Override
-    public void insertLeft(final U node, final Optional<? extends T> value) {
-        Objects.requireNonNull(node);
-        if (Objects.nonNull(node.getLeft())) {
-            LOGGER.debug(String.format("Node (%s) has already left child", node));
-            return;
-        }
-        final U newNode = this.createTreeNode(value);
-        node.setLeft(newNode);
-        this.size++;
+    protected U createTreeNode(Optional<? extends T> value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void insertRight(final U node, final Optional<? extends T> value) {
-        Objects.requireNonNull(node);
-        if (Objects.nonNull(node.getRight())) {
-            LOGGER.debug(String.format("Node (%s) has already right child", node));
-            return;
-        }
-        final U newNode = this.createTreeNode(value);
-        node.setRight(newNode);
-        this.size++;
+    public void insertLeft(U node, Optional<? extends T> value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public T replaceElement(final U node, final T newValue) {
-        Objects.requireNonNull(node);
-        final T value = node.getData();
-        node.setData(newValue);
-        return value;
+    public void insertRight(U node, Optional<? extends T> value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void swapElements(final U first, final U last) {
-        Objects.requireNonNull(first);
-        Objects.requireNonNull(last);
-        final T value = this.replaceElement(first, last.getData());
-        last.setData(value);
+    public T replaceElement(U node, T newValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void swapElements(U first, U last) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

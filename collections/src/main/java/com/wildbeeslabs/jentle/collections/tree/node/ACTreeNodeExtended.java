@@ -40,7 +40,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACExtendedTreeNode<T, U extends ACExtendedTreeNode<T, U>> extends ACTreeNode<T, U> {
+public abstract class ACTreeNodeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACTreeNode<T, U> {
 
     protected U parent;
 
@@ -54,19 +54,19 @@ public abstract class ACExtendedTreeNode<T, U extends ACExtendedTreeNode<T, U>> 
         this.right.parent = (U) this;
     }
 
-    public ACExtendedTreeNode() {
+    public ACTreeNodeExtended() {
         this(null);
     }
 
-    public ACExtendedTreeNode(final T data) {
+    public ACTreeNodeExtended(final T data) {
         this(data, null, null);
     }
 
-    public ACExtendedTreeNode(final T data, final U left, final U right) {
+    public ACTreeNodeExtended(final T data, final U left, final U right) {
         this(data, left, right, null);
     }
 
-    public ACExtendedTreeNode(final T data, final U left, final U right, final U parent) {
+    public ACTreeNodeExtended(final T data, final U left, final U right, final U parent) {
         super(data, left, right);
         this.parent = parent;
     }

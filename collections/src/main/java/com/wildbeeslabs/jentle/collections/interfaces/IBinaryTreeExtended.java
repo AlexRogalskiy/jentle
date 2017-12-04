@@ -23,12 +23,11 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
-import java.util.Optional;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 /**
  *
- * Custom tree interface declaration
+ * Custom binary tree extended interface declaration
  *
  * @author Alex
  * @version 1.0.0
@@ -36,38 +35,6 @@ import java.util.Optional;
  * @param <T>
  * @param <U>
  */
-public interface ITree<T, U extends ACTreeNode<T, U>> extends IBaseTree<T, U> {
+public interface IBinaryTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends IBaseTreeExtended<T, U>, IBinaryTree<T, U> {
 
-    /**
-     * Creates new node as a left child of the current node
-     *
-     * @param node - current node
-     * @param value - node value (optional)
-     */
-    void insertLeft(final U node, final Optional<? extends T> value);
-
-    /**
-     * Creates new node as a right child of the current node
-     *
-     * @param node - current node
-     * @param value - node value (optional)
-     */
-    void insertRight(final U node, final Optional<? extends T> value);
-
-    /**
-     * Replaces current node with a new value
-     *
-     * @param node - current node
-     * @param newValue - new node value
-     * @return previous value of current node
-     */
-    T replaceElement(final U node, final T newValue);
-
-    /**
-     * Swaps elements of first and last nodes
-     *
-     * @param first - first node to replace
-     * @param last - last node to be replaced with
-     */
-    void swapElements(final U first, final U last);
 }

@@ -23,6 +23,10 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +39,8 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 /**
@@ -189,5 +195,19 @@ public final class CStringUtils {
 
     public static Stream<Character> streamOfChars(final String value) {
         return value.codePoints().mapToObj(c -> (char) c);
+    }
+
+    public static String toString(final InputStream inputStream, final String encoding) {
+        final StringWriter writer = new StringWriter();
+        try {
+            IOUtils.copy(inputStream, writer, encoding);
+        } catch (IOException ex) {
+            return null;
+        }
+        return writer.toString();
+    }
+
+    public static String toString(final InputStream inputStream) {
+        return toString(inputStream, StandardCharsets.UTF_8.name());
     }
 }

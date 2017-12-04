@@ -88,34 +88,16 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
         return this.height(this.root);
     }
 
-    private int height(final CTreeNode<T> node) {
-        if (Objects.isNull(node)) {
-            return 0;
-        } else {
-            return Math.max(this.height(node.getLeft()), this.height(node.getRight())) + 1;
-        }
-    }
-
     public int nodesOnLevel(int level) {
         return this.nodesOnLevel(this.root, level);
-    }
-
-    private int nodesOnLevel(final CTreeNode<T> node, int level) {
-        if (Objects.isNull(node)) {
-            return 0;
-        }
-        if (1 == level) {
-            return 1;
-        }
-        return this.nodesOnLevel(node.getLeft(), level - 1) + this.nodesOnLevel(node.getRight(), level - 1);
     }
 
     public CTree<T> fromArray(final T[] array) {
         Objects.requireNonNull(array);
         if (array.length > 0) {
-            final CTreeNode<T> root = new CTreeNode<>(array[0]);
+            final CTreeNode<T> rootNode = new CTreeNode<>(array[0]);
             final Queue<CTreeNode<T>> queue = new LinkedList<>();
-            queue.add(root);
+            queue.add(rootNode);
             boolean done = false;
             int i = 1;
             while (!done) {
@@ -135,7 +117,7 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
                     done = true;
                 }
             }
-            return new CTree<>(root, this.cmp);
+            return new CTree<>(rootNode, this.cmp);
         }
         return null;
     }

@@ -23,12 +23,11 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
-import java.util.Optional;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 /**
  *
- * Custom tree interface declaration
+ * Custom base tree extended interface declaration
  *
  * @author Alex
  * @version 1.0.0
@@ -36,38 +35,45 @@ import java.util.Optional;
  * @param <T>
  * @param <U>
  */
-public interface ITree<T, U extends ACTreeNode<T, U>> extends IBaseTree<T, U> {
+public interface IBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends IBaseTree<T, U> {
 
     /**
-     * Creates new node as a left child of the current node
+     * Checks if current node is left child
      *
      * @param node - current node
-     * @param value - node value (optional)
+     * @return true - if current node is left child node, false - otherwise
      */
-    void insertLeft(final U node, final Optional<? extends T> value);
+    boolean isLeftChild(final U node);
 
     /**
-     * Creates new node as a right child of the current node
+     * Checks if current node is right child
      *
      * @param node - current node
-     * @param value - node value (optional)
+     * @return true - if current node is right child node, false - otherwise
      */
-    void insertRight(final U node, final Optional<? extends T> value);
+    boolean isRightChild(final U node);
 
     /**
-     * Replaces current node with a new value
+     * Checks if current node has parent node
      *
      * @param node - current node
-     * @param newValue - new node value
-     * @return previous value of current node
+     * @return true - if current node has parent node, false - otherwise
      */
-    T replaceElement(final U node, final T newValue);
+    boolean hasParent(final U node);
 
     /**
-     * Swaps elements of first and last nodes
+     * Returns parent node of the current node
      *
-     * @param first - first node to replace
-     * @param last - last node to be replaced with
+     * @param node - current node
+     * @return parent node
      */
-    void swapElements(final U first, final U last);
+    U getParent(final U node);
+
+    /**
+     * Returns depth of the current node
+     *
+     * @param node - current node
+     * @return number of nodes in parent hierarchy
+     */
+    int depth(final U node);
 }

@@ -23,8 +23,9 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.ITreeExtended;
-import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
+import com.wildbeeslabs.jentle.collections.interfaces.IBaseTreeExtended;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
+
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -32,10 +33,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-
 /**
  *
- * Custom abstract extended tree implementation
+ * Custom abstract base extended tree implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -46,9 +46,9 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACExtendedTree<T, U extends ACExtendedTreeNode<T, U>> extends ACTree<T, U> implements ITreeExtended<T, U> {
+public abstract class ACBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACBaseTree<T, U> implements IBaseTreeExtended<T, U> {
 
-    public ACExtendedTree(final U root, final Comparator<? super T> cmp) {
+    public ACBaseTreeExtended(final U root, final Comparator<? super T> cmp) {
         super(root, cmp);
     }
 
@@ -88,8 +88,7 @@ public abstract class ACExtendedTree<T, U extends ACExtendedTreeNode<T, U>> exte
     public int depth(final U node) {
         if (this.isRoot(node)) {
             return 0;
-        } else {
-            return 1 + this.depth(node.getParent());
         }
+        return 1 + this.depth(node.getParent());
     }
 }

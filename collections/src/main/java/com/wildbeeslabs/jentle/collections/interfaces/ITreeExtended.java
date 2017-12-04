@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 /**
  *
@@ -35,45 +35,6 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
  * @param <T>
  * @param <U>
  */
-public interface ITreeExtended<T, U extends ACExtendedTreeNode<T, U>> extends ITree<T, U> {
+public interface ITreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends IBaseTreeExtended<T, U>, ITree<T, U> {
 
-    /**
-     * Checks if current node is left child
-     *
-     * @param node - current node
-     * @return true - if current node is left child node, false - otherwise
-     */
-    boolean isLeftChild(final U node);
-
-    /**
-     * Checks if current node is right child
-     *
-     * @param node - current node
-     * @return true - if current node is right child node, false - otherwise
-     */
-    boolean isRightChild(final U node);
-
-    /**
-     * Checks if current node has parent node
-     *
-     * @param node - current node
-     * @return true - if current node has parent node, false - otherwise
-     */
-    boolean hasParent(final U node);
-
-    /**
-     * Returns parent node of the current node
-     *
-     * @param node - current node
-     * @return parent node
-     */
-    U getParent(final U node);
-
-    /**
-     * Returns depth of the current node
-     *
-     * @param node - current node
-     * @return number of nodes in parent hierarchy
-     */
-    int depth(final U node);
 }

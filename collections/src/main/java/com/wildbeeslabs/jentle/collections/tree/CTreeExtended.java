@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -45,12 +45,12 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CExtendedTree<T> extends ACExtendedTree<T, CExtendedTree.CExtendedTreeNode<T>> {
+public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedTreeNode<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CExtendedTreeNode<T> extends ACExtendedTreeNode<T, CExtendedTreeNode<T>> {
+    public static class CExtendedTreeNode<T> extends ACTreeNodeExtended<T, CExtendedTreeNode<T>> {
 
         public CExtendedTreeNode() {
             this(null);
@@ -69,19 +69,19 @@ public class CExtendedTree<T> extends ACExtendedTree<T, CExtendedTree.CExtendedT
         }
     }
 
-    public CExtendedTree() {
+    public CTreeExtended() {
         this(CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CExtendedTree(final Comparator<? super T> cmp) {
+    public CTreeExtended(final Comparator<? super T> cmp) {
         this(null, cmp);
     }
 
-    public CExtendedTree(final CExtendedTreeNode<T> root) {
+    public CTreeExtended(final CExtendedTreeNode<T> root) {
         this(root, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CExtendedTree(final CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
+    public CTreeExtended(final CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
         super(root, cmp);
     }
 

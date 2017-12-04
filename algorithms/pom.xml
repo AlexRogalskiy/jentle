@@ -19,7 +19,8 @@
     </parent>
     
     <properties>
-        <apache.commons.math.verstion>3.5</apache.commons.math.verstion>
+        <apache.commons.math.version>3.5</apache.commons.math.version>
+        <apache.commons.io.version>1.3.2</apache.commons.io.version>
     </properties>
     
     <build>
@@ -111,7 +112,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>${apache.commons.math.verstion}</version>
+            <version>${apache.commons.math.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${apache.commons.io.version}</version>
         </dependency>
     </dependencies>
 </project>
