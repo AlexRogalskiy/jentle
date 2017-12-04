@@ -23,138 +23,105 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.ITrie;
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  *
- * Custom Trie implementation
+ * Custom trie implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class CTrie<T extends CharSequence> implements ITrie<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CTrieNode<T> {
-
-        protected final Map<T, CTrieNode<T>> children;
-        protected boolean isTerminated;
-        protected T data;
+    public static class CTrieNode<T> extends ACTrieNode<T, CTrieNode<T>> {
 
         public CTrieNode() {
             this(null);
         }
 
         public CTrieNode(final T data) {
-            this.children = new LinkedHashMap<>();
-            this.isTerminated = false;
-            this.data = data;
-        }
-
-        public CTrieNode<T> getChild(final T data) {
-            return this.children.get(data);
+            super(data);
         }
     }
-
-    protected CTrieNode<T> root;
-    protected int size;
-    protected final Comparator<? super T> cmp;
 
     public CTrie() {
-        this(null, CSort.DEFAULT_SORT_COMPARATOR);
+        this(CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final List<? extends T> list) {
+    public CTrie(final Comparator<? super Integer> cmp) {
+        this(null, cmp);
+    }
+
+    public CTrie(final List<? extends CharSequence> list) {
         this(list, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final T[] array) {
+    public CTrie(final CharSequence[] array) {
         this(Arrays.asList(array), CSort.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CTrie(final List<? extends T> list, final Comparator<? super T> cmp) {
-        this.root = new CTrieNode<>();
-        this.size = 0;
-        this.cmp = cmp;
+    public CTrie(final List<? extends CharSequence> list, final Comparator<? super Integer> cmp) {
+        super(cmp);
         this.init(list);
     }
 
-    protected void init(final List<? extends T> list) {
+    protected void init(final List<? extends CharSequence> list) {
         if (Objects.nonNull(list)) {
-            list.stream().filter((item) -> (Objects.nonNull(item) && !String.valueOf(item).isEmpty())).map((T item) -> {
-                CTrieNode current = this.root;
-                for (int i = 0; i < item.length(); i++) {
-                    Character letter = item.charAt(i);
-                    CTrieNode child = current.getChild(letter.toString());
+            list.stream().filter(Objects::nonNull).map((item) -> {
+                CTrieNode<Integer> current = this.root;
+                for (final Integer charCode : item.codePoints().toArray()) {
+                    CTrieNode<Integer> child = current.getChild(charCode);
                     if (Objects.isNull(child)) {
-                        child = new CTrieNode<>(letter.toString());
-                        current.children.put(letter.toString(), child);
+                        child = new CTrieNode<>(charCode);
+                        current.getChild().put(charCode, child);
                         this.size++;
                     }
                     current = child;
                 }
                 return current;
             }).forEach((current) -> {
-                current.isTerminated = true;
+                current.setTerminated(Boolean.TRUE);
             });
         }
     }
 
-    public boolean contains(final T prefix, boolean isExact) {
-        CTrieNode current = this.root;
-        for (int i = 0; i < prefix.length(); i++) {
-            Character letter = prefix.charAt(i);
-            current = current.getChild(letter.toString());
+    @Override
+    protected boolean contains(final CharSequence value, boolean isExact) {
+        CTrieNode<Integer> current = this.root;
+        for (final Integer charCode : value.codePoints().toArray()) {
+            current = current.getChild(charCode);
             if (Objects.isNull(current)) {
                 return false;
             }
         }
-        return !isExact || current.isTerminated;
-    }
-
-    public boolean contains(final T prefix) {
-        return this.contains(prefix, false);
-    }
-
-    public CTrieNode<T> getRoot() {
-        return this.root;
+        return !isExact || current.isTerminated();
     }
 
     @Override
-    public int size() {
-        return this.size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
+    protected CTrieNode createTrieNode(final Optional<? extends Integer> value) {
+        if (value.isPresent()) {
+            return new CTrieNode<>(value.get());
+        }
+        return new CTrieNode<>();
     }
 }

@@ -21,13 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.tree.node;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom trie interface declaration
+ * Custom abstract trie node implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -35,34 +40,25 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
  * @param <T>
  * @param <U>
  */
-public interface ITrie<T, U extends ACTrieNode<T, U>> extends IBase<T, U> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACNode<T> {
 
-    /**
-     * Returns the size of the tree.
-     *
-     * @return size of the tree.
-     */
-    int size();
+    protected final Map<T, U> child;
+    protected boolean isTerminated;
 
-    /**
-     * Checks if trie is empty
-     *
-     * @return true - if tree is empty, false - otherwise
-     */
-    boolean isEmpty();
+    public ACTrieNode() {
+        this(null);
+    }
 
-    /**
-     * Returns current root node
-     *
-     * @return - current root node
-     */
-    U getRoot();
+    public ACTrieNode(final T data) {
+        super(data);
+        this.child = new LinkedHashMap<>();
+        this.isTerminated = false;
+    }
 
-    /**
-     * Checks if trie contains character sequence
-     *
-     * @param value - character sequence
-     * @return true - if trie contains character sequence, false - otherwise
-     */
-    boolean contains(final CharSequence value);
+    public U getChild(final T data) {
+        return this.child.get(data);
+    }
 }

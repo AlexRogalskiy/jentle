@@ -38,6 +38,22 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
 public interface ITreeExtended<T, U extends ACExtendedTreeNode<T, U>> extends ITree<T, U> {
 
     /**
+     * Checks if current node is left child
+     *
+     * @param node - current node
+     * @return true - if current node is left child node, false - otherwise
+     */
+    boolean isLeftChild(final U node);
+
+    /**
+     * Checks if current node is right child
+     *
+     * @param node - current node
+     * @return true - if current node is right child node, false - otherwise
+     */
+    boolean isRightChild(final U node);
+
+    /**
      * Checks if current node has parent node
      *
      * @param node - current node
@@ -52,4 +68,12 @@ public interface ITreeExtended<T, U extends ACExtendedTreeNode<T, U>> extends IT
      * @return parent node
      */
     U getParent(final U node);
+
+    /**
+     * Returns depth of the current node
+     *
+     * @param node - current node
+     * @return number of nodes in parent hierarchy
+     */
+    int depth(final U node);
 }

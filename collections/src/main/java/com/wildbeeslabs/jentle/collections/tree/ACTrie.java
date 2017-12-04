@@ -23,19 +23,22 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.ITreeExtended;
-import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
+import com.wildbeeslabs.jentle.collections.interfaces.ITrie;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
+
 import java.util.Comparator;
-import java.util.Objects;
+import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Custom abstract extended tree implementation
+ * Custom abstract trie implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -44,52 +47,47 @@ import lombok.ToString;
  * @param <U>
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class ACExtendedTree<T, U extends ACExtendedTreeNode<T, U>> extends ACTree<T, U> implements ITreeExtended<T, U> {
+public abstract class ACTrie<T, U extends ACTrieNode<T, U>> implements ITrie<T, U> {
 
-    public ACExtendedTree(final U root, final Comparator<? super T> cmp) {
-        super(root, cmp);
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
+
+    protected U root;
+    protected int size;
+    protected Comparator<? super T> cmp;
+
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public ACTrie(final Comparator<? super T> cmp) {
+        this.root = this.createTrieNode(Optional.empty());
+        this.cmp = cmp;
+        this.size = 0;
     }
 
     @Override
-    public boolean hasParent(final U node) {
-        Objects.requireNonNull(node);
-        return (Objects.nonNull(node.getParent()));
+    public int size() {
+        return this.size;
     }
 
     @Override
-    public U getParent(final U node) {
-        if (this.hasParent(node)) {
-            return node.getParent();
-        }
-        return null;
+    public boolean isEmpty() {
+        return (0 == this.size());
     }
 
     @Override
-    public boolean isLeftChild(final U node) {
-        Objects.requireNonNull(node);
-        if (Objects.isNull(node.getParent())) {
-            return false;
-        }
-        return (node.getParent().getLeft() == node);
+    public boolean contains(final CharSequence value) {
+        return this.contains(value, false);
     }
 
     @Override
-    public boolean isRightChild(final U node) {
-        Objects.requireNonNull(node);
-        if (Objects.isNull(node.getParent())) {
-            return false;
-        }
-        return (node.getParent().getRight() == node);
+    public U getRoot() {
+        return this.root;
     }
 
-    @Override
-    public int depth(final U node) {
-        if (this.isRoot(node)) {
-            return 0;
-        } else {
-            return 1 + this.depth(node.getParent());
-        }
-    }
+    protected abstract U createTrieNode(final Optional<? extends T> value);
+
+    protected abstract boolean contains(final CharSequence value, boolean isExact);
 }

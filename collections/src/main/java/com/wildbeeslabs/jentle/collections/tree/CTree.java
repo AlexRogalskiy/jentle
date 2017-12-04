@@ -24,21 +24,17 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-import com.wildbeeslabs.jentle.collections.interfaces.ITree;
-import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Queue;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -50,14 +46,9 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class CTree<T> implements ITree<T, CTree.CTreeNode<T>> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -77,9 +68,6 @@ public abstract class CTree<T> implements ITree<T, CTree.CTreeNode<T>> {
         }
     }
 
-    protected CTreeNode<T> root;
-    protected final Comparator<? super T> cmp;
-
     public CTree() {
         this(CSort.DEFAULT_SORT_COMPARATOR);
     }
@@ -88,9 +76,12 @@ public abstract class CTree<T> implements ITree<T, CTree.CTreeNode<T>> {
         this(null, cmp);
     }
 
+    public CTree(final CTreeNode<T> root) {
+        this(root, CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
     public CTree(final CTreeNode<T> root, final Comparator<? super T> cmp) {
-        this.root = root;
-        this.cmp = cmp;
+        super(root, cmp);
     }
 
     public int height() {
@@ -117,44 +108,6 @@ public abstract class CTree<T> implements ITree<T, CTree.CTreeNode<T>> {
             return 1;
         }
         return this.nodesOnLevel(node.getLeft(), level - 1) + this.nodesOnLevel(node.getRight(), level - 1);
-    }
-
-    public CTreeNode<T> getRoot() {
-        return this.root;
-    }
-
-    @Override
-    public int size() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
-    public void inOrderTraversal(final CTreeNode<T> node, final IVisitor<T> visitor) {
-        if (Objects.nonNull(node)) {
-            inOrderTraversal(node.getLeft(), visitor);
-            visitor.visit(node.getData());
-            inOrderTraversal(node.getRight(), visitor);
-        }
-    }
-
-    public void preOrderTraversal(final CTreeNode<T> node, final IVisitor<T> visitor) {
-        if (Objects.nonNull(node)) {
-            visitor.visit(node.getData());
-            preOrderTraversal(node.getLeft(), visitor);
-            preOrderTraversal(node.getRight(), visitor);
-        }
-    }
-
-    public void postOrderTraversal(final CTreeNode<T> node, final IVisitor<T> visitor) {
-        if (Objects.nonNull(node)) {
-            postOrderTraversal(node.getLeft(), visitor);
-            postOrderTraversal(node.getRight(), visitor);
-            visitor.visit(node.getData());
-        }
     }
 
     public CTree<T> fromArray(final T[] array) {
@@ -185,5 +138,13 @@ public abstract class CTree<T> implements ITree<T, CTree.CTreeNode<T>> {
             return new CTree<>(root, this.cmp);
         }
         return null;
+    }
+
+    @Override
+    protected CTreeNode<T> createTreeNode(final Optional<? extends T> value) {
+        if (value.isPresent()) {
+            return new CTreeNode<>(value.get());
+        }
+        return new CTreeNode<>();
     }
 }

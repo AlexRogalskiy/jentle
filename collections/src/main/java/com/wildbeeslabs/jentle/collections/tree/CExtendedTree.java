@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.tree.node.ACExtendedTreeNode;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -85,7 +86,10 @@ public class CExtendedTree<T> extends ACExtendedTree<T, CExtendedTree.CExtendedT
     }
 
     @Override
-    protected CExtendedTreeNode<T> createTreeNode(final T value) {
-        return new CExtendedTreeNode<>(value);
+    protected CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
+        if (value.isPresent()) {
+            return new CExtendedTreeNode<>(value.get());
+        }
+        return new CExtendedTreeNode<>();
     }
 }

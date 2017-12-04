@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import java.util.Optional;
 
 /**
  *
@@ -56,7 +57,7 @@ public interface ITree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      *
      * @param value - new root node
      */
-    void setRoot(final T value);
+    void setRoot(final Optional<? extends T> value);
 
     /**
      * Returns current root node
@@ -90,22 +91,6 @@ public interface ITree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
     boolean hasRightChild(final U node);
 
     /**
-     * Checks if current node is left child
-     *
-     * @param node - current node
-     * @return true - if current node is left child node, false - otherwise
-     */
-    boolean isLeftChild(final U node);
-
-    /**
-     * Checks if current node is right child
-     *
-     * @param node - current node
-     * @return true - if current node is right child node, false - otherwise
-     */
-    boolean isRightChild(final U node);
-
-    /**
      * Checks if current node is external node
      *
      * @param node - current node
@@ -127,7 +112,7 @@ public interface ITree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @param value - node value
      */
-    void insertLeft(final U node, final T value);
+    void insertLeft(final U node, final Optional<? extends T> value);
 
     /**
      * Creates new node as a right child of the current node
@@ -135,7 +120,7 @@ public interface ITree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @param value - node value
      */
-    void insertRight(final U node, final T value);
+    void insertRight(final U node, final Optional<? extends T> value);
 
     /**
      * Returns left child node of the current node
@@ -171,18 +156,34 @@ public interface ITree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
     void swapElements(final U first, final U last);
 
     /**
-     * Returns the depth of the current node
-     *
-     * @param node - current node
-     * @return number of nodes in parent hierarchy
-     */
-    int depth(final U node);
-
-    /**
      * Returns the size of the current node
      *
      * @param node - current node
      * @return number of nodes in the child hierarchy
      */
     int nodeSize(final U node);
+
+    /**
+     * Traverses children of the current node in order sequence
+     *
+     * @param node - current node
+     * @param visitor - traversable visitor instance
+     */
+    void inOrderTraversal(final U node, final IVisitor<T> visitor);
+
+    /**
+     * Traverses children of the current node in pre order sequence
+     *
+     * @param node - current node
+     * @param visitor - traversable visitor instance
+     */
+    void preOrderTraversal(final U node, final IVisitor<T> visitor);
+
+    /**
+     * Traverses children of the current node in post order sequence
+     *
+     * @param node - current node
+     * @param visitor - traversable visitor instance
+     */
+    void postOrderTraversal(final U node, final IVisitor<T> visitor);
 }
