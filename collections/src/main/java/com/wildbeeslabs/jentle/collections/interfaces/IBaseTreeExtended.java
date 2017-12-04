@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
+import java.util.Objects;
 
 /**
  *
@@ -43,7 +44,13 @@ public interface IBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extend
      * @param node - current node
      * @return true - if current node is left child node, false - otherwise
      */
-    boolean isLeftChild(final U node);
+    default boolean isLeftChild(final U node) {
+        Objects.requireNonNull(node);
+        if (Objects.isNull(node.getParent())) {
+            return false;
+        }
+        return (node.getParent().getLeft() == node);
+    }
 
     /**
      * Checks if current node is right child
@@ -51,7 +58,13 @@ public interface IBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extend
      * @param node - current node
      * @return true - if current node is right child node, false - otherwise
      */
-    boolean isRightChild(final U node);
+    default boolean isRightChild(final U node) {
+        Objects.requireNonNull(node);
+        if (Objects.isNull(node.getParent())) {
+            return false;
+        }
+        return (node.getParent().getRight() == node);
+    }
 
     /**
      * Checks if current node has parent node
@@ -59,7 +72,10 @@ public interface IBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extend
      * @param node - current node
      * @return true - if current node has parent node, false - otherwise
      */
-    boolean hasParent(final U node);
+    default boolean hasParent(final U node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getParent()));
+    }
 
     /**
      * Returns parent node of the current node
@@ -67,7 +83,12 @@ public interface IBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extend
      * @param node - current node
      * @return parent node
      */
-    U getParent(final U node);
+    default U getParent(final U node) {
+        if (this.hasParent(node)) {
+            return node.getParent();
+        }
+        return null;
+    }
 
     /**
      * Returns depth of the current node
@@ -75,5 +96,10 @@ public interface IBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extend
      * @param node - current node
      * @return number of nodes in parent hierarchy
      */
-    int depth(final U node);
+    default int depth(final U node) {
+        if (this.isRoot(node)) {
+            return 0;
+        }
+        return 1 + this.depth(node.getParent());
+    }
 }

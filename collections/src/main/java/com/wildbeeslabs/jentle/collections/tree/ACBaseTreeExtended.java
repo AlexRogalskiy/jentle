@@ -27,7 +27,6 @@ import com.wildbeeslabs.jentle.collections.interfaces.IBaseTreeExtended;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 import java.util.Comparator;
-import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,45 +49,5 @@ public abstract class ACBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> 
 
     public ACBaseTreeExtended(final U root, final Comparator<? super T> cmp) {
         super(root, cmp);
-    }
-
-    @Override
-    public boolean hasParent(final U node) {
-        Objects.requireNonNull(node);
-        return (Objects.nonNull(node.getParent()));
-    }
-
-    @Override
-    public U getParent(final U node) {
-        if (this.hasParent(node)) {
-            return node.getParent();
-        }
-        return null;
-    }
-
-    @Override
-    public boolean isLeftChild(final U node) {
-        Objects.requireNonNull(node);
-        if (Objects.isNull(node.getParent())) {
-            return false;
-        }
-        return (node.getParent().getLeft() == node);
-    }
-
-    @Override
-    public boolean isRightChild(final U node) {
-        Objects.requireNonNull(node);
-        if (Objects.isNull(node.getParent())) {
-            return false;
-        }
-        return (node.getParent().getRight() == node);
-    }
-
-    @Override
-    public int depth(final U node) {
-        if (this.isRoot(node)) {
-            return 0;
-        }
-        return 1 + this.depth(node.getParent());
     }
 }

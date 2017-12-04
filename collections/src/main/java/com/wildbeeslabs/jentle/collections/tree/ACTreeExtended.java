@@ -27,8 +27,6 @@ import com.wildbeeslabs.jentle.collections.interfaces.ITreeExtended;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 import java.util.Comparator;
-import java.util.Objects;
-import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,34 +45,9 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class ACTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACBaseTreeExtended<T, U> implements ITreeExtended<T, U> {
+public abstract class ACTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACTree<T, U> implements ITreeExtended<T, U> {
 
     public ACTreeExtended(final U root, final Comparator<? super T> cmp) {
         super(root, cmp);
-    }
-
-    @Override
-    protected U createTreeNode(Optional<? extends T> value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void insertLeft(U node, Optional<? extends T> value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void insertRight(U node, Optional<? extends T> value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public T replaceElement(U node, T newValue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void swapElements(U first, U last) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

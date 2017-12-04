@@ -24,6 +24,8 @@
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -50,7 +52,9 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      *
      * @return boolean (true - if the list is empty, false - otherwise)
      */
-    boolean isEmpty();
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 
     /**
      * Add new root node
@@ -72,7 +76,10 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return true - if current node is root, false - otherwise
      */
-    boolean isRoot(final U node);
+    default boolean isRoot(final U node) {
+        Objects.requireNonNull(node);
+        return (this.getRoot() == node);
+    }
 
     /**
      * Checks if current node has left child
@@ -80,7 +87,10 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return true - if current node has left child node, false - otherwise
      */
-    boolean hasLeftChild(final U node);
+    default boolean hasLeftChild(final U node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getLeft()));
+    }
 
     /**
      * Checks if current node has right child
@@ -88,7 +98,10 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return true - if current node has right child node, false - otherwise
      */
-    boolean hasRightChild(final U node);
+    default boolean hasRightChild(final U node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getRight()));
+    }
 
     /**
      * Checks if current node is external node
@@ -96,7 +109,10 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return true - if current node is external node, false - otherwise
      */
-    boolean isExternal(final U node);
+    default boolean isExternal(final U node) {
+        Objects.requireNonNull(node);
+        return (Objects.isNull(node.getLeft()) && Objects.isNull(node.getRight()));
+    }
 
     /**
      * Checks if current node is internal node
@@ -104,7 +120,10 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return true - if current node is internal node, false - otherwise
      */
-    boolean isInternal(final U node);
+    default boolean isInternal(final U node) {
+        Objects.requireNonNull(node);
+        return (Objects.nonNull(node.getLeft()) || Objects.nonNull(node.getRight()));
+    }
 
     /**
      * Returns left child node of the current node
@@ -112,7 +131,12 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return left child node
      */
-    U getLeftChild(final U node);
+    default U getLeftChild(final U node) {
+        if (this.hasLeftChild(node)) {
+            return node.getLeft();
+        }
+        return null;
+    }
 
     /**
      * Returns right child node of the current node
@@ -120,7 +144,12 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return right child node
      */
-    U getRightChild(final U node);
+    default U getRightChild(final U node) {
+        if (this.hasRightChild(node)) {
+            return node.getRight();
+        }
+        return null;
+    }
 
     /**
      * Returns the size of the current node
@@ -128,7 +157,19 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return total number of nodes in the child hierarchy
      */
-    int nodeSize(final U node);
+    default int nodeSize(final U node) {
+        if (Objects.isNull(node)) {
+            return 0;
+        }
+        if (this.hasLeftChild(node) && this.hasRightChild(node)) {
+            return 1 + this.nodeSize(node.getLeft()) + this.nodeSize(node.getRight());
+        } else if (this.hasLeftChild(node) && !this.hasRightChild(node)) {
+            return 1 + this.nodeSize(node.getLeft());
+        } else if (!this.hasLeftChild(node) && this.hasRightChild(node)) {
+            return 1 + this.nodeSize(node.getRight());
+        }
+        return 1;
+    }
 
     /**
      * Returns max number of left/right child nodes of the current node
@@ -136,7 +177,12 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @return max number of nodes in the left / right child hierarchy
      */
-    int height(final U node);
+    default int height(final U node) {
+        if (Objects.isNull(node)) {
+            return 0;
+        }
+        return Math.max(this.height(node.getLeft()), this.height(node.getRight())) + 1;
+    }
 
     /**
      * Returns number of child nodes of the current node on a particular level
@@ -146,7 +192,15 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param level - level of hierarchy
      * @return number of nodes on level hierarchy
      */
-    int nodesOnLevel(final U node, int level);
+    default int nodesOnLevel(final U node, int level) {
+        if (Objects.isNull(node)) {
+            return 0;
+        }
+        if (1 == level) {
+            return 1;
+        }
+        return this.nodesOnLevel(node.getLeft(), level - 1) + this.nodesOnLevel(node.getRight(), level - 1);
+    }
 
     /**
      * Traverses children of the current node in order sequence
@@ -154,7 +208,12 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @param visitor - traversable visitor instance
      */
-    void inOrderTraversal(final U node, final IVisitor<T> visitor);
+    default void inOrderTraversal(final U node, final IVisitor<T> visitor) {
+        Objects.requireNonNull(node);
+        inOrderTraversal(node.getLeft(), visitor);
+        visitor.visit(node.getData());
+        inOrderTraversal(node.getRight(), visitor);
+    }
 
     /**
      * Traverses children of the current node in pre order sequence
@@ -162,7 +221,12 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @param visitor - traversable visitor instance
      */
-    void preOrderTraversal(final U node, final IVisitor<T> visitor);
+    default void preOrderTraversal(final U node, final IVisitor<T> visitor) {
+        Objects.requireNonNull(node);
+        visitor.visit(node.getData());
+        preOrderTraversal(node.getLeft(), visitor);
+        preOrderTraversal(node.getRight(), visitor);
+    }
 
     /**
      * Traverses children of the current node in post order sequence
@@ -170,5 +234,10 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      * @param node - current node
      * @param visitor - traversable visitor instance
      */
-    void postOrderTraversal(final U node, final IVisitor<T> visitor);
+    default void postOrderTraversal(final U node, final IVisitor<T> visitor) {
+        Objects.requireNonNull(node);
+        postOrderTraversal(node.getLeft(), visitor);
+        postOrderTraversal(node.getRight(), visitor);
+        visitor.visit(node.getData());
+    }
 }
