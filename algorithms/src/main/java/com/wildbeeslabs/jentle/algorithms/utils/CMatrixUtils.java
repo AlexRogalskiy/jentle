@@ -42,7 +42,7 @@ public final class CMatrixUtils<T> {
     }
 
     private static <T> void updateColumn(final T[][] matrix, int col, final T value) {
-        for (T[] row : matrix) {
+        for (final T[] row : matrix) {
             row[col] = value;
         }
     }
@@ -54,7 +54,8 @@ public final class CMatrixUtils<T> {
     }
 
     public static <T> void rotate(final T[][] matrix, int size) {
-        if (Objects.isNull(matrix) || Objects.isNull(matrix[0]) || matrix.length != matrix[0].length) {
+        Objects.requireNonNull(matrix);
+        if (Objects.isNull(matrix[0]) || matrix.length != matrix[0].length) {
             return;
         }
         for (int layer = 0; layer < size / 2; layer++) {
@@ -72,17 +73,18 @@ public final class CMatrixUtils<T> {
     }
 
     public static <T> void replaceRCByDefault(final T[][] matrix, final T value, final T defaultValue) {
-        if (Objects.isNull(matrix) || Objects.isNull(matrix[0])) {
+        Objects.requireNonNull(matrix);
+        if (Objects.isNull(matrix[0])) {
             return;
         }
         boolean rowHasZero = false, colHasZero = false;
-        for (T row : matrix[0]) {
+        for (final T row : matrix[0]) {
             if (Objects.equals(row, value)) {
                 rowHasZero = true;
                 break;
             }
         }
-        for (T[] col : matrix) {
+        for (final T[] col : matrix) {
             if (Objects.equals(col[0], value)) {
                 colHasZero = true;
                 break;

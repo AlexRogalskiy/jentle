@@ -49,26 +49,41 @@ public class CBitwise {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static boolean getBit(int num, int i) {
-        return ((num & (1 << i)) != 0);
+    public static boolean getBit(int num, int index) {
+        if (index < 0) {
+            return false;
+        }
+        return ((num & (1 << index)) != 0);
     }
 
-    public static int setBit(int num, int i) {
-        return num | (1 << i);
+    public static int setBit(int num, int index) {
+        if (index < 0) {
+            return num;
+        }
+        return num | (1 << index);
     }
 
-    public static int clearBit(int num, int i) {
-        int mask = ~(1 << i);
+    public static int clearBit(int num, int index) {
+        if (index < 0) {
+            return num;
+        }
+        int mask = ~(1 << index);
         return num & mask;
     }
 
-    public static int clearBitsMSBthroughI(int num, int i) {
-        int mask = (1 << i) - 1;
+    public static int clearBitsMSBthroughI(int num, int index) {
+        if (index < 0) {
+            return num;
+        }
+        int mask = (1 << index) - 1;
         return num & mask;
     }
 
-    public static int clearBithsIthrough0(int num, int i) {
-        int mask = ~(-1 >>> (31 - i));
+    public static int clearBithsIthrough0(int num, int index) {
+        if (index < 0) {
+            return num;
+        }
+        int mask = ~(-1 >>> (31 - index));
         return num & mask;
     }
 
@@ -76,5 +91,22 @@ public class CBitwise {
         int value = flag ? 1 : 0;
         int mask = ~(1 << i);
         return (num & mask) | (value << i);
+    }
+
+    public static boolean checkOnlyOneBitSet(int num) {
+        return (num & (num - 1)) == 0;
+    }
+
+    public static int toggle(int num, int index) {
+        if (index < 0) {
+            return num;
+        }
+        int mask = 1 << index;
+        if ((num & mask) == 0) {
+            num |= mask;
+        } else {
+            num &= ~mask;
+        }
+        return num;
     }
 }

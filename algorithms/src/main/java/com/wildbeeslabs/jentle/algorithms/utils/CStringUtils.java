@@ -124,12 +124,12 @@ public final class CStringUtils {
         if (Objects.isNull(value)) {
             return null;
         }
-        StringBuilder compStr = new StringBuilder();
+        StringBuilder compStr = new StringBuilder(value.length());
         int count = 0, len = value.length();
         for (int i = 0; i < len; i++) {
             count++;
-            if (i + 1 >= value.length() || value.charAt(i) != value.charAt(i + 1)) {
-                compStr.append(value.charAt(i));
+            if (i + 1 >= value.length() || value.codePointAt(i) != value.codePointAt(i + 1)) {
+                compStr.append(Character.toChars(value.codePointAt(i)));
                 compStr.append(count);
                 count = 0;
             }
