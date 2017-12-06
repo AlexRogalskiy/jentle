@@ -21,10 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
+package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+
 import java.util.Comparator;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,37 +35,53 @@ import lombok.ToString;
 
 /**
  *
- * Custom abstract list node implementation
+ * Custom stack with minimum implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACListNode<T, E extends ACListNode<T, E>> extends ACNode<T> {
+public class CStackMin<T> extends CStack<T> {
 
-    protected E next;
+    protected CStack<T> minStack;
     protected final Comparator<? super T> cmp;
 
-    public ACListNode() {
-        this(null);
+    public CStackMin() {
+        this(CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public ACListNode(final T data) {
-        this(data, null);
-    }
-
-    public ACListNode(final T data, final E next) {
-        this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
-    }
-
-    public ACListNode(final T data, final E next, final Comparator<? super T> cmp) {
-        super(data);
-        this.next = next;
+    public CStackMin(final Comparator<? super T> cmp) {
         this.cmp = cmp;
+        this.minStack = new CStack<>();
+    }
+
+    @Override
+    public void push(final T value) {
+        if (Objects.compare(value, this.min(), this.cmp) <= 0) {
+            this.minStack.push(value);
+        }
+        super.push(value);
+    }
+
+    @Override
+    public T pop() throws EmptyStackException {
+        final T value = super.pop();
+        if (Objects.compare(value, this.min(), this.cmp) == 0) {
+            this.minStack.pop();
+        }
+        return value;
+    }
+
+    protected T min() {
+        try {
+            return this.minStack.peek();
+        } catch (EmptyStackException ex) {
+            LOGGER.error(String.format("ERROR: minimum stack is empty: message={%s}", ex.getMessage()));
+            return null;
+        }
     }
 }

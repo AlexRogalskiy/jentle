@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -227,7 +228,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     protected boolean isPalindrome(final E node) {
         E fast = node;
         E slow = node;
-        CStack<T> stack = new CStack<>();
+        final CStack<T> stack = new CStack<>();
         while (Objects.nonNull(fast) && Objects.nonNull(fast.getNext())) {
             stack.push(slow.getData());
             slow = slow.getNext();
@@ -268,6 +269,10 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return current;
     }
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
     private static final class ResultCNode<E> {
 
         public E head;
@@ -284,12 +289,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
 
         public ResultCNode(final E head, final E tail) {
             this(head, tail, 0);
-        }
-
-        public ResultCNode(final E head, final E tail, int size) {
-            this.head = head;
-            this.tail = tail;
-            this.size = size;
         }
     }
 

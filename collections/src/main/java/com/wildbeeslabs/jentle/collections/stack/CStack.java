@@ -21,16 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.Collection;
 import java.util.Queue;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -58,12 +57,10 @@ public class CStack<T> implements IStack<T> {
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
+    @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CStackNode<T> {
+    public static class CStackNode<T> extends ACNode<T> {
 
-        private final T data;
         private CStackNode<T> next;
 
         public CStackNode() {
@@ -72,6 +69,11 @@ public class CStack<T> implements IStack<T> {
 
         public CStackNode(final T data) {
             this(data, null);
+        }
+
+        public CStackNode(final T data, final CStackNode<T> next) {
+            super(data);
+            this.next = next;
         }
     }
 
@@ -88,7 +90,7 @@ public class CStack<T> implements IStack<T> {
         if (this.isEmpty()) {
             throw new EmptyStackException(String.format("ERROR: CStack (empty size=%d)", this.size));
         }
-        T removed = this.top.data;
+        final T removed = this.top.getData();
         this.top = this.top.next;
         this.size--;
         return removed;
@@ -96,7 +98,7 @@ public class CStack<T> implements IStack<T> {
 
     @Override
     public void push(final T item) {
-        CStackNode<T> temp = new CStackNode<>(item, this.top);
+        final CStackNode<T> temp = new CStackNode<>(item, this.top);
         this.size++;
         this.top = temp;
     }
@@ -106,7 +108,7 @@ public class CStack<T> implements IStack<T> {
         if (this.isEmpty()) {
             throw new EmptyStackException(String.format("ERROR: CStack (empty size=%d)", this.size));
         }
-        return top.data;
+        return top.getData();
     }
 
     @Override
