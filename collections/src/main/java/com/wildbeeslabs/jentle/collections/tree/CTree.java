@@ -92,34 +92,36 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
         return this.nodesOnLevel(this.root, level);
     }
 
-    public CTree<T> fromArray(final T[] array) {
+    public static <T> CTree<T> fromArray(final T[] array) {
+        return fromArray(array, 0, array.length - 1);
+    }
+
+    public static <T> CTree<T> fromArray(final T[] array, int start, int end) {
         Objects.requireNonNull(array);
-        if (array.length > 0) {
-            final CTreeNode<T> rootNode = new CTreeNode<>(array[0]);
+        assert (start < array.length && end < array.length && start <= end);
+        final CTreeNode<T> rootNode = new CTreeNode<>(array[start]);
+        if (end - start > 0) {
             final Queue<CTreeNode<T>> queue = new LinkedList<>();
             queue.add(rootNode);
             boolean done = false;
-            int i = 1;
+            int current = start + 1;
             while (!done) {
-                CTreeNode<T> r = queue.element();
-                if (Objects.isNull(r.getLeft())) {//&& Objects.compare(array[i], r.data, this.cmp) < 0
-                    r.setLeft(new CTreeNode<>(array[i]));
-                    i++;
-                    queue.add(r.getLeft());
-                } else if (Objects.isNull(r.getRight())) {//Objects.compare(array[i], r.data, this.cmp) >= 0
-                    r.setRight(new CTreeNode<>(array[i]));
-                    i++;
-                    queue.add(r.getRight());
+                CTreeNode<T> node = queue.element();
+                if (Objects.isNull(node.getLeft())) {
+                    node.setLeft(new CTreeNode<>(array[current++]));
+                    queue.add(node.getLeft());
+                } else if (Objects.isNull(node.getRight())) {
+                    node.setRight(new CTreeNode<>(array[current++]));
+                    queue.add(node.getRight());
                 } else {
                     queue.remove();
                 }
-                if (i == array.length) {
+                if (current == end) {
                     done = true;
                 }
             }
-            return new CTree<>(rootNode, this.cmp);
         }
-        return null;
+        return new CTree<>(rootNode, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
     @Override
