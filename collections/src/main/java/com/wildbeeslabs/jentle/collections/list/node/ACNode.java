@@ -21,45 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.tree.node;
+package com.wildbeeslabs.jentle.collections.list.node;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract trie node implementation
+ * Custom abstract node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <U>
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACNode<T> {
+public abstract class ACNode<T> {
 
-    protected final Map<T, U> child;
-    protected boolean isTerminated;
-
-    public ACTrieNode() {
-        this(null);
-    }
-
-    public ACTrieNode(final T data) {
-        super(data);
-        this.child = new LinkedHashMap<>();
-        this.isTerminated = false;
-    }
-
-    public U getChild(final T data) {
-        return this.child.get(data);
-    }
+    protected T data;
 }

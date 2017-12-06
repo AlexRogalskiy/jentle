@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.list.CLinkedList.CLinkedListNode;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -38,8 +39,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -55,15 +54,10 @@ import org.apache.log4j.Logger;
 @ToString
 public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements IList<T> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
-
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CLinkedListNode<T> extends ACList.ACListNode<T, CLinkedListNode<T>> {
+    public static class CLinkedListNode<T> extends ACListNode<T, CLinkedListNode<T>> {
 
         protected CLinkedListNode<T> previous;
 
@@ -111,8 +105,8 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
 
     public void addList(final CLinkedList<? extends T> source) {
         if (Objects.nonNull(source)) {
-            for (CLinkedListNode<? extends T> current = source.first; current != null; current = current.next) {
-                this.addLast(current.data);
+            for (CLinkedListNode<? extends T> current = source.first; current != null; current = current.getNext()) {
+                this.addLast(current.getData());
             }
         }
     }

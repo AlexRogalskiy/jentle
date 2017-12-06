@@ -21,29 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.tree.node;
+package com.wildbeeslabs.jentle.collections.list.node;
 
-import lombok.AllArgsConstructor;
+import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import java.util.Comparator;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom abstract list node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public abstract class ACNode<T> {
+public abstract class ACListNode<T, E extends ACListNode<T, E>> extends ACNode<T> {
 
-    protected T data;
+    protected E next;
+    protected final Comparator<? super T> cmp;
+
+    public ACListNode() {
+        this(null);
+    }
+
+    public ACListNode(final T data) {
+        this(data, null);
+    }
+
+    public ACListNode(final T data, final E next) {
+        this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
+    public ACListNode(final T data, final E next, final Comparator<? super T> cmp) {
+        super(data);
+        this.next = next;
+        this.cmp = cmp;
+    }
 }

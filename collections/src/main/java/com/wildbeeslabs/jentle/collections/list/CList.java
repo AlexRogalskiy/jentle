@@ -28,6 +28,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.CList.CListNode;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -38,9 +39,6 @@ import java.util.Queue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -56,15 +54,10 @@ import org.apache.log4j.Logger;
 @ToString
 public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
-
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CListNode<T> extends ACList.ACListNode<T, CListNode<T>> {
+    public static class CListNode<T> extends ACListNode<T, CListNode<T>> {
 
         public CListNode() {
             this(null);
@@ -109,8 +102,8 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
 
     public void addList(final CList<? extends T> source) {
         if (Objects.nonNull(source)) {
-            for (CListNode<? extends T> current = source.first; current != null; current = current.next) {
-                this.addLast(current.data);
+            for (CListNode<? extends T> current = source.first; current != null; current = current.getNext()) {
+                this.addLast(current.getData());
             }
         }
     }
@@ -130,7 +123,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         if (Objects.isNull(this.last)) {
             this.first = temp;
         } else {
-            this.last.next = temp;
+            this.last.setNext(temp);
         }
         this.last = temp;
         this.size++;
@@ -140,8 +133,8 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         if (this.isEmpty()) {
             throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
         }
-        T removed = this.first.data;
-        this.first = this.first.next;
+        T removed = this.first.getData();
+        this.first = this.first.getNext();
         this.size--;
         return removed;
     }
@@ -151,18 +144,18 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
             throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
         }
         CListNode<T> previous = this.first, next = this.first;
-        while (Objects.nonNull(next.next)) {
+        while (Objects.nonNull(next.getNext())) {
             previous = next;
-            next = next.next;
+            next = next.getNext();
         }
         if (Objects.isNull(previous)) {
             this.first = null;
         } else {
-            previous.next = null;
+            previous.setNext(null);
         }
         this.last = previous;
         this.size--;
-        return next.data;
+        return next.getData();
     }
 
     @Override
@@ -173,16 +166,16 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         CListNode<T> previous = this.first, next = this.first;
         boolean removed = false;
         while (Objects.nonNull(next)) {
-            if (Objects.compare(item, next.data, this.cmp) == 0) {
+            if (Objects.compare(item, next.getData(), this.cmp) == 0) {
                 removed = true;
                 this.size--;
                 if (Objects.nonNull(previous)) {
-                    previous.next = next.next;
+                    previous.setNext(next.getNext());
                 }
             } else {
                 previous = next;
             }
-            next = next.next;
+            next = next.getNext();
         }
         this.last = previous;
         return removed;
@@ -193,7 +186,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         CListNode<T> previous = this.first, next = this.first;
         while (Objects.nonNull(next) && --index > 0) {
             previous = next;
-            next = next.next;
+            next = next.getNext();
         }
         CListNode<T> temp = new CListNode<>(item, next);
         if (Objects.isNull(next)) {
@@ -202,7 +195,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         if (Objects.isNull(previous)) {
             this.first = temp;
         } else {
-            previous.next = temp;
+            previous.setNext(temp);
         }
         this.size++;
     }
@@ -211,10 +204,10 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         this.checkRange(index);
         CListNode<T> current = this.first;
         while (Objects.nonNull(current) && --index > 0) {
-            current = current.next;
+            current = current.getNext();
         }
         if (Objects.nonNull(current)) {
-            return current.data;
+            return current.getData();
         }
         return null;
     }
@@ -223,7 +216,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         if (this.isEmpty()) {
             return null;
         }
-        return this.first.data;
+        return this.first.getData();
     }
 
     @Override
@@ -324,8 +317,8 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
             if (!this.hasNext()) {
                 return null;
             }
-            T current = this.cursor.data;
-            this.cursor = this.cursor.next;
+            T current = this.cursor.getData();
+            this.cursor = this.cursor.getNext();
             return current;
         }
 

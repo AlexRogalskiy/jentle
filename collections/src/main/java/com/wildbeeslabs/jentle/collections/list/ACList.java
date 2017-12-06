@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.interfaces.IResultVisitor;
-import com.wildbeeslabs.jentle.collections.list.ACList.ACListNode;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
 
 import java.util.Comparator;
@@ -63,34 +61,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
      */
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
-    @Data
-    @EqualsAndHashCode(callSuper = false)
-    @ToString
-    public abstract static class ACListNode<T, E extends ACListNode<T, E>> {
-
-        protected T data;
-        protected E next;
-        protected final Comparator<? super T> cmp;
-
-        public ACListNode() {
-            this(null);
-        }
-
-        public ACListNode(final T data) {
-            this(data, null);
-        }
-
-        public ACListNode(final T data, final E next) {
-            this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
-        }
-
-        public ACListNode(final T data, final E next, final Comparator<? super T> cmp) {
-            this.data = data;
-            this.next = next;
-            this.cmp = cmp;
-        }
-    }
-
     protected final Comparator<? super T> cmp;
 
     public ACList(final Comparator<? super T> cmp) {
@@ -101,13 +71,13 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         final Set<T> set = new HashSet<>();
         E previous = node, current = node;
         while (Objects.nonNull(current)) {
-            if (set.contains(current.data)) {
-                previous.next = current.next;
+            if (set.contains(current.getData())) {
+                previous.setNext(current.getNext());
             } else {
-                set.add(current.data);
+                set.add(current.getData());
                 previous = current;
             }
-            current = current.next;
+            current = current.getNext();
         }
     }
 
@@ -115,28 +85,28 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         E current = node;
         while (Objects.nonNull(current)) {
             E runner = current;
-            while (Objects.nonNull(runner.next)) {
-                if (Objects.compare(runner.next.data, current.data, this.cmp) == 0) {
-                    runner.next = runner.next.next;
+            while (Objects.nonNull(runner.getNext())) {
+                if (Objects.compare(runner.getNext().getData(), current.getData(), this.cmp) == 0) {
+                    runner.setNext(runner.getNext().getNext());
                 } else {
-                    runner = runner.next;
+                    runner = runner.getNext();
                 }
             }
-            current = current.next;
+            current = current.getNext();
         }
     }
 
     protected T getKthToLast(final E node, int k) {
         Integer idx = new Integer(0);
         E current = this.getKthToLast(node, k, idx);
-        return Objects.nonNull(current) ? current.data : null;
+        return Objects.nonNull(current) ? current.getData() : null;
     }
 
     private E getKthToLast(final E node, int k, Integer index) {
         if (this.isEmpty()) {
             return null;
         }
-        E current = getKthToLast(node.next, k, index);
+        E current = getKthToLast(node.getNext(), k, index);
         index = index + 1;
         if (index.intValue() == k) {
             return node;
@@ -150,29 +120,29 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             if (Objects.isNull(p1)) {
                 return null;
             }
-            p1 = p1.next;
+            p1 = p1.getNext();
         }
         while (Objects.nonNull(p1)) {
-            p1 = p1.next;
-            p2 = p2.next;
+            p1 = p1.getNext();
+            p2 = p2.getNext();
         }
-        return p2.data;
+        return p2.getData();
     }
 
     protected boolean delete(final E node) {
-        if (this.isEmpty() || Objects.isNull(node) || Objects.isNull(node.next)) {
+        if (this.isEmpty() || Objects.isNull(node) || Objects.isNull(node.getNext())) {
             return false;
         }
-        E current = node.next;
-        node.data = current.data;
-        node.next = current.next;
+        E current = node.getNext();
+        node.setData(current.getData());
+        node.setNext(current.getNext());
         return true;
     }
 
     protected E insertBefore(final E list, final T data, final Class<E> clazz) {
         try {
             E node = clazz.newInstance();
-            node.data = data;
+            node.setData(data);
             return this.insertBefore(list, node);
         } catch (InstantiationException | IllegalAccessException ex) {
             LOGGER.error("ERROR: cannot instantiate list node", ex);
@@ -182,7 +152,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
 
     protected E insertBefore(final E list, final E data) {
         if (Objects.nonNull(list)) {
-            data.next = list;
+            data.setNext(list);
         }
         return data;
     }
@@ -197,14 +167,14 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         E afterEnd = null;
         E current = node;
         while (Objects.nonNull(current)) {
-            E next = current.next;
-            current.next = null;
-            if (Objects.compare(current.data, value, this.cmp) < 0) {
+            E next = current.getNext();
+            current.setNext(null);
+            if (Objects.compare(current.getData(), value, this.cmp) < 0) {
                 if (Objects.isNull(beforeStart)) {
                     beforeStart = current;
                     beforeEnd = beforeStart;
                 } else {
-                    beforeEnd.next = current;
+                    beforeEnd.setNext(current);
                     beforeEnd = current;
                 }
             } else {
@@ -212,7 +182,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
                     afterStart = current;
                     afterEnd = afterStart;
                 } else {
-                    afterEnd.next = current;
+                    afterEnd.setNext(current);
                     afterEnd = current;
                 }
             }
@@ -221,7 +191,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         if (Objects.isNull(beforeStart)) {
             return afterStart;
         }
-        beforeStart.next = afterStart;
+        beforeStart.setNext(afterStart);
         return beforeStart;
     }
 
@@ -230,14 +200,14 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             return;
         }
         if (Objects.nonNull(first)) {
-            visitor.visit(first.data);
+            visitor.visit(first.getData());
         }
         if (Objects.nonNull(last)) {
-            visitor.visit(last.data);
+            visitor.visit(last.getData());
         }
         result.addLast(visitor.getResult());
         if (Objects.nonNull(first) || Objects.nonNull(last)) {
-            addLists(Objects.isNull(first) ? null : first.next, Objects.isNull(last) ? null : last.next, result, visitor);
+            addLists(Objects.isNull(first) ? null : first.getNext(), Objects.isNull(last) ? null : last.getNext(), result, visitor);
         }
     }
 
@@ -245,11 +215,11 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         E headFirst = first;
         E headLast = last;
         while (Objects.nonNull(headFirst) && Objects.nonNull(headLast)) {
-            if (Objects.compare(headFirst.data, headLast.data, this.cmp) != 0) {
+            if (Objects.compare(headFirst.getData(), headLast.getData(), this.cmp) != 0) {
                 return false;
             }
-            headFirst = headFirst.next;
-            headLast = headLast.next;
+            headFirst = headFirst.getNext();
+            headLast = headLast.getNext();
         }
         return (Objects.nonNull(headFirst) && Objects.nonNull(headLast));
     }
@@ -258,20 +228,20 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         E fast = node;
         E slow = node;
         CStack<T> stack = new CStack<>();
-        while (Objects.nonNull(fast) && Objects.nonNull(fast.next)) {
-            stack.push(slow.data);
-            slow = slow.next;
-            fast = fast.next.next;
+        while (Objects.nonNull(fast) && Objects.nonNull(fast.getNext())) {
+            stack.push(slow.getData());
+            slow = slow.getNext();
+            fast = fast.getNext().getNext();
         }
         if (Objects.nonNull(fast)) {
-            slow = slow.next;
+            slow = slow.getNext();
         }
         try {
             while (Objects.nonNull(slow)) {
-                if (Objects.compare(stack.pop(), slow.data, this.cmp) != 0) {
+                if (Objects.compare(stack.pop(), slow.getData(), this.cmp) != 0) {
                     return false;
                 }
-                slow = slow.next;
+                slow = slow.getNext();
             }
         } catch (EmptyStackException ex) {
             LOGGER.error("ERROR: empty stack", ex);
@@ -284,7 +254,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         E current = node;
         while (Objects.nonNull(current)) {
             size++;
-            current = current.next;
+            current = current.getNext();
         }
         return size;
     }
@@ -292,7 +262,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     protected E getKthToFirst(final E node, int k) {
         E current = node;
         while (k > 0 && Objects.nonNull(current)) {
-            current = current.next;
+            current = current.getNext();
             k--;
         }
         return current;
@@ -329,9 +299,9 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         }
         int size = 1;
         E current = node;
-        while (Objects.nonNull(current.next)) {
+        while (Objects.nonNull(current.getNext())) {
             size++;
-            current = current.next;
+            current = current.getNext();
         }
         return new ResultCNode(null, current, size);
     }
@@ -349,8 +319,8 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         E longer = res2.size < res2.size ? last : first;
         longer = this.getKthToFirst(longer, Math.abs(res1.size - res2.size));
         while (shorter != longer) {
-            shorter = shorter.next;
-            longer = longer.next;
+            shorter = shorter.getNext();
+            longer = longer.getNext();
         }
         return longer;
     }
@@ -358,20 +328,20 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     protected E findLoop(final E node) {
         E slow = node;
         E fast = node;
-        while (Objects.nonNull(fast) && Objects.nonNull(fast.next)) {
-            slow = slow.next;
-            fast = fast.next.next;
+        while (Objects.nonNull(fast) && Objects.nonNull(fast.getNext())) {
+            slow = slow.getNext();
+            fast = fast.getNext().getNext();
             if (slow == fast) {
                 break;
             }
         }
-        if (Objects.isNull(fast) || Objects.isNull(fast.next)) {
+        if (Objects.isNull(fast) || Objects.isNull(fast.getNext())) {
             return null;
         }
         slow = node;
         while (slow != fast) {
-            slow = slow.next;
-            fast = fast.next;
+            slow = slow.getNext();
+            fast = fast.getNext();
         }
         return fast;
     }
