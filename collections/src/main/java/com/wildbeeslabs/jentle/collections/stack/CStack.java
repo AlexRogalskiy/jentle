@@ -116,6 +116,7 @@ public class CStack<T> implements IStack<T> {
         return this.size;
     }
 
+    @Override
     public boolean isEmpty() {
         return (0 == this.size());
     }

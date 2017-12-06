@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
@@ -29,6 +28,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -131,10 +131,10 @@ public class CMGraph<T> implements IGraph<T> {
     }
 
     public IGraph<? extends T> toCLGraph() {
-        IGraph<T> lGraph = new CLGraph<>(this.size());
+        final IGraph<T> lGraph = new CLGraph<>(this.size());
         for (int i = 0; i < this.size(); i++) {
             for (int j = 0; j < this.graph[i].length; j++) {
-                T temp = this.get(i, j);
+                final T temp = this.get(i, j);
                 if (Objects.nonNull(temp)) {
                     lGraph.add(i, j, temp);
                 }

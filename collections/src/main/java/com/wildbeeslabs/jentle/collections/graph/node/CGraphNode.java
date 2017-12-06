@@ -21,21 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.graph.node;
+
+import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import java.util.Comparator;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom graph interface declaration
+ * Custom graph node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface IGraph<T> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
 
-    void add(int from, int to, final T data);
+    public CGraphNode() {
+        this(null);
+    }
 
-//    Iterable<CGraphNode<T>> getNodes();
+    public CGraphNode(final T data) {
+        this(data, null);
+    }
 
+    public CGraphNode(final T data, final CGraphNode<T> next) {
+        this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
+    public CGraphNode(final T data, final CGraphNode<T> next, final Comparator<? super T> cmp) {
+        super(data, next, cmp);
+    }
+
+    public Iterable<CGraphNode<T>> getAdjacent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -21,21 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.graph.node;
+
+import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+
+import java.util.Comparator;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom graph interface declaration
+ * Custom abstract graph node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
-public interface IGraph<T> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode<T> {
 
-    void add(int from, int to, final T data);
+    protected State state;
+    protected E next;
+    protected final Comparator<? super T> cmp;
 
-//    Iterable<CGraphNode<T>> getNodes();
+    public static enum State {
 
+        UNVISITED, VISITED, VISITING;
+    }
+
+    public ACGraphNode() {
+        this(null);
+    }
+
+    public ACGraphNode(final T data) {
+        this(data, null);
+    }
+
+    public ACGraphNode(final T data, final E next) {
+        this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
+    public ACGraphNode(final T data, final E next, final Comparator<? super T> cmp) {
+        super(data);
+        this.next = next;
+        this.cmp = cmp;
+    }
 }

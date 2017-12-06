@@ -23,8 +23,18 @@
  */
 package com.wildbeeslabs.jentle.collections.utils;
 
+import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.graph.CLGraph;
+import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
+import com.wildbeeslabs.jentle.collections.interfaces.IStack;
+import com.wildbeeslabs.jentle.collections.stack.CStack;
+
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Objects;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import static org.apache.commons.lang3.ArrayUtils.toArray;
@@ -63,5 +73,46 @@ public final class CUtils {
         return CollectionUtils.union(first, second);
         //IterableUtils.chainedIterable(collectionA, collectionB);
         //Stream<? extends T> combinedStream = Stream.of(first, second).flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    public static <T> IStack<T> sort(final IStack<T> stack, final Comparator<? super T> cmp) throws EmptyStackException {
+        final IStack<T> result = new CStack<>();
+        while (!stack.isEmpty()) {
+            final T temp = stack.pop();
+            while (!result.isEmpty() && Objects.compare(result.peek(), temp, cmp) > 1) {
+                stack.push(result.pop());
+            }
+            result.push(temp);
+        }
+        return result;
+    }
+
+    public static <T> boolean search(final CLGraph<T> graph, final CGraphNode<T> start, final CGraphNode<T> end) {//IGraph<T>
+        if (start == end) {
+            return true;
+        }
+        final Deque<CGraphNode<T>> listNode = new LinkedList<>();
+        for (final CGraphNode<T> node : graph.getNodes()) {
+            node.setState(CGraphNode.State.UNVISITED);
+        }
+        start.setState(CGraphNode.State.VISITING);
+        listNode.add(start);
+        while (!listNode.isEmpty()) {
+            CGraphNode<T> temp = listNode.removeFirst();
+            if (Objects.nonNull(temp)) {
+                for (final CGraphNode<T> v : temp.getAdjacent()) {
+                    if (Objects.equals(v.getState(), CGraphNode.State.UNVISITED)) {
+                        if (v == end) {
+                            return true;
+                        } else {
+                            v.setState(CGraphNode.State.VISITING);
+                            listNode.add(v);
+                        }
+                    }
+                }
+                temp.setState(CGraphNode.State.VISITED);
+            }
+        }
+        return false;
     }
 }

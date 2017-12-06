@@ -21,21 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
+import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.lang.reflect.Array;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -63,16 +63,19 @@ public class CLGraph<T> implements IGraph<T> {
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
+    @EqualsAndHashCode(callSuper = true)
     @ToString
-    protected static class CLGraphArc<T> {
+    protected static class CLGraphArc<T> extends ACNode<T> {
 
         private int end;
-        private T data;
 
         public CLGraphArc(int end) {
-            this(end, null);
+            this(null, end);
+        }
+
+        public CLGraphArc(final T data, int end) {
+            super(data);
+            this.end = end;
         }
     }
 
@@ -92,7 +95,7 @@ public class CLGraph<T> implements IGraph<T> {
     public void add(int from, int to, final T data) {
         this.checkRange(from);
         this.checkRange(to);
-        this.graph[from - 1].addLast(new CLGraphArc<>(to, data));
+        this.graph[from - 1].addLast(new CLGraphArc<>(data, to));
     }
 
     public void add(int from, int to) {
@@ -114,7 +117,7 @@ public class CLGraph<T> implements IGraph<T> {
     public T get(int from, int to) {
         CLGraphArc<T> temp = this.getItem(from, to);
         if (Objects.nonNull(temp)) {
-            return temp.data;
+            return temp.getData();
         }
         return null;
     }
@@ -122,7 +125,7 @@ public class CLGraph<T> implements IGraph<T> {
     public boolean set(int from, int to, final T data) {
         CLGraphArc<T> temp = this.getItem(from, to);
         if (Objects.nonNull(temp)) {
-            temp.data = data;
+            temp.setData(data);
             return true;
         }
         return false;
@@ -152,7 +155,7 @@ public class CLGraph<T> implements IGraph<T> {
     }
 
     public IGraph<Integer> toCSGraph() {
-        IGraph<Integer> sGraph = new CSGraph(this.size());
+        final IGraph<Integer> sGraph = new CSGraph(this.size());
         for (int i = 0; i < this.size(); i++) {
             for (Iterator<? extends CLGraphArc<T>> it = this.graph[i].iterator(); it.hasNext();) {
                 CLGraphArc<T> node = it.next();
@@ -160,6 +163,10 @@ public class CLGraph<T> implements IGraph<T> {
             }
         }
         return sGraph;
+    }
+
+    public Iterable<CGraphNode<T>> getNodes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
