@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IBaseTree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 
 import lombok.Data;
@@ -84,6 +85,57 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
             return null;
         }
         return this.root;
+    }
+
+    public boolean isBalanced(final ACTreeNode<T, U> root) {
+        if (Objects.isNull(root)) {
+            return true;
+        }
+        int heightDiff = this.height(root.getLeft()) - this.height(root.getRight());
+        if (Math.abs(heightDiff) > 1) {
+            return false;
+        }
+        return this.isBalanced(root.getLeft()) && this.isBalanced(root.getRight());
+    }
+
+    private int checkHeight(final ACTreeNode<T, U> root) {
+        if (Objects.isNull(root)) {
+            return -1;
+        }
+        int leftHeight = this.checkHeight(root.getLeft());
+        if (Objects.equals(leftHeight, Integer.MIN_VALUE)) {
+            return Integer.MIN_VALUE;
+        }
+        int rightHeight = this.checkHeight(root.getRight());
+        if (Objects.equals(rightHeight, Integer.MIN_VALUE)) {
+            return Integer.MIN_VALUE;
+        }
+        int heightDiff = leftHeight - rightHeight;
+        if (Math.abs(heightDiff) > 1) {
+            return Integer.MIN_VALUE;
+        }
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    public boolean isBalanced2(final ACTreeNode<T, U> root) {
+        return (this.checkHeight(root) != Integer.MIN_VALUE);
+    }
+
+    public boolean checkBST(final ACTreeNode<T, U> root) {
+        return this.checkBST(root, null, null);
+    }
+
+    public boolean checkBST(final ACTreeNode<T, U> root, final T min, final T max) {
+        if (Objects.isNull(root)) {
+            return true;
+        }
+        if ((Objects.nonNull(min) && Objects.compare(root.getData(), min, this.cmp) <= 0) || (Objects.nonNull(max) && Objects.compare(root.getData(), max, this.cmp) > 0)) {
+            return false;
+        }
+        if (!this.checkBST(root.getLeft(), min, root.getData()) || !this.checkBST(root.getRight(), root.getData(), max)) {
+            return false;
+        }
+        return true;
     }
 
     protected abstract U createTreeNode(final Optional<? extends T> value);

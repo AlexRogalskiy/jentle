@@ -179,7 +179,7 @@ public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
      */
     default int height(final U node) {
         if (Objects.isNull(node)) {
-            return 0;
+            return -1;
         }
         return Math.max(this.height(node.getLeft()), this.height(node.getRight())) + 1;
     }

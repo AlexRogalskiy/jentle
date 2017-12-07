@@ -28,11 +28,14 @@ import com.wildbeeslabs.jentle.collections.graph.CLGraph;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import java.util.ArrayList;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -66,6 +69,7 @@ public final class CUtils {
 
     public static <T> T safeCast(final Object o, final Class<T> clazz) {
         Objects.requireNonNull(o);
+        Objects.requireNonNull(clazz);
         return (clazz.isInstance(o)) ? clazz.cast(o) : null;
     }
 
@@ -114,5 +118,48 @@ public final class CUtils {
             }
         }
         return false;
+    }
+
+    public static <T, U extends ACTreeNode<T, U>> List<LinkedList<ACTreeNode<T, U>>> createLevelNodeList(final ACTreeNode<T, U> root) {
+        final List<LinkedList<ACTreeNode<T, U>>> levelList = new ArrayList<>();
+        createLevelNodeList(root, levelList, 0);
+        return levelList;
+    }
+
+    private static <T, U extends ACTreeNode<T, U>> void createLevelNodeList(final ACTreeNode<T, U> root, final List<LinkedList<ACTreeNode<T, U>>> levelList, int level) {
+        if (Objects.isNull(root)) {
+            return;
+        }
+        LinkedList<ACTreeNode<T, U>> list = new LinkedList<>();
+        if (levelList.size() == level) {
+            levelList.add(list);
+        } else {
+            list = levelList.get(level);
+        }
+        list.add(root);
+        createLevelNodeList(root.getLeft(), levelList, level + 1);
+        createLevelNodeList(root.getRight(), levelList, level + 1);
+    }
+
+    public static <T, U extends ACTreeNode<T, U>> List<LinkedList<ACTreeNode<T, U>>> createLevelNodeList2(final ACTreeNode<T, U> root) {
+        final List<LinkedList<ACTreeNode<T, U>>> levelList = new ArrayList<>();
+        LinkedList<ACTreeNode<T, U>> current = new LinkedList<>();
+        if (Objects.nonNull(root)) {
+            current.add(root);
+        }
+        while (current.size() > 0) {
+            levelList.add(current);
+            LinkedList<ACTreeNode<T, U>> parents = current;
+            current = new LinkedList<>();
+            for (final ACTreeNode<T, U> parent : parents) {
+                if (Objects.nonNull(parent.getLeft())) {
+                    current.add(parent.getLeft());
+                }
+                if (Objects.nonNull(parent.getRight())) {
+                    current.add(parent.getRight());
+                }
+            }
+        }
+        return levelList;
     }
 }

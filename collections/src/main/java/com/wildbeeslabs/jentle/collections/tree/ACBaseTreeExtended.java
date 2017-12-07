@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IBaseTreeExtended;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,5 +50,32 @@ public abstract class ACBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> 
 
     public ACBaseTreeExtended(final U root, final Comparator<? super T> cmp) {
         super(root, cmp);
+    }
+
+    public ACTreeNodeExtended<T, U> inOrderSuccessor(final ACTreeNodeExtended<T, U> root) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        if (Objects.nonNull(root.getRight())) {
+            return this.leftMostChild(root.getRight());
+        } else {
+            ACTreeNodeExtended<T, U> current = root;
+            ACTreeNodeExtended<T, U> parent = current.getParent();
+            while (Objects.nonNull(parent) && parent.getLeft() != current) {
+                current = parent;
+                parent = parent.getParent();
+            }
+            return parent;
+        }
+    }
+
+    protected ACTreeNodeExtended<T, U> leftMostChild(ACTreeNodeExtended<T, U> root) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        while (Objects.nonNull(root.getLeft())) {
+            root = root.getLeft();
+        }
+        return root;
     }
 }
