@@ -49,18 +49,10 @@ public class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
     }
 
     public CGraphNode(final T data) {
-        this(data, null);
+        this(data, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CGraphNode(final T data, final CGraphNode<T> next) {
-        this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
-    }
-
-    public CGraphNode(final T data, final CGraphNode<T> next, final Comparator<? super T> cmp) {
-        super(data, next, cmp);
-    }
-
-    public Iterable<CGraphNode<T>> getAdjacent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public CGraphNode(final T data, final Comparator<? super T> cmp) {
+        super(data, cmp);
     }
 }

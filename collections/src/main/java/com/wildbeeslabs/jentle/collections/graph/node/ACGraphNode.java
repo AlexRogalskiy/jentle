@@ -26,7 +26,10 @@ package com.wildbeeslabs.jentle.collections.graph.node;
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,8 +50,8 @@ import lombok.ToString;
 @ToString
 public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode<T> {
 
-    protected State state;
-    protected E next;
+    protected ACGraphNode.State state;
+    protected final List<E> adjacents = new ArrayList<>();
     protected final Comparator<? super T> cmp;
 
     public static enum State {
@@ -61,16 +64,28 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode
     }
 
     public ACGraphNode(final T data) {
-        this(data, null);
+        this(data, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public ACGraphNode(final T data, final E next) {
-        this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
-    }
-
-    public ACGraphNode(final T data, final E next, final Comparator<? super T> cmp) {
+    public ACGraphNode(final T data, final Comparator<? super T> cmp) {
         super(data);
-        this.next = next;
         this.cmp = cmp;
+    }
+
+    public Iterable<E> getAdjacents() {
+        return this.adjacents;
+    }
+
+    public void setAdjacents(final List<E> adjacents) {
+        this.adjacents.clear();
+        if (Objects.nonNull(adjacents)) {
+            this.adjacents.addAll(adjacents);
+        }
+    }
+
+    public void addAdjacent(final E adjacent) {
+        if (Objects.nonNull(adjacent)) {
+            this.adjacents.add(adjacent);
+        }
     }
 }

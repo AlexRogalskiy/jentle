@@ -34,7 +34,7 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  */
 public interface IGraph<T> {
 
-    void add(int from, int to, final T data);
+//    void add(int from, int to, final T data);
 
 //    Iterable<CGraphNode<T>> getNodes();
 
