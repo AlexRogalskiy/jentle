@@ -19,6 +19,7 @@
     </parent>
     
     <properties>
+        <jentle.collections.version>1.0.0</jentle.collections.version>
         <apache.commons.math.version>3.5</apache.commons.math.version>
         <apache.commons.io.version>1.3.2</apache.commons.io.version>
     </properties>
@@ -109,6 +110,11 @@
     </build>
     
     <dependencies>
+        <dependency>
+            <groupId>com.wildbeeslabs.jentle</groupId>
+            <artifactId>jentle-collections</artifactId>
+            <version>${jentle.collections.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>

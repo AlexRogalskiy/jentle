@@ -66,7 +66,7 @@ public class CGraph<T> implements IGraph<T> {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    protected static class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
+    public static class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
 
         @Setter(AccessLevel.NONE)
         //protected Map<T, CGraphNode<T>> map = new HashMap<>();
@@ -113,17 +113,29 @@ public class CGraph<T> implements IGraph<T> {
     protected Map<T, CGraphNode<T>> map = new HashMap<>();
     protected final Comparator<? super T> cmp;
 
+    public CGraph() {
+        this(CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
     public CGraph(final Comparator<? super T> cmp) {
         this.cmp = cmp;
     }
 
-    public CGraphNode<T> getOrCreateNode(final T data) {
+    public void createNode(final T data) {
         if (!this.map.containsKey(data)) {
             final CGraphNode<T> node = new CGraphNode<>(data);
             this.nodes.add(node);
             this.map.put(data, node);
         }
+    }
+
+    public CGraphNode<T> getNode(final T data) {
         return this.map.get(data);
+    }
+
+    public CGraphNode<T> getOrCreateNode(final T data) {
+        this.createNode(data);
+        return this.getNode(data);
     }
 
     public void addEdge(final T start, final T end) {
@@ -132,7 +144,7 @@ public class CGraph<T> implements IGraph<T> {
         startNode.addAdjacent(endNode);
     }
 
-    public Iterable<CGraphNode<T>> getNodes() {
+    public List<CGraphNode<T>> getNodes() {
         return this.nodes;
     }
 }

@@ -70,7 +70,7 @@ public class CSGraph implements IGraph<Integer> {
         return this.graph[from - 1].has(new Integer(to));
     }
 
-    @Override
+    //@Override
     public void add(int from, int to, final Integer data) {
         this.add(from, to);
     }
@@ -108,7 +108,7 @@ public class CSGraph implements IGraph<Integer> {
     }
 
     public IGraph<Integer> toCMGraph() {
-        final IGraph<Integer> mGraph = new CMGraph<>((Class<? extends Integer>) this.graph.getClass().getComponentType(), this.size());
+        final CMGraph<Integer> mGraph = new CMGraph<>((Class<? extends Integer>) this.graph.getClass().getComponentType(), this.size());
         for (int i = 0; i < this.size(); i++) {
             for (Iterator<? extends Integer> it = this.graph[i].iterator(); it.hasNext();) {
                 mGraph.add(i, it.next().intValue(), 1);

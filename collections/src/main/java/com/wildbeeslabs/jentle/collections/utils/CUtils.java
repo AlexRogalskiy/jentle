@@ -104,7 +104,7 @@ public final class CUtils {
         while (!listNode.isEmpty()) {
             CGraphNode<T> temp = listNode.removeFirst();
             if (Objects.nonNull(temp)) {
-                for (final CGraphNode<T> v : temp.getAdjacent()) {
+                for (final CGraphNode<T> v : temp.getAdjacents()) {
                     if (Objects.equals(v.getState(), CGraphNode.State.UNVISITED)) {
                         if (v == end) {
                             return true;

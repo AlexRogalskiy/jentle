@@ -68,11 +68,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         }
 
         public CListNode(final T data, final CListNode<T> next) {
-            this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
-        }
-
-        public CListNode(final T data, final CListNode<T> next, final Comparator<? super T> cmp) {
-            super(data, next, cmp);
+            super(data, next);
         }
     }
 
@@ -200,6 +196,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         this.size++;
     }
 
+    @Override
     public T getAt(int index) {
         this.checkRange(index);
         CListNode<T> current = this.first;
@@ -294,7 +291,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    //@Override
+    @Override
     public Iterator<T> iterator() {
         return new CListIterator<>(this);
     }

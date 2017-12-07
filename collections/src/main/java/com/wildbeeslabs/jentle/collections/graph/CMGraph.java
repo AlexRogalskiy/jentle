@@ -85,7 +85,7 @@ public class CMGraph<T> implements IGraph<T> {
         this.add(from, to, this.getDataByDefault());
     }
 
-    @Override
+    //@Override
     public void add(int from, int to, final T data) {
         this.checkRange(from);
         this.checkRange(to);
@@ -131,7 +131,7 @@ public class CMGraph<T> implements IGraph<T> {
     }
 
     public IGraph<? extends T> toCLGraph() {
-        final IGraph<T> lGraph = new CLGraph<>(this.size());
+        final CLGraph<T> lGraph = new CLGraph<>(this.size());
         for (int i = 0; i < this.size(); i++) {
             for (int j = 0; j < this.graph[i].length; j++) {
                 final T temp = this.get(i, j);

@@ -91,7 +91,7 @@ public class CLGraph<T> implements IGraph<T> {
         this.cmp = cmp;
     }
 
-    @Override
+    //@Override
     public void add(int from, int to, final T data) {
         this.checkRange(from);
         this.checkRange(to);
@@ -155,7 +155,7 @@ public class CLGraph<T> implements IGraph<T> {
     }
 
     public IGraph<Integer> toCSGraph() {
-        final IGraph<Integer> sGraph = new CSGraph(this.size());
+        final CSGraph sGraph = new CSGraph(this.size());
         for (int i = 0; i < this.size(); i++) {
             for (Iterator<? extends CLGraphArc<T>> it = this.graph[i].iterator(); it.hasNext();) {
                 CLGraphArc<T> node = it.next();

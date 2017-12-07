@@ -23,9 +23,6 @@
  */
 package com.wildbeeslabs.jentle.collections.list.node;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-import java.util.Comparator;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -46,7 +43,6 @@ import lombok.ToString;
 public abstract class ACListNode<T, E extends ACListNode<T, E>> extends ACNode<T> {
 
     protected E next;
-    protected final Comparator<? super T> cmp;
 
     public ACListNode() {
         this(null);
@@ -57,12 +53,7 @@ public abstract class ACListNode<T, E extends ACListNode<T, E>> extends ACNode<T
     }
 
     public ACListNode(final T data, final E next) {
-        this(data, next, CSort.DEFAULT_SORT_COMPARATOR);
-    }
-
-    public ACListNode(final T data, final E next, final Comparator<? super T> cmp) {
         super(data);
         this.next = next;
-        this.cmp = cmp;
     }
 }

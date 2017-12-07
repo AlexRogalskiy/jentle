@@ -39,7 +39,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-
 /**
  *
  * Custom linked list implementation
@@ -70,11 +69,7 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
         }
 
         public CLinkedListNode(final T data, final CLinkedListNode<T> previous, final CLinkedListNode<T> next) {
-            this(data, previous, next, CSort.DEFAULT_SORT_COMPARATOR);
-        }
-
-        public CLinkedListNode(final T data, final CLinkedListNode<T> previous, final CLinkedListNode<T> next, final Comparator<? super T> cmp) {
-            super(data, next, cmp);
+            super(data, next);
             this.previous = previous;
         }
     }

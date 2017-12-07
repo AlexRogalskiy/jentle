@@ -52,7 +52,7 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode
 
     protected ACGraphNode.State state;
     protected final List<E> adjacents = new ArrayList<>();
-    protected final Comparator<? super T> cmp;
+    protected final Comparator<? super T> comparator;
 
     public static enum State {
 
@@ -67,12 +67,13 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode
         this(data, CSort.DEFAULT_SORT_COMPARATOR);
     }
 
-    public ACGraphNode(final T data, final Comparator<? super T> cmp) {
+    public ACGraphNode(final T data, final Comparator<? super T> comparator) {
         super(data);
-        this.cmp = cmp;
+        this.state = ACGraphNode.State.UNVISITED;
+        this.comparator = comparator;
     }
 
-    public Iterable<E> getAdjacents() {
+    public List<E> getAdjacents() {
         return this.adjacents;
     }
 
