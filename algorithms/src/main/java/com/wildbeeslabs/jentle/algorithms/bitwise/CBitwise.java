@@ -65,6 +65,12 @@ public class CBitwise {
         return num | (1 << index);
     }
 
+    public static int setBits(final List<Integer> bitList) {
+        int result = 0;
+        result = bitList.stream().map((bit) -> 1 << bit).reduce(result, (accumulator, item) -> accumulator | item);
+        return result;
+    }
+
     public static int clearBit(int num, int index) {
         assert (index >= 0);
         int mask = ~(1 << index);

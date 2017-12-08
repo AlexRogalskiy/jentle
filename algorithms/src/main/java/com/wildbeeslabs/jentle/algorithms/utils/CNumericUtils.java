@@ -103,4 +103,14 @@ public final class CNumericUtils {
         assert (value > 0);
         return (int) (Math.log10(value) + 1);
     }
+
+    public static boolean hasPrimeNumbers(int n) {
+        int sqrt = (int) Math.sqrt(n);
+        for (int i = 2; i <= sqrt; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
