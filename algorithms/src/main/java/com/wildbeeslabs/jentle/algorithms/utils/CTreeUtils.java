@@ -269,4 +269,28 @@ public class CTreeUtils {
         }
 
     }
+
+    public static <T extends Double, U extends ACTreeNode<T, U>> Double countPathsWithSum(final U root, final T targetSum) {
+        if (Objects.isNull(root)) {
+            return (T) new Double(0);
+        }
+        final Double pathsFromRoot = countPathWithSumFromNode(root, targetSum, (T) new Double(0));
+        Double pathsOnLeft = countPathsWithSum(root.getLeft(), targetSum);
+        Double pathsOnRight = countPathsWithSum(root.getRight(), targetSum);
+        return (pathsFromRoot + pathsOnLeft + pathsOnRight);
+    }
+
+    private static <T extends Double, U extends ACTreeNode<T, U>> Double countPathWithSumFromNode(final U node, final T targetSum, Double currentSum) {
+        if (Objects.isNull(node)) {
+            return (T) new Double(0);
+        }
+        currentSum += node.getData();
+        double totalPaths = 0;
+        if (Objects.equals(currentSum, targetSum)) {
+            totalPaths++;
+        }
+        totalPaths += countPathWithSumFromNode(node.getLeft(), targetSum, currentSum);
+        totalPaths += countPathWithSumFromNode(node.getRight(), targetSum, currentSum);
+        return totalPaths;
+    }
 }
