@@ -27,8 +27,10 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -267,30 +269,58 @@ public class CTreeUtils {
         } else {
             return matchTree(firstNode.getLeft(), secondNode.getLeft()) && matchTree(firstNode.getRight(), secondNode.getRight());
         }
-
     }
 
-    public static <T extends Double, U extends ACTreeNode<T, U>> Double countPathsWithSum(final U root, final T targetSum) {
+    public static <U extends ACTreeNode<Double, U>> Integer countPathsWithSum(final U root, double targetSum) {
         if (Objects.isNull(root)) {
-            return (T) new Double(0);
+            return 0;
         }
-        final Double pathsFromRoot = countPathWithSumFromNode(root, targetSum, (T) new Double(0));
-        Double pathsOnLeft = countPathsWithSum(root.getLeft(), targetSum);
-        Double pathsOnRight = countPathsWithSum(root.getRight(), targetSum);
+        int pathsFromRoot = countPathWithSumFromNode(root, targetSum, 0.0);
+        int pathsOnLeft = countPathsWithSum(root.getLeft(), targetSum);
+        int pathsOnRight = countPathsWithSum(root.getRight(), targetSum);
         return (pathsFromRoot + pathsOnLeft + pathsOnRight);
     }
 
-    private static <T extends Double, U extends ACTreeNode<T, U>> Double countPathWithSumFromNode(final U node, final T targetSum, Double currentSum) {
+    private static <U extends ACTreeNode<Double, U>> int countPathWithSumFromNode(final U node, double targetSum, double currentSum) {
         if (Objects.isNull(node)) {
-            return (T) new Double(0);
+            return 0;
         }
         currentSum += node.getData();
-        double totalPaths = 0;
-        if (Objects.equals(currentSum, targetSum)) {
+        int totalPaths = 0;
+        if (Double.compare(currentSum, targetSum) == 0) {
             totalPaths++;
         }
         totalPaths += countPathWithSumFromNode(node.getLeft(), targetSum, currentSum);
         totalPaths += countPathWithSumFromNode(node.getRight(), targetSum, currentSum);
         return totalPaths;
+    }
+
+    public static <U extends ACTreeNode<Double, U>> int countPathsWithSum2(final U root, final double targetSum) {
+        return countPathsWithSum(root, targetSum, 0.0, new HashMap<>());
+    }
+
+    private static <U extends ACTreeNode<Double, U>> int countPathsWithSum(final U node, double targetSum, double currentSum, final Map<Double, Integer> pathCount) {
+        if (Objects.isNull(node)) {
+            return 0;
+        }
+        currentSum += node.getData();
+        double sum = currentSum - targetSum;
+        int totalPaths = pathCount.getOrDefault(sum, 0);
+        if (Double.compare(currentSum, targetSum) == 0) {
+            totalPaths++;
+        }
+        incrementHashTable(pathCount, currentSum, 1);
+        totalPaths += countPathsWithSum(node.getLeft(), targetSum, currentSum, pathCount);
+        totalPaths += countPathsWithSum(node.getRight(), targetSum, currentSum, pathCount);
+        incrementHashTable(pathCount, currentSum, -1);
+        return totalPaths;
+    }
+
+    private static void incrementHashTable(final Map<Double, Integer> hashTable, final Double key, final Integer delta) {
+        if (0 == delta) {
+            hashTable.remove(key);
+        } else {
+            hashTable.put(key, delta);
+        }
     }
 }
