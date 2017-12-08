@@ -24,8 +24,8 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-import java.util.Arrays;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
@@ -83,7 +83,7 @@ public class CBinaryTreeExtended<T> extends ACBinaryTreeExtended<T, CTreeExtende
     }
 
     @Override
-    protected CTreeExtended.CExtendedTreeNode<T> createTreeNode(Optional<? extends T> value) {
+    protected CTreeExtended.CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
         if (value.isPresent()) {
             return new CTreeExtended.CExtendedTreeNode<>(value.get());
         }

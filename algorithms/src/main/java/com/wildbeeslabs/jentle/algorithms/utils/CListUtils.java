@@ -129,7 +129,7 @@ public class CListUtils {
         return ThreadLocalRandom.current().nextInt(size) % size;
     }
 
-    public static <T extends Serializable> List<? extends T> cloneList(final List<? extends T> list) {
+    public static <T extends Serializable> List<T> cloneList(final List<? extends T> list) {
         Objects.requireNonNull(list);
         final List<T> clonedList = new ArrayList<>(list.size());
         list.stream().forEach((value) -> {

@@ -38,8 +38,10 @@ import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -69,6 +71,7 @@ public class CGraph<T> implements IGraph<T> {
     public static class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
 
         @Setter(AccessLevel.NONE)
+        @Getter(AccessLevel.NONE)
         //protected Map<T, CGraphNode<T>> map = new HashMap<>();
         protected Set<CGraphNode<T>> set = new HashSet<>();
         @Setter(AccessLevel.NONE)
@@ -101,15 +104,12 @@ public class CGraph<T> implements IGraph<T> {
         public void decDependencies() {
             this.dependencies--;
         }
-
-        public int getNumOfDependencies() {
-            return this.dependencies;
-        }
     }
 
     @Setter(AccessLevel.NONE)
     protected List<CGraphNode<T>> nodes = new ArrayList<>();
     @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
     protected Map<T, CGraphNode<T>> map = new HashMap<>();
     protected final Comparator<? super T> cmp;
 
@@ -142,9 +142,5 @@ public class CGraph<T> implements IGraph<T> {
         final CGraphNode<T> startNode = this.getOrCreateNode(start);
         final CGraphNode<T> endNode = this.getOrCreateNode(end);
         startNode.addAdjacent(endNode);
-    }
-
-    public List<CGraphNode<T>> getNodes() {
-        return this.nodes;
     }
 }

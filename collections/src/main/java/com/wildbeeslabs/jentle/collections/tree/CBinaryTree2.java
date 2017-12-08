@@ -23,48 +23,93 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IBinaryTree;
+import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract binary tree implementation
+ * Custom binary tree2 implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACBinaryTree<T, U extends ACTreeNode<T, U>> extends ACBaseTree<T, U> implements IBinaryTree<T, U> {
+public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>> {
 
-    public ACBinaryTree(final U root, final Comparator<? super T> cmp) {
-        super(root, cmp);
-    }
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @ToString
+    public static class CTreeNode2<T> extends ACTreeNode<T, CTreeNode2<T>> {
 
-    @Override
-    public void insert(final T value) {
-        final U node = this.createTreeNode(Optional.ofNullable(value));
-        if (this.isEmpty()) {
-            this.root = node;
+        @Setter(AccessLevel.NONE)
+        protected int size;
+
+        public CTreeNode2() {
+            this(null);
+        }
+
+        public CTreeNode2(final T data) {
+            this(data, null, null);
+        }
+
+        public CTreeNode2(final T data, final CTreeNode2<T> left, final CTreeNode2<T> right) {
+            super(data, left, right);
             this.size = 1;
-        } else {
-            this.insert(this.getRoot(), node);
+        }
+
+        public CTreeNode2<T> getIthNode(int index) {
+            int leftSize = Objects.isNull(this.getLeft()) ? 0 : this.getLeft().size;
+            if (index < leftSize) {
+                return this.left.getIthNode(index);
+            } else if (index == leftSize) {
+                return this;
+            } else {
+                return this.right.getIthNode(index - (leftSize + 1));
+            }
         }
     }
 
-    protected void insert(final U node, final U newNode) {
+    public CBinaryTree2() {
+        this(CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
+    public CBinaryTree2(final Comparator<? super T> cmp) {
+        this(null, cmp);
+    }
+
+    public CBinaryTree2(final CBinaryTree2.CTreeNode2<T> root) {
+        this(root, CSort.DEFAULT_SORT_COMPARATOR);
+    }
+
+    public CBinaryTree2(final CBinaryTree2.CTreeNode2<T> root, final Comparator<? super T> cmp) {
+        super(root, cmp);
+    }
+
+    public CTreeNode2<T> getRandom() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        int index = CNumericUtils.generateRandomInt(0, this.size());
+        return this.root.getIthNode(index);
+    }
+
+    @Override
+    protected void insert(final CTreeNode2<T> node, final CTreeNode2<T> newNode) {
         Objects.requireNonNull(node);
         if (Objects.compare(newNode.getData(), node.getData(), this.cmp) <= 0) {
             if (Objects.isNull(node.getLeft())) {
@@ -79,25 +124,15 @@ public abstract class ACBinaryTree<T, U extends ACTreeNode<T, U>> extends ACBase
                 this.insert(node.getRight(), newNode);
             }
         }
+        node.size++;
         this.size++;
     }
 
     @Override
-    public U find(final T value) {
-        return this.find(this.getRoot(), value);
-    }
-
-    protected U find(final U node, final T value) {
-        if (Objects.isNull(node)) {
-            return null;
+    protected CBinaryTree2.CTreeNode2<T> createTreeNode(final Optional<? extends T> value) {
+        if (value.isPresent()) {
+            return new CBinaryTree2.CTreeNode2<>(value.get());
         }
-        if (Objects.compare(node.getData(), value, this.cmp) == 0) {
-            return node;
-        } else if (Objects.compare(node.getData(), value, cmp) <= 0) {
-            return this.find(node.getLeft(), value);
-        } else if (Objects.compare(node.getData(), value, cmp) > 0) {
-            return this.find(node.getRight(), value);
-        }
-        return null;
+        return new CBinaryTree2.CTreeNode2<>();
     }
 }

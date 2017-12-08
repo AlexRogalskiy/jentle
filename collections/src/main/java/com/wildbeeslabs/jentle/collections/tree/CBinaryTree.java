@@ -83,7 +83,7 @@ public class CBinaryTree<T> extends ACBinaryTree<T, CTree.CTreeNode<T>> {
     }
 
     @Override
-    protected CTree.CTreeNode<T> createTreeNode(Optional<? extends T> value) {
+    protected CTree.CTreeNode<T> createTreeNode(final Optional<? extends T> value) {
         if (value.isPresent()) {
             return new CTree.CTreeNode<>(value.get());
         }

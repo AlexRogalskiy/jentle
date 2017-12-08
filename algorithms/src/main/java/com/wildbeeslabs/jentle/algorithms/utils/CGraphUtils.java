@@ -81,7 +81,7 @@ public class CGraphUtils {
 
     private static <T> int addNonDependent(final CGraph.CGraphNode<T>[] order, final Iterable<CGraph.CGraphNode<T>> tasks, int offset) {
         for (final CGraph.CGraphNode<T> task : tasks) {
-            if (task.getNumOfDependencies() == 0) {
+            if (task.getDependencies() == 0) {
                 order[offset++] = task;
             }
         }
