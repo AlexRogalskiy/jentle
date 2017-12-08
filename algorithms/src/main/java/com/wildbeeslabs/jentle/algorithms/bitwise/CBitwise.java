@@ -23,6 +23,9 @@
  */
 package com.wildbeeslabs.jentle.algorithms.bitwise;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  *
  * Custom bitwise implementation
@@ -108,5 +111,118 @@ public class CBitwise {
             num &= ~mask;
         }
         return num;
+    }
+
+    public static int createRangeMask(int n, int i, int j) {
+        int allOnes = ~0;
+        int left = allOnes << (j + 1);
+        int right = ((1 << i) - 1);
+        return left | right;
+    }
+
+    public static String fractionToBinaryFormat(double num, boolean isLimitedBy32Bits) {
+        if (num >= 1 || num <= 0) {
+            return null;
+        }
+        StringBuilder buffer = new StringBuilder();
+        while (num > 0) {
+            if (isLimitedBy32Bits && buffer.length() >= 32) {
+                return null;
+            }
+            double r = num * 2;
+            if (r >= 1) {
+                buffer.append(1);
+                num = r - 1;
+            } else {
+                buffer.append(0);
+                num = r;
+            }
+        }
+        return buffer.toString();
+    }
+
+    public static String fractionToBinaryFormat2(double num, boolean isLimitedBy32Bits) {
+        if (num >= 1 || num <= 0) {
+            return null;
+        }
+        StringBuilder buffer = new StringBuilder();
+        double fraction = 0.5;
+        while (num > 0) {
+            if (isLimitedBy32Bits && buffer.length() >= 32) {
+                return null;
+            }
+            if (num >= fraction) {
+                buffer.append(1);
+                num -= fraction;
+            } else {
+                buffer.append(0);
+            }
+            fraction /= 2;
+        }
+        return buffer.toString();
+    }
+
+    public static int longestSequence(int num) {
+        if (-1 == num) {
+            return Integer.BYTES * 8;
+        }
+        final List<Integer> sequences = getAlternatingSequences(num);
+        return findLongestSequence(sequences);
+    }
+
+    private static List<Integer> getAlternatingSequences(int num) {
+        final List<Integer> sequences = new ArrayList<>();
+        int searchingFor = 0;
+        int counter = 0;
+        for (int i = 0; i < Integer.BYTES * 8; i++) {
+            if ((num & 1) != searchingFor) {
+                sequences.add(counter);
+                searchingFor = num & 1;
+                counter = 0;
+            }
+            counter++;
+            num >>>= 1;
+        }
+        sequences.add(counter);
+        return sequences;
+    }
+
+    private static int findLongestSequence(final List<Integer> sequence) {
+        int maxSequence = 1;
+        for (int i = 0; i < sequence.size(); i += 2) {
+            int zerosSequence = sequence.get(i);
+            int onesSequenceRight = i - 1 >= 0 ? sequence.get(i - 1) : 0;
+            int onesSequenceLeft = i + 1 < sequence.size() ? sequence.get(i + 1) : 0;
+            int currentSequence = 0;
+            if (1 == zerosSequence) {
+                currentSequence = onesSequenceLeft + 1 + onesSequenceRight;
+            } else if (zerosSequence > 1) {
+                currentSequence = 1 + Math.max(onesSequenceRight, onesSequenceLeft);
+            } else if (0 == zerosSequence) {
+                currentSequence = Math.max(onesSequenceRight, onesSequenceLeft);
+            }
+            maxSequence = Math.max(currentSequence, maxSequence);
+        }
+        return maxSequence;
+    }
+
+    public static int flipBit(int num) {
+        if (0 == ~num) {
+            return Integer.BYTES * 8;
+        }
+        int currentLength = 0;
+        int previousLength = 0;
+        int maxLength = 1;
+        while (num != 0) {
+            if ((num & 1) == 1) {
+                currentLength++;
+            } else if ((num & 1) == 0) {
+                previousLength = ((num & 2) == 0) ? 0 : currentLength;
+                currentLength = 0;
+            }
+            maxLength = Math.max(previousLength + currentLength + 1, maxLength);
+            num >>>= 1;
+        }
+        return maxLength;
     }
 }
