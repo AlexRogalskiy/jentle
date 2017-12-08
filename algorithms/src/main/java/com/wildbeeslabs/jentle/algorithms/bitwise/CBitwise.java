@@ -48,45 +48,38 @@ import java.util.List;
  */
 public class CBitwise {
 
+    public static final Integer DEFAULT_BITS_PER_BYTE = 8;
+    public static final Integer DEFAULT_INT_SIZE = Integer.BYTES * DEFAULT_BITS_PER_BYTE;
+
     private CBitwise() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
     public static boolean getBit(int num, int index) {
-        if (index < 0) {
-            return false;
-        }
+        assert (index >= 0);
         return ((num & (1 << index)) != 0);
     }
 
     public static int setBit(int num, int index) {
-        if (index < 0) {
-            return num;
-        }
+        assert (index >= 0);
         return num | (1 << index);
     }
 
     public static int clearBit(int num, int index) {
-        if (index < 0) {
-            return num;
-        }
+        assert (index >= 0);
         int mask = ~(1 << index);
         return num & mask;
     }
 
-    public static int clearBitsMSBthroughI(int num, int index) {
-        if (index < 0) {
-            return num;
-        }
+    public static int clearBitsMSBthrough1(int num, int index) {
+        assert (index >= 0);
         int mask = (1 << index) - 1;
         return num & mask;
     }
 
     public static int clearBithsIthrough0(int num, int index) {
-        if (index < 0) {
-            return num;
-        }
-        int mask = ~(-1 >>> (31 - index));
+        assert (index >= 0);
+        int mask = ~(-1 >>> ((DEFAULT_INT_SIZE - 1) - index));
         return num & mask;
     }
 
@@ -97,13 +90,15 @@ public class CBitwise {
     }
 
     public static boolean checkOnlyOneBitSet(int num) {
-        return (num & (num - 1)) == 0;
+        return clearLeastBit(num) == 0;
+    }
+
+    public static int clearLeastBit(int num) {
+        return (num & (num - 1));
     }
 
     public static int toggle(int num, int index) {
-        if (index < 0) {
-            return num;
-        }
+        assert (index >= 0);
         int mask = 1 << index;
         if ((num & mask) == 0) {
             num |= mask;
@@ -113,7 +108,8 @@ public class CBitwise {
         return num;
     }
 
-    public static int createRangeMask(int n, int i, int j) {
+    public static int createRangeMask(int i, int j) {
+        assert (i >= 0 && j >= 0 && i <= j);
         int allOnes = ~0;
         int left = allOnes << (j + 1);
         int right = ((1 << i) - 1);
@@ -164,7 +160,7 @@ public class CBitwise {
 
     public static int longestSequence(int num) {
         if (-1 == num) {
-            return Integer.BYTES * 8;
+            return DEFAULT_INT_SIZE;
         }
         final List<Integer> sequences = getAlternatingSequences(num);
         return findLongestSequence(sequences);
@@ -174,7 +170,7 @@ public class CBitwise {
         final List<Integer> sequences = new ArrayList<>();
         int searchingFor = 0;
         int counter = 0;
-        for (int i = 0; i < Integer.BYTES * 8; i++) {
+        for (int i = 0; i < DEFAULT_INT_SIZE; i++) {
             if ((num & 1) != searchingFor) {
                 sequences.add(counter);
                 searchingFor = num & 1;
@@ -208,7 +204,7 @@ public class CBitwise {
 
     public static int flipBit(int num) {
         if (0 == ~num) {
-            return Integer.BYTES * 8;
+            return DEFAULT_INT_SIZE;
         }
         int currentLength = 0;
         int previousLength = 0;
@@ -224,5 +220,133 @@ public class CBitwise {
             num >>>= 1;
         }
         return maxLength;
+    }
+
+    public static int getLowerMaxWithSameOnesBits(int num) {
+        int c = num;
+        int c0 = 0;
+        int c1 = 0;
+        while (((c & 1) == 0) && (c != 0)) {
+            c0++;
+            c >>= 1;
+        }
+        while ((c & 1) == 1) {
+            c1++;
+            c >>= 1;
+        }
+        if ((c0 + c1 == (DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
+            return -1;
+        }
+        int p = c0 + c1;
+        num |= (1 << p);
+        num &= ~((1 << p) - 1);
+        num |= (1 << (c1 - 1)) - 1;
+        return num;
+    }
+
+    public static int getUpperMinWithSameOnesBits(int num) {
+        int temp = num;
+        int c0 = 0;
+        int c1 = 0;
+        while ((temp & 1) == 1) {
+            c1++;
+            temp >>= 1;
+        }
+        if (0 == temp) {
+            return -1;
+        }
+        while ((temp & 1) == 0 && (temp != 0)) {
+            c0++;
+            temp >>= 1;
+        }
+        int p = c0 + c1;
+        num &= ((~0) << (p + 1));
+        int mask = (1 << (c1 + 1)) - 1;
+        num |= mask << (c0 - 1);
+        return num;
+    }
+
+    public static int getLowerMaxWithSameOnesBits2(int num) {
+        int c = num;
+        int c0 = 0;
+        int c1 = 0;
+        while (((c & 1) == 0) && (c != 0)) {
+            c0++;
+            c >>= 1;
+        }
+        while ((c & 1) == 1) {
+            c1++;
+            c >>= 1;
+        }
+        if ((c0 + c1 == (DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
+            return -1;
+        }
+        return num + (1 << c0) + (1 << (c1 - 1)) - 1;
+    }
+
+    public static int getUpperMinWithSameOnesBits2(int num) {
+        int temp = num;
+        int c0 = 0;
+        int c1 = 0;
+        while ((temp & 1) == 1) {
+            c1++;
+            temp >>= 1;
+        }
+        if (0 == temp) {
+            return -1;
+        }
+        while ((temp & 1) == 0 && (temp != 0)) {
+            c0++;
+            temp >>= 1;
+        }
+        return num - (1 << c1) - (1 << (c0 - 1)) + 1;
+    }
+
+    public static int bitSwapRequired(int a, int b) {
+        int count = 0;
+        for (int c = a ^ b; c != 0; c = clearLeastBit(c)) {//c = c >> 1
+            count++;
+            //count += c & 1;
+        }
+        return count;
+    }
+
+    public static int swapOddEvenBits(int num) {
+        return (((num & 0xaaaaaaaa) >>> 1) | ((num & 0x55555555) << 1));
+    }
+
+    public static long swapOddEvenBits(long num) {
+        return (((num & 0xaaaaaaaaaaaaaaaal) >>> 1) | ((num & 0x5555555555555555l) << 1));
+    }
+
+    public static void drawLine(byte[] screen, int width, int x1, int x2, int y) {
+        int start_offset = x1 % DEFAULT_BITS_PER_BYTE;
+        int first_full_byte = x1 / DEFAULT_BITS_PER_BYTE;
+        if (0 != start_offset) {
+            first_full_byte++;
+        }
+        int end_offset = x2 % DEFAULT_BITS_PER_BYTE;
+        int last_full_byte = x2 / DEFAULT_BITS_PER_BYTE;
+        if (DEFAULT_BITS_PER_BYTE - 1 != end_offset) {
+            last_full_byte--;
+        }
+        for (int b = first_full_byte; b <= last_full_byte; b++) {
+            screen[(width / DEFAULT_BITS_PER_BYTE) * y + b] = (byte) 0xFF;
+        }
+        byte start_mask = (byte) (0xFF >> start_offset);
+        byte end_mask = (byte) ~(0xFF >> (end_offset + 1));
+        if ((x1 / DEFAULT_BITS_PER_BYTE) == (x2 / DEFAULT_BITS_PER_BYTE)) {
+            byte mask = (byte) (start_mask & end_mask);
+            screen[(width / DEFAULT_BITS_PER_BYTE) * y + (x1 / DEFAULT_BITS_PER_BYTE)] |= mask;
+        } else {
+            if (0 != start_offset) {
+                int byte_number = (width / DEFAULT_BITS_PER_BYTE) * y + first_full_byte - 1;
+                screen[byte_number] |= start_mask;
+            }
+            if (DEFAULT_BITS_PER_BYTE - 1 != end_offset) {
+                int byte_number = (width / DEFAULT_BITS_PER_BYTE) * y + last_full_byte + 1;
+                screen[byte_number] |= end_mask;
+            }
+        }
     }
 }
