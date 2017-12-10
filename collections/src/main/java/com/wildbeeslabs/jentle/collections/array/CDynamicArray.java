@@ -23,25 +23,17 @@
  */
 package com.wildbeeslabs.jentle.collections.array;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IArray;
+import com.wildbeeslabs.jentle.algorithms.utils.CArrayUtils;
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
-import com.wildbeeslabs.jentle.collections.utils.CConverterUtils;
-import java.io.Serializable;
 
-import java.lang.reflect.Array;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.IntFunction;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -53,14 +45,10 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CDynamicArray<T extends Serializable> implements IArray<T> {
+public class CDynamicArray<T extends Serializable> extends ACArray<T> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
     /**
      * Default array enlarge capacity coefficient
      */
@@ -70,9 +58,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
      */
     private static final double DEFAULT_SHRINK_CAPACITY_FACTOR = 1.75;
 
-    private int size;
     private int capacity;
-    private T[] array;
 
     public CDynamicArray(final Class<? extends T[]> clazz) throws InvalidDimensionException {
         this(clazz, 0);
@@ -92,7 +78,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         }
         this.size = size;
         this.capacity = (capacity < size ? size : capacity);
-        this.array = this.newArray(clazz, this.capacity);
+        this.array = CArrayUtils.newArray(clazz, this.capacity);
         if (Objects.nonNull(array)) {
             System.arraycopy(array, 0, this.array, 0, Math.min(this.size, array.length));
         }
@@ -148,11 +134,11 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         if (itemsToShift > 0) {
             System.arraycopy(this.array, index + 1, this.array, index, itemsToShift);
         }
-        this.array[size] = null;
+        this.array[this.size] = null;
         return removed;
     }
 
-    public void resize(int delta) {
+    private void resize(int delta) {
         if (delta > 0) {
             this.enlargeCapacity(delta);
         } else if (delta < 0) {
@@ -161,8 +147,9 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
     }
 
     private void enlargeCapacity(int delta) {
-        if ((this.size + delta) > this.capacity) {
-            this.capacity = (int) Math.floor((this.size + delta) * DEFAULT_ENLARGE_CAPACITY_FACTOR);
+        this.size += delta;
+        if (this.size > this.capacity) {
+            this.capacity = (int) Math.floor(this.size * DEFAULT_ENLARGE_CAPACITY_FACTOR);
             LOGGER.info(String.format("CDynamicArray (enlarged capacity=%d)", this.capacity));
             this.changeCapacity();
         }
@@ -171,62 +158,22 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
     private void shrinkCapacity(int delta) {
         this.size = (delta > this.size ? 0 : this.size - delta);
         if ((int) Math.floor(this.size * DEFAULT_SHRINK_CAPACITY_FACTOR) < this.capacity) {
-            this.capacity = (int) Math.floor(this.size * DEFAULT_ENLARGE_CAPACITY_FACTOR);
+            this.capacity = (int) Math.floor(this.size * DEFAULT_SHRINK_CAPACITY_FACTOR);
             LOGGER.info(String.format("CDynamicArray (shrinked capacity=%d)", this.capacity));
             this.changeCapacity();
         }
     }
 
     private void changeCapacity() {
-        T[] temp = this.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity);
+        final T[] temp = CArrayUtils.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity);
         System.arraycopy(this.array, 0, temp, 0, this.size);
         this.array = temp;
-    }
-
-    private T[] newArray(final Class<? extends T[]> type, int size) {
-        assert (Objects.nonNull(type));
-        assert (size >= 0);
-        return type.cast(Array.newInstance(type.getComponentType(), size));
-    }
-
-    public int indexOf(final T item) {
-        if (Objects.isNull(item)) {
-            for (int i = 0; i < this.size(); i++) {
-                if (Objects.isNull(this.array[i])) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = 0; i < this.size(); i++) {
-                if (Objects.equals(item, this.array[i])) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    public void fill(final IntFunction<? extends T> generator) {
-        assert (Objects.nonNull(generator));
-        Arrays.setAll(this.array, generator);
-    }
-
-    public void fill(final T value) {
-        this.fill(value, 0, this.size() - 1);
-    }
-
-    public void fill(final T value, int startIndex, int endIndex) {
-        this.checkRange(startIndex);
-        this.checkRange(endIndex);
-        assert (startIndex + endIndex < this.size());
-        Arrays.fill(this.array, startIndex, endIndex, value);
     }
 
     public void clear() {
         for (int i = 0; i < this.size(); i++) {
             this.array[i] = null;
         }
-        this.size = 0;
     }
 
     public boolean contains(final T item) {
@@ -240,38 +187,8 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
         }
     }
 
-    private void checkRange(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CDynamicArray (index=%d is out of bounds [0, %d])", index, this.size - 1));
-        }
-    }
-
-    public T[] toArray() {
-        return Arrays.copyOf(this.array, this.size);
-        //SerializationUtils.clone(this.array);
-    }
-//    public T[] toArray(final T[] items) {
-//        return (T[]) Arrays.copyOf(this.array, this.size, items.getClass());
-//    }
-
-    public Set<? extends T> toSet() {
-        return CConverterUtils.convertArrayToSet(this.array);
-    }
-
-    public List<? extends T> toList() {
-        return CConverterUtils.convertArrayToList(this.array);
-    }
-
-    public int size() {
-        return this.size;
-    }
-
     public int capacity() {
         return this.capacity;
-    }
-
-    public boolean isEmpty() {
-        return (0 == this.size());
     }
 
     @Override
@@ -291,7 +208,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
 
         @Override
         public boolean hasNext() {
-            return (this.cursor < this.source.size);
+            return (this.cursor < this.source.size());
         }
 
         @Override
@@ -299,7 +216,7 @@ public class CDynamicArray<T extends Serializable> implements IArray<T> {
             if (!hasNext()) {
                 return null;
             }
-            T value = this.source.array[this.cursor];
+            final T value = this.source.array[this.cursor];
             this.cursor++;
             return value;
         }

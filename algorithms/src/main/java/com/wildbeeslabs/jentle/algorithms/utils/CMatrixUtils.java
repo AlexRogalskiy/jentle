@@ -115,4 +115,29 @@ public final class CMatrixUtils<T> {
             updateColumn(matrix, 0, defaultValue);
         }
     }
+
+    public static <T> void shuffle(final T[][] matrix) {
+        Objects.requireNonNull(matrix);
+        if (Objects.isNull(matrix[0])) {
+            return;
+        }
+        int nRows = matrix.length;
+        int nColumns = matrix[0].length;
+        int num = nRows * nColumns;
+        for (int i = 0; i < num; i++) {
+            int j = i + CNumericUtils.generateRandomInt(0, num - i);
+            if (i != j) {
+                int row1 = i / nColumns;
+                int column1 = (i - row1 * nColumns) % nColumns;
+                T cell1 = matrix[row1][column1];
+
+                int row2 = j / nColumns;
+                int column2 = (j - row2 * nColumns) % nColumns;
+                T cell2 = matrix[row2][column2];
+
+                matrix[row1][column1] = cell2;
+                matrix[row2][column2] = cell1;
+            }
+        }
+    }
 }
