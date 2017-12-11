@@ -161,4 +161,26 @@ public class CListUtils {
                     return left;
                 }, Collections::unmodifiableList);
     }
+
+    public static <T> List<List<? extends T>> getSubsets(final List<? extends T> list) {
+        final List<List<? extends T>> result = new ArrayList<>();
+        int max = 1 << list.size();
+        for (int k = 0; k < max; k++) {
+            final List<T> subset = convertIntToSet(k, list);
+            result.add(subset);
+        }
+        return result;
+    }
+
+    public static <T> List<T> convertIntToSet(int x, final List<? extends T> list) {
+        final List<T> subset = new ArrayList<>();
+        int index = 0;
+        for (int k = x; k > 0; k >>= 1) {
+            if ((k & 1) == 1) {
+                subset.add(list.get(index));
+            }
+            index++;
+        }
+        return subset;
+    }
 }

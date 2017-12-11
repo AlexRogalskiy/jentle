@@ -94,4 +94,29 @@ public final class CArrayUtils {
         assert (size >= 0);
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
+
+    public static int getMagic(int[] array) {
+        Objects.requireNonNull(array);
+        return getMagic(array, 0, array.length - 1);
+    }
+
+    public static int getMagic(int[] array, int start, int end) {
+        if (end < start) {
+            return -1;
+        }
+        int midIndex = (start + end) / 2;
+        int midValue = array[midIndex];
+        if (midValue == midIndex) {
+            return midIndex;
+        }
+
+        int leftIndex = Math.min(midIndex - 1, midValue);
+        int left = getMagic(array, start, leftIndex);
+        if (left >= 0) {
+            return left;
+        }
+        int rightIndex = Math.max(midIndex + 1, midValue);
+        int right = getMagic(array, rightIndex, end);
+        return right;
+    }
 }
