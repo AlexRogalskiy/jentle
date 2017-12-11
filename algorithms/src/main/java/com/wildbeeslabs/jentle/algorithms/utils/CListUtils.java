@@ -172,7 +172,7 @@ public class CListUtils {
         return result;
     }
 
-    public static <T> List<T> convertIntToSet(int x, final List<? extends T> list) {
+    private static <T> List<T> convertIntToSet(int x, final List<? extends T> list) {
         final List<T> subset = new ArrayList<>();
         int index = 0;
         for (int k = x; k > 0; k >>= 1) {

@@ -21,16 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -88,7 +90,62 @@ public final class CPermutation {
     }
 
     public static <T> Stream<Stream<? extends T>> of(final T... items) {
+        Objects.requireNonNull(items);
         List<? extends T> itemList = Arrays.asList(items);
         return LongStream.range(0, factorial(items.length)).mapToObj(no -> permutation(no, itemList).stream());
+    }
+
+    public static List<String> getPermutations(final String value) {
+        Objects.requireNonNull(value);
+        final List<String> result = new ArrayList<>();
+        getPermutations(StringUtils.EMPTY, value, result);
+        return result;
+    }
+
+    private static void getPermutations(final String prefix, final String remainder, final List<String> result) {
+        int len = remainder.length();
+        if (0 == len) {
+            result.add(prefix);
+        }
+        for (int i = 0; i < len; i++) {
+            String before = remainder.substring(0, i);
+            String after = remainder.substring(i + 1, len);
+            String c = Character.toChars(remainder.codePointAt(i)).toString();
+            getPermutations(prefix + c, before + after, result);
+        }
+    }
+
+    public static List<String> getPermutations2(final String value) {
+        Objects.requireNonNull(value);
+        final List<String> result = new ArrayList<>();
+        final Map<Integer, Integer> map = buildFrequencyTable(value);
+        getPermutations2(map, StringUtils.EMPTY, value.length(), result);
+        return result;
+    }
+
+    private static Map<Integer, Integer> buildFrequencyTable(final String value) {
+        final Map<Integer, Integer> map = new HashMap<>();
+        for (Integer c : value.codePoints().toArray()) {
+            if (!map.containsKey(c)) {
+                map.put(c, 0);
+            }
+            map.put(c, map.get(c) + 1);
+        }
+        return map;
+    }
+
+    private static void getPermutations2(final Map<Integer, Integer> map, final String prefix, int remaining, final List<String> result) {
+        if (0 == remaining) {
+            result.add(prefix);
+            return;
+        }
+        for (Integer c : map.keySet()) {
+            int count = map.get(c);
+            if (count > 0) {
+                map.put(c, count - 1);
+                getPermutations2(map, prefix + c, remaining - 1, result);
+                map.put(c, count);
+            }
+        }
     }
 }
