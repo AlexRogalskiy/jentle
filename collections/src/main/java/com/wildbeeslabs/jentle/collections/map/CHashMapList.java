@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.map;
 
+import com.wildbeeslabs.jentle.collections.interfaces.IMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Custom hash-map-list implementation
+ * Custom hash map list implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -53,7 +53,7 @@ import org.apache.log4j.Logger;
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @ToString
-public class CHashMapList<T, E> {
+public class CHashMapList<T, E> implements IMap<T, E> {
 
     /**
      * Default Logger instance

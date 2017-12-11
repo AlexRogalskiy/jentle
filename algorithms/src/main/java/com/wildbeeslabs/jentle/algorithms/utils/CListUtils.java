@@ -35,6 +35,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.SerializationUtils;
 
 /**
@@ -51,12 +52,12 @@ public class CListUtils {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <T> List<T> removeDuplicates(final List<T> list) {
+    public static <T> List<? extends T> removeDuplicates(final List<? extends T> list) {
         Objects.requireNonNull(list);
         return list.stream().distinct().collect(Collectors.toList());
     }
 
-    public static <T> List<T> removeNulls(final List<T> list) {
+    public static <T> List<? extends T> removeNulls(final List<? extends T> list) {
         Objects.requireNonNull(list);
         return list.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
         //CollectionUtils.filter(list, PredicateUtils.notNullPredicate());
@@ -117,7 +118,7 @@ public class CListUtils {
     }
 
     public static <T> List<? extends T> toList(final Iterable<? extends T> iterable) {
-        List<T> list = new ArrayList<>();
+        final List<T> list = new ArrayList<>();
         for (T item : iterable) {
             list.add(item);
         }

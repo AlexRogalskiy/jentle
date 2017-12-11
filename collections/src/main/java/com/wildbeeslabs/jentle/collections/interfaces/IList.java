@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
@@ -39,80 +38,97 @@ import java.util.Iterator;
 public interface IList<T> {
 
     /**
-     * Add a value to the beginning of the queue.
+     * Adds new value to the beginning of the list
      *
-     * @param value to add to queue.
-     * @return True if added to queue.
+     * @param value - value to be added to list
+     * @return true (if the value was added, false - otherwise)
      */
     public boolean offer(final T value);
 
     /**
-     * Remove a value from the tail of the queue.
+     * Removes a value from the tail of the list
      *
-     * @return value from the tail of the queue.
+     * @return value - value to be removed from the list
      */
     public T poll();
 
     /**
-     * Remove the value from the queue.
+     * Removes a value from the list
      *
-     * @param value to remove from the queue.
-     * @return True if the value was removed from the queue.
+     * @param value - value to be removed from the list
+     * @return true (if the value was removed, false - otherwise)
      * @throws com.wildbeeslabs.jentle.collections.exception.EmptyListException
      */
     public boolean remove(final T value) throws EmptyListException;
 
     /**
-     * Clear the entire queue.
+     * Removes all values from the list
      */
     public void clear();
 
     /**
-     * Does the queue contain the value.
+     * Checks if the list contains the value
      *
-     * @param value to find in the queue.
-     * @return True if the queue contains the value.
+     * @param value - value to search for
+     * @return boolean (true - if the list contains value, false - otherwise)
      */
     public boolean contains(final T value);
 
     /**
-     * Get the size of the list.
+     * Gets the size of the list
      *
-     * @return size of the list.
+     * @return size of the list
      */
     public int size();
 
     /**
-     * Check if the list contains values.
+     * Checks if the list contains values
      *
      * @return boolean (true - if the list is empty, false - otherwise)
      */
     public boolean isEmpty();
 
     /**
-     * Validate the queue according to the invariants.
+     * Validates the list according to the invariants
      *
-     * @return True if the queue is valid.
+     * @return true (true - if the list is valid, false - otherwise)
      */
     public boolean validate();
 
     /**
-     * Get this Queue as a Java compatible Queue
+     * Returns the list as a Java compatible Queue {@link java.util.Queue}
      *
-     * @return Java compatible Queue
+     * @return Java compatible Queue {@link java.util.Queue}
      */
     public java.util.Queue<? extends T> toQueue();
 
     /**
-     * Get this Queue as a Java compatible Collection
+     * Returns the list as a Java compatible Collection
+     * {@link java.util.Collection}
      *
-     * @return Java compatible Collection
+     * @return Java compatible Collection {@link java.util.Collection}
      */
     public java.util.Collection<? extends T> toCollection();
-    
+
+    /**
+     * Adds new value to the list
+     *
+     * @param item - value to be added to the list
+     */
     public void addLast(final T item);
-    
+
+    /**
+     * Returns the value from the list by index
+     *
+     * @param index - node index
+     * @return node value
+     */
     public T getAt(int index);
-    
+
+    /**
+     * Creates iterator instance for the list values
+     *
+     * @return iterator instance
+     */
     public Iterator<? extends T> iterator();
 }
