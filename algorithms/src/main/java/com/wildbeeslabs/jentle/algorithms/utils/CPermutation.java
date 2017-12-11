@@ -203,6 +203,7 @@ public final class CPermutation {
     }
 
     public static <T> int createStack(final List<T> list, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(list);
         Collections.sort(list, cmp);
         int maxHeight = 0;
         int[] stackMap = new int[list.size()];
