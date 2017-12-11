@@ -25,6 +25,8 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -147,5 +149,107 @@ public final class CPermutation {
                 map.put(c, count);
             }
         }
+    }
+
+    public static int makeChange(int num) {
+        int[] denoms = {25, 10, 5, 1};
+        int[][] map = new int[num + 1][denoms.length];
+        return makeChange(num, denoms, 0, map);
+    }
+
+    private static int makeChange(int amount, int[] denoms, int index, int[][] map) {
+        if (map[amount][index] > 0) {
+            return map[amount][index];
+        }
+        if (index >= denoms.length - 1) {
+            return 1;
+        }
+        int denomAmount = denoms[index];
+        int ways = 0;
+        for (int i = 0; i * denomAmount <= amount; i++) {
+            int amountReamining = amount - i * denomAmount;
+            ways += makeChange(amountReamining, denoms, index + 1, map);
+        }
+        map[amount][index] = ways;
+        return ways;
+    }
+
+    public static void placeMembers(int row, final Integer[] columns, final List<Integer[]> results) {
+        if (8 == row) {
+            results.add(columns.clone());
+        } else {
+            for (int col = 0; col < 8; col++) {
+                if (isLocationValid(columns, row, col)) {
+                    columns[row] = col;
+                    placeMembers(row + 1, columns, results);
+                }
+            }
+        }
+    }
+
+    private static boolean isLocationValid(final Integer[] columns, int row, int column) {
+        for (int r = 0; r < row; r++) {
+            int c = columns[r];
+            if (column == c) {
+                return false;
+            }
+            int columnDistance = Math.abs(c - column);
+            int rowDistance = row - r;
+            if (columnDistance == rowDistance) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static <T> int createStack(final List<T> list, final Comparator<? super T> cmp) {
+        Collections.sort(list, cmp);
+        int maxHeight = 0;
+        int[] stackMap = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            int height = createStack(list, i, stackMap);
+            maxHeight = Math.max(maxHeight, height);
+        }
+        return maxHeight;
+    }
+
+    private static <T> int createStack(final List<T> list, int bottomIndex, final int[] stackMap) {
+        if (bottomIndex < list.size() && stackMap[bottomIndex] > 0) {
+            return stackMap[bottomIndex];
+        }
+        final T bottom = list.get(bottomIndex);
+        int maxHeight = 0;
+        for (int i = bottomIndex + 1; i < list.size(); i++) {
+//            if (list.get(i).isAbove(bottom)) {
+//                int height = createStack(list, i, stackMap);
+//                maxHeight = Math.max(height, maxHeight);
+//            }
+        }
+//        maxHeight += bottom.height;
+        stackMap[bottomIndex] = maxHeight;
+        return maxHeight;
+    }
+
+    public static <T> int createStack2(final List<T> list, final Comparator<? super T> cmp) {
+        Collections.sort(list, cmp);
+        int[] stackMap = new int[list.size()];
+        return createStack(list, null, 0, stackMap);
+    }
+
+    private static <T> int createStack(final List<T> list, final T bottom, int offset, int[] stackMap) {
+        if (offset >= list.size()) {
+            return 0;
+        }
+        final T newBottom = list.get(offset);
+        int heightWithBottom = 0;
+//        if (Objects.isNull(bottom) || newBottom.canBeAbove(bottom)) {
+//            if (0 == stackMap[offset]) {
+//                stackMap[offset] = createStack(list, newBottom, offset + 1, stackMap);
+//                stackMap[offset] += newBottom.height;
+//            }
+//            heightWithBottom = stackMap[offset];
+//        }
+        int heightWithoutBottom = createStack(list, bottom, offset + 1, stackMap);
+        return Math.max(heightWithBottom, heightWithoutBottom);
     }
 }
