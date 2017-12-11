@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -209,5 +210,33 @@ public final class CStringUtils {
 
     public static String toString(final InputStream inputStream) {
         return toString(inputStream, StandardCharsets.UTF_8.name());
+    }
+
+    public static List<String> generateParenthesis(int count) {
+        assert (count > 0);
+        char[] str = new char[count * 2];
+        final List<String> list = new ArrayList<>();
+        addParanthesis(list, count, count, str, 0);
+        return list;
+    }
+
+    private static void addParanthesis(final List<String> list, int left, int right, char[] str, int count) {
+        if (left < 0 || right < left) {
+            return;
+        }
+        if (0 == left && 0 == right) {
+            String s = String.copyValueOf(str);
+            list.add(s);
+        } else {
+            if (left > 0) {
+                str[count] = '(';
+                addParanthesis(list, left - 1, right, str, count + 1);
+            }
+
+            if (right > left) {
+                str[count] = ')';
+                addParanthesis(list, left, right - 1, str, count + 1);
+            }
+        }
     }
 }
