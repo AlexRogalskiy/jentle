@@ -23,10 +23,10 @@
         <java.version>1.8</java.version>
     </properties>
     
-    <!--<issueManagement>
+    <issueManagement>
         <url>https://github.com/AlexRogalskiy/jentle/issues</url>
         <system>GitHub Issues</system>
-    </issueManagement>-->
+    </issueManagement>
     
     <licenses>
         <license>
