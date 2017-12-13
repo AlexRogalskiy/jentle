@@ -21,25 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms;
+package com.wildbeeslabs.jentle.collections.list.node;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Initial Application Class Loader
+ * Custom list graph node implementation
  *
  * @author Alex
  * @version 1.0.0
- * @since 2017-08-08
+ * @since 2017-08-07
+ * @param <T>
+ * @param <E>
  */
-public class AppLoader {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class CListGraphNode<T, E extends ACGraphNode<T, E>> extends ACListGraphNode<T, E, CListGraphNode<T, E>> {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        int i = CSort.binarySearch(new Integer[]{3, 4, 5, 6, 7}, new Integer(33));
-        System.out.println(i);
+    public CListGraphNode() {
+        this(null);
+    }
+
+    public CListGraphNode(final E data) {
+        this(data, null, null);
+    }
+
+    public CListGraphNode(final E data, final CListGraphNode<T, E> previous, final CListGraphNode<T, E> next) {
+        super(data, next, previous);
     }
 }

@@ -24,10 +24,22 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.graph.CGraph;
+import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;
+import com.wildbeeslabs.jentle.collections.list.node.ACListGraphNode;
+import com.wildbeeslabs.jentle.collections.list.node.CListGraphNode;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Stack;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
@@ -142,5 +154,86 @@ public class CGraphUtils {
             paintFill(screen, row, column + 1, oldValue, newValue);
         }
         return true;
+    }
+
+    public static <T extends Entry, E extends ACGraphNode<T, E>, U extends ACListGraphNode<T, E, U>> List<E> findPathBiBFS(final Map<Integer, E> map, int source, int destination) {
+        final BFSData<T, E, U> sourceData = new BFSData(map.get(source));
+        final BFSData<T, E, U> destData = new BFSData(map.get(destination));
+        while (!sourceData.isFinished() && !destData.isFinished()) {
+            T collision = searchLevel(map, sourceData, destData);
+            if (Objects.nonNull(collision)) {
+                return mergePaths(sourceData, destData, collision.getId());
+            }
+            collision = searchLevel(map, destData, sourceData);
+            if (Objects.nonNull(collision)) {
+                return mergePaths(sourceData, destData, collision.getId());
+            }
+        }
+        return null;
+    }
+
+    private static <T extends Entry, E extends ACGraphNode<T, E>, U extends ACListGraphNode<T, E, U>> T searchLevel(final Map<Integer, E> map, final BFSData<T, E, U> primary, final BFSData<T, E, U> secondary) {
+        int count = primary.toVisit.size();
+        for (int i = 0; i < count; i++) {
+            final U pathNode = primary.toVisit.poll();
+            int personId = pathNode.getData().getData().getId();
+            if (secondary.visited.containsKey(personId)) {
+                return pathNode.getData().getData();
+            }
+            final E data = pathNode.getData();
+            final List<E> adjacentList = data.getAdjacents();
+            adjacentList.stream().filter((adjacent) -> (!primary.visited.containsKey(adjacent.getData().getId()))).map((adjacent) -> {
+                final E current = map.get(adjacent.getData().getId());
+                final U next = (U) new CListGraphNode<>(current, (CListGraphNode) pathNode, null);
+                primary.visited.put(adjacent.getData().getId(), (U) next);
+                return next;
+            }).forEach((next) -> {
+                primary.toVisit.add((U) next);
+            });
+        }
+        return null;
+    }
+
+    private static <T extends Entry, E extends ACGraphNode<T, E>, U extends ACListGraphNode<T, E, U>> List<E> mergePaths(final BFSData<T, E, U> primary, final BFSData<T, E, U> secondary, int connection) {
+        final U end1 = primary.visited.get(connection);
+        final U end2 = secondary.visited.get(connection);
+        final LinkedList<E> pathOne = end1.collapse(false);
+        final LinkedList<E> pathTwo = end2.collapse(true);
+        pathTwo.removeFirst();
+        pathOne.addAll(pathTwo);
+        return pathOne;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class BFSData<T extends Entry, E extends ACGraphNode<T, E>, U extends ACListGraphNode<T, E, U>> {
+
+        public final Queue<U> toVisit = new LinkedList<>();
+        public final Map<Integer, U> visited = new HashMap<>();
+
+        public BFSData(final E root) {
+            final U sourcePath = (U) new CListGraphNode<>(root);
+            this.toVisit.add(sourcePath);
+            this.visited.put(root.getData().getId(), sourcePath);
+        }
+
+        public boolean isFinished() {
+            return this.toVisit.isEmpty();
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
+    protected static final class Entry {
+
+        private final Integer id;
+        private String info;
+
+        public Entry(final Integer id) {
+            this.id = id;
+        }
     }
 }
