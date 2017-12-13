@@ -236,4 +236,53 @@ public class CGraphUtils {
             this.id = id;
         }
     }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
+    protected static final class Machine<E extends Entry> {
+
+        private Map<Integer, E> entryMap = new HashMap<>();
+        private final Integer id;
+        private String info;
+
+        public Machine(final Integer id) {
+            this.id = id;
+        }
+
+        public Entry getEntryById(final Integer entryId) {
+            return this.entryMap.get(entryId);
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
+    protected static final class Cluster<M extends Machine> {
+
+        private Map<Integer, M> machineMap = new HashMap<>();
+        private Map<Integer, Integer> entryToMachineMap = new HashMap();
+
+        public M getMachineById(final Integer machineId) {
+            return this.machineMap.get(machineId);
+        }
+
+        public Integer getMachineIdByEntryId(final Integer entryId) {
+            return this.entryToMachineMap.get(entryId);
+        }
+
+        public Entry getEntryById(final Integer entryId) {
+            final Integer machineId = this.entryToMachineMap.get(entryId);
+            if (Objects.isNull(machineId)) {
+                return null;
+            }
+            final M machine = getMachineById(machineId);
+            if (Objects.isNull(machine)) {
+                return null;
+            }
+            return machine.getEntryById(entryId);
+        }
+    }
 }
