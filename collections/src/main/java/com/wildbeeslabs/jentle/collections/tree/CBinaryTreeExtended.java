@@ -23,8 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
@@ -49,7 +48,7 @@ import lombok.ToString;
 public class CBinaryTreeExtended<T> extends ACBinaryTreeExtended<T, CTreeExtended.CExtendedTreeNode<T>> {
 
     public CBinaryTreeExtended() {
-        this(CSort.DEFAULT_SORT_COMPARATOR);
+        this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CBinaryTreeExtended(final Comparator<? super T> cmp) {
@@ -57,7 +56,7 @@ public class CBinaryTreeExtended<T> extends ACBinaryTreeExtended<T, CTreeExtende
     }
 
     public CBinaryTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root) {
-        this(root, CSort.DEFAULT_SORT_COMPARATOR);
+        this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CBinaryTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {

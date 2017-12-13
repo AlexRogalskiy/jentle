@@ -17,9 +17,12 @@
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        
         <apache.commons.version>3.5</apache.commons.version>
         <logback.version>1.1.9</logback.version>
         <lombok.version>1.16.16</lombok.version>
+        <junit.version>4.11</junit.version>
+        <log4j.version>1.2.17</log4j.version>
         <java.version>1.8</java.version>
     </properties>
     
@@ -113,18 +116,22 @@
     </build>
     
     <dependencies>
+        <!-- Testing dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- Logging dependencie -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j.version}</version>
         </dependency>
-        <!-- Logback -->
+        
+        <!-- Logback dependencies -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
@@ -135,14 +142,16 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-        <!-- Lombok -->
+        
+        <!-- Lombok dependencies -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Apache Commons -->
+        
+        <!-- Apache Commons dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

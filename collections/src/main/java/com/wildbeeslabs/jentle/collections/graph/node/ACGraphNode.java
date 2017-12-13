@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.graph.node;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -64,7 +64,7 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode
     }
 
     public ACGraphNode(final T data) {
-        this(data, CSort.DEFAULT_SORT_COMPARATOR);
+        this(data, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public ACGraphNode(final T data, final Comparator<? super T> comparator) {

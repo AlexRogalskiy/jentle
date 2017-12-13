@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.stack;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -51,7 +51,7 @@ public class CStackMin<T> extends CStack<T> {
     protected final Comparator<? super T> cmp;
 
     public CStackMin() {
-        this(CSort.DEFAULT_SORT_COMPARATOR);
+        this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CStackMin(final Comparator<? super T> cmp) {

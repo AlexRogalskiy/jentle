@@ -19,8 +19,8 @@
     </parent>
     
     <properties>
-        <jentle.algorithms.version>1.0.0</jentle.algorithms.version>
-        <apache.commons.collections.verstion>4.1</apache.commons.collections.verstion>
+        <!--<jentle.algorithms.version>1.0.0</jentle.algorithms.version>-->
+        <apache.commons.collections.version>4.1</apache.commons.collections.version>
     </properties>
   
     <build>
@@ -109,16 +109,17 @@
     </build>
   
     <dependencies>
-        <!-- jentle-algorithms -->
-        <dependency>
+        <!-- Jentle algorithms -->
+<!--        <dependency>
             <groupId>com.wildbeeslabs.jentle</groupId>
             <artifactId>jentle-algorithms</artifactId>
             <version>${jentle.algorithms.version}</version>
-        </dependency>
+        </dependency>-->
+        <!-- Apache Commons Collections -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>${apache.commons.collections.verstion}</version>
+            <version>${apache.commons.collections.version}</version>
         </dependency>
     </dependencies>
 </project>

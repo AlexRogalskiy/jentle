@@ -23,13 +23,13 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -85,7 +85,7 @@ public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>>
     }
 
     public CBinaryTree2() {
-        this(CSort.DEFAULT_SORT_COMPARATOR);
+        this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CBinaryTree2(final Comparator<? super T> cmp) {
@@ -93,7 +93,7 @@ public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>>
     }
 
     public CBinaryTree2(final CBinaryTree2.CTreeNode2<T> root) {
-        this(root, CSort.DEFAULT_SORT_COMPARATOR);
+        this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CBinaryTree2(final CBinaryTree2.CTreeNode2<T> root, final Comparator<? super T> cmp) {
@@ -104,7 +104,7 @@ public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>>
         if (this.isEmpty()) {
             return null;
         }
-        int index = CNumericUtils.generateRandomInt(0, this.size());
+        int index = new Random().nextInt(this.size());
         return this.root.getIthNode(index);
     }
 

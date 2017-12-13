@@ -110,16 +110,19 @@
     </build>
     
     <dependencies>
+        <!-- Jentle collections -->
         <dependency>
             <groupId>com.wildbeeslabs.jentle</groupId>
             <artifactId>jentle-collections</artifactId>
             <version>${jentle.collections.version}</version>
         </dependency>
+        <!-- Apache Commons Math -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>${apache.commons.math.version}</version>
         </dependency>
+        <!-- Apache Commons IO -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-io</artifactId>

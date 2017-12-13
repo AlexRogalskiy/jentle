@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.graph.node;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Comparator;
 
 import lombok.Data;
@@ -49,7 +49,7 @@ public class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
     }
 
     public CGraphNode(final T data) {
-        this(data, CSort.DEFAULT_SORT_COMPARATOR);
+        this(data, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CGraphNode(final T data, final Comparator<? super T> cmp) {

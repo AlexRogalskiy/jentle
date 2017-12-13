@@ -23,9 +23,9 @@
  */
 package com.wildbeeslabs.jentle.collections.graph;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -81,7 +81,7 @@ public class CGraph<T> implements IGraph<T> {
         }
 
         public CGraphNode(final T data) {
-            this(data, CSort.DEFAULT_SORT_COMPARATOR);
+            this(data, CUtils.DEFAULT_SORT_COMPARATOR);
         }
 
         public CGraphNode(final T data, final Comparator<? super T> cmp) {
@@ -113,7 +113,7 @@ public class CGraph<T> implements IGraph<T> {
     protected final Comparator<? super T> cmp;
 
     public CGraph() {
-        this(CSort.DEFAULT_SORT_COMPARATOR);
+        this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CGraph(final Comparator<? super T> cmp) {

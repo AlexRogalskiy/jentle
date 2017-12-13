@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sort;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CComparator;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,25 +50,25 @@ public class CSort {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    /**
-     * Default sort comparator
-     */
-    public static final CSort.CSortComparator DEFAULT_SORT_COMPARATOR = new CSort.CSortComparator();
-
-    protected static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
-
-        @Override
-        public int compare(final T first, final T last) {
-            return CComparator.compareTo(first, last);
-        }
-    }
-
-    public static <T extends Comparable<? super T>> CSort.CSortComparator<T> getDefaultSortComparator() {
-        return new CSort.CSortComparator<>();
-    }
+//    /**
+//     * Default sort comparator
+//     */
+//    public static final CSort.CSortComparator DEFAULT_SORT_COMPARATOR = new CSort.CSortComparator();
+//
+//    protected static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
+//
+//        @Override
+//        public int compare(final T first, final T last) {
+//            return CComparator.compareTo(first, last);
+//        }
+//    }
+//
+//    public static <T extends Comparable<? super T>> CSort.CSortComparator<T> getDefaultSortComparator() {
+//        return new CSort.CSortComparator<>();
+//    }
 
     public static <T extends Comparable<? super T>> int binarySearch(final T[] array, T value) {
-        return CSort.binarySearch(array, value, CSort.<T>getDefaultSortComparator());
+        return CSort.binarySearch(array, value, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> int binarySearch(final T[] array, final T value, final Comparator<? super T> cmp) {
@@ -89,7 +89,7 @@ public class CSort {
     }
 
     public static <T extends Comparable<? super T>> int binarySearchRecursive(final T[] array, final T value, int low, int high) {
-        return CSort.binarySearchRecursive(array, value, low, high, CSort.<T>getDefaultSortComparator());
+        return CSort.binarySearchRecursive(array, value, low, high, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> int binarySearchRecursive(final T[] array, final T value, int low, int high, final Comparator<? super T> cmp) {
@@ -120,7 +120,7 @@ public class CSort {
      * average - O(n*log(n)) /worst - O(n*n) / memory - O(log(n))
      */
     public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right) {
-        CSort.quickSort(array, left, right, CSort.<T>getDefaultSortComparator());
+        CSort.quickSort(array, left, right, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
@@ -170,13 +170,13 @@ public class CSort {
      * worst - O(n*log(n)) / average - O(n*log(n)) / memory - O(n)
      */
     public static <T extends Comparable<? super T>> void mergeSort(final T[] array) {
-        CSort.mergeSort(array, CSort.<T>getDefaultSortComparator());
+        CSort.mergeSort(array, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> void mergeSort(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         Objects.requireNonNull(cmp);
-        final T[] temp = ArrayUtils.clone(array);//CSort.newArray((Class<? extends T[]>) array.getClass(), array.length);
+        final T[] temp = ArrayUtils.clone(array);//CUtils.newArray((Class<? extends T[]>) array.getClass(), array.length);
         mergeSort(array, temp, 0, array.length - 1, cmp);
     }
 
@@ -215,18 +215,8 @@ public class CSort {
         }
     }
 
-//    private static <T> T[] newArray(final Class<? extends T> type, int size) {
-//        Objects.requireNonNull(type);
-//        assert (size >= 0);
-//        return (T[]) Array.newInstance(type, size);
-//    }
-//    private static <T> T[] newArray(final Class<? extends T[]> type, int size) {
-//        Objects.requireNonNull(type);
-//        assert (size >= 0);
-//        return type.cast(Array.newInstance(type.getComponentType(), size));
-//    }
     public static <T extends Comparable<? super T>> void sort(final T[] array, int low, int high) {
-        sort(array, low, high, CSort.<T>getDefaultSortComparator());
+        sort(array, low, high, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> void sort(final T[] array, int low, int high, final Comparator<? super T> cmp) {
@@ -237,7 +227,7 @@ public class CSort {
     }
 
     public static <T extends Comparable<? super T>> void sort(final List<? extends T> list) {
-        sort(list, CSort.<T>getDefaultSortComparator());
+        sort(list, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> void sort(final List<? extends T> list, final Comparator<? super T> cmp) {
@@ -255,7 +245,7 @@ public class CSort {
     }
 
     public static <T extends Comparable<? super T>> Set<? extends T> sort(final Set<? extends T> set) {
-        return sort(set, CSort.<T>getDefaultSortComparator());
+        return sort(set, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>, U> Map<? extends T, ? extends U> sortByKeys(final Map<T, U> map, final Comparator<? super T> cmp) {
@@ -271,7 +261,7 @@ public class CSort {
     }
 
     public static <T extends Comparable<? super T>, U> Map<? extends T, ? extends U> sortByKeys(final Map<? extends T, ? extends U> map) {
-        return sortByKeys(map, CSort.<T>getDefaultSortComparator());
+        return sortByKeys(map, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T, U extends Comparable<? super U>> Map<? extends T, ? extends U> sortByValues(final Map<T, U> map, final Comparator<? super U> cmp) {
@@ -287,6 +277,6 @@ public class CSort {
     }
 
     public static <T, U extends Comparable<? super U>> Map<? extends T, ? extends U> sortByValues(final Map<T, U> map) {
-        return sortByValues(map, CSort.<U>getDefaultSortComparator());
+        return sortByValues(map, CUtils.<U>getDefaultSortComparator());
     }
 }

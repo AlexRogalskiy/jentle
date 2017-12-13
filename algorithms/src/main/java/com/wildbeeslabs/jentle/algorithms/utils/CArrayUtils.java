@@ -23,8 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-import java.lang.reflect.Array;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +46,7 @@ public final class CArrayUtils {
     }
 
     public static <T extends Comparable<? super T>> int getMinIndex(final T[] array) {
-        return getMinIndex(array, CSort.<T>getDefaultSortComparator());
+        return getMinIndex(array, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> int getMinIndex(final T[] array, final Comparator<? super T> cmp) {
@@ -61,7 +60,7 @@ public final class CArrayUtils {
     }
 
     public static <T extends Comparable<? super T>> int getMaxIndex(final T[] array) {
-        return getMaxIndex(array, CSort.<T>getDefaultSortComparator());
+        return getMaxIndex(array, CUtils.<T>getDefaultSortComparator());
     }
 
     public static <T extends Comparable<? super T>> int getMaxIndex(final T[] array, final Comparator<? super T> cmp) {
@@ -87,12 +86,6 @@ public final class CArrayUtils {
                 .mapToObj(i -> array[i])
                 .collect(Collectors.toList());
         return result;
-    }
-
-    public static <T> T[] newArray(final Class<? extends T[]> type, int size) {
-        assert (Objects.nonNull(type));
-        assert (size >= 0);
-        return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
     public static int getMagic(int[] array) {

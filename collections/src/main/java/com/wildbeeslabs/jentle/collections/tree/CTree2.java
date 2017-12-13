@@ -23,8 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
-
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -67,7 +66,7 @@ public class CTree2<T> {
     }
 
     public CTree2(final T data) {
-        this(data, null, null, CSort.DEFAULT_SORT_COMPARATOR);
+        this(data, null, null, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CTree2(final T data, final CTree2<T> left, final CTree2<T> right, final Comparator<? super T> cmp) {

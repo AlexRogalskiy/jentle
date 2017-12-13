@@ -24,8 +24,8 @@
 
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.exception.NoSpaceAvailableException;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -64,7 +64,7 @@ public class CHeap<T> {
     protected T[] array;
 
     public CHeap(final Class<? extends T[]> clazz, int capacity) {
-        this(clazz, capacity, CSort.DEFAULT_SORT_COMPARATOR);
+        this(clazz, capacity, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CHeap(final Class<? extends T[]> clazz, int capacity, final Comparator<? super T> cmp) {

@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.array;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CArrayUtils;
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -66,7 +66,7 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
             throw new InvalidDimensionException(String.format("ERROR: CCircularArray (invalid initial size=%d)", size));
         }
         this.size = size;
-        this.array = CArrayUtils.newArray(clazz, this.size);
+        this.array = CUtils.newArray(clazz, this.size);
         if (Objects.nonNull(array)) {
             System.arraycopy(array, 0, this.array, 0, Math.min(this.size, array.length));
         }

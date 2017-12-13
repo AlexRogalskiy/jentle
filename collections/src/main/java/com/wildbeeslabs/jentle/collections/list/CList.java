@@ -23,12 +23,12 @@
  */
 package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.CList.CListNode;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -77,7 +77,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
     protected int size;
 
     public CList() {
-        this(null, CSort.DEFAULT_SORT_COMPARATOR);
+        this(null, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CList(final Comparator<? super T> cmp) {
@@ -85,7 +85,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
     }
 
     public CList(final CList<? extends T> source) {
-        this(source, CSort.DEFAULT_SORT_COMPARATOR);
+        this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")

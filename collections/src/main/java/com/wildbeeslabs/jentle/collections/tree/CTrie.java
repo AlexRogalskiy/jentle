@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -64,7 +64,7 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     }
 
     public CTrie() {
-        this(CSort.DEFAULT_SORT_COMPARATOR);
+        this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CTrie(final Comparator<? super Integer> cmp) {
@@ -72,11 +72,11 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     }
 
     public CTrie(final List<? extends CharSequence> list) {
-        this(list, CSort.DEFAULT_SORT_COMPARATOR);
+        this(list, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CTrie(final CharSequence[] array) {
-        this(Arrays.asList(array), CSort.DEFAULT_SORT_COMPARATOR);
+        this(Arrays.asList(array), CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")

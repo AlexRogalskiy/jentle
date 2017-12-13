@@ -29,6 +29,7 @@ import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import java.util.Collection;
@@ -54,6 +55,23 @@ public final class CUtils {
 
     private CUtils() {
         // PRIVATE CONSTRUCTOR
+    }
+
+    /**
+     * Default sort comparator
+     */
+    public static final CUtils.CSortComparator DEFAULT_SORT_COMPARATOR = CUtils.getDefaultSortComparator();
+
+    public static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
+
+        @Override
+        public int compare(final T first, final T last) {
+            return CComparatorUtils.compareTo(first, last);
+        }
+    }
+
+    public static <T extends Comparable<? super T>> CUtils.CSortComparator<T> getDefaultSortComparator() {
+        return new CUtils.CSortComparator<>();
     }
 
     public static Object[] merge(final Object o1, final Object o2) {
@@ -161,5 +179,11 @@ public final class CUtils {
             }
         }
         return levelList;
+    }
+
+    public static <T> T[] newArray(final Class<? extends T[]> type, int size) {
+        assert (Objects.nonNull(type));
+        assert (size >= 0);
+        return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 }

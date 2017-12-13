@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -69,7 +69,7 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
     }
 
     public CTree() {
-        this(CSort.DEFAULT_SORT_COMPARATOR);
+        this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CTree(final Comparator<? super T> cmp) {
@@ -77,7 +77,7 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
     }
 
     public CTree(final CTreeNode<T> root) {
-        this(root, CSort.DEFAULT_SORT_COMPARATOR);
+        this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CTree(final CTreeNode<T> root, final Comparator<? super T> cmp) {
@@ -121,7 +121,7 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
                 }
             }
         }
-        return new CTree<>(rootNode, CSort.DEFAULT_SORT_COMPARATOR);
+        return new CTree<>(rootNode, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @Override

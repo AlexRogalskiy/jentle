@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -70,7 +70,7 @@ public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedT
     }
 
     public CTreeExtended() {
-        this(CSort.DEFAULT_SORT_COMPARATOR);
+        this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CTreeExtended(final Comparator<? super T> cmp) {
@@ -78,7 +78,7 @@ public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedT
     }
 
     public CTreeExtended(final CExtendedTreeNode<T> root) {
-        this(root, CSort.DEFAULT_SORT_COMPARATOR);
+        this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CTreeExtended(final CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {

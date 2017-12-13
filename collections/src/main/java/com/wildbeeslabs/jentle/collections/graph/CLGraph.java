@@ -23,12 +23,12 @@
  */
 package com.wildbeeslabs.jentle.collections.graph;
 
-import com.wildbeeslabs.jentle.algorithms.sort.CSort;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -83,7 +83,7 @@ public class CLGraph<T> implements IGraph<T> {
     protected final Comparator<? super T> cmp;
 
     public CLGraph(int size) {
-        this(size, CSort.DEFAULT_SORT_COMPARATOR);
+        this(size, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public CLGraph(int size, final Comparator<? super T> cmp) {
