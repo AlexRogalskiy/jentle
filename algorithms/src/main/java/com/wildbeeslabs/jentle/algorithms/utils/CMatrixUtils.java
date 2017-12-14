@@ -26,6 +26,12 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import java.util.Comparator;
 import java.util.Objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 /**
  *
  * Custom matrix utilities implementation
@@ -157,5 +163,93 @@ public final class CMatrixUtils<T> {
             }
         }
         return false;
+    }
+
+    public static <T> Coordinate<T> findElement2(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        final Coordinate<T> origin = new Coordinate(0, 0);
+        final Coordinate<T> dest = new Coordinate(matrix.length - 1, matrix[0].length - 1);
+        return findElement(matrix, origin, dest, value, cmp);
+    }
+
+    private static <T> Coordinate<T> findElement(final T[][] matrix, final Coordinate<T> origin, final Coordinate<T> dest, final T value, final Comparator<? super T> cmp) {
+        if (!origin.inBounds(matrix) || !dest.inBounds(matrix)) {
+            return null;
+        }
+        if (Objects.compare(matrix[origin.row][origin.column], value, cmp) == 0) {
+            return origin;
+        } else if (!origin.isBefore(dest)) {
+            return null;
+        }
+
+        final Coordinate<T> start = (Coordinate<T>) origin.clone();
+        int diagDist = Math.min(dest.row - origin.row, dest.column - origin.column);
+        final Coordinate<T> end = new Coordinate<>(start.row + diagDist, start.column + diagDist);
+        final Coordinate<T> p = new Coordinate<>(0, 0);
+
+        while (start.isBefore(end)) {
+            p.setToAverage(start, end);
+            if (Objects.compare(value, matrix[p.row][p.column], cmp) > 0) {
+                start.row = p.row + 1;
+                start.column = p.column + 1;
+            } else {
+                end.row = p.row - 1;
+                end.column = p.column - 1;
+            }
+        }
+        return partitionAndSearch(matrix, origin, dest, start, value, cmp);
+    }
+
+    private static <T> Coordinate<T> partitionAndSearch(final T[][] matrix, final Coordinate<T> origin, final Coordinate<T> dest, final Coordinate<T> pivot, final T value, final Comparator<? super T> cmp) {
+        final Coordinate<T> lowerLeftOrigin = new Coordinate<>(pivot.row, origin.column);
+        final Coordinate<T> lowerLeftDest = new Coordinate<>(dest.row, pivot.column - 1);
+        final Coordinate<T> upperRightOrigin = new Coordinate<>(origin.row, pivot.column);
+        final Coordinate<T> upperRightDest = new Coordinate<>(pivot.row - 1, dest.column);
+
+        final Coordinate<T> lowerLeft = findElement(matrix, lowerLeftOrigin, lowerLeftDest, value, cmp);
+        if (Objects.isNull(lowerLeft)) {
+            return findElement(matrix, upperRightOrigin, upperRightDest, value, cmp);
+        }
+        return lowerLeft;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    public static class Coordinate<T> implements Cloneable {
+
+        public int row;
+        public int column;
+
+        public boolean inBounds(final T[][] matrix) {
+            if (Objects.isNull(matrix) || Objects.isNull(matrix[0])) {
+                return false;
+            }
+            return (this.row >= 0 && this.column >= 0 && this.row < matrix.length && this.column < matrix[0].length);
+        }
+
+        public boolean isBefore(final Coordinate<T> coordinate) {
+            if (Objects.isNull(coordinate)) {
+                return false;
+            }
+            return (this.row <= coordinate.row && this.column <= coordinate.column);
+        }
+
+        @Override
+        @SuppressWarnings({"CloneDeclaresCloneNotSupported", "CloneDoesntCallSuperClone"})
+        public Coordinate<T> clone() {
+            return new Coordinate<>(this.row, this.column);
+        }
+
+        public void setToAverage(final Coordinate<T> min, final Coordinate<T> max) {
+            if (Objects.isNull(min) || Objects.isNull(max)) {
+                return;
+            }
+            this.row = (min.row + max.row) / 2;
+            this.column = (min.column + max.column) / 2;
+        }
     }
 }

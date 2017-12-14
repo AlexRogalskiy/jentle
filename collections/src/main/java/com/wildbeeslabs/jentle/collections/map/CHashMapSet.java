@@ -24,14 +24,12 @@
 package com.wildbeeslabs.jentle.collections.map;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IMap;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,7 +41,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Custom hash map list implementation
+ * Custom hash map set implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -55,36 +53,32 @@ import org.apache.log4j.Logger;
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @ToString
-public class CHashMapList<T, E> implements IMap<T, E> {
+public class CHashMapSet<T, E> implements IMap<T, E> {
 
     /**
      * Default Logger instance
      */
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
-    protected final Map<T, List<E>> map;
+    protected final Map<T, Set<E>> map;
 
-    public CHashMapList() {
+    public CHashMapSet() {
         this.map = new HashMap<>();
     }
 
     public void put(final T key, final E item) {
         if (!this.containsKey(key)) {
-            this.map.put(key, new ArrayList<>());
+            this.map.put(key, new HashSet<>());
         }
         this.map.get(key).add(item);
     }
 
-    public void put(final T key, final List<E> items) {
+    public void put(final T key, final Set<E> items) {
         this.map.put(key, items);
     }
 
-    public List<E> get(final T key) {
+    public Set<E> get(final T key) {
         return this.map.get(key);
-    }
-
-    public Set<E> getAsSet(final T key) {
-        return this.toSet(this.get(key));
     }
 
     public boolean containsKey(final T key) {
@@ -92,7 +86,7 @@ public class CHashMapList<T, E> implements IMap<T, E> {
     }
 
     public boolean containsKeyValue(final T key, final E value) {
-        final List<E> items = this.get(key);
+        final Set<E> items = this.get(key);
         if (Objects.isNull(items)) {
             return false;
         }
@@ -103,15 +97,7 @@ public class CHashMapList<T, E> implements IMap<T, E> {
         return this.map.keySet();
     }
 
-    public Collection<List<E>> values() {
+    public Collection<Set<E>> values() {
         return this.map.values();
-    }
-
-    public Set<E> valueSet() {
-        return this.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
-    }
-
-    private Set<E> toSet(final List<E> list) {
-        return list.stream().collect(Collectors.toSet());
     }
 }

@@ -227,7 +227,7 @@ public class CGraphUtils {
     @EqualsAndHashCode(callSuper = false)
     @AllArgsConstructor
     @ToString
-    protected static final class Entry {
+    protected static class Entry {
 
         private final Integer id;
         private String info;
@@ -241,7 +241,7 @@ public class CGraphUtils {
     @EqualsAndHashCode(callSuper = false)
     @AllArgsConstructor
     @ToString
-    protected static final class Machine<E extends Entry> {
+    protected static class Machine<E extends Entry> {
 
         private Map<Integer, E> entryMap = new HashMap<>();
         private final Integer id;
@@ -260,7 +260,7 @@ public class CGraphUtils {
     @EqualsAndHashCode(callSuper = false)
     @AllArgsConstructor
     @ToString
-    protected static final class Cluster<M extends Machine> {
+    protected static class Cluster<M extends Machine> {
 
         private Map<Integer, M> machineMap = new HashMap<>();
         private Map<Integer, Integer> entryToMachineMap = new HashMap();
