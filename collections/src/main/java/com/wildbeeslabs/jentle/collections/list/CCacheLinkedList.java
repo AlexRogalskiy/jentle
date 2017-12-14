@@ -28,6 +28,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import lombok.Data;
@@ -46,7 +47,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CCacheLinkedList<T> extends CLinkedList<T, CCacheLinkedList.CCacheNode<T>> {
+public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T>> {
 
     /**
      * Default max cache size
@@ -61,16 +62,20 @@ public class CCacheLinkedList<T> extends CLinkedList<T, CCacheLinkedList.CCacheN
         private String query;
 
         public CCacheNode() {
-            this(null, null);
+            this(null);
         }
 
-        public CCacheNode(final String query, final T data) {
-            this(query, data, null, null);
+        public CCacheNode(final T data) {
+            this(data, null);
         }
 
-        public CCacheNode(final String query, final T data, final CCacheNode<T> next, final CCacheNode<T> previous) {
-            super(data, next, previous);
+        public CCacheNode(final T data, final String query) {
+            this(data, null, null);
             this.query = query;
+        }
+
+        public CCacheNode(final T data, final CCacheNode<T> next, final CCacheNode<T> previous) {
+            super(data, next, previous);
         }
     }
 
@@ -121,7 +126,7 @@ public class CCacheLinkedList<T> extends CLinkedList<T, CCacheLinkedList.CCacheN
             moveToFront(node);
             return;
         }
-        final CCacheLinkedList.CCacheNode<T> node = new CCacheLinkedList.CCacheNode<>(query, data);
+        final CCacheLinkedList.CCacheNode<T> node = new CCacheLinkedList.CCacheNode<>(data, query);
         moveToFront(node);
         this.map.put(query, node);
 
@@ -129,5 +134,30 @@ public class CCacheLinkedList<T> extends CLinkedList<T, CCacheLinkedList.CCacheN
             this.map.remove(this.last.getQuery());
             removeFromLinkedList(this.last);
         }
+    }
+
+    @Override
+    public void addLast(final T item) {
+        this.addToLast(item);
+    }
+
+    @Override
+    public void addFirst(final T item) {
+        this.addToFirst(item);
+    }
+
+    @Override
+    public void insertAt(final T item, int index) {
+        this.insertAt(item, index);
+    }
+
+    @Override
+    public Iterator<? extends T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected CCacheLinkedList.CCacheNode<T> createNode(final T value) {
+        return new CCacheLinkedList.CCacheNode<>(value);
     }
 }

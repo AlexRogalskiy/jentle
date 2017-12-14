@@ -23,18 +23,24 @@
  */
 package com.wildbeeslabs.jentle.collections.list;
 
+import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.interfaces.IResultVisitor;
+import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import java.util.Collection;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
-import lombok.AllArgsConstructor;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -62,10 +68,192 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
      */
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
+    protected E first;
+    protected E last;
+    protected int size;
     protected final Comparator<? super T> cmp;
 
+    public ACList() {
+        this(null, CUtils.DEFAULT_SORT_COMPARATOR);
+    }
+
     public ACList(final Comparator<? super T> cmp) {
+        this(null, cmp);
+    }
+
+    public ACList(final ACList<? extends T, ? extends E> source) {
+        this(source, CUtils.DEFAULT_SORT_COMPARATOR);
+    }
+
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public ACList(final ACList<? extends T, ? extends E> source, final Comparator<? super T> cmp) {
+        this.first = this.last = null;
+        this.size = 0;
         this.cmp = cmp;
+        this.addList(source);
+    }
+
+    public void addList(final ACList<? extends T, ? extends E> source) {
+        if (Objects.nonNull(source)) {
+            for (E current = source.getFirst(); Objects.nonNull(current); current = current.getNext()) {
+                this.addLast(current.getData());
+            }
+        }
+    }
+
+    public E addToFirst(final T item) {
+        final E temp = this.createNode(item);
+        temp.setNext(this.first);
+        temp.setNext(this.first);
+        if (Objects.isNull(this.first)) {
+            this.last = temp;
+        }
+        this.first = temp;
+        this.size++;
+        return this.first;
+    }
+
+    protected E addToLast(final T item) {
+        final E temp = this.createNode(item);
+        temp.setNext(null);
+        if (Objects.isNull(this.last)) {
+            this.first = temp;
+        } else {
+            this.last.setNext(temp);
+        }
+        this.last = temp;
+        this.size++;
+        return this.last;
+    }
+
+    public T removeFirst() throws EmptyListException {
+        if (this.isEmpty()) {
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
+        }
+        final T removed = this.first.getData();
+        this.first = this.first.getNext();
+        this.size--;
+        return removed;
+    }
+
+    public T removeLast() throws EmptyListException {
+        if (this.isEmpty()) {
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
+        }
+        E previous = this.first, next = this.first;
+        while (Objects.nonNull(next.getNext())) {
+            previous = next;
+            next = next.getNext();
+        }
+        if (Objects.isNull(previous)) {
+            this.first = null;
+        } else {
+            previous.setNext(null);
+        }
+        this.last = previous;
+        this.size--;
+        return next.getData();
+    }
+
+    @Override
+    public boolean remove(final T item) throws EmptyListException {
+        if (this.isEmpty()) {
+            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
+        }
+        E previous = this.first, next = this.first;
+        boolean removed = false;
+        while (Objects.nonNull(next)) {
+            if (Objects.compare(item, next.getData(), this.cmp) == 0) {
+                removed = true;
+                this.size--;
+                if (Objects.nonNull(previous)) {
+                    previous.setNext(next.getNext());
+                }
+            } else {
+                previous = next;
+            }
+            next = next.getNext();
+        }
+        this.last = previous;
+        return removed;
+    }
+
+    protected E insertToAt(final T item, int index) {
+        this.checkRange(index);
+        E previous = this.first, next = this.first;
+        while (Objects.nonNull(next) && --index > 0) {
+            previous = next;
+            next = next.getNext();
+        }
+        E temp = this.createNode(item);
+        temp.setNext(next);
+        if (Objects.isNull(next)) {
+            this.last = temp;
+        }
+        if (Objects.isNull(previous)) {
+            this.first = temp;
+        } else {
+            previous.setNext(temp);
+        }
+        this.size++;
+        return temp;
+    }
+
+    @Override
+    public T getAt(int index) {
+        this.checkRange(index);
+        E current = this.first;
+        while (Objects.nonNull(current) && --index > 0) {
+            current = current.getNext();
+        }
+        if (Objects.nonNull(current)) {
+            return current.getData();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean contains(final T item) {
+        for (Iterator<? extends T> i = this.iterator(); i.hasNext();) {
+            if (Objects.compare(i.next(), item, this.cmp) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void checkRange(int index) throws IndexOutOfBoundsException {
+        if (index <= 0 || index > this.size()) {
+            throw new IndexOutOfBoundsException(String.format("ERROR: CList (index=%d is out of bounds [1, %d])", index, this.size));
+        }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
+    }
+
+    @Override
+    public void clear() {
+        this.first = this.last = null;
+        this.size = 0;
+    }
+
+    @Override
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isDistinct() {
+        for (Iterator<? extends T> i = this.iterator(); i.hasNext();) {
+            T item = i.next();
+            for (Iterator<? extends T> j = this.iterator(); j.hasNext();) {
+                if (Objects.compare(j.next(), item, this.cmp) == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     protected void deleteDuplicates(final E node) {
@@ -212,6 +400,12 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         }
     }
 
+    public void each(final IVisitor visitor) {
+        for (Iterator<? extends T> current = this.iterator(); current.hasNext();) {
+            visitor.visit(current.next());
+        }
+    }
+
     protected boolean isEqual(final E first, final E last) {
         E headFirst = first;
         E headLast = last;
@@ -344,4 +538,32 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         }
         return fast;
     }
+
+    public void deleteDuplicates() {
+        this.deleteDuplicates(this.first);
+    }
+
+    public T getKthToLast2(int k) {
+        return this.getKthToLast2(this.first, k);
+    }
+
+    public E partition(final T value) {
+        return this.partition(this.first, value);
+    }
+
+    public boolean isPalindrome() {
+        return this.isPalindrome(this.first);
+    }
+
+    @Override
+    public Queue<T> toQueue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<T> toCollection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    protected abstract E createNode(final T value);
 }

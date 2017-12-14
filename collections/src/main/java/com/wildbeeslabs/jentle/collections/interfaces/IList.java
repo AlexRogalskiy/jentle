@@ -43,15 +43,13 @@ public interface IList<T> {
      * @param value - value to be added to list
      * @return true (if the value was added, false - otherwise)
      */
-    public boolean offer(final T value);
-
+//    public boolean offer(final T value);
     /**
      * Removes a value from the tail of the list
      *
      * @return value - value to be removed from the list
      */
-    public T poll();
-
+//    public T poll();
     /**
      * Removes a value from the list
      *
@@ -93,8 +91,7 @@ public interface IList<T> {
      *
      * @return true (true - if the list is valid, false - otherwise)
      */
-    public boolean validate();
-
+//    public boolean validate();
     /**
      * Returns the list as a Java compatible Queue {@link java.util.Queue}
      *
@@ -111,11 +108,26 @@ public interface IList<T> {
     public java.util.Collection<? extends T> toCollection();
 
     /**
-     * Adds new value to the list
+     * Adds new value to the tail of the list
      *
      * @param item - value to be added to the list
      */
     public void addLast(final T item);
+
+    /**
+     * Adds new value to the head of the list
+     *
+     * @param item - value to be added to the list
+     */
+    public void addFirst(final T item);
+
+    /**
+     * Adds new value to particular position of the list
+     *
+     * @param item - value to be added to the list
+     * @param index - position of new node
+     */
+    public void insertAt(final T item, int index);
 
     /**
      * Returns the value from the list by index

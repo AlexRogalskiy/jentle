@@ -23,17 +23,13 @@
  */
 package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.list.CLinkedList.CLinkedListNode;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Objects;
-import java.util.Queue;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,12 +43,11 @@ import lombok.ToString;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CLinkedList<T, E extends ACListNodeExtended<T, E>> extends ACList<T, E> implements IList<T> {
+public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> implements IList<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -72,10 +67,6 @@ public class CLinkedList<T, E extends ACListNodeExtended<T, E>> extends ACList<T
         }
     }
 
-    protected E first;
-    protected E last;
-    protected int size;
-
     public CLinkedList() {
         this(null, CUtils.DEFAULT_SORT_COMPARATOR);
     }
@@ -84,105 +75,36 @@ public class CLinkedList<T, E extends ACListNodeExtended<T, E>> extends ACList<T
         this(null, cmp);
     }
 
-    public CLinkedList(final CLinkedList<? extends T, ? extends E> source) {
+    public CLinkedList(final CLinkedList<T> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CLinkedList(final CLinkedList<? extends T, ? extends E> source, final Comparator<? super T> cmp) {
-        super(cmp);
-        this.first = this.last = null;
-        this.size = 0;
-        this.addList(source);
-    }
-
-    public void addList(final CLinkedList<? extends T, ? extends E> source) {
-        if (Objects.nonNull(source)) {
-            for (E current = source.getFirst(); Objects.nonNull(current) || current != this.last; current = current.getNext()) {
-                this.addLast(current.getData());
-            }
-        }
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
-    @Override
-    public void clear() {
-        this.first = this.last = null;
-        this.size = 0;
-    }
-
-    @Override
-    public int size() {
-        return this.size;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean offer(T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public T poll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean remove(T value) throws EmptyListException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean contains(T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean validate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Queue<T> toQueue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Collection<T> toCollection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public CLinkedList(final CLinkedList<T> source, final Comparator<? super T> cmp) {
+        super(source, cmp);
     }
 
     @Override
     public void addLast(final T item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.addToLast(item);
     }
 
     @Override
-    public T getAt(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addFirst(final T item) {
+        this.addToFirst(item);
     }
 
-    public void deleteDuplicates() {
-        this.deleteDuplicates(this.first);
+    @Override
+    public void insertAt(final T item, int index) {
+        this.insertAt(item, index);
     }
 
-    public T getKthToLast2(int k) {
-        return this.getKthToLast2(this.first, k);
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public E partition(final T value) {
-        return (E) this.partition(this.first, value);
-    }
-
-    public boolean isPalindrome() {
-        return this.isPalindrome(this.first);
+    @Override
+    protected CLinkedList.CLinkedListNode<T> createNode(final T value) {
+        return new CLinkedList.CLinkedListNode<>(value);
     }
 }
