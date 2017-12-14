@@ -84,11 +84,11 @@ public class CCacheLinkedList<T> extends CLinkedList<T, CCacheLinkedList.CCacheN
         this(null, cmp);
     }
 
-    public CCacheLinkedList(final CCacheNode<T> source) {
+    public CCacheLinkedList(final CCacheLinkedList<T> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CCacheLinkedList(final CCacheNode<T> source, final Comparator<? super T> cmp) {
+    public CCacheLinkedList(final CCacheLinkedList<T> source, final Comparator<? super T> cmp) {
         super(source, cmp);
         this.map = new HashMap<>();
     }

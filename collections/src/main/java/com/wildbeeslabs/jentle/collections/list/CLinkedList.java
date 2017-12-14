@@ -84,21 +84,21 @@ public class CLinkedList<T, E extends ACListNodeExtended<T, E>> extends ACList<T
         this(null, cmp);
     }
 
-    public CLinkedList(final E source) {
+    public CLinkedList(final CLinkedList<? extends T, ? extends E> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CLinkedList(final E source, final Comparator<? super T> cmp) {
+    public CLinkedList(final CLinkedList<? extends T, ? extends E> source, final Comparator<? super T> cmp) {
         super(cmp);
         this.first = this.last = null;
         this.size = 0;
         this.addList(source);
     }
 
-    public void addList(final E source) {
+    public void addList(final CLinkedList<? extends T, ? extends E> source) {
         if (Objects.nonNull(source)) {
-            for (E current = this.first; Objects.nonNull(current) || current != this.last; current = current.getNext()) {
+            for (E current = source.getFirst(); Objects.nonNull(current) || current != this.last; current = current.getNext()) {
                 this.addLast(current.getData());
             }
         }

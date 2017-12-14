@@ -48,11 +48,12 @@ import lombok.ToString;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
+public class CList<T, E extends ACListNode<T, E>> extends ACList<T, E> implements IList<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -72,8 +73,8 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         }
     }
 
-    protected CListNode<T> first;
-    protected CListNode<T> last;
+    protected E first;
+    protected E last;
     protected int size;
 
     public CList() {
@@ -84,28 +85,28 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         this(null, cmp);
     }
 
-    public CList(final CList<? extends T> source) {
+    public CList(final CList<? extends T, ? extends E> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CList(final CList<? extends T> source, final Comparator<? super T> cmp) {
+    public CList(final CList<? extends T, ? extends E> source, final Comparator<? super T> cmp) {
         super(cmp);
         this.first = this.last = null;
         this.size = 0;
         this.addList(source);
     }
 
-    public void addList(final CList<? extends T> source) {
+    public void addList(final CList<? extends T, ? extends E> source) {
         if (Objects.nonNull(source)) {
-            for (CListNode<? extends T> current = source.first; current != null; current = current.getNext()) {
+            for (E current = source.getFirst(); Objects.nonNull(current); current = current.getNext()) {
                 this.addLast(current.getData());
             }
         }
     }
 
     public void addFirst(final T item) {
-        final CListNode<T> temp = new CListNode<>(item, this.first);
+        final E temp = (E) new CList.CListNode<>(item, (CListNode<T>) this.first);
         if (Objects.isNull(this.first)) {
             this.last = temp;
         }
@@ -115,13 +116,13 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
 
     @Override
     public void addLast(final T item) {
-        final CListNode<T> temp = new CListNode<>(item, null);
+        final E temp = (E) new CList.CListNode<>(item, null);
         if (Objects.isNull(this.last)) {
-            this.first = temp;
+            this.first = (E) temp;
         } else {
             this.last.setNext(temp);
         }
-        this.last = temp;
+        this.last = (E) temp;
         this.size++;
     }
 
@@ -139,7 +140,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         if (this.isEmpty()) {
             throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
         }
-        CListNode<T> previous = this.first, next = this.first;
+        E previous = this.first, next = this.first;
         while (Objects.nonNull(next.getNext())) {
             previous = next;
             next = next.getNext();
@@ -159,7 +160,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         if (this.isEmpty()) {
             throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
         }
-        CListNode<T> previous = this.first, next = this.first;
+        E previous = this.first, next = this.first;
         boolean removed = false;
         while (Objects.nonNull(next)) {
             if (Objects.compare(item, next.getData(), this.cmp) == 0) {
@@ -179,12 +180,12 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
 
     public void insertAt(final T item, int index) {
         this.checkRange(index);
-        CListNode<T> previous = this.first, next = this.first;
+        E previous = this.first, next = this.first;
         while (Objects.nonNull(next) && --index > 0) {
             previous = next;
             next = next.getNext();
         }
-        CListNode<T> temp = new CListNode<>(item, next);
+        E temp = (E) new CListNode<>(item, (CListNode<T>) next);
         if (Objects.isNull(next)) {
             this.last = temp;
         }
@@ -199,7 +200,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
     @Override
     public T getAt(int index) {
         this.checkRange(index);
-        CListNode<T> current = this.first;
+        E current = this.first;
         while (Objects.nonNull(current) && --index > 0) {
             current = current.getNext();
         }
@@ -209,7 +210,7 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         return null;
     }
 
-    public T getFirst() {
+    public T getFirstData() {
         if (this.isEmpty()) {
             return null;
         }
@@ -296,11 +297,11 @@ public class CList<T> extends ACList<T, CListNode<T>> implements IList<T> {
         return new CListIterator<>(this);
     }
 
-    protected static class CListIterator<T> implements Iterator<T> {
+    protected static class CListIterator<T, E extends ACListNode<T, E>> implements Iterator<T> {
 
-        private CListNode<? extends T> cursor = null;
+        private E cursor = null;
 
-        public CListIterator(final CList<? extends T> source) {
+        public CListIterator(final CList<? extends T, ? extends E> source) {
             this.cursor = source.first;
         }
 
