@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sort;
 
+import com.wildbeeslabs.jentle.collections.list.ACList;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
@@ -350,5 +352,69 @@ public class CSort {
             }
         }
         return -1;
+    }
+
+    public static <T, E extends ACListNode<T, E>> int search(final ACList<T, E> list, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(list);
+        int index = 1;
+        while (Objects.compare(list.getAt(index), value, cmp) < 0) {//list.getAt(index) != -1
+            index *= 2;
+        }
+        return binarySearch(list, value, index / 2, index, cmp);
+    }
+
+    private static <T, E extends ACListNode<T, E>> int binarySearch(final ACList<T, E> list, final T value, int low, int high, final Comparator<? super T> cmp) {
+        while (low <= high) {
+            int middle = (low + high) / 2;
+            final T midValue = list.getAt(middle);
+            if (Objects.compare(midValue, value, cmp) > 0) {//middle == -1
+                high = middle - 1;
+            } else if (Objects.compare(midValue, value, cmp) < 0) {
+                low = middle + 1;
+            } else {
+                return middle;
+            }
+        }
+        return -1;
+    }
+
+    public static <T> int search(final T[] array, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        if (Objects.isNull(value)) {
+            return -1;
+        }
+        return search(array, value, 0, array.length - 1, cmp);
+    }
+
+    private static <T> int search(final T[] array, final T value, int first, int last, final Comparator<? super T> cmp) {
+        assert (first >= 0 && last >= 0 && first < array.length && last < array.length);
+        if (first > last) {
+            return -1;
+        }
+        int middle = (last + first) / 2;
+        if (Objects.isNull(array[middle])) {
+            int left = middle - 1;
+            int right = middle + 1;
+            while (true) {
+                if (left < first && right > last) {
+                    return -1;
+                } else if (right <= last && Objects.nonNull(array[right])) {
+                    middle = right;
+                    break;
+                } else if (left >= first && Objects.nonNull(array[left])) {
+                    middle = left;
+                    break;
+                }
+                right++;
+                left--;
+            }
+        }
+        if (Objects.compare(array[middle], value, cmp) == 0) {
+            return middle;
+        } else if (Objects.compare(array[middle], value, cmp) < 0) {
+            return search(array, value, middle + 1, last, cmp);
+        } else {
+            return search(array, value, first, middle - 1, cmp);
+        }
     }
 }
