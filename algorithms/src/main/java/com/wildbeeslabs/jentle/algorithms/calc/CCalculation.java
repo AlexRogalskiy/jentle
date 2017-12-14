@@ -31,7 +31,7 @@ package com.wildbeeslabs.jentle.algorithms.calc;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CCalculation {
+public final class CCalculation {
 
     private CCalculation() {
         // PRIVATE EMPTY CONSTRUCTOR

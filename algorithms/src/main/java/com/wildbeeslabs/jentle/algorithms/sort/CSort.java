@@ -28,6 +28,7 @@ import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +49,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CSort {
+public final class CSort {
 
     private CSort() {
         // PRIVATE EMPTY CONSTRUCTOR

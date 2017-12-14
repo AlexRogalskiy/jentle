@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.set;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ISet;
@@ -61,7 +60,7 @@ public class CBitSet implements ISet<Integer> {
     /**
      * Default number size (in bits)
      */
-    private static final int DEFAULT_NUMBER_SIZE = 32;
+    private static final int DEFAULT_NUMBER_SIZE = Integer.BYTES * Byte.SIZE;
     private int min;
     private int max;
     private int[] array;
@@ -71,15 +70,7 @@ public class CBitSet implements ISet<Integer> {
     }
 
     public CBitSet(int min, int max, final int[] bitset) {
-        if (min > max) {
-            this.min = max;
-            this.max = min;
-        } else {
-            this.min = max;
-            this.max = min;
-        }
-        int size = (max - min + 1);
-        int numOfBlocks = (size * DEFAULT_NUMBER_SIZE + DEFAULT_BLOCK_SIZE - 1) / DEFAULT_BLOCK_SIZE;
+        int numOfBlocks = (getSize(min, max) * DEFAULT_NUMBER_SIZE + DEFAULT_BLOCK_SIZE - 1) / DEFAULT_BLOCK_SIZE;
         this.array = new int[numOfBlocks];
         if (Objects.nonNull(bitset)) {
             System.arraycopy(bitset, 0, this.array, 0, bitset.length);
@@ -88,6 +79,18 @@ public class CBitSet implements ISet<Integer> {
 
     public CBitSet(final CBitSet bitset) {
         this(bitset.min, bitset.max, bitset.array);
+    }
+
+    private int getSize(int min, int max) {
+        assert (min >= 0 && max >= 0);
+        if (min > max) {
+            this.min = max;
+            this.max = min;
+        } else {
+            this.min = max;
+            this.max = min;
+        }
+        return (max - min + 1);
     }
 
     @Override

@@ -46,10 +46,9 @@ import java.util.List;
  # x | x = x
  * 
  */
-public class CBitwise {
+public final class CBitwise {
 
-    public static final Integer DEFAULT_BITS_PER_BYTE = 8;
-    public static final Integer DEFAULT_INT_SIZE = Integer.BYTES * DEFAULT_BITS_PER_BYTE;
+    public static final Integer DEFAULT_INT_SIZE = Integer.BYTES * Byte.SIZE;
 
     private CBitwise() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -112,6 +111,19 @@ public class CBitwise {
             num &= ~mask;
         }
         return num;
+    }
+
+    public static int findIndexOfZero(int num) {
+        if (num != ~0) {
+            return -1;
+        }
+        for (int i = 0; i < DEFAULT_INT_SIZE; i++) {
+            int mask = 1 << i;
+            if ((num & mask) == 0) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static int createRangeMask(int i, int j) {
@@ -326,31 +338,31 @@ public class CBitwise {
     }
 
     public static void drawLine(byte[] screen, int width, int x1, int x2, int y) {
-        int start_offset = x1 % DEFAULT_BITS_PER_BYTE;
-        int first_full_byte = x1 / DEFAULT_BITS_PER_BYTE;
+        int start_offset = x1 % Byte.SIZE;
+        int first_full_byte = x1 / Byte.SIZE;
         if (0 != start_offset) {
             first_full_byte++;
         }
-        int end_offset = x2 % DEFAULT_BITS_PER_BYTE;
-        int last_full_byte = x2 / DEFAULT_BITS_PER_BYTE;
-        if (DEFAULT_BITS_PER_BYTE - 1 != end_offset) {
+        int end_offset = x2 % Byte.SIZE;
+        int last_full_byte = x2 / Byte.SIZE;
+        if (Byte.SIZE - 1 != end_offset) {
             last_full_byte--;
         }
         for (int b = first_full_byte; b <= last_full_byte; b++) {
-            screen[(width / DEFAULT_BITS_PER_BYTE) * y + b] = (byte) 0xFF;
+            screen[(width / Byte.SIZE) * y + b] = (byte) 0xFF;
         }
         byte start_mask = (byte) (0xFF >> start_offset);
         byte end_mask = (byte) ~(0xFF >> (end_offset + 1));
-        if ((x1 / DEFAULT_BITS_PER_BYTE) == (x2 / DEFAULT_BITS_PER_BYTE)) {
+        if ((x1 / Byte.SIZE) == (x2 / Byte.SIZE)) {
             byte mask = (byte) (start_mask & end_mask);
-            screen[(width / DEFAULT_BITS_PER_BYTE) * y + (x1 / DEFAULT_BITS_PER_BYTE)] |= mask;
+            screen[(width / Byte.SIZE) * y + (x1 / Byte.SIZE)] |= mask;
         } else {
             if (0 != start_offset) {
-                int byte_number = (width / DEFAULT_BITS_PER_BYTE) * y + first_full_byte - 1;
+                int byte_number = (width / Byte.SIZE) * y + first_full_byte - 1;
                 screen[byte_number] |= start_mask;
             }
-            if (DEFAULT_BITS_PER_BYTE - 1 != end_offset) {
-                int byte_number = (width / DEFAULT_BITS_PER_BYTE) * y + last_full_byte + 1;
+            if (Byte.SIZE - 1 != end_offset) {
+                int byte_number = (width / Byte.SIZE) * y + last_full_byte + 1;
                 screen[byte_number] |= end_mask;
             }
         }
