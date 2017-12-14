@@ -26,7 +26,7 @@ package com.wildbeeslabs.jentle.collections.list;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.list.CLinkedList.CLinkedListNode;
-import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Collection;
@@ -47,18 +47,17 @@ import lombok.ToString;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements IList<T> {
+public class CLinkedList<T, E extends ACListNodeExtended<T, E>> extends ACList<T, E> implements IList<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CLinkedListNode<T> extends ACListNode<T, CLinkedListNode<T>> {
-
-        protected CLinkedListNode<T> previous;
+    public static class CLinkedListNode<T> extends ACListNodeExtended<T, CLinkedListNode<T>> {
 
         public CLinkedListNode() {
             this(null);
@@ -69,13 +68,12 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
         }
 
         public CLinkedListNode(final T data, final CLinkedListNode<T> previous, final CLinkedListNode<T> next) {
-            super(data, next);
-            this.previous = previous;
+            super(data, next, previous);
         }
     }
 
-    protected CLinkedListNode<T> first;
-    protected CLinkedListNode<T> last;
+    protected E first;
+    protected E last;
     protected int size;
 
     public CLinkedList() {
@@ -86,21 +84,21 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
         this(null, cmp);
     }
 
-    public CLinkedList(final CLinkedList<? extends T> source) {
+    public CLinkedList(final E source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CLinkedList(final CLinkedList<? extends T> source, final Comparator<? super T> cmp) {
+    public CLinkedList(final E source, final Comparator<? super T> cmp) {
         super(cmp);
         this.first = this.last = null;
         this.size = 0;
         this.addList(source);
     }
 
-    public void addList(final CLinkedList<? extends T> source) {
+    public void addList(final E source) {
         if (Objects.nonNull(source)) {
-            for (CLinkedListNode<? extends T> current = source.first; current != null; current = current.getNext()) {
+            for (E current = this.first; Objects.nonNull(current) || current != this.last; current = current.getNext()) {
                 this.addLast(current.getData());
             }
         }
@@ -180,8 +178,8 @@ public class CLinkedList<T> extends ACList<T, CLinkedListNode<T>> implements ILi
         return this.getKthToLast2(this.first, k);
     }
 
-    public CLinkedListNode<T> partition(final T value) {
-        return (CLinkedListNode<T>) this.partition(this.first, value);
+    public E partition(final T value) {
+        return (E) this.partition(this.first, value);
     }
 
     public boolean isPalindrome() {
