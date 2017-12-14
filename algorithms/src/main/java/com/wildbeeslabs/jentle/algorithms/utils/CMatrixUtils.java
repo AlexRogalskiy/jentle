@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -139,5 +140,22 @@ public final class CMatrixUtils<T> {
                 matrix[row2][column2] = cell1;
             }
         }
+    }
+
+    public static <T> boolean findElement(final T[][] matrix, final T elem, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        int row = 0;
+        int col = matrix[0].length - 1;
+        while (row < matrix.length && col >= 0) {
+            if (Objects.compare(matrix[row][col], elem, cmp) == 0) {
+                return true;
+            } else if (Objects.compare(matrix[row][col], elem, cmp) > 0) {
+                col--;
+            } else {
+                row++;
+            }
+        }
+        return false;
     }
 }
