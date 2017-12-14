@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sort;
 
+import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,24 +52,21 @@ public class CSort {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-//    /**
-//     * Default sort comparator
-//     */
-//    public static final CSort.CSortComparator DEFAULT_SORT_COMPARATOR = new CSort.CSortComparator();
-//
-//    protected static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
-//
-//        @Override
-//        public int compare(final T first, final T last) {
-//            return CComparator.compareTo(first, last);
-//        }
-//    }
-//
-//    public static <T extends Comparable<? super T>> CSort.CSortComparator<T> getDefaultSortComparator() {
-//        return new CSort.CSortComparator<>();
-//    }
+    public static class CStringComparator extends CUtils.CSortComparator<String> {
 
-    public static <T extends Comparable<? super T>> int binarySearch(final T[] array, T value) {
+        @Override
+        public int compare(final String first, final String last) {
+            return CComparatorUtils.stringCompareTo(CSort.sortChars(first), CSort.sortChars(last));
+        }
+    }
+
+    public static String sortChars(final String value) {
+        final char[] content = value.toCharArray();
+        Arrays.sort(content);
+        return new String(content);
+    }
+
+    public static <T extends Comparable<? super T>> int binarySearch(final T[] array, final T value) {
         return CSort.binarySearch(array, value, CUtils.<T>getDefaultSortComparator());
     }
 
@@ -95,7 +94,7 @@ public class CSort {
     public static <T extends Comparable<? super T>> int binarySearchRecursive(final T[] array, final T value, int low, int high, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         Objects.requireNonNull(cmp);
-        assert (low >= 0 && high >= 0);
+        assert (low >= 0 && high >= 0 && low <= high && low < array.length && high <= array.length);
         if (low > high) {
             return -1;
         }
@@ -126,7 +125,7 @@ public class CSort {
     public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         Objects.requireNonNull(cmp);
-        assert (left >= 0 && right >= 0 && left <= right);
+        assert (left >= 0 && right >= 0 && left <= right && left < array.length && right <= array.length);
         int index = partition(array, left, right, cmp);
         if (left < index - 1) {
             quickSort(array, left, index - 1, cmp);
@@ -222,7 +221,7 @@ public class CSort {
     public static <T extends Comparable<? super T>> void sort(final T[] array, int low, int high, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         Objects.requireNonNull(cmp);
-        assert (low >= 0 && high >= 0 && low <= high);
+        assert (low >= 0 && high >= 0 && low <= high && low < array.length && high < array.length);
         Arrays.parallelSort(array, low, high, cmp);
     }
 
@@ -278,5 +277,78 @@ public class CSort {
 
     public static <T, U extends Comparable<? super U>> Map<? extends T, ? extends U> sortByValues(final Map<T, U> map) {
         return sortByValues(map, CUtils.<U>getDefaultSortComparator());
+    }
+
+    public static <T> void merge(final T[] first, final T[] second, int lastFirst, int lastSecond, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(first);
+        Objects.requireNonNull(second);
+        assert (lastFirst >= 0 && lastSecond >= 0 && lastFirst < first.length && lastSecond < second.length);
+        int indexF = lastFirst - 1;
+        int indexS = lastSecond - 1;
+        int indexMerged = lastSecond + lastFirst - 1;
+
+        while (indexS >= 0) {
+            if (indexF >= 0 && Objects.compare(first[indexF], second[indexS], cmp) > 0) {
+                first[indexMerged] = first[indexF];
+                indexF--;
+            } else {
+                first[indexMerged] = second[indexS];
+                indexS--;
+            }
+            indexMerged--;
+        }
+    }
+
+    public static void sortBlocks(final String[] array) {
+        final CHashMapList<String, String> mapList = new CHashMapList<>();
+        for (final String value : array) {
+            final String key = CSort.sortChars(value);
+            mapList.put(key, value);
+        }
+        int index = 0;
+        for (final String key : mapList.keySet()) {
+            final List<String> list = mapList.get(key);
+            for (final String value : list) {
+                array[index] = value;
+                index++;
+            }
+        }
+    }
+
+    public static <T> int search(final T[] array, int left, int right, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        assert (left >= 0 && right >= 0 && left <= right && left < array.length && right < array.length);
+        int middle = (left + right) / 2;
+        if (Objects.compare(value, array[middle], cmp) == 0) {
+            return middle;
+        }
+        if (right < left) {
+            return -1;
+        }
+        if (Objects.compare(array[left], array[middle], cmp) < 0) {
+            if (Objects.compare(value, array[left], cmp) >= 0 && Objects.compare(value, array[middle], cmp) < 0) {
+                return search(array, left, middle - 1, value, cmp);
+            } else {
+                return search(array, middle + 1, right, value, cmp);
+            }
+        } else if (Objects.compare(array[middle], array[left], cmp) < 0) {
+            if (Objects.compare(value, array[middle], cmp) > 0 && Objects.compare(value, array[right], cmp) <= 0) {
+                return search(array, middle + 1, right, value, cmp);
+            } else {
+                return search(array, left, middle - 1, value, cmp);
+            }
+        } else if (Objects.compare(array[left], array[middle], cmp) == 0) {
+            if (Objects.compare(array[middle], array[right], cmp) != 0) {
+                return search(array, middle + 1, right, value, cmp);
+            } else {
+                int result = search(array, left, middle - 1, value, cmp);
+                if (-1 == result) {
+                    return search(array, middle + 1, right, value, cmp);
+                } else {
+                    return result;
+                }
+            }
+        }
+        return -1;
     }
 }
