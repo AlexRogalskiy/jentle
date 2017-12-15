@@ -113,4 +113,73 @@ public final class CNumericUtils {
         }
         return true;
     }
+
+    public static int negate(int num) {
+        int neg = 0;
+        int newSign = num < 0 ? 1 : -1;
+        while (num != 0) {
+            neg += newSign;
+            num += newSign;
+        }
+        return neg;
+    }
+
+    public static int negate2(int num) {
+        int neg = 0;
+        int newSign = num < 0 ? 1 : -1;
+        int delta = newSign;
+        while (num != 0) {
+            boolean diffSigns = (num + delta > 0) != (num > 0);
+            if (num + delta != 0 && diffSigns) {
+                delta = newSign;
+            }
+            neg += delta;
+            num += delta;
+            delta += delta;
+        }
+        return neg;
+    }
+
+    public static int minus(int a, int b) {
+        return a + negate(b);
+    }
+
+    public static int multiply(int a, int b) {
+        if (a < b) {
+            return multiply(b, a);
+        }
+        int sum = 0;
+        for (int i = abs(b); i > 0; i = minus(i, 1)) {
+            sum += a;
+        }
+        if (b < 0) {
+            sum = negate(sum);
+        }
+        return sum;
+    }
+
+    private static int abs(int a) {
+        if (a < 0) {
+            return negate(a);
+        }
+        return a;
+    }
+
+    public static int divide(int a, int b) throws java.lang.ArithmeticException {
+        if (0 == b) {
+            throw new java.lang.ArithmeticException("ERROR: divider cannot be null");
+        }
+        int absa = abs(a);
+        int absb = abs(b);
+        int product = 0;
+        int x = 0;
+        while (product + absb <= absa) {
+            product += absb;
+            x++;
+        }
+        if ((a < 0 && b < 0) || (a > 0 && b > 0)) {
+            return x;
+        }
+        return negate(x);
+    }
 }
