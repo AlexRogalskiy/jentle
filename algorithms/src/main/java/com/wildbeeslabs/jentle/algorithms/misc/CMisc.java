@@ -26,6 +26,9 @@ package com.wildbeeslabs.jentle.algorithms.misc;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
@@ -115,5 +118,96 @@ public final class CMisc {
             }
         }
         return -1;
+    }
+
+    public static <T extends Point> T intersection(final T start1, final T end1, final T start2, final T end2) {
+        if (start1.x > end1.x) {
+            swap(start1, end1);
+        }
+        if (start2.x > end2.x) {
+            swap(start2, end2);
+        }
+        if (start1.x > start2.x) {
+            swap(start1, start2);
+            swap(end1, end2);
+        }
+        final Line<T> line1 = new Line<>(start1, end1);
+        final Line<T> line2 = new Line<>(start2, end2);
+        if (line1.slope == line2.slope) {
+            if (line1.yIntercept == line2.yIntercept && isBetween(start1, start2, end2)) {
+                return start2;
+            }
+            return null;
+        }
+        double x = (line2.yIntercept - line1.yIntercept) / (line1.slope - line2.slope);
+        double y = x * line1.slope + line1.yIntercept;
+        final Point intersection = new Point(x, y);
+        if (isBetween(start1, intersection, end1) && isBetween(start2, intersection, end2)) {
+            return (T) intersection;
+        }
+        return null;
+    }
+
+    private static boolean isBetween(double start, double middle, double end) {
+        if (start > end) {
+            return end <= middle && middle <= start;
+        } else {
+            return start <= middle && middle <= end;
+        }
+    }
+
+    private static <T extends Point> boolean isBetween(final T start, final T middle, final T end) {
+        return isBetween(start.x, middle.x, end.x) && isBetween(start.y, middle.y, end.y);
+    }
+
+    private static <T extends Point> void swap(final T first, final T last) {
+        double tempX = first.x;
+        double tempY = first.y;
+        first.setLocation(last.x, last.y);
+        last.setLocation(tempX, tempY);
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Line<T extends Point> {
+
+        public double slope;
+        public double yIntercept;
+
+        public Line(final T start, final T end) {
+            double deltaY = end.y - start.y;
+            double deltaX = end.x - start.x;
+            this.slope = deltaY / deltaX;
+            this.yIntercept = (end.y - slope * end.x);
+        }
+
+        public void setLocation(final Line<T> line2) {
+            this.slope = line2.slope;
+            this.yIntercept = line2.yIntercept;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Point {
+
+        public double x;
+        public double y;
+
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void setLocation(final Point point2) {
+            this.setLocation(point2.x, point2.y);
+        }
+
+        public void setLocation(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }

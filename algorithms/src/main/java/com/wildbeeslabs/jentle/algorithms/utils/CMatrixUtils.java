@@ -252,4 +252,21 @@ public final class CMatrixUtils<T> {
             this.column = (min.column + max.column) / 2;
         }
     }
+
+    public static <T> boolean checkDiagonal(final T[][] matrix, boolean isMainDiagonal, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        int row = 0;
+        int column = isMainDiagonal ? 0 : matrix[0].length - 1;
+        int direction = isMainDiagonal ? 1 : -1;
+        final T first = matrix[0][column];
+        for (int i = 0; i < matrix.length; i++) {
+            if (Objects.compare(matrix[row][column], first, cmp) != 0) {
+                return false;
+            }
+            row += 1;
+            column += direction;
+        }
+        return true;
+    }
 }
