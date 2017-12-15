@@ -25,11 +25,14 @@ package com.wildbeeslabs.jentle.algorithms.misc;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
@@ -270,5 +273,57 @@ public final class CMisc {
         }
         sb.append(parts.pop());
         return sb.toString();
+    }
+
+    public static <T extends Person> int maxAliveYear(final T[] persons, int min, int max) {
+        int[] populationDeltas = getPopulationDeltas(persons, min, max);
+        int maxAliveYear = getMaxAliveYear(populationDeltas);
+        return maxAliveYear + min;
+    }
+
+    private static <T extends Person> int[] getPopulationDeltas(final T[] persons, int min, int max) {
+        int[] populationDeltas = new int[max - min + 2];
+        for (final T person : persons) {
+            int birth = person.birth - min;
+            populationDeltas[birth]++;
+            int death = person.death - min;
+            populationDeltas[death + 1]--;
+        }
+        return populationDeltas;
+    }
+
+    private static int getMaxAliveYear(int[] deltas) {
+        int maxAliveYear = 0;
+        int maxAlive = 0;
+        int currentAlive = 0;
+        for (int year = 0; year < deltas.length; year++) {
+            currentAlive += deltas[year];
+            if (currentAlive > maxAlive) {
+                maxAliveYear = year;
+                maxAlive = currentAlive;
+            }
+        }
+        return maxAliveYear;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    public static class Person {
+
+        public int birth;
+        public int death;
+    }
+
+    public static Set<Integer> allLengths(int k, int shorter, int longer) {
+        final Set<Integer> lengths = new HashSet<>();
+        for (int i = 0; i <= k; i++) {
+            int j = k - i;
+            int length = i * shorter + j * longer;
+            lengths.add(length);
+        }
+        return lengths;
     }
 }
