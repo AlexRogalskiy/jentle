@@ -89,4 +89,10 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode
             this.adjacents.add(adjacent);
         }
     }
+
+    public void removeAdjacent(final E adjacent) {
+        if (Objects.nonNull(adjacent)) {
+            this.adjacents.remove(adjacent);
+        }
+    }
 }
