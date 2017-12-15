@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
@@ -195,5 +196,16 @@ public class CListUtils {
             }
         }
         return maxElem;
+    }
+
+    final static Predicate<Object> flip = predicate -> {
+        return new Random().nextBoolean();
+    };
+
+    public static <T> List<T> getRandomSubset(final List<T> list) {
+        final Random random = new Random();
+        return list.stream().filter(f -> {
+            return random.nextBoolean();
+        }).collect(Collectors.<T>toList());
     }
 }
