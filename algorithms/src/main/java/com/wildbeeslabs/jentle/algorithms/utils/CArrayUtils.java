@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -111,5 +112,26 @@ public final class CArrayUtils {
         int rightIndex = Math.max(midIndex + 1, midValue);
         int right = getMagic(array, rightIndex, end);
         return right;
+    }
+
+    public static int findMinDiff(final int[] array1, final int[] array2) {
+        Objects.requireNonNull(array1);
+        Objects.requireNonNull(array2);
+        Arrays.sort(array1);
+        Arrays.sort(array2);
+        int a = 0;
+        int b = 0;
+        int difference = Integer.MAX_VALUE;
+        while (a < array1.length && b < array2.length) {
+            if (Math.abs(array1[a] - array2[b]) < difference) {
+                difference = Math.abs(array1[a] - array2[b]);
+            }
+            if (array1[a] < array2[b]) {
+                a++;
+            } else {
+                b++;
+            }
+        }
+        return difference;
     }
 }

@@ -44,6 +44,10 @@ import java.util.List;
  # x ^ x = 0
  # x & x = x
  # x | x = x
+ #
+ # a = a ^ b
+ # b = a ^ b
+ # a = a ^b
  * 
  */
 public final class CBitwise {
@@ -111,6 +115,14 @@ public final class CBitwise {
             num &= ~mask;
         }
         return num;
+    }
+
+    public static int sign(int num) {
+        return flip((num >> DEFAULT_INT_SIZE - 1) & 0x1);
+    }
+
+    public static int flip(int bit) {
+        return 1 ^ bit;
     }
 
     public static int findIndexOfZero(int num) {
@@ -366,5 +378,17 @@ public final class CBitwise {
                 screen[byte_number] |= end_mask;
             }
         }
+    }
+
+    public static int getMax(int a, int b) {
+        int c = a - b;
+        int sa = sign(a);
+        int sb = sign(b);
+        int sc = sign(c);
+        int use_sign_of_a = sa ^ sb;
+        int use_sign_of_c = flip(sa ^ sb);
+        int k = use_sign_of_a * sa + use_sign_of_c * sc;
+        int q = flip(k);
+        return a * k + b * q;
     }
 }

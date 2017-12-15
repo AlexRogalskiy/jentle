@@ -25,10 +25,13 @@ package com.wildbeeslabs.jentle.algorithms.misc;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -209,5 +212,63 @@ public final class CMisc {
             this.x = x;
             this.y = y;
         }
+    }
+
+    public static class LexNumbers {
+
+        public static final String[] smalls = {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+        public static final String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+        public static final String[] bigs = {"", "Thousand", "Million", "Billion"};
+        public static final String hundred = "Hundred";
+        public static final String negative = "Negative";
+    }
+
+    public static String convert(int num) {
+        if (0 == num) {
+            return LexNumbers.smalls[0];
+        } else if (num < 0) {
+            return LexNumbers.negative + StringUtils.EMPTY + convert(-1 * num);
+        }
+        final LinkedList<String> parts = new LinkedList<>();
+        int chunkCount = 0;
+        while (num > 0) {
+            if (num % 1000 != 0) {
+                StringBuilder chunk = new StringBuilder();
+                chunk.append(convertChunk(num % 1000)).append(StringUtils.EMPTY).append(LexNumbers.bigs[chunkCount]);
+                parts.addFirst(chunk.toString());
+            }
+            num /= 1000;
+            chunkCount++;
+        }
+        return listToString(parts);
+    }
+
+    private static String convertChunk(int num) {
+        final LinkedList<String> parts = new LinkedList<>();
+        if (num >= 100) {
+            parts.addLast(LexNumbers.smalls[num / 100]);
+            parts.addLast(LexNumbers.hundred);
+            num %= 100;
+        }
+        if (num >= 10 && num <= 19) {
+            parts.addLast(LexNumbers.smalls[num]);
+        } else if (num >= 20) {
+            parts.addLast(LexNumbers.tens[num / 10]);
+            num %= 10;
+        }
+        if (num >= 1 && num <= 9) {
+            parts.addLast(LexNumbers.smalls[num]);
+        }
+        return listToString(parts);
+    }
+
+    private static String listToString(final LinkedList<String> parts) {
+        final StringBuffer sb = new StringBuffer();
+        while (parts.size() > 1) {
+            sb.append(parts.pop());
+            sb.append(StringUtils.EMPTY);
+        }
+        sb.append(parts.pop());
+        return sb.toString();
     }
 }
