@@ -88,9 +88,9 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     protected void init(final List<? extends CharSequence> list) {
         if (Objects.nonNull(list)) {
             list.stream().filter(Objects::nonNull).map((item) -> {
-                CTrieNode<Integer> current = this.root;
+                CTrie.CTrieNode<Integer> current = this.root;
                 for (final Integer charCode : item.codePoints().toArray()) {
-                    CTrieNode<Integer> child = current.getChild(charCode);
+                    CTrie.CTrieNode<Integer> child = current.getChild(charCode);
                     if (Objects.isNull(child)) {
                         child = new CTrieNode<>(charCode);
                         current.getChild().put(charCode, child);
@@ -107,7 +107,7 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
 
     @Override
     protected boolean contains(final CharSequence value, boolean isExact) {
-        CTrieNode<Integer> current = this.root;
+        CTrie.CTrieNode<Integer> current = this.root;
         for (final Integer charCode : value.codePoints().toArray()) {
             current = current.getChild(charCode);
             if (Objects.isNull(current)) {
@@ -118,10 +118,10 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     }
 
     @Override
-    protected CTrieNode createTrieNode(final Optional<? extends Integer> value) {
+    protected CTrie.CTrieNode createTrieNode(final Optional<? extends Integer> value) {
         if (value.isPresent()) {
-            return new CTrieNode<>(value.get());
+            return new CTrie.CTrieNode<>(value.get());
         }
-        return new CTrieNode<>();
+        return new CTrie.CTrieNode<>();
     }
 }

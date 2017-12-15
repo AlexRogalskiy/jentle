@@ -76,12 +76,22 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
         this(null, cmp);
     }
 
-    public CTree(final CTreeNode<T> root) {
+    public CTree(final CTree.CTreeNode<T> root) {
         this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTree(final CTreeNode<T> root, final Comparator<? super T> cmp) {
+    public CTree(final CTree.CTreeNode<T> root, final Comparator<? super T> cmp) {
         super(root, cmp);
+    }
+
+    @Override
+    public void insertLeft(final CTree.CTreeNode<T> node, final Optional<? extends T> value) {
+        this.insertLeft(null, value);
+    }
+
+    @Override
+    public void insertRight(final CTree.CTreeNode<T> node, final Optional<? extends T> value) {
+        this.insertToRight(node, value);
     }
 
     public int height() {
@@ -99,14 +109,14 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
     public static <T> CTree<T> fromArray(final T[] array, int start, int end) {
         Objects.requireNonNull(array);
         assert (start < array.length && end < array.length && start <= end);
-        final CTreeNode<T> rootNode = new CTreeNode<>(array[start]);
+        final CTree.CTreeNode<T> rootNode = new CTreeNode<>(array[start]);
         if (end - start > 0) {
-            final Queue<CTreeNode<T>> queue = new LinkedList<>();
+            final Queue<CTree.CTreeNode<T>> queue = new LinkedList<>();
             queue.add(rootNode);
             boolean done = false;
             int current = start + 1;
             while (!done) {
-                CTreeNode<T> node = queue.element();
+                CTree.CTreeNode<T> node = queue.element();
                 if (Objects.isNull(node.getLeft())) {
                     node.setLeft(new CTreeNode<>(array[current++]));
                     queue.add(node.getLeft());
@@ -125,10 +135,10 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
     }
 
     @Override
-    protected CTreeNode<T> createTreeNode(final Optional<? extends T> value) {
+    protected CTree.CTreeNode<T> createTreeNode(final Optional<? extends T> value) {
         if (value.isPresent()) {
-            return new CTreeNode<>(value.get());
+            return new CTree.CTreeNode<>(value.get());
         }
-        return new CTreeNode<>();
+        return new CTree.CTreeNode<>();
     }
 }

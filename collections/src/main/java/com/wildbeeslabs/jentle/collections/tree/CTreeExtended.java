@@ -77,19 +77,29 @@ public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedT
         this(null, cmp);
     }
 
-    public CTreeExtended(final CExtendedTreeNode<T> root) {
+    public CTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root) {
         this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTreeExtended(final CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
+    public CTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
         super(root, cmp);
     }
 
     @Override
-    protected CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
+    public void insertLeft(final CTreeExtended.CExtendedTreeNode<T> node, final Optional<? extends T> value) {
+        this.insertLeft(null, value);
+    }
+
+    @Override
+    public void insertRight(final CTreeExtended.CExtendedTreeNode<T> node, final Optional<? extends T> value) {
+        this.insertToRight(node, value);
+    }
+
+    @Override
+    protected CTreeExtended.CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
         if (value.isPresent()) {
-            return new CExtendedTreeNode<>(value.get());
+            return new CTreeExtended.CExtendedTreeNode<>(value.get());
         }
-        return new CExtendedTreeNode<>();
+        return new CTreeExtended.CExtendedTreeNode<>();
     }
 }

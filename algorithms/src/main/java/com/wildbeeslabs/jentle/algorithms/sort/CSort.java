@@ -418,4 +418,28 @@ public final class CSort {
             return search(array, value, first, middle - 1, cmp);
         }
     }
+
+    public static <T> void sortValleyPeak(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        for (int i = 1; i < array.length; i += 2) {
+            int bigIndex = maxIndex(array, i - 1, i, i + 1, cmp);
+            if (i != bigIndex) {
+                swap(array, i, bigIndex);
+            }
+        }
+    }
+
+    private static <T> int maxIndex(final T[] array, int a, int b, int c, final Comparator<? super T> cmp) {
+        int len = array.length;
+        final T aValue = a >= 0 && a < len ? array[a] : null;
+        final T bValue = b >= 0 && b < len ? array[b] : null;
+        final T cValue = c >= 0 && c < len ? array[c] : null;
+        final T max = Collections.max(Arrays.asList(aValue, bValue, cValue), cmp);
+        if (aValue == max) {
+            return a;
+        } else if (bValue == max) {
+            return b;
+        }
+        return c;
+    }
 }

@@ -25,8 +25,10 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -321,6 +323,82 @@ public class CTreeUtils {
             hashTable.remove(key);
         } else {
             hashTable.put(key, delta);
+        }
+    }
+
+    @SuppressWarnings("UnusedAssignment")
+    private static <T> void track(CRankTreeNode<T> root, final T value) {
+        if (Objects.isNull(root)) {
+            root = new CRankTreeNode<>(value);
+        } else {
+            root.insert(value);
+        }
+    }
+
+    public static <T, U extends CRankTreeNode<T>> int getRank(final U root, final T value) {
+        return root.getRank(value);
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @ToString
+    public static class CRankTreeNode<T> extends ACTreeNode<T, CRankTreeNode<T>> {
+
+        private int leftSize;
+        private final Comparator<? super T> cmp;
+
+        public CRankTreeNode() {
+            this(null);
+        }
+
+        public CRankTreeNode(final T data) {
+            this(data, CUtils.DEFAULT_SORT_COMPARATOR);
+        }
+
+        public CRankTreeNode(final T data, final Comparator<? super T> cmp) {
+            this(data, null, null, cmp);
+        }
+
+        public CRankTreeNode(final T data, final CRankTreeNode<T> left, final CRankTreeNode<T> right, final Comparator<? super T> cmp) {
+            super(data, left, right);
+            this.leftSize = 0;
+            this.cmp = cmp;
+        }
+
+        public void insert(final T value) {
+            if (Objects.compare(this.data, value, this.cmp) >= 0) {
+                if (Objects.nonNull(this.left)) {
+                    this.left.insert(value);
+                } else {
+                    this.left = new CRankTreeNode<>(value, this.cmp);
+                }
+                leftSize++;
+            } else {
+                if (Objects.nonNull(this.right)) {
+                    this.right.insert(value);
+                } else {
+                    this.right = new CRankTreeNode<>(value, this.cmp);
+                }
+            }
+        }
+
+        public int getRank(final T value) {
+            if (Objects.compare(this.data, value, this.cmp) == 0) {
+                return this.leftSize;
+            } else if (Objects.compare(this.data, value, this.cmp) > 0) {
+                if (Objects.isNull(this.left)) {
+                    return -1;
+                } else {
+                    return this.left.getRank(value);
+                }
+            } else {
+                int rightRank = Objects.isNull(this.right) ? -1 : this.right.getRank(value);
+                if (-1 == rightRank) {
+                    return -1;
+                } else {
+                    return this.leftSize + 1 + rightRank;
+                }
+            }
         }
     }
 }

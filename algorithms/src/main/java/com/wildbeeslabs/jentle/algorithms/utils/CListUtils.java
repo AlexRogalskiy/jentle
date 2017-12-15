@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -182,5 +183,17 @@ public class CListUtils {
             index++;
         }
         return subset;
+    }
+
+    public static <T> T max(final List<? extends T> list, int begin, int end, final Comparator<? super T> cmp) {//extends Comparable<? super T>
+        Objects.requireNonNull(list);
+        assert (begin >= 0 && end >= 0 && begin <= end && begin < list.size() && end < list.size());
+        T maxElem = list.get(begin);
+        for (++begin; begin < end; ++begin) {
+            if (Objects.compare(maxElem, list.get(begin), cmp) < 0) {
+                maxElem = list.get(begin);
+            }
+        }
+        return maxElem;
     }
 }

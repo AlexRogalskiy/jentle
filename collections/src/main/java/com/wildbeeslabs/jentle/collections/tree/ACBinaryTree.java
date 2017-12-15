@@ -53,8 +53,7 @@ public abstract class ACBinaryTree<T, U extends ACTreeNode<T, U>> extends ACBase
         super(root, cmp);
     }
 
-    @Override
-    public void insert(final T value) {
+    protected U insertTo(final T value) {
         final U node = this.createTreeNode(Optional.ofNullable(value));
         if (this.isEmpty()) {
             this.root = node;
@@ -62,6 +61,7 @@ public abstract class ACBinaryTree<T, U extends ACTreeNode<T, U>> extends ACBase
         } else {
             this.insert(this.getRoot(), node);
         }
+        return node;
     }
 
     protected void insert(final U node, final U newNode) {

@@ -100,6 +100,11 @@ public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>>
         super(root, cmp);
     }
 
+    @Override
+    public void insert(final T value) {
+        this.insertTo(value);
+    }
+
     public CTreeNode2<T> getRandom() {
         if (this.isEmpty()) {
             return null;

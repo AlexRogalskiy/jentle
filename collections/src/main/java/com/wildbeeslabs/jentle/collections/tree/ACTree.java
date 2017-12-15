@@ -53,28 +53,28 @@ public abstract class ACTree<T, U extends ACTreeNode<T, U>> extends ACBaseTree<T
         super(root, cmp);
     }
 
-    @Override
-    public void insertLeft(final U node, final Optional<? extends T> value) {
+    protected U insertToLeft(final U node, final Optional<? extends T> value) {
         Objects.requireNonNull(node);
         if (Objects.nonNull(node.getLeft())) {
             LOGGER.debug(String.format("Node (%s) has already left child", node));
-            return;
+            return null;
         }
         final U newNode = this.createTreeNode(value);
         node.setLeft(newNode);
         this.size++;
+        return newNode;
     }
 
-    @Override
-    public void insertRight(final U node, final Optional<? extends T> value) {
+    protected U insertToRight(final U node, final Optional<? extends T> value) {
         Objects.requireNonNull(node);
         if (Objects.nonNull(node.getRight())) {
             LOGGER.debug(String.format("Node (%s) has already right child", node));
-            return;
+            return null;
         }
         final U newNode = this.createTreeNode(value);
         node.setRight(newNode);
         this.size++;
+        return newNode;
     }
 
     @Override

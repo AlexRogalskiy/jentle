@@ -75,7 +75,11 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
 
     @Override
     public void setRoot(final Optional<? extends T> value) {
-        this.root = this.createTreeNode(value);
+        this.setRoot(this.createTreeNode(value));
+    }
+
+    protected void setRoot(final U node) {
+        this.root = node;
         this.size = 1;
     }
 

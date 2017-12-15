@@ -63,6 +63,11 @@ public class CBinaryTree<T> extends ACBinaryTree<T, CTree.CTreeNode<T>> {
         super(root, cmp);
     }
 
+    @Override
+    public void insert(final T value) {
+        this.insertTo(value);
+    }
+
     public static <T> CTree<T> createMinimalBST(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         Arrays.sort(array, cmp);
