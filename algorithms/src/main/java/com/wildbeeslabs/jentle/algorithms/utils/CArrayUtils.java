@@ -26,8 +26,10 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -227,5 +229,59 @@ public final class CArrayUtils {
             }
         }
         return maxSum;
+    }
+
+    public static int[] findSwapValues(int[] array1, int[] array2) {
+        Objects.requireNonNull(array1);
+        Objects.requireNonNull(array2);
+        final Integer target = getTarget(array1, array2);
+        if (Objects.isNull(target)) {
+            return null;
+        }
+        return findDifference(array1, array2, target);
+    }
+
+    private static Integer getTarget(int[] array1, int[] array2) {
+        int sum1 = Arrays.stream(array1).sum();
+        int sum2 = Arrays.stream(array2).sum();
+        if ((sum1 - sum2) % 2 != 0) {
+            return null;
+        }
+        return (sum1 - sum2) / 2;
+    }
+
+    private static int[] findDifference(int[] array1, int[] array2, int target) {
+        final Set<Integer> content = getContents(array2);
+        for (int one : array1) {
+            int two = one - target;
+            if (content.contains(two)) {
+                return new int[]{one, two};
+            }
+        }
+        return null;
+    }
+
+    private static int[] findDifference2(int[] array1, int[] array2, int target) {
+        int a = 0;
+        int b = 0;
+        while (a < array1.length && b < array2.length) {
+            int diff = array1[a] - array2[b];
+            if (diff == target) {
+                return new int[]{array1[a], array2[b]};
+            } else if (diff < target) {
+                a++;
+            } else {
+                b++;
+            }
+        }
+        return null;
+    }
+
+    private static Set<Integer> getContents(int[] array) {
+        final Set<Integer> set = new HashSet<>();
+        for (int a : array) {
+            set.add(a);
+        }
+        return set;
     }
 }
