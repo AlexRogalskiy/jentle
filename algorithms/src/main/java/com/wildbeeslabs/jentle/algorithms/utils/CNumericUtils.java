@@ -182,4 +182,31 @@ public final class CNumericUtils {
         }
         return negate(x);
     }
+
+    public static int rand7() {
+        while (true) {
+            int r1 = 2 * rand5();
+            int r2 = rand5();
+            if (r2 != 4) {
+                int rand1 = r2 % 2;
+                int num = r1 + rand1;
+                if (num < 7) {
+                    return num;
+                }
+            }
+        }
+    }
+
+    public static int rand72() {
+        while (true) {
+            int num = 5 * rand5() + rand5();
+            if (num < 21) {
+                return num % 7;
+            }
+        }
+    }
+
+    public static int rand5() {
+        return CNumericUtils.generateRandomInt(0, 5);
+    }
 }
