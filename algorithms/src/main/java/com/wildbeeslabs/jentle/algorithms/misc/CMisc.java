@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.misc;
 
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Arrays;
@@ -33,11 +34,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -526,5 +529,252 @@ public final class CMisc {
             }
         }
         return result;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Grid<E extends Position, T extends Actor<E>> {
+
+        private boolean[][] grid;
+        private final T actor;
+
+        public Grid(final T actor) {
+            this(actor, 1);
+        }
+
+        public Grid(final T actor, int size) {
+            assert (size > 0);
+            this.grid = new boolean[size][size];
+            this.actor = actor;
+        }
+
+        private void copyWithShift(boolean[][] oldGrid, boolean[][] newGrid, int shiftRow, int shiftColumn) {
+            for (int r = 0; r < oldGrid.length; r++) {
+                System.arraycopy(oldGrid[r], 0, newGrid[r + shiftRow], shiftColumn, oldGrid[0].length);
+            }
+        }
+
+        private void ensureFit(final E position) {
+            int shiftRow = 0;
+            int shiftColumn = 0;
+
+            int numRows = this.grid.length;
+            if (position.row < 0) {
+                shiftRow = numRows;
+                numRows *= 2;
+            } else if (position.row >= numRows) {
+                numRows *= 2;
+            }
+
+            int numColumns = this.grid[0].length;
+            if (position.column < 0) {
+                shiftColumn = numColumns;
+                numColumns *= 2;
+            } else if (position.column >= numColumns) {
+                numColumns *= 2;
+            }
+
+            if (numRows != this.grid.length || numColumns != this.grid[0].length) {
+                boolean[][] newGrid = new boolean[numRows][numColumns];
+                copyWithShift(this.grid, newGrid, shiftRow, shiftColumn);
+                this.actor.adjustPosition(shiftRow, shiftColumn);
+                this.grid = newGrid;
+            }
+        }
+
+        private void flip(final E position) {
+            int row = position.row;
+            int column = position.column;
+            this.grid[row][column] = !this.grid[row][column];
+        }
+
+        public void move() {
+            this.actor.turn(this.grid[this.actor.position.row][this.actor.position.column]);
+            this.flip(this.actor.position);
+            this.actor.move();
+            this.ensureFit(this.actor.position);
+        }
+
+        public String toFormatString() {
+            final StringBuffer sb = new StringBuffer();
+            for (int r = 0; r < this.grid.length; r++) {
+                for (int c = 0; c < this.grid[0].length; c++) {
+                    if (r == this.actor.position.row && c == this.actor.position.column) {
+                        sb.append(this.actor.orientation.toFormatString());
+                    } else if (this.grid[r][c]) {
+                        sb.append("X");
+                    } else {
+                        sb.append("_");
+                    }
+                }
+                sb.append(StringUtils.LF);
+            }
+            sb.append(this.actor.getClass().getName()).append(this.actor.orientation.toFormatString()).append(StringUtils.LF);
+            return sb.toString();
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Actor<T extends Position> {
+
+        public Orientation orientation;
+        public T position;
+
+        public Actor() {
+            this((T) new Position(0, 0), Orientation.RIGHT);
+        }
+
+        public Actor(final T position, final Orientation orientation) {
+            this.position = position;
+            this.orientation = orientation;
+        }
+
+        public void turn(boolean clockWise) {
+            this.orientation = this.orientation.getTurn(clockWise);
+        }
+
+        public void move() {
+            if (Objects.equals(Orientation.LEFT, this.orientation)) {
+                this.position.column--;
+            } else if (Objects.equals(Orientation.RIGHT, this.orientation)) {
+                this.position.column++;
+            } else if (Objects.equals(Orientation.UP, this.orientation)) {
+                this.position.row--;
+            } else if (Objects.equals(Orientation.DOWN, this.orientation)) {
+                this.position.row++;
+            }
+        }
+
+        public void adjustPosition(int shiftRow, int shiftColumn) {
+            this.position.row += shiftRow;
+            this.position.column += shiftColumn;
+        }
+    }
+
+    public static enum Orientation {
+
+        LEFT, UP, RIGHT, DOWN;
+
+        public Orientation getTurn(boolean clockWise) {
+            if (Objects.equals(Orientation.LEFT, this)) {
+                return clockWise ? Orientation.UP : Orientation.DOWN;
+            } else if (Objects.equals(Orientation.UP, this)) {
+                return clockWise ? Orientation.RIGHT : Orientation.LEFT;
+            } else if (Objects.equals(Orientation.RIGHT, this)) {
+                return clockWise ? Orientation.DOWN : Orientation.UP;
+            }
+            return clockWise ? Orientation.LEFT : Orientation.RIGHT;
+        }
+
+        public String toFormatString() {
+            if (Objects.equals(Orientation.LEFT, this)) {
+                return "\u2190";
+            } else if (Objects.equals(Orientation.UP, this)) {
+                return "\u2191";
+            } else if (Objects.equals(Orientation.RIGHT, this)) {
+                return "\u2192";
+            }
+            return "\u2193";
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Position implements Cloneable {
+
+        public int row;
+        public int column;
+
+        public Position(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
+
+        @Override
+        @SuppressWarnings({"CloneDoesntCallSuperClone", "CloneDeclaresCloneNotSupported"})
+        public Position clone() {
+            return new Position(this.row, this.column);
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Board<E extends Position, T extends Actor<E>> {
+
+        private final Set<E> whites;
+        private final T actor;
+        private E topLeft;
+        private E bottomRight;
+
+        public Board(final T actor) {
+            this(actor, (E) new Position(0, 0), (E) new Position(0, 0));
+        }
+
+        public Board(final T actor, final E topLeft, final E bottomRight) {
+            this.whites = new HashSet<>();
+            this.actor = actor;
+            this.topLeft = topLeft;
+            this.bottomRight = bottomRight;
+        }
+
+        public void move() {
+            this.actor.turn(this.isWhite(this.actor.position));
+            this.flip(this.actor.position);
+            this.actor.move();
+            this.ensureFit(this.actor.position);
+        }
+
+        private void flip(final E position) {
+            if (this.whites.contains(position)) {
+                this.whites.remove(position);
+            } else {
+                this.whites.add((E) position.clone());
+            }
+        }
+
+        private void ensureFit(final E position) {
+            int row = position.row;
+            int column = position.column;
+
+            this.topLeft.row = Math.min(this.topLeft.row, row);
+            this.topLeft.column = Math.min(this.topLeft.column, column);
+            this.bottomRight.row = Math.max(this.bottomRight.row, row);
+            this.bottomRight.column = Math.max(this.bottomRight.column, column);
+        }
+
+        public boolean isWhite(int row, int column) {
+            return this.isWhite((E) new Position(row, column));
+        }
+
+        public boolean isWhite(final E position) {
+            return this.whites.contains(position);
+        }
+
+        public String toFormatString() {
+            final StringBuffer sb = new StringBuffer();
+            int rowMin = this.topLeft.row;
+            int rowMax = this.bottomRight.row;
+            int colMin = this.topLeft.column;
+            int colMax = this.bottomRight.column;
+            for (int r = rowMin; r <= rowMax; r++) {
+                for (int c = colMin; c <= colMax; c++) {
+                    if (r == this.actor.position.row && c == this.actor.position.column) {
+                        sb.append(this.actor.orientation.toFormatString());
+                    } else if (this.isWhite(r, c)) {
+                        sb.append("X");
+                    } else {
+                        sb.append("_");
+                    }
+                }
+                sb.append(StringUtils.LF);
+            }
+            sb.append(this.actor.getClass().getName()).append(this.actor.orientation.toFormatString()).append(StringUtils.LF);
+            return sb.toString();
+        }
     }
 }
