@@ -23,7 +23,9 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import lombok.AllArgsConstructor;
@@ -268,5 +270,35 @@ public final class CMatrixUtils<T> {
             column += direction;
         }
         return true;
+    }
+
+    public static <T> List<Integer> computeAreaSize(final T[][] matrix, final T emptyValue, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+        final List<Integer> areaSize = new ArrayList<>();
+        for (int r = 0; r < matrix.length; r++) {
+            for (int c = 0; c < matrix[0].length; c++) {
+                int size = computeArea(matrix, visited, r, c, emptyValue, cmp);
+                if (size > 0) {
+                    areaSize.add(size);
+                }
+            }
+        }
+        return areaSize;
+    }
+
+    private static <T> int computeArea(final T[][] matrix, boolean[][] visited, int row, int col, final T emptyValue, final Comparator<? super T> cmp) {
+        if (row < 0 || col < 0 || row >= matrix.length || col >= matrix[0].length || visited[row][col] || Objects.compare(matrix[row][col], emptyValue, cmp) == 0) {
+            return 0;
+        }
+        int size = 1;
+        visited[row][col] = true;
+        for (int dr = -1; dr <= 1; dr++) {
+            for (int dc = -1; dc <= 1; dc++) {
+                size += computeArea(matrix, visited, row + dr, col + dc, emptyValue, cmp);
+            }
+        }
+        return size;
     }
 }
