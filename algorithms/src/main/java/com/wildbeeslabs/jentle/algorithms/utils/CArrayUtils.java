@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -33,11 +34,13 @@ import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.math3.util.Pair;
 
 /**
  *
@@ -283,5 +286,42 @@ public final class CArrayUtils {
             set.add(a);
         }
         return set;
+    }
+
+    public static List<Pair<Integer, Integer>> getPairSum(int[] array, int sum) {
+        Objects.requireNonNull(array);
+        final List<Pair<Integer, Integer>> result = new ArrayList<>();
+        final Set<Integer> elements = new HashSet<>();
+        for (int x : array) {
+            int complement = sum - x;
+            if (elements.contains(complement) && !elements.contains(x)) {
+                result.add(new Pair<>(x, complement));
+            }
+            elements.add(x);
+        }
+        return result;
+    }
+
+    public static List<Pair<Integer, Integer>> getPairSum2(int[] array, int sum) {
+        Objects.requireNonNull(array);
+        Arrays.sort(array);
+        int first = 0;
+        int last = array.length - 1;
+        final List<Pair<Integer, Integer>> result = new ArrayList<>();
+        while (first < last) {
+            int s = array[first] + array[last];
+            if (s == sum) {
+                result.add(new Pair<>(array[first], array[last]));
+                first++;
+                last--;
+            } else {
+                if (s < sum) {
+                    first++;
+                } else {
+                    last--;
+                }
+            }
+        }
+        return result;
     }
 }
