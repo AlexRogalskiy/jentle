@@ -31,6 +31,11 @@ import java.util.Objects;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
@@ -133,5 +138,94 @@ public final class CArrayUtils {
             }
         }
         return difference;
+    }
+
+    public static <T> Result findUnsortedSequence(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int endLeft = findEndOfLeftSubsequence(array, cmp);
+        if (endLeft >= array.length - 1) {
+            return null;
+        }
+        int startRight = findStartOfRightSubsequence(array, cmp);
+        int maxIndex = endLeft;
+        int minIndex = startRight;
+        for (int i = endLeft + 1; i < startRight; i++) {
+            if (Objects.compare(array[i], array[minIndex], cmp) < 0) {
+                minIndex = i;
+            }
+            if (Objects.compare(array[i], array[maxIndex], cmp) > 0) {
+                maxIndex = i;
+            }
+        }
+        int leftIndex = shrinkLeft(array, minIndex, endLeft, cmp);
+        int rightIndex = shrinkRight(array, maxIndex, startRight, cmp);
+        return new Result(leftIndex, rightIndex);
+    }
+
+    private static <T> int findEndOfLeftSubsequence(final T[] array, final Comparator<? super T> cmp) {
+        for (int i = 1; i < array.length; i++) {
+            if (Objects.compare(array[i], array[i - 1], cmp) < 0) {
+                return i - 1;
+            }
+        }
+        return array.length - 1;
+    }
+
+    private static <T> int findStartOfRightSubsequence(final T[] array, final Comparator<? super T> cmp) {
+        for (int i = array.length - 2; i >= 0; i--) {
+            if (Objects.compare(array[i], array[i + 1], cmp) > 0) {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+
+    private static <T> int shrinkLeft(final T[] array, int minIndex, int start, final Comparator<? super T> cmp) {
+        final T comp = array[minIndex];
+        for (int i = start - 1; i >= 0; i--) {
+            if (Objects.compare(array[i], comp, cmp) <= 0) {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+
+    private static <T> int shrinkRight(final T[] array, int maxIndex, int start, final Comparator<? super T> cmp) {
+        final T comp = array[maxIndex];
+        for (int i = start; i < array.length; i++) {
+            if (Objects.compare(array[i], comp, cmp) >= 0) {
+                return i - 1;
+            }
+        }
+        return array.length - 1;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    public static class Result {
+
+        public int leftIndex = 0;
+        public int rightIndex = 0;
+
+        public String toFormatString() {
+            return "( " + this.leftIndex + ", " + this.rightIndex + " )";
+        }
+    }
+
+    public static int getMaxSum(int[] array) {
+        int maxSum = 0;
+        int sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            sum += array[i];
+            if (maxSum < sum) {
+                maxSum = sum;
+            } else if (sum < 0) {
+                sum = 0;
+            }
+        }
+        return maxSum;
     }
 }

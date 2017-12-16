@@ -282,4 +282,62 @@ public final class CStringUtils {
     private static boolean stringToBool(final String value) {
         return "1".equals(value);
     }
+
+    public static boolean doesMatch(final String pattern, final String value) {
+        if (pattern.length() == 0) {
+            return value.length() == 0;
+        }
+        char mainChar = pattern.charAt(0);
+        char altChar = mainChar == 'a' ? 'b' : 'a';
+        int size = value.length();
+
+        int countOfMain = countOf(pattern, mainChar);
+        int countOfAlt = pattern.length() - countOfMain;
+        int firstAlt = pattern.indexOf(altChar);
+        int maxMainSize = size / countOfMain;
+
+        for (int i = 0; i <= maxMainSize; i++) {
+            int remainLength = size - i * countOfMain;
+            if (0 == countOfAlt || remainLength % countOfAlt == 0) {
+                int altIndex = firstAlt * i;
+                int altSize = 0 == countOfAlt ? 0 : remainLength / countOfAlt;
+                if (matches(pattern, value, i, altSize, altIndex)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean matches(final String pattern, final String value, int mainSize, int altSize, int firstAlt) {
+        int stringIndex = mainSize;
+        for (int i = 1; i < pattern.length(); i++) {
+            int size = pattern.charAt(i) == pattern.charAt(0) ? mainSize : altSize;
+            int offset = pattern.charAt(i) == pattern.charAt(0) ? 0 : firstAlt;
+            if (!isEqual(value, offset, stringIndex, size)) {
+                return false;
+            }
+            stringIndex += size;
+        }
+        return true;
+    }
+
+    private static boolean isEqual(final String s1, int offset1, int offset2, int size) {
+        for (int i = 0; i < size; i++) {
+            if (s1.charAt(offset1 + i) != s1.charAt(offset2 + i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static int countOf(final String pattern, char c) {
+        int count = 0;
+        for (int i = 0; i < pattern.length(); i++) {
+            if (pattern.charAt(i) == c) {
+                count++;
+            }
+        }
+        return count;
+    }
 }
