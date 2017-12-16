@@ -23,10 +23,14 @@
  */
 package com.wildbeeslabs.jentle.algorithms.misc;
 
+import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -178,19 +182,42 @@ public final class CMisc {
     @ToString
     public static class Line<T extends Point> {
 
+        public static double epsilon = 0.0001;
         public double slope;
         public double yIntercept;
+        private boolean infinite_slope = false;
 
         public Line(final T start, final T end) {
-            double deltaY = end.y - start.y;
-            double deltaX = end.x - start.x;
-            this.slope = deltaY / deltaX;
-            this.yIntercept = (end.y - slope * end.x);
+            if (Math.abs(start.x - end.x) > Line.epsilon) {
+                double deltaY = start.y - end.y;
+                double deltaX = start.x - end.x;
+                this.slope = deltaY / deltaX;
+                this.yIntercept = (start.y - slope * start.x);
+            } else {
+                this.infinite_slope = true;
+                this.yIntercept = start.x;
+            }
         }
 
         public void setLocation(final Line<T> line2) {
             this.slope = line2.slope;
             this.yIntercept = line2.yIntercept;
+        }
+
+        public static double floorToNearestEpsilon(double value) {
+            int res = (int) (value / Line.epsilon);
+            return ((double) res) * Line.epsilon;
+        }
+
+        public boolean isEquivalent(final Line<T> line) {
+            if (isEquivalent(line.slope, this.slope) && isEquivalent(line.yIntercept, this.yIntercept) && (line.infinite_slope = this.infinite_slope)) {
+                return true;
+            }
+            return false;
+        }
+
+        public boolean isEquivalent(double a, double b) {
+            return (Math.abs(a - b) < Line.epsilon);
         }
     }
 
@@ -346,15 +373,15 @@ public final class CMisc {
             this.bottom = bottom;
         }
 
-        public Point middle() {
-            return new Point((this.left + this.right) / 2.0, (this.top + this.bottom) / 2.0);
+        public T middle() {
+            return (T) new Point((this.left + this.right) / 2.0, (this.top + this.bottom) / 2.0);
         }
 
-        public Point extend(final Point mid1, Point mid2, double size) {
+        public T extend(final T mid1, T mid2, double size) {
             double xdir = mid1.x < mid2.x ? -1 : 1;
             double ydir = mid1.y < mid2.x ? -1 : 1;
             if (mid1.x == mid2.x) {
-                return new Point(mid1.x, mid1.y + ydir * size / 2.0);
+                return (T) new Point(mid1.x, mid1.y + ydir * size / 2.0);
             }
 
             double slope = (mid1.y - mid2.y) / (mid1.x - mid2.x);
@@ -372,19 +399,19 @@ public final class CMisc {
                 y1 = mid1.y + ydir * size / 2.0;
                 x1 = (y1 - mid1.y) / slope + mid1.x;
             }
-            return new Point(x1, y1);
+            return (T) new Point(x1, y1);
         }
 
-        public Line cut(final Square<T> other) {
-            final Point p1 = extend(this.middle(), other.middle(), this.size);
-            final Point p2 = extend(this.middle(), other.middle(), -1 * this.size);
-            final Point p3 = extend(other.middle(), this.middle(), other.size);
-            final Point p4 = extend(other.middle(), this.middle(), -1 * other.size);
+        public Line<T> cut(final Square<T> other) {
+            final T p1 = extend(this.middle(), other.middle(), this.size);
+            final T p2 = extend(this.middle(), other.middle(), -1 * this.size);
+            final T p3 = extend(other.middle(), this.middle(), other.size);
+            final T p4 = extend(other.middle(), this.middle(), -1 * other.size);
 
-            Point start = p1;
-            Point end = p1;
-            Point[] points = {p2, p3, p4};
-            for (Point point : points) {
+            T start = p1;
+            T end = p1;
+            final List<T> points = Arrays.asList(p2, p3, p4);
+            for (final T point : points) {
                 if (point.x < start.x || (point.x == start.x && point.y < start.y)) {
                     start = point;
                 } else if (point.x > end.x || (point.x == end.x && point.y > end.y)) {
@@ -393,5 +420,56 @@ public final class CMisc {
             }
             return new Line<>(start, end);
         }
+    }
+
+    public static <T extends Point> Line<T> findBestLine(final T[] points) {
+        final CHashMapList<Double, Line<T>> linesBySlope = getListOfLines(points);
+        return getBestLine(linesBySlope);
+    }
+
+    private static <T extends Point> CHashMapList<Double, Line<T>> getListOfLines(final T[] points) {
+        final CHashMapList<Double, Line<T>> linesBySlope = new CHashMapList<>();
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                final Line<T> line = new Line<>(points[i], points[j]);
+                double key = Line.floorToNearestEpsilon(line.slope);
+                linesBySlope.put(key, line);
+            }
+        }
+        return linesBySlope;
+    }
+
+    private static <T extends Point> Line<T> getBestLine(final CHashMapList<Double, Line<T>> linesBySlope) {
+        Line<T> bestLine = null;
+        int bestCount = 0;
+        final Set<Double> slopes = linesBySlope.keySet();
+        for (final Double slope : slopes) {
+            final List<Line<T>> lines = linesBySlope.get(slope);
+            for (final Line<T> line : lines) {
+                int count = countEquivalentLines(linesBySlope, line);
+                if (count > bestCount) {
+                    bestLine = line;
+                    bestCount = count;
+                }
+            }
+        }
+        return bestLine;
+    }
+
+    private static <T extends Point> int countEquivalentLines(final CHashMapList<Double, Line<T>> linesBySlope, final Line<T> line) {
+        double key = Line.floorToNearestEpsilon(line.slope);
+        int count = countEquivalentLines(linesBySlope.get(key), line);
+        count += countEquivalentLines(linesBySlope.get(key - Line.epsilon), line);
+        count += countEquivalentLines(linesBySlope.get(key + Line.epsilon), line);
+        return count;
+    }
+
+    private static <T extends Point> int countEquivalentLines(final List<Line<T>> lines, final Line<T> line) {
+        if (Objects.isNull(lines)) {
+            return 0;
+        }
+        int count = 0;
+        count = lines.stream().filter((parallelLine) -> (parallelLine.isEquivalent(line))).map((item) -> 1).reduce(count, Integer::sum);
+        return count;
     }
 }
