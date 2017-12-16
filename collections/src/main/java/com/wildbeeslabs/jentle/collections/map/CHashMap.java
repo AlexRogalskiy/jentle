@@ -25,10 +25,12 @@ package com.wildbeeslabs.jentle.collections.map;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IMap;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
+import java.util.AbstractMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,7 +54,7 @@ import org.apache.log4j.Logger;
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @ToString
-public class CHashMap<K, V> implements IMap<K, V> {
+public class CHashMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {
 
     /**
      * Default Logger instance
@@ -99,11 +101,13 @@ public class CHashMap<K, V> implements IMap<K, V> {
 //        }
     }
 
-    public void put(final K key, final V value) {
+    @Override
+    public V put(final K key, final V value) {
         CLinkedListNode<K, V> node = this.getNodeForKey(key);
         if (Objects.nonNull(key)) {
+            final V prevValue = node.getData();
             node.setData(value);
-            return;
+            return prevValue;
         }
         node = new CLinkedListNode<>(key, value);
         int index = this.getIndexForKey(key);
@@ -112,9 +116,10 @@ public class CHashMap<K, V> implements IMap<K, V> {
             node.getNext().setPrevious(node);
         }
         this.array.set(index, node);
+        return null;
     }
 
-    public void remove(final K key) {
+    protected V removeBy(final K key) {
         final CLinkedListNode<K, V> node = this.getNodeForKey(key);
         if (Objects.nonNull(node.getPrevious())) {
             node.getPrevious().setNext(node.getNext());
@@ -125,9 +130,10 @@ public class CHashMap<K, V> implements IMap<K, V> {
         if (Objects.nonNull(node.getNext())) {
             node.getNext().setPrevious(node.getPrevious());
         }
+        return node.getData();
     }
 
-    public V get(final K key) {
+    protected V getBy(final K key) {
         final CLinkedListNode<K, V> node = this.getNodeForKey(key);
         return (Objects.isNull(node) ? null : node.getData());
     }
@@ -146,5 +152,10 @@ public class CHashMap<K, V> implements IMap<K, V> {
 
     public int getIndexForKey(final K key) {
         return Math.abs(key.hashCode() % this.array.size());
+    }
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

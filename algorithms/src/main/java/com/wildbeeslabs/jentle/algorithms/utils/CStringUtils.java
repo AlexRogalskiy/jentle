@@ -23,12 +23,15 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+import com.wildbeeslabs.jentle.collections.tree.CTrie;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +46,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -339,5 +343,112 @@ public final class CStringUtils {
             }
         }
         return count;
+    }
+
+    public static List<String> getValidT9Words(final String numbers, final CHashMapList<String, String> dictionary) {
+        return dictionary.get(numbers);
+    }
+
+    private static CHashMapList<String, String> initializeDictionary(final String[] words) {
+        final Map<Integer, Character> letterToNumberMap = createLetterToNumberMap();
+        final CHashMapList<String, String> wordsToNumbers = new CHashMapList<>();
+        for (final String word : words) {
+            String numbers = convertToT9(word, letterToNumberMap);
+            wordsToNumbers.put(numbers, word);
+        }
+        return wordsToNumbers;
+    }
+
+    private static Map<Integer, Character> createLetterToNumberMap() {
+        final Map<Integer, Character> letterToNumberMap = new HashMap<>();
+        for (int i = 0; i < T9.letters.length; i++) {
+            int[] letters = T9.letters[i];
+            if (Objects.nonNull(letters)) {
+                for (int letter : letters) {
+                    char c = Character.forDigit(i, 10);
+                    letterToNumberMap.put(letter, c);
+                }
+            }
+        }
+        return letterToNumberMap;
+    }
+
+    private static String convertToT9(final String word, final Map<Integer, Character> letterToNumberMap) {
+        final StringBuffer sb = new StringBuffer();
+        for (int c : word.codePoints().toArray()) {
+            if (letterToNumberMap.containsKey(c)) {
+                char digit = letterToNumberMap.get(c);
+                sb.append(digit);
+            }
+        }
+        return sb.toString();
+    }
+
+    private static String converToT9(final String word, final Map<Integer, Character> letterToNumberMap) {
+        final StringBuffer sb = new StringBuffer();
+        for (int c : word.codePoints().toArray()) {
+            if (letterToNumberMap.containsKey(c)) {
+                char digit = letterToNumberMap.get(c);
+                sb.append(digit);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static List<String> getValidT9Words(final String number, final CTrie trie) {
+        final List<String> results = new ArrayList<>();
+        getValidWords(number, 0, StringUtils.EMPTY, trie.getRoot(), results);
+        return results;
+    }
+
+    private static void getValidWords(final String number, int index, final String prefix, final CTrie.CTrieNode<Integer> node, final List<String> results) {
+        if (number.length() == index) {
+            if (node.isTerminated()) {
+                results.add(prefix);
+            }
+            return;
+        }
+        char digit = number.charAt(index);
+        int[] letters = getT9Chars(digit);
+        if (Objects.nonNull(letters)) {
+            for (int letter : letters) {
+                final CTrie.CTrieNode<Integer> child = node.getChild(letter);
+                if (Objects.nonNull(child)) {
+                    getValidWords(number, index + 1, prefix + letter, child, results);
+                }
+            }
+        }
+    }
+
+    private static int[] getT9Chars(char digit) {
+        if (!Character.isDigit(digit)) {
+            return null;
+        }
+        int dig = Character.getNumericValue(digit) - Character.getNumericValue('0');
+        return T9.letters[dig];
+    }
+
+    private static class T9 {
+
+        public static final int[][] letters = {
+            null,
+            null,
+            {getCodePointAtZero("a"), getCodePointAtZero("b"), getCodePointAtZero("c")},
+            {getCodePointAtZero("d"), getCodePointAtZero("e"), getCodePointAtZero("f")},
+            {getCodePointAtZero("g"), getCodePointAtZero("h"), getCodePointAtZero("i")},
+            {getCodePointAtZero("j"), getCodePointAtZero("k"), getCodePointAtZero("l")},
+            {getCodePointAtZero("m"), getCodePointAtZero("n"), getCodePointAtZero("o")},
+            {getCodePointAtZero("p"), getCodePointAtZero("q"), getCodePointAtZero("r"), getCodePointAtZero("s")},
+            {getCodePointAtZero("t"), getCodePointAtZero("u"), getCodePointAtZero("v")},
+            {getCodePointAtZero("w"), getCodePointAtZero("x"), getCodePointAtZero("y"), getCodePointAtZero("z")}
+        };
+
+        public static int getCodePointAtZero(final String str) {
+            return getCodePoint(str, 0);
+        }
+
+        public static int getCodePoint(final String str, int index) {
+            return Character.codePointAt(str, index);
+        }
     }
 }

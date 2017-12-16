@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
+import java.util.Map;
+
 /**
  *
  * Custom map interface declaration
@@ -33,6 +35,6 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  * @param <K>
  * @param <V>
  */
-public interface IMap<K, V> {
+public interface IMap<K, V> extends Map<K, V> {
 
 }
