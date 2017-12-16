@@ -472,4 +472,59 @@ public final class CMisc {
         count = lines.stream().filter((parallelLine) -> (parallelLine.isEquivalent(line))).map((item) -> 1).reduce(count, Integer::sum);
         return count;
     }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @NoArgsConstructor
+    @ToString
+    public static class Result {
+
+        public int hits = 0;
+        public int pseudoHits = 0;
+
+        public String toFormatString() {
+            return "( " + this.hits + ", " + this.pseudoHits + " )";
+        }
+    }
+
+    private static int code(char c) {
+        switch (c) {
+            case 'B':
+                return 0;
+            case 'G':
+                return 1;
+            case 'R':
+                return 2;
+            case 'Y':
+                return 3;
+            default:
+                return -1;
+        }
+    }
+
+    public static Result estimate(final String guess, final String solution) {
+        Objects.requireNonNull(guess);
+        Objects.requireNonNull(solution);
+        if (guess.length() != solution.length()) {
+            return null;
+        }
+        final Result result = new Result();
+        int[] frequencies = new int[4];
+        for (int i = 0; i < guess.length(); i++) {
+            if (guess.charAt(i) == solution.charAt(i)) {
+                result.hits++;
+            } else {
+                int code = code(solution.charAt(i));
+                frequencies[code]++;
+            }
+        }
+        for (int i = 0; i < guess.length(); i++) {
+            int code = code(guess.charAt(i));
+            if (code >= 0 && frequencies[code] > 0 && guess.charAt(i) != solution.charAt(i)) {
+                result.pseudoHits++;
+                frequencies[code]--;
+            }
+        }
+        return result;
+    }
 }
