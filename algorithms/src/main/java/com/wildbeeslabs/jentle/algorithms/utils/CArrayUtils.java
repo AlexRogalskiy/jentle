@@ -28,8 +28,10 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.IntPredicate;
@@ -335,15 +337,60 @@ public final class CArrayUtils {
         }
     }
 
-    public static <T> void shuffle(final T[] array, final T[] subset, int m) {
+    public static <T> void shuffle(final T[] array, T[] subset, int m) {
         Objects.requireNonNull(array);
         Objects.requireNonNull(subset);
-        System.arraycopy(array, 0, subset, 0, m);
+        subset = Arrays.copyOfRange(array, 0, m);
         for (int i = m; i < array.length; i++) {
             int k = CNumericUtils.generateRandomInt(0, i);
             if (k < m) {
                 subset[k] = array[i];
             }
         }
+    }
+
+    public static char[] findLongestSubarray(char[] array) {
+        Objects.requireNonNull(array);
+        int[] deltas = computeDeltaArray(array);
+        int[] match = findLongestMatch(deltas);
+        return extract(array, match[0] + 1, match[1]);
+    }
+
+    private static int[] computeDeltaArray(char[] array) {
+        int[] deltas = new int[array.length];
+        int delta = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (Character.isLetter(array[i])) {
+                delta++;
+            } else if (Character.isDigit(array[i])) {
+                delta--;
+            }
+            deltas[i] = delta;
+        }
+        return deltas;
+    }
+
+    private static int[] findLongestMatch(int[] deltas) {
+        final Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        int[] max = new int[2];
+        for (int i = 0; i < deltas.length; i++) {
+            if (!map.containsKey(deltas[i])) {
+                map.put(deltas[1], i);
+            } else {
+                int match = map.get(deltas[i]);
+                int distance = i - match;
+                int longest = max[1] - max[0];
+                if (distance > longest) {
+                    max[1] = i;
+                    max[0] = match;
+                }
+            }
+        }
+        return max;
+    }
+
+    private static char[] extract(char[] array, int start, int end) {
+        return Arrays.copyOfRange(array, start, end);
     }
 }

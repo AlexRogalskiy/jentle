@@ -80,7 +80,7 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         this.capacity = (capacity < size ? size : capacity);
         this.array = CUtils.newArray(clazz, this.capacity);
         if (Objects.nonNull(array)) {
-            System.arraycopy(array, 0, this.array, 0, Math.min(this.size, array.length));
+            this.array = Arrays.copyOfRange(array, 0, Math.min(this.size, array.length));
         }
     }
 
@@ -165,8 +165,8 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
     }
 
     private void changeCapacity() {
-        final T[] temp = CUtils.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity);
-        System.arraycopy(this.array, 0, temp, 0, this.size);
+        //T[] temp = CUtils.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity);
+        T[] temp = Arrays.copyOfRange(this.array, 0, this.size);
         this.array = temp;
     }
 

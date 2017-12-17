@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.set;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ISet;
+import java.util.Arrays;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -73,7 +74,7 @@ public class CBitSet implements ISet<Integer> {
         int numOfBlocks = (getSize(min, max) * DEFAULT_NUMBER_SIZE + DEFAULT_BLOCK_SIZE - 1) / DEFAULT_BLOCK_SIZE;
         this.array = new int[numOfBlocks];
         if (Objects.nonNull(bitset)) {
-            System.arraycopy(bitset, 0, this.array, 0, bitset.length);
+            this.array = Arrays.copyOfRange(bitset, 0, bitset.length);
         }
     }
 

@@ -68,7 +68,7 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
         this.size = size;
         this.array = CUtils.newArray(clazz, this.size);
         if (Objects.nonNull(array)) {
-            System.arraycopy(array, 0, this.array, 0, Math.min(this.size, array.length));
+            this.array = Arrays.copyOfRange(array, 0, Math.min(this.size, array.length));
         }
     }
 
