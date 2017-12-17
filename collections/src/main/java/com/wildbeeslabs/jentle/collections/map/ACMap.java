@@ -21,13 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.map;
 
-import java.util.Map;
+import com.wildbeeslabs.jentle.collections.interfaces.IMap;
+
+import java.util.AbstractMap;
+import java.util.Set;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Custom map interface declaration
+ * Custom abstract map implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -35,6 +45,27 @@ import java.util.Map;
  * @param <K>
  * @param <V>
  */
-public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public abstract class ACMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {//IBaseMap<K, V>
 
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    protected <T> T convert(final Object obj, final Class<? extends T> clazz) {
+        try {
+            return clazz.cast(obj);
+        } catch (ClassCastException ex) {
+            LOGGER.error(String.format("ERROR: cannot convert obj=(%s) to clazz=(%s)", String.valueOf(obj), String.valueOf(clazz)));
+            return null;
+        }
+    }
 }

@@ -37,7 +37,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom cache linked list implementation
+ * Custom linked list cache implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -52,7 +52,7 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
     /**
      * Default max cache size
      */
-    public static final Integer DEFAULT_MAX_SIZE = 10;
+    public static final Integer DEFAULT_MAX_CACHE_SIZE = 10;
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -79,7 +79,7 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
         }
     }
 
-    private Map<String, CCacheLinkedList.CCacheNode<T>> map;
+    protected Map<String, CCacheLinkedList.CCacheNode<T>> map;
 
     public CCacheLinkedList() {
         this(null, CUtils.DEFAULT_SORT_COMPARATOR);
@@ -130,7 +130,7 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
         moveToFront(node);
         this.map.put(query, node);
 
-        if (this.size > DEFAULT_MAX_SIZE) {
+        if (this.size > CCacheLinkedList.DEFAULT_MAX_CACHE_SIZE) {
             this.map.remove(this.last.getQuery());
             removeFromLinkedList(this.last);
         }

@@ -21,20 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.map;
 
-import java.util.Map;
+import com.wildbeeslabs.jentle.collections.interfaces.IBaseMapExtended;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom map interface declaration
+ * Custom abstract base extended map implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <K>
  * @param <V>
+ * @param <T>
  */
-public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public abstract class ACBaseExtended<K, V, T extends Collection<V>> extends ACBaseMap<K, V> implements IBaseMapExtended<K, V, T> {
 
+    protected Set<V> toSet(final T list) {
+        return list.stream().collect(Collectors.toSet());
+    }
+
+    protected List<V> toList(final T set) {
+        return set.stream().collect(Collectors.toList());
+    }
 }

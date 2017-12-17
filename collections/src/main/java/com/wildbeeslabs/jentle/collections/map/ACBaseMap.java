@@ -21,13 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.map;
 
-import java.util.Map;
+import com.wildbeeslabs.jentle.collections.interfaces.IBaseMap;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Custom map interface declaration
+ * Custom abstract base map implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -35,6 +42,13 @@ import java.util.Map;
  * @param <K>
  * @param <V>
  */
-public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
+@Data
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class ACBaseMap<K, V> implements IBaseMap<K, V> {
 
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 }

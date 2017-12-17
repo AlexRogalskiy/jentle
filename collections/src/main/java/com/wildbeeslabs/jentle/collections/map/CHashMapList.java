@@ -23,9 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.map;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IMap;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,13 +32,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -47,71 +42,71 @@ import org.apache.log4j.Logger;
  *
  * @author Alex
  * @version 1.0.0
- * @param <T>
- * @param <E>
  * @since 2017-08-07
+ * @param <K>
+ * @param <V>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CHashMapList<T, E> implements IMap<T, E> {
+public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
 
     /**
-     * Default Logger instance
+     * Default map size
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    public static final Integer DEFAULT_MAP_SIZE = 10;
 
-    protected final Map<T, List<E>> map;
+    protected final Map<K, List<V>> map;
 
     public CHashMapList() {
-        this.map = new HashMap<>();
+        this(CHashMapList.DEFAULT_MAP_SIZE);
     }
 
-    public void put(final T key, final E item) {
+    public CHashMapList(int size) {
+        assert (size > 0);
+        this.map = new HashMap<>(size);
+    }
+
+    public void put(final K key, final V item) {
         if (!this.containsKey(key)) {
-            this.map.put(key, new ArrayList<>());
+            this.map.put(key, Collections.EMPTY_LIST);
         }
         this.map.get(key).add(item);
     }
 
-    public void put(final T key, final List<E> items) {
+    public void put(final K key, final List<V> items) {
         this.map.put(key, items);
     }
 
-    public List<E> get(final T key) {
+    public List<V> get(final K key) {
         return this.map.get(key);
     }
 
-    public Set<E> getAsSet(final T key) {
+    public Set<V> getAsSet(final K key) {
         return this.toSet(this.get(key));
     }
 
-    public boolean containsKey(final T key) {
+    public boolean containsKey(final K key) {
         return this.map.containsKey(key);
     }
 
-    public boolean containsKeyValue(final T key, final E value) {
-        final List<E> items = this.get(key);
+    public boolean containsKeyValue(final K key, final V value) {
+        final List<V> items = this.get(key);
         if (Objects.isNull(items)) {
             return false;
         }
         return items.contains(value);
     }
 
-    public Set<T> keySet() {
+    public Set<K> keySet() {
         return this.map.keySet();
     }
 
-    public Collection<List<E>> values() {
+    public Collection<List<V>> values() {
         return this.map.values();
     }
 
-    public Set<E> valueSet() {
+    public Set<V> valueSet() {
         return this.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
-    }
-
-    private Set<E> toSet(final List<E> list) {
-        return list.stream().collect(Collectors.toSet());
     }
 }

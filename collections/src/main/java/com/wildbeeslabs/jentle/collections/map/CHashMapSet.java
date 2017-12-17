@@ -23,21 +23,16 @@
  */
 package com.wildbeeslabs.jentle.collections.map;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IMap;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -45,59 +40,70 @@ import org.apache.log4j.Logger;
  *
  * @author Alex
  * @version 1.0.0
- * @param <T>
- * @param <E>
  * @since 2017-08-07
+ * @param <K>
+ * @param <V>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CHashMapSet<T, E> implements IMap<T, E> {
+public class CHashMapSet<K, V> extends ACBaseExtended<K, V, Set<V>> {
 
     /**
-     * Default Logger instance
+     * Default map size
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    public static final Integer DEFAULT_MAP_SIZE = 10;
 
-    protected final Map<T, Set<E>> map;
+    protected final Map<K, Set<V>> map;
 
     public CHashMapSet() {
-        this.map = new HashMap<>();
+        this(CHashMapSet.DEFAULT_MAP_SIZE);
     }
 
-    public void put(final T key, final E item) {
+    public CHashMapSet(int size) {
+        assert (size > 0);
+        this.map = new HashMap<>(size);
+    }
+
+    @Override
+    public void put(final K key, final V item) {
         if (!this.containsKey(key)) {
-            this.map.put(key, new HashSet<>());
+            this.map.put(key, Collections.EMPTY_SET);
         }
         this.map.get(key).add(item);
     }
 
-    public void put(final T key, final Set<E> items) {
+    @Override
+    public void put(final K key, final Set<V> items) {
         this.map.put(key, items);
     }
 
-    public Set<E> get(final T key) {
+    @Override
+    public Set<V> get(final K key) {
         return this.map.get(key);
     }
 
-    public boolean containsKey(final T key) {
+    @Override
+    public boolean containsKey(final K key) {
         return this.map.containsKey(key);
     }
 
-    public boolean containsKeyValue(final T key, final E value) {
-        final Set<E> items = this.get(key);
+    @Override
+    public boolean containsKeyValue(final K key, final V value) {
+        final Set<V> items = this.get(key);
         if (Objects.isNull(items)) {
             return false;
         }
         return items.contains(value);
     }
 
-    public Set<T> keySet() {
+    @Override
+    public Set<K> keySet() {
         return this.map.keySet();
     }
 
-    public Collection<Set<E>> values() {
+    @Override
+    public Collection<Set<V>> values() {
         return this.map.values();
     }
 }

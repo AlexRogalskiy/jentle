@@ -23,22 +23,15 @@
  */
 package com.wildbeeslabs.jentle.collections.map;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IMap;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
-import java.util.AbstractMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -51,15 +44,9 @@ import org.apache.log4j.Logger;
  * @param <V>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CHashMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CHashMap<K, V> extends ACMap<K, V> {
 
     /**
      * Default map capacity
@@ -95,16 +82,12 @@ public class CHashMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {
 
     public CHashMap(int capacity) {
         this.array = new ArrayList<>(capacity);
-//        this.array.ensureCapacity(capacity);
-//        for (int i = 0; i < capacity; i++) {
-//            this.array.add(null);
-//        }
     }
 
     @Override
     public V put(final K key, final V value) {
         CLinkedListNode<K, V> node = this.getNodeForKey(key);
-        if (Objects.nonNull(key)) {
+        if (Objects.nonNull(node)) {
             final V prevValue = node.getData();
             node.setData(value);
             return prevValue;
@@ -119,6 +102,11 @@ public class CHashMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {
         return null;
     }
 
+    @Override
+    public V remove(final Object key) {
+        return this.removeBy((K) key);
+    }
+
     protected V removeBy(final K key) {
         final CLinkedListNode<K, V> node = this.getNodeForKey(key);
         if (Objects.nonNull(node.getPrevious())) {
@@ -131,6 +119,11 @@ public class CHashMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {
             node.getNext().setPrevious(node.getPrevious());
         }
         return node.getData();
+    }
+
+    @Override
+    public V get(final Object key) {
+        return this.getBy((K) key);
     }
 
     protected V getBy(final K key) {
@@ -150,12 +143,8 @@ public class CHashMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {
         return null;
     }
 
-    public int getIndexForKey(final K key) {
+    protected int getIndexForKey(final K key) {
+        Objects.requireNonNull(key);
         return Math.abs(key.hashCode() % this.array.size());
-    }
-
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -29,9 +29,9 @@ import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;

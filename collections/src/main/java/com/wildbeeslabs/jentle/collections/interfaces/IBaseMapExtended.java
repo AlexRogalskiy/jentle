@@ -23,18 +23,33 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  *
- * Custom map interface declaration
+ * Custom base map extended interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <K>
  * @param <V>
+ * @param <T>
  */
-public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
+public interface IBaseMapExtended<K, V, T extends Collection<V>> extends IBaseMap<K, V> {
 
+    void put(final K key, final V item);
+
+    void put(final K key, final T items);
+
+    T get(final K key);
+
+    boolean containsKey(final K key);
+
+    boolean containsKeyValue(final K key, final V value);
+
+    Set<K> keySet();
+
+    Collection<T> values();
 }

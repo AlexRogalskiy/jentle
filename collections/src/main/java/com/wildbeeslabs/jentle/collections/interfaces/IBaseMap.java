@@ -23,11 +23,9 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import java.util.Map;
-
 /**
  *
- * Custom map interface declaration
+ * Custom base map interface declaration
  *
  * @author Alex
  * @version 1.0.0
@@ -35,6 +33,6 @@ import java.util.Map;
  * @param <K>
  * @param <V>
  */
-public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
+public interface IBaseMap<K, V> {
 
 }
