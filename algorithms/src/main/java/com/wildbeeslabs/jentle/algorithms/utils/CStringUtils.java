@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.tree.CTrie;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -37,12 +38,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -450,5 +456,157 @@ public final class CStringUtils {
         public static int getCodePoint(final String str, int index) {
             return Character.codePointAt(str, index);
         }
+    }
+
+    public static Double compute(final String sequence) {
+        final List<Term> terms = Term.parseTermSequence(sequence);
+        if (Objects.isNull(terms)) {
+            return null;
+        }
+        double result = 0;
+        Term processing = null;
+        for (int i = 0; i < terms.size(); i++) {
+            Term current = terms.get(i);
+            Term next = i + 1 < terms.size() ? terms.get(i + 1) : null;
+            processing = collapseTerm(processing, current);
+            if (Objects.isNull(next) || Objects.equals(Operator.ADD, next.getOperator()) || Objects.equals(Operator.SUBTRACT, next.getOperator())) {
+                result = applyOp(result, processing.getOperator(), processing.getNumber());
+                processing = null;
+            }
+        }
+        return result;
+    }
+
+    private static Term collapseTerm(final Term primary, final Term secondary) {
+        if (Objects.isNull(primary)) {
+            return secondary;
+        }
+        if (Objects.isNull(secondary)) {
+            return primary;
+        }
+        double value = applyOp(primary.getNumber(), secondary.getOperator(), secondary.getNumber());
+        primary.setNumber(value);
+        return primary;
+    }
+
+    private static double applyOp(double left, final Operator op, double right) {
+        if (Objects.equals(Operator.ADD, op)) {
+            return left + right;
+        } else if (Objects.equals(Operator.SUBTRACT, op)) {
+            return left - right;
+        } else if (Objects.equals(Operator.MULTIPLY, op)) {
+            return left * right;
+        } else if (Objects.equals(Operator.DIVIDE, op)) {
+            return left / right;
+        }
+        return right;
+    }
+
+    public static enum Operator {
+
+        ADD, SUBTRACT, MULTIPLY, DIVIDE, BLANK
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Term {
+
+        private double number;
+        private Operator operator;
+
+        public Term() {
+            this(0, Operator.BLANK);
+        }
+
+        public Term(double number, final Operator operator) {
+            this.number = number;
+            this.operator = operator;
+        }
+
+        public static List<Term> parseTermSequence(final String sequence) {
+            return null;
+        }
+    }
+
+    public static Double compute2(final String sequence) {
+        final Stack<Double> numberStack = new Stack<>();
+        final Stack<Operator> operatorStack = new Stack<>();
+        for (int i = 0; i < sequence.length(); i++) {
+            try {
+                double value = parseNextNumber(sequence, i);
+                numberStack.push(value);
+                i += Double.toHexString(value).length();
+                if (i >= sequence.length()) {
+                    break;
+                }
+                Operator op = parseNextOperator(sequence, i);
+                collapseTop(op, numberStack, operatorStack);
+                operatorStack.push(op);
+            } catch (NumberFormatException ex) {
+                return null;
+            }
+        }
+        collapseTop(Operator.BLANK, numberStack, operatorStack);
+        if (1 == numberStack.size() && 0 == operatorStack.size()) {
+            return numberStack.pop();
+        }
+        return 0.0;
+    }
+
+    private static void collapseTop(final Operator futureTop, final Stack<Double> numberStack, final Stack<Operator> operatorStack) {
+        while (operatorStack.size() >= 1 && numberStack.size() >= 2) {
+            if (priorityOfOperator(futureTop) <= priorityOfOperator(operatorStack.peek())) {
+                double second = numberStack.pop();
+                double first = numberStack.pop();
+                final Operator op = operatorStack.pop();
+                double collapsed = applyOp(first, op, second);
+                numberStack.push(collapsed);
+            } else {
+                break;
+            }
+        }
+    }
+
+    private static int priorityOfOperator(final Operator op) {
+        switch (op) {
+            case ADD:
+                return 1;
+            case SUBTRACT:
+                return 1;
+            case MULTIPLY:
+                return 2;
+            case DIVIDE:
+                return 2;
+            case BLANK:
+                return 0;
+        }
+        return 0;
+    }
+
+    private static double parseNextNumber(final String sequence, int offset) {
+        final StringBuffer sb = new StringBuffer();
+        while (offset < sequence.length() && Character.isDigit(sequence.charAt(offset))) {
+            sb.append(sequence.charAt(offset));
+            offset++;
+        }
+        return Double.parseDouble(sb.toString());
+    }
+
+    private static Operator parseNextOperator(final String sequence, int offset) {
+        if (offset < sequence.length()) {
+            char op = sequence.charAt(offset);
+            switch (op) {
+                case '+':
+                    return Operator.ADD;
+                case '-':
+                    return Operator.SUBTRACT;
+                case '*':
+                    return Operator.MULTIPLY;
+                case '/':
+                    return Operator.DIVIDE;
+            }
+        }
+        return Operator.BLANK;
     }
 }
