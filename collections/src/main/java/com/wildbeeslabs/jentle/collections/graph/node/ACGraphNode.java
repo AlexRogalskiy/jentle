@@ -27,8 +27,8 @@ import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 import lombok.Data;
@@ -51,7 +51,7 @@ import lombok.ToString;
 public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode<T> {
 
     protected ACGraphNode.State state;
-    protected final List<E> adjacents = new ArrayList<>();
+    protected final Collection<E> adjacents = new ArrayList<>();
     protected final Comparator<? super T> comparator;
 
     public static enum State {
@@ -73,11 +73,11 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACNode
         this.comparator = comparator;
     }
 
-    public List<E> getAdjacents() {
+    public Collection<E> getAdjacents() {
         return this.adjacents;
     }
 
-    public void setAdjacents(final List<E> adjacents) {
+    public void setAdjacents(final Collection<E> adjacents) {
         this.adjacents.clear();
         if (Objects.nonNull(adjacents)) {
             this.adjacents.addAll(adjacents);

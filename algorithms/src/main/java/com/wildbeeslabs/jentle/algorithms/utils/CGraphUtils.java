@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.graph.CGraph;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;
 import com.wildbeeslabs.jentle.collections.list.node.ACListGraphNode;
 import com.wildbeeslabs.jentle.collections.list.node.CListGraphNode;
+import java.util.Collection;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -124,7 +125,7 @@ public class CGraphUtils {
         }
         if (Objects.equals(task.getState(), CGraph.CGraphNode.State.UNVISITED)) {
             task.setState(CGraph.CGraphNode.State.VISITING);
-            final List<CGraph.CGraphNode<T>> children = task.getAdjacents();
+            final Collection<CGraph.CGraphNode<T>> children = task.getAdjacents();
             if (!children.stream().noneMatch((child) -> (!doDFS(child, stack)))) {
                 return false;
             }
@@ -181,7 +182,7 @@ public class CGraphUtils {
                 return pathNode.getData().getData();
             }
             final E data = pathNode.getData();
-            final List<E> adjacentList = data.getAdjacents();
+            final Collection<E> adjacentList = data.getAdjacents();
             adjacentList.stream().filter((adjacent) -> (!primary.visited.containsKey(adjacent.getData().getId()))).map((adjacent) -> {
                 final E current = map.get(adjacent.getData().getId());
                 final U next = (U) new CListGraphNode<>(current, (CListGraphNode) pathNode, null);

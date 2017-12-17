@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
+//import com.wildbeeslabs.jentle.collections.graph.CGraph.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
@@ -717,4 +718,54 @@ public final class CStringUtils {
             return this.names.size();
         }
     }
+
+//    public static Map<String, Integer> concatByNames(final Map<String, Integer> names, final String[][] synonyms) {
+//        final Graph graph = constructGraph(names);
+//        connectEdges(graph, synonyms);
+//        final Map<String, Integer> rootNames = getTrueFrequencies(graph);
+//        return rootNames;
+//    }
+//
+//    private static Graph constructGraph(final Map<String, Integer> names) {
+//        final Graph graph = new Graph();
+//        names.entrySet().stream().forEach((entry) -> {
+//            String name = entry.getKey();
+//            int frequency = entry.getValue();
+//            final NameSet group = new NameSet(name, frequency);
+//            graph.put(name, group);
+//        });
+//        return graph;
+//    }
+//
+//    private static void connectEdges(final Graph graph, final String[][] synonyms) {
+//        for (String[] entry : synonyms) {
+//            final String name1 = entry[0];
+//            final String name2 = entry[1];
+//            graph.addEdge(name1, name2);
+//        }
+//    }
+//
+//    private static Map<String, Integer> getFrequencies(final Graph graph) {
+//        final Map<String, Integer> rootNames = new HashMap<>();
+//        graph.getNodes().stream()
+//                .filter((node) -> (!Objects.equals(CGraphNode.State.VISITED, node.getState())))
+//                .forEach((node) -> {
+//                    int frequency = getComponentFrequency(node);
+//                    final String name = node.getName();
+//                    rootNames.put(name, frequency);
+//                });
+//        return rootNames;
+//    }
+//
+//    private static int getComponentFrequency(final GraphNode node) {
+//        if (Objects.equals(CGraphNode.State.VISITED, node.getState())) {
+//            return 0;
+//        }
+//        node.setState(CGraphNode.State.VISITED);
+//        int sum = node.getFrequency();
+//        sum = node.getAdjacents().stream()
+//                .map((child) -> getComponentFrequency(child))
+//                .reduce(sum, Integer::sum);
+//        return sum;
+//    }
 }
