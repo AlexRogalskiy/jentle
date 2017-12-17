@@ -27,7 +27,9 @@ import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -775,6 +777,77 @@ public final class CMisc {
             }
             sb.append(this.actor.getClass().getName()).append(this.actor.orientation.toFormatString()).append(StringUtils.LF);
             return sb.toString();
+        }
+    }
+
+    public static List<HtWt> longestIncreasingSequence(final List<HtWt> list) {
+        Collections.sort(list);
+        final List<List<HtWt>> result = new ArrayList<>();
+        List<HtWt> bestSequence = null;
+        for (int i = 0; i < list.size(); i++) {
+            final List<HtWt> longestAtIndex = bestSequenceAtIndex(list, result, i);
+            result.add(i, longestAtIndex);;
+            bestSequence = max(bestSequence, longestAtIndex);
+        }
+        return bestSequence;
+    }
+
+    private static List<HtWt> bestSequenceAtIndex(final List<HtWt> list, List<List<HtWt>> resultList, int index) {
+        final HtWt value = list.get(index);
+        List<HtWt> bestSequence = Collections.EMPTY_LIST;
+        for (int i = 0; i < index; i++) {
+            final List<HtWt> result = resultList.get(i);
+            if (canAppend(result, value)) {
+                bestSequence = max(result, bestSequence);
+            }
+        }
+        final List<HtWt> best = new ArrayList<>(bestSequence);
+        best.add(value);
+        return best;
+    }
+
+    private static List<HtWt> max(final List<HtWt> sequence1, final List<HtWt> sequence2) {
+        if (Objects.isNull(sequence1)) {
+            return sequence2;
+        } else if (Objects.isNull(sequence2)) {
+            return sequence1;
+        }
+        return sequence1.size() > sequence2.size() ? sequence1 : sequence2;
+    }
+
+    private static boolean canAppend(final List<HtWt> result, final HtWt value) {
+        if (Objects.isNull(result)) {
+            return false;
+        }
+        if (result.isEmpty()) {
+            return true;
+        }
+        final HtWt last = result.get(result.size() - 1);
+        return last.isBefore(value);
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    @ToString
+    public static class HtWt implements Comparable<HtWt> {
+
+        private int height;
+        private int weight;
+
+        @Override
+        public int compareTo(final HtWt second) {
+            if (this.height != second.height) {
+                return Integer.valueOf(this.height).compareTo(second.height);
+            }
+            return Integer.valueOf(this.weight).compareTo(second.weight);
+        }
+
+        public boolean isBefore(final HtWt other) {
+            if (this.height < other.height && this.weight < other.weight) {
+                return true;
+            }
+            return false;
         }
     }
 }
