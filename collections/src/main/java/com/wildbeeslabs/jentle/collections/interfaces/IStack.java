@@ -24,6 +24,9 @@
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
+import java.util.Collection;
+import java.util.Queue;
 
 /**
  *
@@ -40,8 +43,10 @@ public interface IStack<T> {
      * Push value on top of stack
      *
      * @param value to push on the stack.
+     * @throws
+     * com.wildbeeslabs.jentle.collections.exception.OverflowStackException
      */
-    void push(final T value);
+    void push(final T value) throws OverflowStackException;
 
     /**
      * Pop the value from the top of stack.
@@ -95,18 +100,23 @@ public interface IStack<T> {
     boolean validate();
 
     /**
-     * Get this Stack as a Java compatible Queue
+     * Converts current stack to Java compatible Queue
      *
      * @return Java compatible Queue
      */
-    java.util.Queue<? extends T> toLifoQueue();
+    Queue<? extends T> toLifoQueue();
 
     /**
-     * Get this Stack as a Java compatible Collection
+     * Converts current stack to Java compatible Collection
      *
      * @return Java compatible Collection
      */
-    java.util.Collection<? extends T> toCollection();
+    Collection<? extends T> toCollection();
 
+    /**
+     * Checks if current stack is empty
+     *
+     * @return true - if current stack is empty, false - otherwise
+     */
     boolean isEmpty();
 }

@@ -23,7 +23,11 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
+import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
 import com.wildbeeslabs.jentle.collections.tree.CTrie;
 
 import java.io.IOException;
@@ -608,5 +612,39 @@ public final class CStringUtils {
             }
         }
         return Operator.BLANK;
+    }
+
+    public static boolean brackets(final String value, int maxdeep) {
+        try {
+            final IStack<Character> stack = new CBoundStack<>(maxdeep, Character[].class);
+            for (int i = 0; i < value.length(); i++) {
+                char c = value.charAt(i);
+                switch (c) {
+                    case '(':
+                    case '[':
+                    case '{':
+                        stack.push(c);
+                        break;
+                    case ')':
+                        if (stack.pop() != '(') {
+                            return false;
+                        }
+                        break;
+                    case ']':
+                        if (stack.pop() != '[') {
+                            return false;
+                        }
+                        break;
+                    case '}':
+                        if (stack.pop() != '{') {
+                            return false;
+                        }
+                        break;
+                }
+            }
+            return stack.isEmpty();
+        } catch (OverflowStackException | EmptyStackException ex) {
+            return false;
+        }
     }
 }

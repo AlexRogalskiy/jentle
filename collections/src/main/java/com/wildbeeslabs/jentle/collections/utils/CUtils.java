@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.utils;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.graph.CLGraph;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
@@ -97,7 +98,7 @@ public final class CUtils {
         //Stream<? extends T> combinedStream = Stream.of(first, second).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    public static <T> IStack<T> sort(final IStack<T> stack, final Comparator<? super T> cmp) throws EmptyStackException {
+    public static <T> IStack<T> sort(final IStack<T> stack, final Comparator<? super T> cmp) throws EmptyStackException, OverflowStackException {
         final IStack<T> result = new CStack<>();
         while (!stack.isEmpty()) {
             final T temp = stack.pop();

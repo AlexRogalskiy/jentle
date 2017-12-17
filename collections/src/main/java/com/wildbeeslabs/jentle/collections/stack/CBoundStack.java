@@ -23,9 +23,10 @@
  */
 package com.wildbeeslabs.jentle.collections.stack;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
+import com.wildbeeslabs.jentle.collections.interfaces.IStack;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Collection;
 import java.util.Queue;
@@ -39,7 +40,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Custom stack implementation
+ * Custom bound stack implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -49,81 +50,46 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CStack<T> implements IStack<T> {
+public class CBoundStack<T> implements IStack<T> {
 
     /**
      * Default Logger instance
      */
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
-    @Data
-    @EqualsAndHashCode(callSuper = true)
-    @ToString
-    public static class CStackNode<T> extends ACNode<T> {
+    protected T[] stack;
+    private int size;
 
-        private CStackNode<T> next;
-
-        public CStackNode() {
-            this(null);
-        }
-
-        public CStackNode(final T data) {
-            this(data, null);
-        }
-
-        public CStackNode(final T data, final CStackNode<T> next) {
-            super(data);
-            this.next = next;
-        }
+    public CBoundStack(int size, final Class<? extends T[]> clazz) {
+        assert (size > 0);
+        this.stack = CUtils.newArray(clazz, size);
+        this.size = 0;
     }
 
-    protected CStackNode<T> top;
-    protected int size;
-
-    public CStack() {
-        this.top = null;
-        this.size = 0;
+    @Override
+    public void push(final T value) throws OverflowStackException {
+        if (this.isFull()) {
+            throw new OverflowStackException(String.format("ERROR: CBoundStack (full size=%d)", this.size()));
+        }
+        this.stack[this.size++] = value;
     }
 
     @Override
     public T pop() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%d)", this.size()));
+            throw new EmptyStackException(String.format("ERROR: CBoundStack (empty size=%d)", this.size()));
         }
-        final T removed = this.top.getData();
-        this.top = this.top.next;
-        this.size--;
+        final T removed = this.stack[--this.size];
+        this.stack[this.size] = null;
         return removed;
-    }
-
-    @Override
-    public void push(final T item) {
-        final CStackNode<T> temp = new CStackNode<>(item, this.top);
-        this.size++;
-        this.top = temp;
     }
 
     @Override
     public T peek() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CStack (empty size=%d)", this.size));
+            throw new EmptyStackException(String.format("ERROR: CBoundStack (empty size=%d)", this.size));
         }
-        return top.getData();
-    }
-
-    @Override
-    public int size() {
-        return this.size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.stack[this.size - 1];
     }
 
     @Override
@@ -132,8 +98,28 @@ public class CStack<T> implements IStack<T> {
     }
 
     @Override
+    public void clear() {
+        for (int i = 0; i < this.getSize(); i++) {
+            this.stack[i] = null;
+        }
+        this.size = 0;
+    }
+
+    public void duplicate() throws EmptyStackException, OverflowStackException {
+        final T first = this.pop();
+        final T second = this.pop();
+        this.push(first);
+        this.push(second);
+    }
+
+    @Override
     public boolean contains(final T value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int size() {
+        return this.size;
     }
 
     @Override
@@ -142,12 +128,21 @@ public class CStack<T> implements IStack<T> {
     }
 
     @Override
-    public Queue<T> toLifoQueue() {
+    public Queue<? extends T> toLifoQueue() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Collection<T> toCollection() {
+    public Collection<? extends T> toCollection() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
+    }
+
+    public boolean isFull() {
+        return (this.size() <= this.stack.length);
     }
 }
