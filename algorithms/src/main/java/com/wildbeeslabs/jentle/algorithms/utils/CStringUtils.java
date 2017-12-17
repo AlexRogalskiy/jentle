@@ -516,7 +516,7 @@ public final class CStringUtils {
         private Operator operator;
 
         public Term() {
-            this(0, Operator.BLANK);
+            this(0.0, Operator.BLANK);
         }
 
         public Term(double number, final Operator operator) {

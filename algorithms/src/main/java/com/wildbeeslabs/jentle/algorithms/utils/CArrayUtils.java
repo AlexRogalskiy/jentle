@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -40,6 +41,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import org.apache.commons.math3.util.Pair;
 
 /**
@@ -323,5 +325,25 @@ public final class CArrayUtils {
             }
         }
         return result;
+    }
+
+    public static <T> void shuffle(final T[] array) {
+        Objects.requireNonNull(array);
+        for (int i = 0; i < array.length; i++) {
+            int k = CNumericUtils.generateRandomInt(0, i);
+            swap(array, k, i);
+        }
+    }
+
+    public static <T> void shuffle(final T[] array, final T[] subset, int m) {
+        Objects.requireNonNull(array);
+        Objects.requireNonNull(subset);
+        System.arraycopy(array, 0, subset, 0, m);
+        for (int i = m; i < array.length; i++) {
+            int k = CNumericUtils.generateRandomInt(0, i);
+            if (k < m) {
+                subset[k] = array[i];
+            }
+        }
     }
 }

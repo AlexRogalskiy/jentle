@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.bitwise;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -390,5 +391,32 @@ public final class CBitwise {
         int k = use_sign_of_a * sa + use_sign_of_c * sc;
         int q = flip(k);
         return a * k + b * q;
+    }
+
+    public static int findMissing(final List<BigInteger> array) {
+        return findMissing(array, 0);
+    }
+
+    private static int findMissing(final List<BigInteger> array, int column) {
+        if (column >= BigInteger.ONE.bitCount()) {
+            return 0;
+        }
+        final List<BigInteger> oneBits = new ArrayList<>(array.size() / 2);
+        final List<BigInteger> zeroBits = new ArrayList<>(array.size() / 2);
+
+        array.stream().forEach((t) -> {
+            if (!t.testBit(column)) {
+                zeroBits.add(t);
+            } else {
+                oneBits.add(t);
+            }
+        });
+        if (zeroBits.size() <= oneBits.size()) {
+            int v = findMissing(zeroBits, column + 1);
+            return (v << 1);
+        } else {
+            int v = findMissing(oneBits, column + 1);
+            return (v << 1) | 1;
+        }
     }
 }
