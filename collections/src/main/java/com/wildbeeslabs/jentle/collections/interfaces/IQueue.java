@@ -21,89 +21,132 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
+import com.wildbeeslabs.jentle.collections.exception.OverflowQueueException;
 
 /**
  *
  * Custom queue interface declaration
+ *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
 public interface IQueue<T> {
-    /**
-     * Add a value to the beginning of the queue.
-     * 
-     * @param value to add to queue.
-     * @return True if added to queue.
-     */
-    public boolean offer(final T value);
 
+//    /**
+//     * Add a value to the beginning of the queue.
+//     *
+//     * @param value to add to queue.
+//     * @return True if added to queue.
+//     */
+//    public boolean offer(final T value);
+//
+//    /**
+//     * Remove a value from the tail of the queue.
+//     *
+//     * @return value from the tail of the queue.
+//     */
+//    public T poll();
+//
     /**
-     * Remove a value from the tail of the queue.
-     * 
-     * @return value from the tail of the queue.
-     */
-    public T poll();
-
-    /**
-     * Get but do not remove tail of the queue.
-     * 
-     * @return value from the tail of the queue.
+     * Returns but do not remove element value from the tail of the current
+     * queue.
+     *
+     * @return element value from the tail of the current queue.
      * @throws com.wildbeeslabs.jentle.collections.exception.EmptyQueueException
      */
     public T peek() throws EmptyQueueException;
 
     /**
-     * Remove the value from the queue.
-     * 
-     * @param value to remove from the queue.
-     * @return True if the value was removed from the queue.
+     * Adds value to the tail of the current queue
+     *
+     * @param value - element value to enqueue to the queue.
+     * @return true if element was added to the current queue, false - otherwise
+     * @throws OverflowQueueException
      */
-    public boolean remove(final T value);
+    boolean enqueue(final T value) throws OverflowQueueException;
 
     /**
-     * Clear the entire queue.
+     * Removes element from the head of the current queue
+     *
+     * @return element value to dequeue from the queue.
+     * @throws EmptyQueueException
      */
-    public void clear();
+    T dequeue() throws EmptyQueueException;
 
     /**
-     * Does the queue contain the value.
-     * 
+     * Returns the head element of the current queue
+     *
+     * @return head element of the current queue
+     * @throws EmptyQueueException
+     */
+    T head() throws EmptyQueueException;
+
+    /**
+     * Returns the tail element of the current queue
+     *
+     * @return tail element of the current queue
+     * @throws EmptyQueueException
+     */
+    T tail() throws EmptyQueueException;
+
+    /**
+     * Removes value from the current queue.
+     *
+     * @param value to remove from the current queue.
+     * @return true if element was removed, false - otherwise
+     */
+    boolean remove(final T value);
+
+    /**
+     * Clears the current queue.
+     */
+    void clear();
+
+    /**
+     * Checks if the current queue contains the value.
+     *
      * @param value to find in the queue.
-     * @return True if the queue contains the value.
+     * @return true if the current queue contains the value, false - otherwise
      */
-    public boolean contains(final T value);
+    boolean contains(final T value);
 
     /**
-     * Get the size of the queue.
-     * 
-     * @return size of the queue.
+     * Returns the size of the current queue.
+     *
+     * @return size of the current queue.
      */
-    public int size();
+    int size();
 
     /**
-     * Validate the queue according to the invariants.
-     * 
-     * @return True if the queue is valid.
+     * Validates the current queue according to the invariants.
+     *
+     * @return true if the current queue is valid, false - otherwise
      */
-    public boolean validate();
+    boolean validate();
 
     /**
-     * Get this Queue as a Java compatible Queue
-     * 
+     * Converts the current queue to Java compatible Queue
+     *
      * @return Java compatible Queue
      */
-    public java.util.Queue<? extends T> toQueue();
+    java.util.Queue<? extends T> toQueue();
 
     /**
-     * Get this Queue as a Java compatible Collection
-     * 
+     * Converts the current queue to Java compatible Collection
+     *
      * @return Java compatible Collection
      */
-    public java.util.Collection<? extends T> toCollection();
+    java.util.Collection<? extends T> toCollection();
+
+    /**
+     * Checks if the current queue is empty
+     *
+     * @return true - if the current queue is empty, false - otherwise
+     */
+    boolean isEmpty();
 }

@@ -25,8 +25,6 @@ package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import java.util.Collection;
-import java.util.Queue;
 
 /**
  *
@@ -40,83 +38,84 @@ import java.util.Queue;
 public interface IStack<T> {
 
     /**
-     * Push value on top of stack
+     * Adds value to the top of the current stack
      *
-     * @param value to push on the stack.
+     * @param value element value to push on the stack.
      * @throws
      * com.wildbeeslabs.jentle.collections.exception.OverflowStackException
      */
     void push(final T value) throws OverflowStackException;
 
     /**
-     * Pop the value from the top of stack.
+     * Returns element value from the top of stack.
      *
-     * @return value popped off the top of the stack.
+     * @return element value from the top of the stack.
      * @throws com.wildbeeslabs.jentle.collections.exception.EmptyStackException
      */
     T pop() throws EmptyStackException;
 
     /**
-     * Peek the value from the top of stack.
+     * Returns but do not remove element value from the top of the current the
+     * stack.
      *
-     * @return value popped off the top of the stack.
+     * @return element value from the top of the stack.
      * @throws com.wildbeeslabs.jentle.collections.exception.EmptyStackException
      */
     T peek() throws EmptyStackException;
 
     /**
-     * Remove value from stack.
+     * Removes element value from the current stack.
      *
-     * @param value to remove from stack.
-     * @return True if value was removed.
+     * @param value to remove from the current stack.
+     * @return true if the value was removed, false - otherwise
      */
     boolean remove(final T value);
 
     /**
-     * Clear the entire stack.
+     * Clears the current stack.
      */
     void clear();
 
     /**
-     * Does stack contain object.
+     * Checks if the current stack contains the value
      *
      * @param value object to find in stack.
-     * @return True is stack contains object.
+     * @return true if the current stack contains the value, false - otherwise.
      */
     boolean contains(final T value);
 
     /**
-     * Size of the stack.
+     * Returns the size of the current stack.
      *
-     * @return size of the stack.
+     * @return size of the current stack.
      */
     int size();
 
     /**
-     * Validate the stack according to the invariants.
+     * Validate the current stack according to the invariants.
      *
-     * @return True if the stack is valid.
+     * @return true if the current stack is valid, false - otherwise
      */
     boolean validate();
 
     /**
-     * Converts current stack to Java compatible Queue
+     * Converts the current stack to Java compatible Queue
      *
      * @return Java compatible Queue
      */
-    Queue<? extends T> toLifoQueue();
+    java.util.Queue<? extends T> toLifoQueue();
 
     /**
-     * Converts current stack to Java compatible Collection
+     * Converts the current stack to Java compatible Collection
      *
      * @return Java compatible Collection
      */
-    Collection<? extends T> toCollection();
+    java.util.Collection<? extends T> toCollection();
 
     /**
-     * Checks if current stack is empty
+     * Checks if the current stack is empty
      *
-     * @return true - if current stack is empty, false - otherwise
+     * @return true - if the current stack is empty, false - otherwise
      */
     boolean isEmpty();
 }

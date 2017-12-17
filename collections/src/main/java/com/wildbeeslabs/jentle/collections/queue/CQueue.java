@@ -21,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.queue;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IQueue;
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
+import com.wildbeeslabs.jentle.collections.exception.OverflowQueueException;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -40,7 +39,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Custom Queue implementation
+ * Custom queue implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -48,15 +47,9 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CQueue<T> implements IQueue<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CQueue<T> extends ACQueue<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = false)
@@ -86,7 +79,18 @@ public class CQueue<T> implements IQueue<T> {
         this.size = 0;
     }
 
-    public void enqueue(final T item) {
+    @Override
+    public T head() throws EmptyQueueException {
+        return this.first.getData();
+    }
+
+    @Override
+    public T tail() throws EmptyQueueException {
+        return this.last.getData();
+    }
+
+    @Override
+    public boolean enqueue(final T item) throws OverflowQueueException {
         CQueueNode<T> temp = new CQueueNode<>(item);
         if (Objects.nonNull(last)) {
             this.last.next = temp;
@@ -96,6 +100,7 @@ public class CQueue<T> implements IQueue<T> {
             this.first = this.last;
         }
         this.size++;
+        return true;
     }
 
     public T dequeue() throws EmptyQueueException {
@@ -126,16 +131,6 @@ public class CQueue<T> implements IQueue<T> {
 
     public boolean isEmpty() {
         return (0 == this.size());
-    }
-
-    @Override
-    public boolean offer(final T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public T poll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
