@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -645,6 +646,75 @@ public final class CStringUtils {
             return stack.isEmpty();
         } catch (OverflowStackException | EmptyStackException ex) {
             return false;
+        }
+    }
+
+    public static Map<String, Integer> concatByNames(final Map<String, Integer> names, final String[][] synonyms) {
+        final Map<String, NameSet> groups = constructGroups(names);
+        mergeClasses(groups, synonyms);
+        return convertToMap(groups);
+    }
+
+    private static void mergeClasses(final Map<String, NameSet> groups, final String[][] synonyms) {
+        for (final String[] entry : synonyms) {
+            String name1 = entry[0];
+            String name2 = entry[1];
+            final NameSet set1 = groups.get(name1);
+            final NameSet set2 = groups.get(name2);
+            if (set1 != set2) {
+                final NameSet smaller = set2.size() < set1.size() ? set2 : set1;
+                final NameSet bigger = set2.size() < set1.size() ? set1 : set2;
+                final Set<String> otherNames = smaller.getNames();
+                int frequency = smaller.getFrequency();
+                bigger.copyNamesWithFrequency(otherNames, frequency);
+                otherNames.stream().forEach((name) -> {
+                    groups.put(name, bigger);
+                });
+            }
+        }
+    }
+
+    private static Map<String, NameSet> constructGroups(final Map<String, Integer> names) {
+        final Map<String, NameSet> groups = new HashMap<>();
+        names.entrySet().stream().forEach((entry) -> {
+            String name = entry.getKey();
+            int frequency = entry.getValue();
+            final NameSet group = new NameSet(name, frequency);
+            groups.put(name, group);
+        });
+        return groups;
+    }
+
+    private static Map<String, Integer> convertToMap(final Map<String, NameSet> groups) {
+        final Map<String, Integer> list = new HashMap<>();
+        groups.values().stream().forEach((group) -> {
+            list.put(group.getRootName(), group.getFrequency());
+        });
+        return list;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class NameSet {
+
+        private final Set<String> names = new HashSet<>();
+        private String rootName;
+        private int frequency;
+
+        public NameSet(final String name, int frequency) {
+            this.names.add(name);
+            this.rootName = name;
+            this.frequency = frequency;
+        }
+
+        public void copyNamesWithFrequency(final Set<String> names, int frequency) {
+            this.names.addAll(names);
+            this.frequency += frequency;
+        }
+
+        public int size() {
+            return this.names.size();
         }
     }
 }
