@@ -25,18 +25,18 @@ package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Comparator;
-import java.util.Objects;
+import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 /**
  *
- * Custom stack with minimum implementation
+ * Custom abstract stack implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -44,45 +44,19 @@ import lombok.ToString;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString
-public class CStackMin<T> extends CStack<T> {
+public abstract class ACStack<T> implements IStack<T> {
 
-    protected CStack<T> minStack;
-    protected final Comparator<? super T> cmp;
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
-    public CStackMin() {
-        this(CUtils.DEFAULT_SORT_COMPARATOR);
-    }
-
-    public CStackMin(final Comparator<? super T> cmp) {
-        this.cmp = cmp;
-        this.minStack = new CStack<>();
-    }
-
-    @Override
-    public void push(final T value) throws OverflowStackException {
-        if (Objects.compare(value, this.min(), this.cmp) <= 0) {
-            this.minStack.push(value);
-        }
-        super.push(value);
-    }
-
-    @Override
-    public T pop() throws EmptyStackException {
-        final T value = super.pop();
-        if (Objects.compare(value, this.min(), this.cmp) == 0) {
-            this.minStack.pop();
-        }
-        return value;
-    }
-
-    protected T min() {
-        try {
-            return this.minStack.peek();
-        } catch (EmptyStackException ex) {
-            LOGGER.error(String.format("ERROR: minimum stack is empty: message={%s}", ex.getMessage()));
-            return null;
-        }
+    public void duplicate() throws EmptyStackException, OverflowStackException {
+        final T first = this.pop();
+        final T second = this.pop();
+        this.push(first);
+        this.push(second);
     }
 }

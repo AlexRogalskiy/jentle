@@ -25,14 +25,15 @@ package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.interfaces.IResultVisitor;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-import java.util.Collection;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -419,7 +420,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return (Objects.nonNull(headFirst) && Objects.nonNull(headLast));
     }
 
-    protected boolean isPalindrome(final E node) {
+    protected boolean isPalindrome(final E node) throws OverflowStackException {
         E fast = node;
         E slow = node;
         final CStack<T> stack = new CStack<>();
@@ -551,7 +552,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return this.partition(this.first, value);
     }
 
-    public boolean isPalindrome() {
+    public boolean isPalindrome() throws OverflowStackException {
         return this.isPalindrome(this.first);
     }
 

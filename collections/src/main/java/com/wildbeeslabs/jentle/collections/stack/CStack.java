@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.stack;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
+import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.Collection;
@@ -47,14 +47,9 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CStack<T> implements IStack<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CStack<T> extends ACStack<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -97,7 +92,7 @@ public class CStack<T> implements IStack<T> {
     }
 
     @Override
-    public void push(final T item) {
+    public void push(final T item) throws OverflowStackException {
         final CStackNode<T> temp = new CStackNode<>(item, this.top);
         this.size++;
         this.top = temp;

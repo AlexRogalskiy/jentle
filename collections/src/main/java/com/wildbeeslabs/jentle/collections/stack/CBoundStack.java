@@ -25,7 +25,6 @@ package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Collection;
@@ -34,9 +33,6 @@ import java.util.Queue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -48,14 +44,9 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CBoundStack<T> implements IStack<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CBoundStack<T> extends ACStack<T> {
 
     protected T[] stack;
     private int size;
@@ -103,13 +94,6 @@ public class CBoundStack<T> implements IStack<T> {
             this.stack[i] = null;
         }
         this.size = 0;
-    }
-
-    public void duplicate() throws EmptyStackException, OverflowStackException {
-        final T first = this.pop();
-        final T second = this.pop();
-        this.push(first);
-        this.push(second);
     }
 
     @Override
