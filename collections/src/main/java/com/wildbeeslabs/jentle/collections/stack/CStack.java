@@ -28,14 +28,12 @@ import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Queue;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -72,7 +70,7 @@ public class CStack<T> extends ACStack<T> {
         }
     }
 
-    protected CStackNode<T> top;
+    protected CStack.CStackNode<T> top;
     protected int size;
 
     public CStack() {
@@ -93,7 +91,7 @@ public class CStack<T> extends ACStack<T> {
 
     @Override
     public void push(final T item) throws OverflowStackException {
-        final CStackNode<T> temp = new CStackNode<>(item, this.top);
+        final CStack.CStackNode<T> temp = new CStackNode<>(item, this.top);
         this.size++;
         this.top = temp;
     }
@@ -103,7 +101,7 @@ public class CStack<T> extends ACStack<T> {
         if (this.isEmpty()) {
             throw new EmptyStackException(String.format("ERROR: CStack (empty size=%d)", this.size));
         }
-        return top.getData();
+        return this.top.getData();
     }
 
     @Override
@@ -118,7 +116,13 @@ public class CStack<T> extends ACStack<T> {
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        @SuppressWarnings("UnusedAssignment")
+        CStack.CStackNode<T> temp = null;
+        while (Objects.nonNull(this.top)) {
+            temp = this.top.getNext();
+            this.top = temp;
+        }
+        this.size = 0;
     }
 
     @Override
