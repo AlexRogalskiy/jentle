@@ -768,4 +768,89 @@ public final class CStringUtils {
 //                .reduce(sum, Integer::sum);
 //        return sum;
 //    }
+    public static LocationPair findClosest(final String[] words, final String word1, final String word2) {
+        final LocationPair best = new LocationPair(-1, -1);
+        LocationPair current = new LocationPair(-1, -1);
+        for (int i = 0; i < words.length; i++) {
+            final String word = words[i];
+            if (Objects.equals(word, word1)) {
+                current.location1 = i;
+                best.updateWithMin(current);
+            } else if (Objects.equals(word, word2)) {
+                current.location2 = i;
+                best.updateWithMin(current);
+            }
+        }
+        return best;
+    }
+
+    public static LocationPair findClosest2(final String word1, final String word2, final CHashMapList<String, Integer> locations) {
+        final List<Integer> locations1 = locations.get(word1);
+        final List<Integer> locations2 = locations.get(word2);
+        return findMinDistancePair(locations1, locations2);
+    }
+
+    private static LocationPair findMinDistancePair(final List<Integer> list1, final List<Integer> list2) {
+        if (Objects.isNull(list1) || Objects.isNull(list2) || list1.isEmpty() || list2.isEmpty()) {
+            return null;
+        }
+        int index1 = 0;
+        int index2 = 0;
+        final LocationPair best = new LocationPair(list1.get(0), list2.get(0));
+        final LocationPair current = new LocationPair(list1.get(0), list2.get(0));
+        while (index1 < list1.size() && index2 < list2.size()) {
+            current.setLocations(list1.get(index1), list2.get(index2));
+            best.updateWithMin(current);
+            if (current.location1 < current.location2) {
+                index1++;
+            } else {
+                index2++;
+            }
+        }
+        return best;
+    }
+
+    private static CHashMapList<String, Integer> getWordLocations(final String[] words) {
+        final CHashMapList<String, Integer> locations = new CHashMapList<>();
+        for (int i = 0; i < words.length; i++) {
+            locations.put(words[i], i);
+        }
+        return locations;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class LocationPair {
+
+        public int location1;
+        public int location2;
+
+        public LocationPair(int first, int second) {
+            this.setLocations(first, second);
+        }
+
+        public void setLocations(int first, int second) {
+            this.location1 = first;
+            this.location2 = second;
+        }
+
+        public void setLocations(final LocationPair location) {
+            this.setLocations(location.location1, location.location2);
+        }
+
+        public int distance() {
+            return Math.abs(location1 - location2);
+        }
+
+        public boolean isValid() {
+            return this.location1 >= 0 && this.location2 >= 0;
+        }
+
+        public void updateWithMin(final LocationPair location) {
+            if (!this.isValid() || location.distance() < distance()) {
+                this.setLocations(location);
+            }
+        }
+    }
 }

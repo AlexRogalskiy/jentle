@@ -393,4 +393,35 @@ public final class CArrayUtils {
     private static char[] extract(char[] array, int start, int end) {
         return Arrays.copyOfRange(array, start, end);
     }
+
+    public static <T> T findMajorityElement(final T[] array, final Comparator<? super T> cmp) {
+        final T candidate = getCandidate(array, cmp);
+        return validate(array, candidate, cmp) ? candidate : null;
+    }
+
+    private static <T> T getCandidate(final T[] array, final Comparator<? super T> cmp) {
+        T majority = null;
+        int count = 0;
+        for (final T elem : array) {
+            if (0 == count) {
+                majority = elem;
+            }
+            if (Objects.compare(elem, majority, cmp) == 0) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+        return majority;
+    }
+
+    private static <T> boolean validate(final T[] array, final T majority, final Comparator<? super T> cmp) {
+        int count = 0;
+        for (final T elem : array) {
+            if (Objects.compare(elem, majority, cmp) == 0) {
+                count++;
+            }
+        }
+        return count > array.length / 2;
+    }
 }
