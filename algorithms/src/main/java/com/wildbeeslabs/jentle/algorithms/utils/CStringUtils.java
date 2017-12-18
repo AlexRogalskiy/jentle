@@ -853,4 +853,59 @@ public final class CStringUtils {
             }
         }
     }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class ParseResult {
+
+        public int invalid;
+        public String parsed;
+
+        public ParseResult() {
+            this(Integer.MAX_VALUE, " ");
+        }
+
+        public ParseResult(int invalid, final String parsed) {
+            this.invalid = invalid;
+            this.parsed = parsed;
+        }
+    }
+
+    public static String bestSplit(final Set<String> dictionary, final String sentence) {
+        final ParseResult[] memo = new ParseResult[sentence.length()];
+        final ParseResult r = split(dictionary, sentence, 0, memo);
+        return Objects.isNull(r) ? null : r.parsed;
+    }
+
+    private static ParseResult split(final Set<String> dictionary, final String sentence, int start, final ParseResult[] memo) {
+        if (start >= sentence.length()) {
+            return new ParseResult(0, "");
+        }
+        if (Objects.nonNull(memo[start])) {
+            return memo[start];
+        }
+        int bestInvalid = Integer.MAX_VALUE;
+        String bestParsing = null;
+        String partial = "";
+        int index = start;
+        while (index < sentence.length()) {
+            char c = sentence.charAt(index);
+            partial += c;
+            int invalid = dictionary.contains(partial) ? 0 : partial.length();
+            if (invalid < bestInvalid) {
+                final ParseResult result = split(dictionary, sentence, index + 1, memo);
+                if (invalid + result.invalid < bestInvalid) {
+                    bestInvalid = invalid + result.invalid;
+                    bestParsing = partial + " " + result.parsed;
+                    if (0 == bestInvalid) {
+                        break;
+                    }
+                }
+            }
+            index++;
+        }
+        memo[start] = new ParseResult(bestInvalid, bestParsing);
+        return memo[start];
+    }
 }

@@ -388,17 +388,56 @@ public class CTreeUtils {
             } else if (Objects.compare(this.data, value, this.cmp) > 0) {
                 if (Objects.isNull(this.left)) {
                     return -1;
-                } else {
-                    return this.left.getRank(value);
                 }
+                return this.left.getRank(value);
             } else {
                 int rightRank = Objects.isNull(this.right) ? -1 : this.right.getRank(value);
                 if (-1 == rightRank) {
                     return -1;
-                } else {
-                    return this.leftSize + 1 + rightRank;
                 }
+                return this.leftSize + 1 + rightRank;
             }
         }
+    }
+
+    private static <U extends ACTreeNode<Double, U>> U convertToCircular(final U root) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        final U left = convertToCircular(root.getLeft());
+        final U right = convertToCircular(root.getRight());
+        if (Objects.isNull(left) && Objects.isNull(right)) {
+            root.setLeft(root);
+            root.setRight(root);
+            return root;
+        }
+        final U tailRight = (Objects.isNull(right) ? null : right.getLeft());
+        if (Objects.isNull(left)) {
+            concat(right.getLeft(), root);
+        } else {
+            concat(left.getLeft(), root);
+        }
+        if (Objects.isNull(right)) {
+            concat(root, left);
+        } else {
+            concat(root, right);
+        }
+
+        if (Objects.nonNull(left) && Objects.nonNull(right)) {
+            concat(tailRight, left);
+        }
+        return Objects.isNull(left) ? root : left;
+    }
+
+    private static <U extends ACTreeNode<Double, U>> void concat(final U left, final U right) {
+        left.setRight(right);
+        right.setLeft(left);
+    }
+
+    public static <U extends ACTreeNode<Double, U>> U convert(final U root) {
+        final U head = convertToCircular(root);
+        head.getLeft().setRight(null);;
+        head.setLeft(null);
+        return head;
     }
 }
