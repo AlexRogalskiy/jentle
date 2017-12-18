@@ -30,6 +30,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
 import com.wildbeeslabs.jentle.collections.tree.CTrie;
+import com.wildbeeslabs.jentle.collections.tree.CTrie3;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -828,6 +829,7 @@ public final class CStringUtils {
         public int location1;
         public int location2;
 
+        @SuppressWarnings("OverridableMethodCallInConstructor")
         public LocationPair(int first, int second) {
             this.setLocations(first, second);
         }
@@ -944,6 +946,35 @@ public final class CStringUtils {
 
         public int compare(final String first, final String second) {
             return first.length() - second.length();
+        }
+    }
+
+    public static CHashMapList<String, Integer> searchAll(final String value, final String[] smalls) {
+        final CHashMapList<String, Integer> lookup = new CHashMapList<>();
+        final CTrie3 tree = createTrieFromString(value);
+        for (String small : smalls) {
+            final List<Integer> locations = tree.search(small);
+            subtractValue(locations, small.length());
+            lookup.put(small, locations);
+        }
+        return lookup;
+    }
+
+    private static CTrie3 createTrieFromString(final String value) {
+        final CTrie3 trie = new CTrie3();
+        for (int i = 0; i < value.length(); i++) {
+            final String suffix = value.substring(i);
+            trie.insert(suffix, i);
+        }
+        return trie;
+    }
+
+    private static void subtractValue(final List<Integer> locations, int delta) {
+        if (Objects.isNull(locations)) {
+            return;
+        }
+        for (int i = 0; i < locations.size(); i++) {
+            locations.set(i, locations.get(i) - delta);
         }
     }
 }

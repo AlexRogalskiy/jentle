@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.collections.tree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -38,7 +39,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom trie implementation
+ * Custom trie3 implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -47,40 +48,80 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
+public class CTrie3 extends ACTrie<Character, CTrie3.CTrieNode> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CTrieNode<T> extends ACTrieNode<T, CTrieNode<T>> {
+    public static class CTrieNode extends ACTrieNode<Character, CTrieNode> {
+
+        public static final char DEFAULT_NODE_VALUE_TERMINATOR = '\0';
+        protected List<Integer> indexes;
 
         public CTrieNode() {
             this(null);
         }
 
-        public CTrieNode(final T data) {
+        public CTrieNode(final Character data) {
             super(data);
+            this.indexes = new ArrayList<>();
+        }
+
+        public void insertString(final CharSequence value, int index) {
+            this.indexes.add(index);
+            if (Objects.nonNull(value) && value.length() > 0) {
+                char val = value.charAt(0);
+                this.setData(val);
+                @SuppressWarnings("UnusedAssignment")
+                CTrieNode child = null;
+                if (this.hasChild(val)) {
+                    child = this.getChild(val);
+                } else {
+                    child = new CTrieNode();
+                    this.childs.put(val, child);
+                }
+                child.insertString(value.toString().substring(1), index + 1);
+            } else {
+                this.childs.put(CTrieNode.DEFAULT_NODE_VALUE_TERMINATOR, null);
+            }
+        }
+
+        public List<Integer> search(final CharSequence value) {
+            if (Objects.isNull(value) || value.length() == 0) {
+                return this.indexes;
+            } else {
+                char first = value.charAt(0);
+                if (this.hasChild(first)) {
+                    return this.getChild(first).search(value.toString().substring(1));
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public boolean isTerminated() {
+            return this.hasChild(CTrieNode.DEFAULT_NODE_VALUE_TERMINATOR);
         }
     }
 
-    public CTrie() {
+    public CTrie3() {
         this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final Comparator<? super Integer> cmp) {
+    public CTrie3(final Comparator<? super Character> cmp) {
         this(null, cmp);
     }
 
-    public CTrie(final List<? extends CharSequence> list) {
+    public CTrie3(final List<? extends CharSequence> list) {
         this(list, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final CharSequence[] array) {
+    public CTrie3(final CharSequence[] array) {
         this(Arrays.asList(array), CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CTrie(final List<? extends CharSequence> list, final Comparator<? super Integer> cmp) {
+    public CTrie3(final List<? extends CharSequence> list, final Comparator<? super Character> cmp) {
         super(cmp);
         this.init(list);
     }
@@ -88,11 +129,11 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     protected void init(final List<? extends CharSequence> list) {
         if (Objects.nonNull(list)) {
             list.stream().filter(Objects::nonNull).map((item) -> {
-                CTrie.CTrieNode<Integer> current = this.root;
-                for (final Integer charCode : item.codePoints().toArray()) {
-                    CTrie.CTrieNode<Integer> child = current.getChild(charCode);
+                CTrie3.CTrieNode current = this.root;
+                for (int i = 0; i < item.length(); i++) {
+                    CTrie3.CTrieNode child = current.getChild(item.charAt(i));
                     if (Objects.isNull(child)) {
-                        child = new CTrieNode<>(charCode);
+                        child = new CTrie3.CTrieNode(item.charAt(i));
                         current.addChild(child);
                         this.size++;
                     }
@@ -105,11 +146,19 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
         }
     }
 
+    public List<Integer> search(final CharSequence value) {
+        return this.root.search(value);
+    }
+
+    public void insert(final CharSequence value, int location) {
+        this.root.insertString(value, location);
+    }
+
     @Override
     protected boolean contains(final CharSequence value, boolean isExact) {
-        CTrie.CTrieNode<Integer> current = this.root;
-        for (final Integer charCode : value.codePoints().toArray()) {
-            current = current.getChild(charCode);
+        CTrie3.CTrieNode current = this.root;
+        for (int i = 0; i < value.length(); i++) {
+            current = current.getChild(value.charAt(i));
             if (Objects.isNull(current)) {
                 return false;
             }
@@ -118,10 +167,10 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     }
 
     @Override
-    protected CTrie.CTrieNode<Integer> createTrieNode(final Optional<? extends Integer> value) {
+    protected CTrie3.CTrieNode createTrieNode(final Optional<? extends Character> value) {
         if (value.isPresent()) {
-            return new CTrie.CTrieNode<>(value.get());
+            return new CTrie3.CTrieNode(value.get());
         }
-        return new CTrie.CTrieNode<>();
+        return new CTrie3.CTrieNode();
     }
 }

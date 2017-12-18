@@ -66,6 +66,10 @@ public class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACNode<T> {
         this.isTerminated = isTerminated;
     }
 
+    public boolean hasChild(final T data) {
+        return this.childs.containsKey(data);
+    }
+
     public U getChild(final T data) {
         return this.childs.get(data);
     }

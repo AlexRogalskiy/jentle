@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.collections.tree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -38,7 +39,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom trie implementation
+ * Custom trie2 implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -47,12 +48,14 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
+public class CTrie2 extends ACTrie<Integer, CTrie2.CTrieNode<Integer>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
     public static class CTrieNode<T> extends ACTrieNode<T, CTrieNode<T>> {
+
+        protected List<Integer> indexes;
 
         public CTrieNode() {
             this(null);
@@ -60,27 +63,28 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
 
         public CTrieNode(final T data) {
             super(data);
+            this.indexes = new ArrayList<>();
         }
     }
 
-    public CTrie() {
+    public CTrie2() {
         this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final Comparator<? super Integer> cmp) {
+    public CTrie2(final Comparator<? super Integer> cmp) {
         this(null, cmp);
     }
 
-    public CTrie(final List<? extends CharSequence> list) {
+    public CTrie2(final List<? extends CharSequence> list) {
         this(list, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final CharSequence[] array) {
+    public CTrie2(final CharSequence[] array) {
         this(Arrays.asList(array), CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CTrie(final List<? extends CharSequence> list, final Comparator<? super Integer> cmp) {
+    public CTrie2(final List<? extends CharSequence> list, final Comparator<? super Integer> cmp) {
         super(cmp);
         this.init(list);
     }
@@ -88,11 +92,11 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     protected void init(final List<? extends CharSequence> list) {
         if (Objects.nonNull(list)) {
             list.stream().filter(Objects::nonNull).map((item) -> {
-                CTrie.CTrieNode<Integer> current = this.root;
+                CTrie2.CTrieNode<Integer> current = this.root;
                 for (final Integer charCode : item.codePoints().toArray()) {
-                    CTrie.CTrieNode<Integer> child = current.getChild(charCode);
+                    CTrie2.CTrieNode<Integer> child = current.getChild(charCode);
                     if (Objects.isNull(child)) {
-                        child = new CTrieNode<>(charCode);
+                        child = new CTrie2.CTrieNode<>(charCode);
                         current.addChild(child);
                         this.size++;
                     }
@@ -105,9 +109,51 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
         }
     }
 
+    public void insert(final CharSequence value, int index, final CTrie2.CTrieNode<Integer> node) {
+        if (Objects.nonNull(value)) {
+            insert(value.codePoints().toArray(), 0, index, node);
+        }
+    }
+
+    protected void insert(int[] array, int arrayIndex, int index, final CTrie2.CTrieNode<Integer> node) {
+        node.indexes.add(index);
+        if (arrayIndex < array.length) {
+            node.setData(array[arrayIndex]);
+            @SuppressWarnings("UnusedAssignment")
+            CTrieNode<Integer> child = null;
+            if (node.hasChild(array[arrayIndex])) {
+                child = node.getChild(array[arrayIndex]);
+            } else {
+                child = new CTrieNode<>();
+                node.getChilds().put(array[arrayIndex], child);
+            }
+            this.insert(array, arrayIndex + 1, index + 1, child);
+        } else {
+            node.getChilds().put(null, null);
+        }
+    }
+
+    public List<Integer> search(final CharSequence value, final CTrie2.CTrieNode<Integer> node) {
+        if (Objects.isNull(value) || value.length() == 0) {
+            return node.getIndexes();
+        }
+        return this.search(value.codePoints().toArray(), 0, node);
+    }
+
+    protected List<Integer> search(int[] array, int arrayIndex, final CTrie2.CTrieNode<Integer> node) {
+        if (arrayIndex == array.length) {
+            return node.getIndexes();
+        }
+        int first = array[arrayIndex];
+        if (node.getChilds().containsKey(first)) {
+            return this.search(array, arrayIndex + 1, node.getChilds().get(first));
+        }
+        return null;
+    }
+
     @Override
     protected boolean contains(final CharSequence value, boolean isExact) {
-        CTrie.CTrieNode<Integer> current = this.root;
+        CTrie2.CTrieNode<Integer> current = this.root;
         for (final Integer charCode : value.codePoints().toArray()) {
             current = current.getChild(charCode);
             if (Objects.isNull(current)) {
@@ -118,10 +164,10 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     }
 
     @Override
-    protected CTrie.CTrieNode<Integer> createTrieNode(final Optional<? extends Integer> value) {
+    protected CTrie2.CTrieNode<Integer> createTrieNode(final Optional<? extends Integer> value) {
         if (value.isPresent()) {
-            return new CTrie.CTrieNode<>(value.get());
+            return new CTrie2.CTrieNode<>(value.get());
         }
-        return new CTrie.CTrieNode<>();
+        return new CTrie2.CTrieNode<>();
     }
 }
