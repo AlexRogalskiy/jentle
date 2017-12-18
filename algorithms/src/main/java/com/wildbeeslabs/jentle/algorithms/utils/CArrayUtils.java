@@ -534,4 +534,17 @@ public final class CArrayUtils {
         return new PartitionResult(left - start, right - left + 1);
     }
 
+    public static int maxMin(int[] seances) {
+        Objects.requireNonNull(seances);
+        int oneStep = 0;
+        int twoStep = 0;
+        for (int i = seances.length - 1; i >= 0; i--) {
+            int bestWith = seances[i] + twoStep;
+            int bestWithout = oneStep;
+            int current = Math.max(bestWith, bestWithout);
+            twoStep = oneStep;
+            oneStep = current;
+        }
+        return oneStep;
+    }
 }
