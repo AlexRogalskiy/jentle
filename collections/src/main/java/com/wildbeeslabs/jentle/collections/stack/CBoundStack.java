@@ -51,9 +51,9 @@ public class CBoundStack<T> extends ACStack<T> {
     protected T[] stack;
     private int size;
 
-    public CBoundStack(int size, final Class<? extends T[]> clazz) {
+    public CBoundStack(int maxSize, final Class<? extends T[]> clazz) {
         assert (size > 0);
-        this.stack = CUtils.newArray(clazz, size);
+        this.stack = CUtils.newArray(clazz, maxSize);
         this.size = 0;
     }
 
@@ -127,6 +127,6 @@ public class CBoundStack<T> extends ACStack<T> {
     }
 
     public boolean isFull() {
-        return (this.size() <= this.stack.length);
+        return (this.size() == this.stack.length);
     }
 }

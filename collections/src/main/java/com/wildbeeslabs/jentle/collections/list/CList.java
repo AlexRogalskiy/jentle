@@ -75,11 +75,11 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> 
         this(null, cmp);
     }
 
-    public CList(final CList<T> source) {
+    public CList(final IList<T> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CList(final CList<T> source, final Comparator<? super T> cmp) {
+    public CList(final IList<T> source, final Comparator<? super T> cmp) {
         super(source, cmp);
     }
 

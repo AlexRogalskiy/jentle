@@ -63,7 +63,7 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
 
     public CCircularArray(final Class<? extends T[]> clazz, int size, final T[] array) throws InvalidDimensionException {
         if (size < 0) {
-            throw new InvalidDimensionException(String.format("ERROR: CCircularArray (invalid initial size=%d)", size));
+            throw new InvalidDimensionException(String.format("ERROR: %s (invalid initial size=%d)", this.getClass().getName(), size));
         }
         this.size = size;
         this.array = CUtils.newArray(clazz, this.size);
@@ -142,11 +142,6 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
         public void remove() {
             throw new UnsupportedOperationException("Remove operation is not supported");
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CCircularArray {data: %s, head: %d}", this.array, this.head);
     }
 
     @Override

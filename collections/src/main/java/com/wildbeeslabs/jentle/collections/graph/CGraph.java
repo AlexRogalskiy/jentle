@@ -62,7 +62,7 @@ public class CGraph<T> implements IGraph<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Data
     @EqualsAndHashCode(callSuper = true)

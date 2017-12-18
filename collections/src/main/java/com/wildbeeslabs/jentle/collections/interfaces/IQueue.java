@@ -53,22 +53,12 @@ public interface IQueue<T> {
 //    public T poll();
 //
     /**
-     * Returns but do not remove element value from the tail of the current
-     * queue.
-     *
-     * @return element value from the tail of the current queue.
-     * @throws com.wildbeeslabs.jentle.collections.exception.EmptyQueueException
-     */
-    public T peek() throws EmptyQueueException;
-
-    /**
      * Adds value to the tail of the current queue
      *
      * @param value - element value to enqueue to the queue.
-     * @return true if element was added to the current queue, false - otherwise
      * @throws OverflowQueueException
      */
-    boolean enqueue(final T value) throws OverflowQueueException;
+    void enqueue(final T value) throws OverflowQueueException;
 
     /**
      * Removes element from the head of the current queue
@@ -79,17 +69,19 @@ public interface IQueue<T> {
     T dequeue() throws EmptyQueueException;
 
     /**
-     * Returns the head element of the current queue
+     * Returns but do not remove element value from the head of the current
+     * queue
      *
-     * @return head element of the current queue
+     * @return element value from the head of the current queue.
      * @throws EmptyQueueException
      */
     T head() throws EmptyQueueException;
 
     /**
-     * Returns the tail element of the current queue
+     * Returns but do not remove element value from the tail of the current
+     * queue
      *
-     * @return tail element of the current queue
+     * @return element value from the tail of the current queue.
      * @throws EmptyQueueException
      */
     T tail() throws EmptyQueueException;

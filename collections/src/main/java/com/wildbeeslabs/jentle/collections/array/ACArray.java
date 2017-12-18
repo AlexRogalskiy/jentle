@@ -58,7 +58,7 @@ public abstract class ACArray<T extends Serializable> implements IArray<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected T[] array;
     protected int size;
@@ -104,9 +104,6 @@ public abstract class ACArray<T extends Serializable> implements IArray<T> {
         return Arrays.copyOf(this.array, this.size());
         //SerializationUtils.clone(this.array);
     }
-//    public T[] toArray(final T[] items) {
-//        return (T[]) Arrays.copyOf(this.array, this.size(), items.getClass());
-//    }
 
     public Set<? extends T> toSet() {
         return CConverterUtils.convertArrayToSet(this.array);
@@ -126,7 +123,7 @@ public abstract class ACArray<T extends Serializable> implements IArray<T> {
 
     protected void checkRange(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CDynamicArray (index=%d is out of bounds [0, %d])", index, this.size - 1));
+            throw new IndexOutOfBoundsException(String.format("ERROR: %s (index=%d is out of bounds [0, %d])", this.getClass().getName(), index, this.size - 1));
         }
     }
 }

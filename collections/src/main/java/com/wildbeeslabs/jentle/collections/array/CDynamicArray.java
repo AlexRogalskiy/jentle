@@ -74,7 +74,7 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
 
     public CDynamicArray(final Class<? extends T[]> clazz, int size, int capacity, final T[] array) throws InvalidDimensionException {
         if (size < 0) {
-            throw new InvalidDimensionException(String.format("ERROR: CDynamicArray (invalid initial size=%d)", size));
+            throw new InvalidDimensionException(String.format("ERROR: %s (invalid initial size=%d)", this.getClass().getName(), size));
         }
         this.size = size;
         this.capacity = (capacity < size ? size : capacity);
@@ -226,11 +226,6 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
             this.source.checkRange(--this.cursor);
             this.source.removeAt(this.cursor);
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("CDynamicArray {data: %s, size: %d, capacity: %d}", this.array, this.size, this.capacity);
     }
 
     @Override

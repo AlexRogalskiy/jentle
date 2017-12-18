@@ -41,7 +41,6 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -51,7 +50,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Abstract Custom list implementation
+ * Custom abstract list implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -67,7 +66,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected E first;
     protected E last;
@@ -82,29 +81,42 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         this(null, cmp);
     }
 
-    public ACList(final ACList<? extends T, ? extends E> source) {
+    public ACList(final IList<T> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public ACList(final ACList<? extends T, ? extends E> source, final Comparator<? super T> cmp) {
+    public ACList(final IList<T> source, final Comparator<? super T> cmp) {
         this.first = this.last = null;
         this.size = 0;
         this.cmp = cmp;
         this.addList(source);
     }
 
-    public void addList(final ACList<? extends T, ? extends E> source) {
+    public T head() throws EmptyListException {
+        if (Objects.isNull(this.first)) {
+            throw new EmptyListException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size));
+        }
+        return this.first.getData();
+    }
+
+    public T tail() throws EmptyListException {
+        if (Objects.isNull(this.last)) {
+            throw new EmptyListException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size));
+        }
+        return this.last.getData();
+    }
+
+    protected void addList(final IList<T> source) {
         if (Objects.nonNull(source)) {
-            for (E current = source.getFirst(); Objects.nonNull(current); current = current.getNext()) {
-                this.addLast(current.getData());
+            for (Iterator<? extends T> iterator = source.iterator(); iterator.hasNext();) {
+                this.addLast(iterator.next());
             }
         }
     }
 
-    public E addToFirst(final T item) {
+    protected E addToFirst(final T item) {
         final E temp = this.createNode(item);
-        temp.setNext(this.first);
         temp.setNext(this.first);
         if (Objects.isNull(this.first)) {
             this.last = temp;
@@ -129,7 +141,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
 
     public T removeFirst() throws EmptyListException {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
+            throw new EmptyListException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         final T removed = this.first.getData();
         this.first = this.first.getNext();
@@ -139,7 +151,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
 
     public T removeLast() throws EmptyListException {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
+            throw new EmptyListException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         E previous = this.first, next = this.first;
         while (Objects.nonNull(next.getNext())) {
@@ -159,7 +171,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     @Override
     public boolean remove(final T item) throws EmptyListException {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: CList (empty size=%d)", this.size()));
+            throw new EmptyListException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         E previous = this.first, next = this.first;
         boolean removed = false;
@@ -186,7 +198,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             previous = next;
             next = next.getNext();
         }
-        E temp = this.createNode(item);
+        final E temp = this.createNode(item);
         temp.setNext(next);
         if (Objects.isNull(next)) {
             this.last = temp;
@@ -200,13 +212,21 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return temp;
     }
 
-    @Override
-    public T getAt(int index) {
+    protected E getToAt(int index) {
         this.checkRange(index);
         E current = this.first;
         while (Objects.nonNull(current) && --index > 0) {
             current = current.getNext();
         }
+        if (Objects.nonNull(current)) {
+            return current;
+        }
+        return null;
+    }
+
+    @Override
+    public T getAt(int index) {
+        final E current = this.getToAt(index);
         if (Objects.nonNull(current)) {
             return current.getData();
         }
@@ -223,9 +243,9 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return false;
     }
 
-    private void checkRange(int index) throws IndexOutOfBoundsException {
+    protected void checkRange(int index) throws IndexOutOfBoundsException {
         if (index <= 0 || index > this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CList (index=%d is out of bounds [1, %d])", index, this.size));
+            throw new IndexOutOfBoundsException(String.format("ERROR: %s (index=%d is out of bounds [1, %d])", this.getClass().getName(), index, this.size));
         }
     }
 
@@ -335,7 +355,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             node.setData(data);
             return this.insertBefore(list, node);
         } catch (InstantiationException | IllegalAccessException ex) {
-            LOGGER.error("ERROR: cannot instantiate list node", ex);
+            LOGGER.error(String.format("ERROR: cannot instantiate list node, message=%s", ex.getMessage()));
         }
         return null;
     }
@@ -440,7 +460,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
                 slow = slow.getNext();
             }
         } catch (EmptyStackException ex) {
-            LOGGER.error("ERROR: empty stack", ex);
+            LOGGER.error(String.format("ERROR: empty stack, message=%s", ex.getMessage()));
         }
         return true;
     }
@@ -466,7 +486,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
     @ToString
     private static final class ResultCNode<E> {
 
@@ -484,6 +503,12 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
 
         public ResultCNode(final E head, final E tail) {
             this(head, tail, 0);
+        }
+
+        public ResultCNode(final E head, final E tail, int size) {
+            this.head = head;
+            this.tail = tail;
+            this.size = size;
         }
     }
 
@@ -558,12 +583,12 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
 
     @Override
     public Queue<T> toQueue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Collection<T> toCollection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     protected abstract E createNode(final T value);

@@ -53,7 +53,7 @@ public class CMGraph<T> implements IGraph<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected T[][] graph;
 
@@ -76,7 +76,7 @@ public class CMGraph<T> implements IGraph<T> {
     private T getDataByDefault() {
         try {
             return (T) this.graph.getClass().getComponentType().newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException ex) {
             return null;
         }
     }
@@ -143,9 +143,9 @@ public class CMGraph<T> implements IGraph<T> {
         return lGraph;
     }
 
-    private void checkRange(int index) throws IndexOutOfBoundsException {
+    protected void checkRange(int index) throws IndexOutOfBoundsException {
         if (index <= 0 || index > this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CMGraph (vertex=%i is out of bounds [1, %i])", index, this.size()));
+            throw new IndexOutOfBoundsException(String.format("ERROR: %s (vertex=%i is out of bounds [1, %i])", this.getClass().getName(), index, this.size()));
         }
     }
 

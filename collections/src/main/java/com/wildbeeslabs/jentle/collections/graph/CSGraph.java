@@ -53,7 +53,7 @@ public class CSGraph implements IGraph<Integer> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected ISet<Integer>[] graph;
 
@@ -117,9 +117,9 @@ public class CSGraph implements IGraph<Integer> {
         return mGraph;
     }
 
-    private void checkRange(int index) throws IndexOutOfBoundsException {
+    protected void checkRange(int index) throws IndexOutOfBoundsException {
         if (index <= 0 || index > this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CMGraph (vertex=%i is out of bounds [1, %i])", index, this.size()));
+            throw new IndexOutOfBoundsException(String.format("ERROR: %s (vertex=%i is out of bounds [1, %i])", this.getClass().getName(), index, this.size()));
         }
     }
 

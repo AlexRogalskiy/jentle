@@ -25,17 +25,15 @@ package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowQueueException;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Queue;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -49,15 +47,13 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CQueue<T> extends ACQueue<T> {
+public class CQueue<T> extends ACQueue<T> {//CCircularList
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
     @ToString
-    public static class CQueueNode<T> {
+    public static class CQueueNode<T> extends ACNode<T> {
 
-        private final T data;
         private CQueueNode<T> next;
 
         public CQueueNode() {
@@ -67,61 +63,62 @@ public class CQueue<T> extends ACQueue<T> {
         public CQueueNode(final T data) {
             this(data, null);
         }
+
+        public CQueueNode(final T data, final CQueueNode<T> next) {
+            super(data);
+            this.next = next;
+        }
     }
 
-    protected CQueueNode<T> first;
-    protected CQueueNode<T> last;
+    protected CQueueNode<T> head;
+    protected CQueueNode<T> tail;
     protected int size;
 
     public CQueue() {
-        this.first = null;
-        this.last = null;
+        this.head = this.tail = null;
         this.size = 0;
     }
 
     @Override
     public T head() throws EmptyQueueException {
-        return this.first.getData();
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size));
+        }
+        return this.head.getData();
     }
 
     @Override
     public T tail() throws EmptyQueueException {
-        return this.last.getData();
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size));
+        }
+        return this.tail.getData();
     }
 
     @Override
-    public boolean enqueue(final T item) throws OverflowQueueException {
-        CQueueNode<T> temp = new CQueueNode<>(item);
-        if (Objects.nonNull(last)) {
-            this.last.next = temp;
+    public void enqueue(final T value) throws OverflowQueueException {
+        final CQueueNode<T> temp = new CQueueNode<>(value);
+        if (Objects.nonNull(this.tail)) {
+            this.tail.next = temp;
         }
-        this.last = temp;
-        if (Objects.isNull(first)) {
-            this.first = this.last;
+        this.tail = temp;
+        if (Objects.isNull(this.head)) {
+            this.head = this.tail;
         }
         this.size++;
-        return true;
     }
 
     public T dequeue() throws EmptyQueueException {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size()));
         }
-        T data = this.first.data;
-        this.first = this.first.next;
-        if (Objects.isNull(first)) {
-            this.last = null;
+        final T data = this.head.getData();
+        this.head = this.head.next;
+        if (Objects.isNull(head)) {
+            this.tail = null;
         }
         this.size--;
         return data;
-    }
-
-    @Override
-    public T peek() throws EmptyQueueException {
-        if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: CQueue (empty size=%i)", this.size));
-        }
-        return this.first.data;
     }
 
     @Override
@@ -135,12 +132,20 @@ public class CQueue<T> extends ACQueue<T> {
 
     @Override
     public boolean remove(final T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        @SuppressWarnings("UnusedAssignment")
+        CQueue.CQueueNode<T> temp = null;
+        while (Objects.nonNull(this.head)) {
+            temp = this.head.getNext();
+            this.head = null;
+            this.head = temp;
+        }
+        this.tail = null;
+        this.size = 0;
     }
 
     @Override

@@ -120,6 +120,7 @@ public class CStack<T> extends ACStack<T> {
         CStack.CStackNode<T> temp = null;
         while (Objects.nonNull(this.top)) {
             temp = this.top.getNext();
+            this.top = null;
             this.top = temp;
         }
         this.size = 0;

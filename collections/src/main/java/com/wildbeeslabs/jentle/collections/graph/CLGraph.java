@@ -60,7 +60,7 @@ public class CLGraph<T> implements IGraph<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -148,9 +148,9 @@ public class CLGraph<T> implements IGraph<T> {
         this.graph = this.newArray((Class<? extends IList<CLGraphArc<T>>[]>) this.graph.getClass(), this.size());
     }
 
-    private void checkRange(int index) throws IndexOutOfBoundsException {
+    protected void checkRange(int index) throws IndexOutOfBoundsException {
         if (index <= 0 || index > this.size()) {
-            throw new IndexOutOfBoundsException(String.format("ERROR: CLGraph (vertex=%d is out of bounds [1, %d])", index, this.size()));
+            throw new IndexOutOfBoundsException(String.format("ERROR: %s (vertex=%d is out of bounds [0, %d])", this.getClass().getName(), index, this.size()));
         }
     }
 

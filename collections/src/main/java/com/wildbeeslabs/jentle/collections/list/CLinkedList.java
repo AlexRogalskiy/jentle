@@ -75,32 +75,69 @@ public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> im
         this(null, cmp);
     }
 
-    public CLinkedList(final CLinkedList<T> source) {
+    public CLinkedList(final IList<T> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CLinkedList(final CLinkedList<T> source, final Comparator<? super T> cmp) {
+    public CLinkedList(final IList<T> source, final Comparator<? super T> cmp) {
         super(source, cmp);
     }
 
     @Override
     public void addLast(final T item) {
+        final CLinkedList.CLinkedListNode<T> temp = this.last;
         this.addToLast(item);
+        this.last.setPrevious(temp);
     }
 
     @Override
     public void addFirst(final T item) {
+        final CLinkedList.CLinkedListNode<T> temp = this.first;
         this.addToFirst(item);
+        temp.setPrevious(this.first);
     }
 
     @Override
     public void insertAt(final T item, int index) {
-        this.insertAt(item, index);
+        final CLinkedList.CLinkedListNode<T> temp1 = this.getToAt(index - 1);
+        final CLinkedList.CLinkedListNode<T> temp2 = this.getToAt(index);
+        final CLinkedList.CLinkedListNode<T> node = this.insertToAt(item, index);
+        temp2.setPrevious(node);
+        node.setPrevious(temp1);
     }
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new CLinkedListIterator<>(this);
+    }
+
+    protected static class CLinkedListIterator<T> implements Iterator<T> {
+
+        private CLinkedList.CLinkedListNode<? extends T> cursor = null;
+
+        public CLinkedListIterator(final CLinkedList<? extends T> source) {
+            this.cursor = source.first;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return (null != this.cursor);
+        }
+
+        @Override
+        public T next() {
+            if (!this.hasNext()) {
+                return null;
+            }
+            final T current = this.cursor.getData();
+            this.cursor = this.cursor.getNext();
+            return current;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 
     @Override

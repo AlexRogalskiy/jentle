@@ -56,7 +56,7 @@ public class COffHeapArray<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     private long size;
     private long address;

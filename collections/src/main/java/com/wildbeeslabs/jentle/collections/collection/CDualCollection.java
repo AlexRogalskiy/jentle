@@ -54,7 +54,7 @@ public class CDualCollection<T> extends AbstractCollection<T> implements Seriali
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected final Collection<T> first;
     protected final Collection<T> second;
