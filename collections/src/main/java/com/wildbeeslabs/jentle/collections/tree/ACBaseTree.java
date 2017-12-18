@@ -24,11 +24,16 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IBaseTree;
+import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.Stack;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -75,7 +80,7 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
 
     @Override
     public void setRoot(final Optional<? extends T> value) {
-        this.setRoot(this.createTreeNode(value));
+        this.root = this.createTreeNode(value);
     }
 
     protected void setRoot(final U node) {
@@ -140,6 +145,74 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
             return false;
         }
         return true;
+    }
+
+    protected void traverseUpDown(final U root, final IVisitor<T> visitor) {
+        Objects.requireNonNull(root);
+        final Stack<U> stack = new Stack<>();
+        U current = root;
+        while (true) {
+            visitor.visit(current.getData());
+            if (Objects.nonNull(current.getRight())) {
+                stack.push(current.getRight());
+            }
+            if (Objects.nonNull(current.getLeft())) {
+                current = current.getLeft();
+            } else {
+                current = stack.pop();
+            }
+        }
+    }
+
+    protected void traverseInfix(final U root, final IVisitor<T> visitor) {
+        Objects.requireNonNull(root);
+        final Stack<U> stack = new Stack<>();
+        U current = root;
+        while (true) {
+            stack.push(current);
+            if (Objects.nonNull(current.getLeft())) {
+                current = current.getLeft();
+            } else {
+                do {
+                    current = stack.pop();
+                    visitor.visit(current.getData());
+                    current = current.getRight();
+                } while (Objects.isNull(current));
+            }
+        }
+    }
+
+    public Iterator<? extends T> iterator() {
+        return new BreadthFirstIterator<>(this);
+    }
+
+    protected static class BreadthFirstIterator<T, U extends ACTreeNode<T, U>> implements Iterator<T> {
+
+        //private U root = null;
+        private Queue<U> queue = null;
+
+        public BreadthFirstIterator(final IBaseTree<T, U> source) {
+            //this.root = source.getRoot();
+            this.queue = new LinkedList<>();
+            this.queue.offer(source.getRoot());
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !this.queue.isEmpty();
+        }
+
+        @Override
+        public T next() {
+            U current = this.queue.poll();
+            if (Objects.nonNull(current.getLeft())) {
+                this.queue.offer(current.getLeft());
+            }
+            if (Objects.nonNull(current.getRight())) {
+                this.queue.offer(current.getRight());
+            }
+            return current.getData();
+        }
     }
 
     protected abstract U createTreeNode(final Optional<? extends T> value);
