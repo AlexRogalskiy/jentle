@@ -93,7 +93,7 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
                     CTrie.CTrieNode<Integer> child = current.getChild(charCode);
                     if (Objects.isNull(child)) {
                         child = new CTrieNode<>(charCode);
-                        current.getChild().put(charCode, child);
+                        current.addChild(child);
                         this.size++;
                     }
                     current = child;

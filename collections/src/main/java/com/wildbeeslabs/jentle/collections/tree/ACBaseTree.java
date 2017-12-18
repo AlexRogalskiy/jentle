@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.collections.tree;
 import com.wildbeeslabs.jentle.collections.interfaces.IBaseTree;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode2;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -182,17 +183,25 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
         }
     }
 
-    public Iterator<? extends T> iterator() {
+    protected U leftMostChild(U root) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        while (Objects.nonNull(root.getLeft())) {
+            root = root.getLeft();
+        }
+        return root;
+    }
+
+    public Iterator<? extends T> breadthFirstIterator() {
         return new BreadthFirstIterator<>(this);
     }
 
     protected static class BreadthFirstIterator<T, U extends ACTreeNode<T, U>> implements Iterator<T> {
 
-        //private U root = null;
         private Queue<U> queue = null;
 
         public BreadthFirstIterator(final IBaseTree<T, U> source) {
-            //this.root = source.getRoot();
             this.queue = new LinkedList<>();
             this.queue.offer(source.getRoot());
         }
@@ -212,6 +221,39 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
                 this.queue.offer(current.getRight());
             }
             return current.getData();
+        }
+    }
+
+    protected static class UpDownIterator<T, U extends ACTreeNode2<T, U>> implements Iterator<T> {
+
+        private U cursor = null;
+
+        public UpDownIterator(final IBaseTree<T, U> source) {
+            this.cursor = source.getRoot();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return Objects.nonNull(this.cursor);
+        }
+
+        @Override
+        public T next() {
+            if (!this.hasNext()) {
+                return null;
+            }
+            final T current = this.cursor.getData();
+            if (Objects.nonNull(this.cursor.getLeft())) {
+                this.cursor = this.cursor.getLeft();
+            } else {
+                while (Objects.nonNull(this.cursor) && this.cursor.isYoungest()) {
+                    this.cursor = this.cursor.getRight();
+                }
+                if (Objects.nonNull(this.cursor)) {
+                    this.cursor = this.cursor.getRight();
+                }
+            }
+            return current;
         }
     }
 

@@ -29,7 +29,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom abstract binary tree node implementation
+ * Custom abstract binary tree extended node implementation
  *
  * @author Alex
  * @version 1.0.0

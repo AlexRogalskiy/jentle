@@ -52,30 +52,20 @@ public abstract class ACBaseTreeExtended<T, U extends ACTreeNodeExtended<T, U>> 
         super(root, cmp);
     }
 
-    public ACTreeNodeExtended<T, U> inOrderSuccessor(final ACTreeNodeExtended<T, U> root) {
+    public U inOrderSuccessor(final U root) {
         if (Objects.isNull(root)) {
             return null;
         }
         if (Objects.nonNull(root.getRight())) {
             return this.leftMostChild(root.getRight());
         } else {
-            ACTreeNodeExtended<T, U> current = root;
-            ACTreeNodeExtended<T, U> parent = current.getParent();
+            U current = root;
+            U parent = current.getParent();
             while (Objects.nonNull(parent) && parent.getLeft() != current) {
                 current = parent;
                 parent = parent.getParent();
             }
             return parent;
         }
-    }
-
-    protected ACTreeNodeExtended<T, U> leftMostChild(ACTreeNodeExtended<T, U> root) {
-        if (Objects.isNull(root)) {
-            return null;
-        }
-        while (Objects.nonNull(root.getLeft())) {
-            root = root.getLeft();
-        }
-        return root;
     }
 }

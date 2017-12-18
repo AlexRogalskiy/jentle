@@ -23,21 +23,13 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.node;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract trie node implementation
+ * Custom abstract binary tree node implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -48,44 +40,24 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACNode<T> {
+public abstract class ACTreeNode2<T, U extends ACTreeNode2<T, U>> extends ACTreeNode<T, U> {
 
-    protected final Map<T, U> childs = new LinkedHashMap<>();
-    protected boolean isTerminated;
+    protected boolean isYoungest;
 
-    public ACTrieNode() {
+    public ACTreeNode2() {
         this(null);
     }
 
-    public ACTrieNode(final T data) {
-        this(null, Boolean.FALSE);
+    public ACTreeNode2(final T data) {
+        this(data, null, null);
     }
 
-    public ACTrieNode(final T data, boolean isTerminated) {
-        super(data);
-        this.isTerminated = isTerminated;
+    public ACTreeNode2(final T data, final U son, final U brother) {
+        this(data, son, brother, Boolean.FALSE);
     }
 
-    public U getChild(final T data) {
-        return this.childs.get(data);
-    }
-
-    public void setChilds(final List<U> childs) {
-        this.childs.clear();
-        if (Objects.nonNull(childs)) {
-            this.childs.putAll(childs.stream().collect(Collectors.toMap(key -> key.getData(), value -> value)));
-        }
-    }
-
-    public void addChild(final U child) {
-        if (Objects.nonNull(child)) {
-            this.childs.put(child.getData(), child);
-        }
-    }
-
-    public void removeChild(final U child) {
-        if (Objects.nonNull(child)) {
-            this.childs.remove(child.getData());
-        }
+    public ACTreeNode2(final T data, final U son, final U brother, boolean isYoungest) {
+        super(data, son, brother);
+        this.isYoungest = isYoungest;
     }
 }
