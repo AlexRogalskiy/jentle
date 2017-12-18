@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
@@ -424,4 +425,113 @@ public final class CArrayUtils {
         }
         return count > array.length / 2;
     }
+
+    public static <T> T[] getElems(final T[] array, int k, final Class<? extends T[]> clazz, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        assert (k > 0 && k <= array.length);
+        Arrays.sort(array, cmp);
+        final T[] smallest = CUtils.newArray(clazz, k);
+        for (int i = 0; i < k; i++) {
+            smallest[i] = array[i];
+        }
+        return smallest;
+    }
+
+    public static <T> T[] getElems2(final T[] array, int k, final Class<? extends T[]> clazz, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        assert (k > 0 && k <= array.length);
+        final PriorityQueue<T> heap = getFromHeap(array, k, cmp);
+        return heapToArray(heap, clazz);
+    }
+
+    private static <T> PriorityQueue<T> getFromHeap(final T[] array, int k, final Comparator<? super T> cmp) {
+        final PriorityQueue<T> heap = new PriorityQueue<>(k, cmp);
+        for (final T elem : array) {
+            if (heap.size() < k) {
+                heap.add(elem);
+            } else if (Objects.compare(elem, heap.peek(), cmp) < 0) {
+                heap.poll();
+                heap.add(elem);
+            }
+        }
+        return heap;
+    }
+
+    private static <T> T[] heapToArray(final PriorityQueue<T> heap, final Class<? extends T[]> clazz) {
+        final T[] array = CUtils.newArray(clazz, heap.size());
+        while (!heap.isEmpty()) {
+            array[heap.size() - 1] = heap.poll();
+        }
+        return array;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class PartitionResult {
+
+        public int leftSize;
+        public int middleSize;
+
+        public PartitionResult(int leftSize, int middleSize) {
+            this.leftSize = leftSize;
+            this.middleSize = middleSize;
+        }
+    }
+
+    public static <T> T[] getElems3(final T[] array, int k, final Class<? extends T[]> clazz, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        assert (k > 0 && k <= array.length);
+        final T threshold = rank(array, k - 1, cmp);
+        final T[] smallest = CUtils.newArray(clazz, k);
+        int count = 0;
+        for (final T elem : array) {
+            if (Objects.compare(elem, threshold, cmp) < 0) {
+                smallest[count++] = elem;
+            }
+        }
+        while (count < k) {
+            smallest[count++] = threshold;
+        }
+        return smallest;
+    }
+
+    private static <T> T rank(final T[] array, int k, final Comparator<? super T> cmp) {
+        assert (k > 0 && k <= array.length);
+        return rank(array, k, 0, array.length - 1, cmp);
+    }
+
+    private static <T> T rank(final T[] array, int k, int start, int end, final Comparator<? super T> cmp) {
+        final T pivot = array[CNumericUtils.generateRandomInt(start, end)];
+        final PartitionResult partition = partition(array, start, end, pivot, cmp);
+        int leftSize = partition.leftSize;
+        int middleSize = partition.middleSize;
+
+        if (k < leftSize) {
+            return rank(array, k, start, start + leftSize - 1, cmp);
+        } else if (k < leftSize + middleSize) {
+            return pivot;
+        }
+        return rank(array, k - leftSize - middleSize, start + leftSize + middleSize, end, cmp);
+    }
+
+    private static <T> PartitionResult partition(final T[] array, int start, int end, final T pivot, final Comparator<? super T> cmp) {
+        int left = start;
+        int right = end;
+        int middle = start;
+        while (middle <= right) {
+            if (Objects.compare(array[middle], pivot, cmp) < 0) {
+                swap(array, middle, left);
+                middle++;
+                left++;
+            } else if (Objects.compare(array[middle], pivot, cmp) > 0) {
+                swap(array, middle, right);
+                right--;
+            } else if (Objects.compare(array[middle], pivot, cmp) == 0) {
+                middle++;
+            }
+        }
+        return new PartitionResult(left - start, right - left + 1);
+    }
+
 }
