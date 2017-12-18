@@ -150,6 +150,10 @@ public class CTrie3 extends ACTrie<Character, CTrie3.CTrieNode> {
         return this.root.search(value);
     }
 
+    public void setRoot(final CharSequence value) {
+        this.insert(value, 0);
+    }
+
     public void insert(final CharSequence value, int location) {
         this.root.insertString(value, location);
     }

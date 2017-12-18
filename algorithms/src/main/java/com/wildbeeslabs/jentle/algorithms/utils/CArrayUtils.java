@@ -547,4 +547,87 @@ public final class CArrayUtils {
         }
         return oneStep;
     }
+
+    public static Range shortestSuperSequence(int[] big, int[] small) {
+        final int[][] nextElements = getNextElementsMulti(big, small);
+        final int[] closures = getClosures(nextElements);
+        return getShortestClosure(closures);
+    }
+
+    private static int[][] getNextElementsMulti(final int[] big, final int[] small) {
+        int[][] nextElements = new int[small.length][big.length];
+        for (int i = 0; i < small.length; i++) {
+            nextElements[i] = getNextElement(big, small[i]);
+        }
+        return nextElements;
+    }
+
+    private static int[] getNextElement(final int[] big, int value) {
+        int next = -1;
+        int[] nexts = new int[big.length];
+        for (int i = big.length - 1; i >= 0; i--) {
+            if (big[i] == value) {
+                next = i;
+            }
+            nexts[i] = next;
+        }
+        return nexts;
+    }
+
+    private static int[] getClosures(int[][] nextElements) {
+        int[] maxNextElement = new int[nextElements[0].length];
+        for (int i = 0; i < nextElements[0].length; i++) {
+            maxNextElement[i] = getClosureForIndex(nextElements, i);
+        }
+        return maxNextElement;
+    }
+
+    private static int getClosureForIndex(int[][] nextElements, int index) {
+        int max = -1;
+        for (int i = 0; i < nextElements.length; i++) {
+            if (nextElements[i][index] == -1) {
+                return -1;
+            }
+            max = Math.max(max, nextElements[i][index]);
+        }
+        return max;
+    }
+
+    private static Range getShortestClosure(int[] closures) {
+        int bestStart = -1;
+        int bestEnd = -1;
+        for (int i = 0; i < closures.length; i++) {
+            if (closures[i] == -1) {
+                break;
+            }
+            int current = closures[i] - i;
+            if (bestStart == -1 || current < bestEnd - bestStart) {
+                bestStart = i;
+                bestEnd = closures[i];
+            }
+        }
+        return new Range(bestStart, bestEnd);
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Range {
+
+        private int start;
+        private int end;
+
+        public Range(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        public int length() {
+            return end - start + 1;
+        }
+
+        public boolean isShorterThan(final Range other) {
+            return this.length() < other.length();
+        }
+    }
 }

@@ -25,7 +25,7 @@ package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 
-import java.lang.reflect.Array;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -58,11 +58,7 @@ public class CMGraph<T> implements IGraph<T> {
     protected T[][] graph;
 
     public CMGraph(final Class<? extends T> clazz, int numOfVertex) {
-        this.graph = this.newArray(clazz, numOfVertex);
-    }
-
-    private T[][] newArray(Class<? extends T> type, int size) {
-        return (T[][]) Array.newInstance(type, size, size);
+        this.graph = CUtils.newMatrix(clazz, numOfVertex, numOfVertex);
     }
 
     public boolean has(int from, int to) {

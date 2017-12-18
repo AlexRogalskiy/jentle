@@ -28,9 +28,11 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
 
 import java.util.Comparator;
 import java.util.Optional;
+import lombok.AccessLevel;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 
 import org.apache.log4j.LogManager;
@@ -56,6 +58,7 @@ public abstract class ACTrie<T, U extends ACTrieNode<T, U>> implements ITrie<T, 
      */
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
+    @Setter(AccessLevel.NONE)
     protected U root;
     protected int size;
     protected Comparator<? super T> cmp;

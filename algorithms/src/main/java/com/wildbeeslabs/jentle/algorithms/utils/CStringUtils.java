@@ -977,4 +977,48 @@ public final class CStringUtils {
             locations.set(i, locations.get(i) - delta);
         }
     }
+
+    public static CHashMapList<String, Integer> searchAll2(final String value, final String[] smalls) {
+        final CHashMapList<String, Integer> lookup = new CHashMapList<>();
+        int maxLen = value.length();
+        final CTrie3.CTrieNode root = createTreeFromStrings(smalls, maxLen).getRoot();
+        for (int i = 0; i < maxLen; i++) {
+            final List<String> strings = findStringsAtLocation(root, value, i);
+            insertIntoHashMap(strings, lookup, i);
+        }
+        return lookup;
+    }
+
+    private static CTrie3 createTreeFromStrings(final String[] smalls, int maxLen) {
+        final CTrie3 tree = new CTrie3();
+        tree.setRoot("");
+        for (final String small : smalls) {
+            if (small.length() <= maxLen) {
+                tree.setRoot(small);
+            }
+        }
+        return tree;
+    }
+
+    private static List<String> findStringsAtLocation(CTrie3.CTrieNode root, final String value, int start) {
+        final List<String> strings = new ArrayList<>();
+        int index = start;
+        while (index < value.length()) {
+            root = root.getChild(value.charAt(index));
+            if (Objects.isNull(root)) {
+                break;
+            }
+            if (root.isTerminated()) {
+                strings.add(value.substring(start, index + 1));
+            }
+            index++;
+        }
+        return strings;
+    }
+
+    private static void insertIntoHashMap(final List<String> strings, final CHashMapList<String, Integer> lookup, int index) {
+        for (final String string : strings) {
+            lookup.put(string, index);
+        }
+    }
 }

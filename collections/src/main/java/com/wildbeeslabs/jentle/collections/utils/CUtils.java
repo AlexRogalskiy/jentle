@@ -187,4 +187,16 @@ public final class CUtils {
         assert (size >= 0);
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
+
+    public static <T> T[] newArray2(final Class<? extends T> type, int size) {
+        assert (Objects.nonNull(type));
+        assert (size >= 0);
+        return (T[]) Array.newInstance(type, size);
+    }
+
+    public static <T> T[][] newMatrix(final Class<? extends T> type, int rows, int columns) {
+        assert (Objects.nonNull(type));
+        assert (rows >= 0 && columns >= 0);
+        return (T[][]) Array.newInstance(type, rows, columns);
+    }
 }

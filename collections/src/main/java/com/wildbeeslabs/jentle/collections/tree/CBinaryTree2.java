@@ -114,23 +114,12 @@ public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>>
     }
 
     @Override
-    protected void insert(final CTreeNode2<T> node, final CTreeNode2<T> newNode) {
-        Objects.requireNonNull(node);
-        if (Objects.compare(newNode.getData(), node.getData(), this.cmp) <= 0) {
-            if (Objects.isNull(node.getLeft())) {
-                node.setLeft(newNode);
-            } else {
-                this.insert(node.getLeft(), newNode);
-            }
-        } else {
-            if (Objects.isNull(node.getRight())) {
-                node.setRight(newNode);
-            } else {
-                this.insert(node.getRight(), newNode);
-            }
+    protected boolean insert(final CTreeNode2<T> node, final CTreeNode2<T> newNode, boolean isExact) {
+        if (this.insert(node, newNode, isExact)) {
+            node.size++;
+            return true;
         }
-        node.size++;
-        this.size++;
+        return false;
     }
 
     @Override

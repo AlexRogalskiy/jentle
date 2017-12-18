@@ -54,32 +54,144 @@ public abstract class ACBinaryTree<T, U extends ACTreeNode<T, U>> extends ACBase
     }
 
     protected U insertTo(final T value) {
+        return this.insertTo(value, Boolean.FALSE);
+    }
+
+    protected U insertTo(final T value, boolean isExact) {
         final U node = this.createTreeNode(Optional.ofNullable(value));
         if (this.isEmpty()) {
             this.root = node;
             this.size = 1;
         } else {
-            this.insert(this.getRoot(), node);
+            if (!this.insert(this.getRoot(), node, isExact)) {
+                return null;
+            }
         }
         return node;
     }
 
-    protected void insert(final U node, final U newNode) {
+    protected boolean insert(final U node, final U newNode, boolean isExact) {
         Objects.requireNonNull(node);
+        if (isExact && Objects.compare(newNode.getData(), node.getData(), this.cmp) == 0) {
+            return false;
+        }
         if (Objects.compare(newNode.getData(), node.getData(), this.cmp) <= 0) {
             if (Objects.isNull(node.getLeft())) {
                 node.setLeft(newNode);
             } else {
-                this.insert(node.getLeft(), newNode);
+                return this.insert(node.getLeft(), newNode, isExact);
             }
         } else {
             if (Objects.isNull(node.getRight())) {
                 node.setRight(newNode);
             } else {
-                this.insert(node.getRight(), newNode);
+                return this.insert(node.getRight(), newNode, isExact);
             }
         }
         this.size++;
+        return true;
+    }
+
+    public void insertRoot(final T value) {
+        final int LEFT = 1;
+        final int RIGHT = 2;
+        U current = this.getRoot();
+        U nodeLeft = this.createTreeNode(Optional.ofNullable(value));
+        int leftPos = LEFT;
+        U nodeRight = nodeLeft;
+        int rightPos = RIGHT;
+        this.root = nodeLeft;
+        while (Objects.nonNull(current)) {
+            if (Objects.compare(current.getData(), value, this.cmp) < 0) {
+                if (leftPos == LEFT) {
+                    nodeLeft.setLeft(current);
+                } else {
+                    nodeLeft.setRight(current);
+                }
+                nodeLeft = current;
+                leftPos = RIGHT;
+                current = current.getRight();
+            } else {
+                if (rightPos == LEFT) {
+                    nodeRight.setLeft(current);
+                } else {
+                    nodeRight.setRight(current);
+                }
+                rightPos = LEFT;
+                nodeRight = current;
+                current = current.getLeft();
+            }
+        }
+        if (leftPos == LEFT) {
+            nodeLeft.setLeft(null);
+        } else {
+            nodeLeft.setRight(null);
+        }
+        if (rightPos == RIGHT) {
+            nodeRight.setLeft(null);
+        } else {
+            nodeRight.setRight(null);
+        }
+        this.size++;
+    }
+
+    public void remove(final U root, final T value) {
+        this.removeTo(this.getRoot(), value);
+    }
+
+    protected boolean removeTo(U root, final T value) {
+        final int GO_LEFT = -1;
+        final int GO_RIGHT = 1;
+        final int NO_STEP = 0;
+        U parent = null;
+        U current = this.getRoot();
+        int comp = 0;
+        int lastStep = NO_STEP;
+        while (Objects.nonNull(current) && (comp = Objects.compare(current.getData(), value, this.cmp)) != 0) {
+            parent = current;
+            if (comp < 0) {
+                lastStep = GO_RIGHT;
+                current = current.getRight();
+            } else {
+                lastStep = GO_LEFT;
+                current = current.getLeft();
+            }
+        }
+        if (Objects.isNull(current)) {
+            return false;
+        }
+        if (Objects.isNull(current.getLeft())) {
+            if (lastStep == GO_RIGHT) {
+                parent.setRight(current.getRight());
+            } else if (lastStep == GO_LEFT) {
+                parent.setLeft(current.getRight());
+            } else {
+                root = current.getRight();
+            }
+        } else if (Objects.isNull(current.getRight())) {
+            if (lastStep == GO_RIGHT) {
+                parent.setRight(current.getLeft());
+            } else if (lastStep == GO_LEFT) {
+                parent.setLeft(current.getLeft());
+            } else {
+                root = current.getLeft();
+            }
+        } else {
+            U nodeToReplace = current.getRight();
+            parent = current;
+            while (Objects.nonNull(nodeToReplace.getLeft())) {
+                parent = nodeToReplace;
+                nodeToReplace = nodeToReplace.getLeft();
+            }
+            current.setData(nodeToReplace.getData());
+            if (parent == current) {
+                parent.setRight(nodeToReplace.getRight());
+            } else {
+                parent.setLeft(nodeToReplace.getRight());
+            }
+        }
+        this.size--;
+        return true;
     }
 
     @Override
