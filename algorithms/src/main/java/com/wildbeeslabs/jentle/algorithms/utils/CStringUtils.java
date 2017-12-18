@@ -36,7 +36,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -907,5 +909,41 @@ public final class CStringUtils {
         }
         memo[start] = new ParseResult(bestInvalid, bestParsing);
         return memo[start];
+    }
+
+    public static String getLongestToken(final String[] array) {
+        final Map<String, Boolean> map = new HashMap<>();
+        for (final String elem : array) {
+            map.put(elem, true);
+        }
+        Arrays.sort(array, new StringLengthComparator());
+        for (final String elem : array) {
+            if (canBuildWord(elem, true, map)) {
+                return elem;
+            }
+        }
+        return null;
+    }
+
+    private static boolean canBuildWord(final String value, boolean isOriginalWord, final Map<String, Boolean> map) {
+        if (map.containsKey(value) && !isOriginalWord) {
+            return map.get(value);
+        }
+        for (int i = 1; i < value.length(); i++) {
+            final String left = value.substring(0, i);
+            final String right = value.substring(i);
+            if (map.containsKey(left) && map.get(left) && canBuildWord(right, false, map)) {
+                return true;
+            }
+        }
+        map.put(value, false);
+        return false;
+    }
+
+    private static class StringLengthComparator implements Comparator<String> {
+
+        public int compare(final String first, final String second) {
+            return first.length() - second.length();
+        }
     }
 }
