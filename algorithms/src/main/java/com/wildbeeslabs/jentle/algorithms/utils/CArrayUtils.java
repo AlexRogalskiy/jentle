@@ -30,10 +30,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
@@ -628,6 +630,121 @@ public final class CArrayUtils {
 
         public boolean isShorterThan(final Range other) {
             return this.length() < other.length();
+        }
+    }
+
+    public static Range shortestSuperSequence2(int[] big, int[] small) {
+        final int[] closures = getClosures2(big, small);
+        return getShortestClosure2(closures);
+    }
+
+    private static int[] getClosures2(int[] big, int[] small) {
+        int[] closure = new int[big.length];
+        for (int i = 0; i < small.length; i++) {
+            sweepForClosure(big, closure, small[i]);
+        }
+        return closure;
+    }
+
+    private static void sweepForClosure(int[] big, int[] closures, int value) {
+        int next = -1;
+        for (int i = big.length - 1; i >= 0; i--) {
+            if (big[i] == value) {
+                next = i;
+            }
+            if ((next == -1 || closures[i] < next) && (closures[i] != -1)) {
+                closures[i] = next;
+            }
+        }
+    }
+
+    private static Range getShortestClosure2(int[] closures) {
+        Range shortest = new Range(0, closures[0]);
+        for (int i = 1; i < closures.length; i++) {
+            if (closures[i] == -1) {
+                break;
+            }
+            Range range = new Range(i, closures[i]);
+            if (!shortest.isShorterThan(range)) {
+                shortest = range;
+            }
+        }
+        return shortest;
+    }
+
+    public static Range shortestSuperSequence3(int[] big, int[] small) {
+        final List<Queue<Integer>> locations = getLocationsForElements(big, small);
+        if (Objects.isNull(locations)) {
+            return null;
+        }
+        return getShortestClosure3(locations);
+    }
+
+    private static List<Queue<Integer>> getLocationsForElements(int[] big, int[] small) {
+        final List<Queue<Integer>> allLocations = new ArrayList<>();
+        for (int e : small) {
+            final Queue<Integer> locations = getLocations(big, e);
+            if (locations.size() == 0) {
+                return null;
+            }
+            allLocations.add(locations);
+        }
+        return allLocations;
+    }
+
+    private static Queue<Integer> getLocations(int[] big, int small) {
+        final Queue<Integer> locations = new LinkedList<>();
+        for (int i = 0; i < big.length; i++) {
+            if (big[i] == small) {
+                locations.add(i);
+            }
+        }
+        return locations;
+    }
+
+    private static Range getShortestClosure3(final List<Queue<Integer>> lists) {
+        final PriorityQueue<HeapNode> minHeap = new PriorityQueue<>();
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < lists.size(); i++) {
+            int head = lists.get(i).remove();
+            minHeap.add(new HeapNode(head, i));
+            max = Math.max(max, head);
+        }
+        int min = minHeap.peek().locationWithinList;
+        int bestRangeMin = min;
+        int bestRangeMax = max;
+        while (true) {
+            final HeapNode n = minHeap.poll();
+            final Queue<Integer> list = lists.get(n.listId);
+            min = n.locationWithinList;
+            if (max - min < bestRangeMax - bestRangeMin) {
+                bestRangeMax = max;
+                bestRangeMin = min;
+            }
+            if (list.size() == 0) {
+                break;
+            }
+            n.locationWithinList = list.remove();
+            minHeap.add(n);
+            max = Math.max(max, n.locationWithinList);
+        }
+        return new Range(bestRangeMin, bestRangeMax);
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class HeapNode {
+
+        public int listId;
+        public int locationWithinList;
+
+        private int start;
+        private int end;
+
+        public HeapNode(int start, int end) {
+            this.start = start;
+            this.end = end;
         }
     }
 }
