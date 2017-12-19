@@ -45,9 +45,9 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class CString {
-
+    
     private final CStringList stringList;
-
+    
     public CString(final String value) {
         this.stringList = new CStringList(value);
     }
@@ -69,89 +69,106 @@ public class CString {
          * Default string item size
          */
         public static final int DEFAULT_ITEM_SIZE = 16;
-
+        
         @Override
         public void addLast(StringItem item) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-
+        
         @Override
         public void addFirst(StringItem item) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-
+        
         @Override
         public void insertAt(StringItem item, int index) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-
+        
         @Override
         public Iterator<? extends StringItem> iterator() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-
+        
         @Data
         @EqualsAndHashCode(callSuper = false)
         @ToString
         protected static class StringItem {
-
+            
             private int[] symbols = new int[CStringList.DEFAULT_ITEM_SIZE];
-            private int size;
-
+            private int size = 0;
+            
+            public StringItem(int symbol) {
+                this.add(symbol);
+            }
+            
             public StringItem(int[] symbols) {
                 this.symbols = symbols;
                 this.size = symbols.length;
             }
-
+            
+            public void add(int symbol) {
+                this.symbols[this.size++] = symbol;
+            }
+            
             public int getSymbol(int index) {
                 assert (index > 0 && index < this.size);
                 return this.symbols[index];
             }
+            
+            public void setSymbol(int index, int codePoint) {
+                assert (index > 0 && index < this.size);
+                this.symbols[index] = codePoint;
+            }
         }
-
+        
         @Data
         @EqualsAndHashCode(callSuper = true)
         @ToString
         protected static class StringItemNode extends ACListNode<CStringList.StringItem, CStringList.StringItemNode> {
-
+            
             public StringItemNode() {
                 this(null);
             }
-
+            
             public StringItemNode(final StringItem data) {
                 this(data, null);
             }
-
+            
             public StringItemNode(final StringItem data, StringItemNode next) {
                 super(data, next);
             }
         }
-
+        
         @Data
         @EqualsAndHashCode(callSuper = false)
         @ToString
         protected static class SymbolPosition {
-
+            
             private StringItemNode item;
             private int position;
-
+            
             public SymbolPosition(final StringItemNode item, int position) {
                 this.item = item;
                 this.position = position;
             }
         }
-
+        
         public CStringList() {
             this(null);
         }
-
+        
         public CStringList(final String value) {
+            this.append(value);
+        }
+        
+        public void append(final String value) {
             if (Objects.nonNull(value) && value.length() > 0) {
-                this.init(value.codePoints().toArray());
+                this.append(value.codePoints().toArray());
             }
         }
-
-        private void init(int[] codepoints) {
+        
+        public void append(int[] codepoints) {
             int full = codepoints.length / CStringList.DEFAULT_ITEM_SIZE;
             int half = codepoints.length % CStringList.DEFAULT_ITEM_SIZE;
             int index = 0;
@@ -165,7 +182,7 @@ public class CString {
                 this.addToLast(item);
             }
         }
-
+        
         public CStringList.SymbolPosition findPosition(int index) {
             if (index < 0) {
                 throw new IndexOutOfBoundsException(String.format("ERROR: invalid index=(%d), cannot be lower than zero", index));
@@ -181,13 +198,13 @@ public class CString {
             }
             return new SymbolPosition(current, curIndex);
         }
-
+        
         @Override
         protected CStringList.StringItemNode createNode(final CStringList.StringItem value) {
             return new CStringList.StringItemNode(value);
         }
     }
-
+    
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer();
@@ -199,7 +216,7 @@ public class CString {
         }
         return sb.toString();
     }
-
+    
     public int length() {
         int length = 0;
         for (CStringList.StringItemNode current = this.stringList.first; Objects.nonNull(current);) {
@@ -208,13 +225,33 @@ public class CString {
         }
         return length;
     }
-
+    
     public int codePointAt(int index) {
         final CStringList.SymbolPosition sp = this.stringList.findPosition(index);
         return sp.item.getData().getSymbol(index);
     }
-
-    public char[] charAt(int index) {
+    
+    public char[] charsAt(int index) {
         return Character.toChars(this.codePointAt(index));
+    }
+    
+    public void setCodePointAt(int index, int codePointAt) {
+        final CStringList.SymbolPosition sp = this.stringList.findPosition(index);
+        sp.item.getData().setSymbol(index, codePointAt);
+    }
+    
+    public void append(final String value) {
+        this.stringList.append(value);
+    }
+    
+    public void append(char value) {
+        final CStringList.StringItemNode last = this.stringList.getLast();
+        if (Objects.isNull(last)) {
+            this.stringList.setFirst(new CStringList.StringItemNode(new CStringList.StringItem(value)));
+        } else if (last.getData().getSize() < CStringList.DEFAULT_ITEM_SIZE) {
+            last.getData().add(value);
+        } else {
+            last.setNext(new CStringList.StringItemNode(new CStringList.StringItem(value)));
+        }
     }
 }
