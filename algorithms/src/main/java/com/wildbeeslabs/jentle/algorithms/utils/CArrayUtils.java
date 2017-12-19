@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,8 +39,10 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.IntPredicate;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -746,5 +749,52 @@ public final class CArrayUtils {
             this.start = start;
             this.end = end;
         }
+    }
+
+    public static int findSplitPoint(int arr[], int n) {
+        int leftSum = 0;
+        for (int i = 0; i < n; i++) {
+            leftSum += arr[i];
+        }
+        int rightSum = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            rightSum += arr[i];
+            leftSum -= arr[i];
+            if (rightSum == leftSum) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static String[] join(final String[] first, final String[] second) {
+        return Stream.concat(Arrays.stream(first), Arrays.stream(second)).toArray(String[]::new);
+    }
+
+    public static <T> Collection<T> join(final Collection<T> first, final Collection<T> second, final Predicate<? super T> filter) {
+        return Stream.concat(first.stream(), second.stream()).filter(filter).collect(Collectors.toList());
+    }
+
+    public static String join(final String[] array, final String delimiter) {
+        return Arrays.stream(array).collect(Collectors.joining(delimiter));
+    }
+
+    public static String join(final Collection<String> collection, final String delimiter) {
+        return collection.stream().collect(Collectors.joining(delimiter));
+    }
+
+    public static <K, V> String join(final Map<K, V> map, final String keyValueDelimiter, final String delimiter) {
+        return map.entrySet().stream().map(entry -> entry.getKey() + keyValueDelimiter + entry.getValue()).collect(Collectors.joining(delimiter));
+    }
+
+    public static Map<Integer, List<String>> splitByLength(final String[] array) {
+        return Arrays.stream(array).filter(Objects::nonNull).collect(Collectors.groupingBy(String::length));
+    }
+
+    public static Collection<String> split(final String value, final String delimiter) {
+        return Arrays.stream(value.split(delimiter))
+                .map(String::trim)
+                .filter(next -> !next.isEmpty())
+                .collect(Collectors.toList());
     }
 }

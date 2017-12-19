@@ -350,14 +350,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     }
 
     protected E insertBefore(final E list, final T data, final Class<E> clazz) {
-        try {
-            E node = clazz.newInstance();
-            node.setData(data);
-            return this.insertBefore(list, node);
-        } catch (InstantiationException | IllegalAccessException ex) {
-            LOGGER.error(String.format("ERROR: cannot instantiate list node, message=%s", ex.getMessage()));
-        }
-        return null;
+        return this.insertBefore(list, this.createNode(data));
     }
 
     protected E insertBefore(final E list, final E data) {
