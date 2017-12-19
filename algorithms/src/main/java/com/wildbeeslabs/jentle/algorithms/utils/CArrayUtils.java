@@ -27,7 +27,6 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,10 +38,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.IntPredicate;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -767,37 +764,6 @@ public final class CArrayUtils {
         return -1;
     }
 
-    public static String[] join(final String[] first, final String[] second) {
-        return Stream.concat(Arrays.stream(first), Arrays.stream(second)).toArray(String[]::new);
-    }
-
-    public static <T> Collection<T> join(final Collection<T> first, final Collection<T> second, final Predicate<? super T> filter) {
-        return Stream.concat(first.stream(), second.stream()).filter(filter).collect(Collectors.toList());
-    }
-
-    public static String join(final String[] array, final String delimiter) {
-        return Arrays.stream(array).collect(Collectors.joining(delimiter));
-    }
-
-    public static String join(final Collection<String> collection, final String delimiter) {
-        return collection.stream().collect(Collectors.joining(delimiter));
-    }
-
-    public static <K, V> String join(final Map<K, V> map, final String keyValueDelimiter, final String delimiter) {
-        return map.entrySet().stream().map(entry -> entry.getKey() + keyValueDelimiter + entry.getValue()).collect(Collectors.joining(delimiter));
-    }
-
-    public static Map<Integer, List<String>> splitByLength(final String[] array) {
-        return Arrays.stream(array).filter(Objects::nonNull).collect(Collectors.groupingBy(String::length));
-    }
-
-    public static Collection<String> split(final String value, final String delimiter) {
-        return Arrays.stream(value.split(delimiter))
-                .map(String::trim)
-                .filter(next -> !next.isEmpty())
-                .collect(Collectors.toList());
-    }
-
     public static int[] missingTwo(int[] array) {
         int max_value = array.length + 2;
         int rem_square = squareSumToN(max_value, 2);
@@ -856,5 +822,100 @@ public final class CArrayUtils {
         } else {
             return maxHeap.peek();
         }
+    }
+
+    public static int computeHistogramVolume(int[] histogram) {
+        int start = 0;
+        int end = histogram.length - 1;
+
+        final HistogramData[] data = createHistogramData(histogram);
+        int max = data[0].getRightMaxIndex();
+        int leftVolume = subgraphVolume(data, start, max, true);
+        int rightVolume = subgraphVolume(data, max, end, false);
+        return leftVolume + rightVolume;
+    }
+
+    private static HistogramData[] createHistogramData(int[] histogram) {
+        final HistogramData[] result = new HistogramData[histogram.length];
+        for (int i = 0; i < histogram.length; i++) {
+            result[i] = new HistogramData(histogram[i]);
+        }
+        int maxIndex = 0;
+        for (int i = 0; i < histogram.length; i++) {
+            if (histogram[maxIndex] < histogram[i]) {
+                maxIndex = i;
+            }
+            result[i].setLeftMaxIndex(maxIndex);
+        }
+        maxIndex = histogram.length - 1;
+        for (int i = histogram.length - 1; i >= 0; i--) {
+            if (histogram[maxIndex] < histogram[i]) {
+                maxIndex = i;
+            }
+            result[i].setRightMaxIndex(maxIndex);
+        }
+        return result;
+    }
+
+    private static int subgraphVolume(final HistogramData[] histogram, int start, int end, boolean isLeft) {
+        if (start >= end) {
+            return 0;
+        }
+        int sum = 0;
+        if (isLeft) {
+            int max = histogram[end - 1].getLeftMaxIndex();
+            sum += borderedVolume(histogram, max, end);
+            sum += subgraphVolume(histogram, start, max, isLeft);
+        } else {
+            int max = histogram[start + 1].getRightMaxIndex();
+            sum += borderedVolume(histogram, start, max);
+            sum += subgraphVolume(histogram, max, end, isLeft);
+        }
+        return sum;
+    }
+
+    private static int borderedVolume(final HistogramData[] data, int start, int end) {
+        if (start >= end) {
+            return 0;
+        }
+        int min = Math.min(data[start].getHeight(), data[end].getHeight());
+        int sum = 0;
+        for (int i = start + 1; i < end; i++) {
+            sum += min - data[i].getHeight();
+        }
+        return sum;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class HistogramData {
+
+        private int height;
+        private int leftMaxIndex = -1;
+        private int rightMaxIndex = -1;
+
+        public HistogramData(int height) {
+            this.height = height;
+        }
+    }
+
+    public static int computeHistogramVolume2(int[] histogram) {
+        int[] leftMaxes = new int[histogram.length];
+        int leftMax = histogram[0];
+        for (int i = 0; i < histogram.length; i++) {
+            leftMax = Math.max(leftMax, histogram[i]);
+            leftMaxes[i] = leftMax;
+        }
+        int sum = 0;
+        int rightMax = histogram[histogram.length - 1];
+        for (int i = histogram.length - 1; i >= 0; i--) {
+            rightMax = Math.max(rightMax, histogram[i]);
+            int secondTallest = Math.min(rightMax, leftMaxes[i]);
+            if (secondTallest > histogram[i]) {
+                sum += secondTallest - histogram[i];
+            }
+        }
+        return sum;
     }
 }
