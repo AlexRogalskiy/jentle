@@ -797,4 +797,64 @@ public final class CArrayUtils {
                 .filter(next -> !next.isEmpty())
                 .collect(Collectors.toList());
     }
+
+    public static int[] missingTwo(int[] array) {
+        int max_value = array.length + 2;
+        int rem_square = squareSumToN(max_value, 2);
+        int rem_one = max_value * (max_value + 1) / 2;
+        for (int i = 0; i < array.length; i++) {
+            rem_square -= array[i] * array[i];
+            rem_one -= array[i];
+        }
+        return solveEquation(rem_one, rem_square);
+    }
+
+    private static int squareSumToN(int n, int power) {
+        int sum = 0;
+        for (int i = 1; i <= n; i++) {
+            sum += (int) Math.pow(i, power);
+        }
+        return sum;
+    }
+
+    private static int[] solveEquation(int r1, int r2) {
+        int a = 2;
+        int b = -2 * r1;
+        int c = r1 * r1 - r2;
+        double part1 = -1 * b;
+        double part2 = Math.sqrt(b * b - 4 * a * c);
+        double part3 = 2 * a;
+        int solutionX = (int) ((part1 + part2) / part3);
+        int solutionY = r1 - solutionX;
+        return new int[]{solutionX, solutionY};
+    }
+
+    public static void addNewNumber(double number, final PriorityQueue<Double> maxHeap, final PriorityQueue<Double> minHeap) {
+        if (maxHeap.size() == minHeap.size()) {
+            if (Objects.nonNull(minHeap.peek()) && number > minHeap.peek()) {
+                maxHeap.offer(minHeap.poll());
+                minHeap.offer(number);
+            } else {
+                maxHeap.offer(number);
+            }
+        } else {
+            if (number < maxHeap.peek()) {
+                minHeap.offer(maxHeap.poll());
+                maxHeap.offer(number);
+            } else {
+                minHeap.offer(number);
+            }
+        }
+    }
+
+    public static double getMedian(final PriorityQueue<Double> maxHeap, final PriorityQueue<Double> minHeap) {
+        if (maxHeap.isEmpty()) {
+            return 0;
+        }
+        if (maxHeap.size() == minHeap.size()) {
+            return (maxHeap.peek() + minHeap.peek()) / 2;
+        } else {
+            return maxHeap.peek();
+        }
+    }
 }

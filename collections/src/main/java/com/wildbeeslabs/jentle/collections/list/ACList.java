@@ -349,15 +349,35 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return true;
     }
 
-    protected E insertBefore(final E list, final T data, final Class<E> clazz) {
+    protected E insertBefore(final E list, final T data) {
         return this.insertBefore(list, this.createNode(data));
     }
 
-    protected E insertBefore(final E list, final E data) {
-        if (Objects.nonNull(list)) {
-            data.setNext(list);
+    protected E insertBefore(final E first, final E second) {
+        Objects.requireNonNull(first);
+        Objects.requireNonNull(second);
+        second.setNext(first);
+        E current = this.first, previous = null;
+        while (Objects.nonNull(current) && current != first) {
+            previous = current;
+            current = current.getNext();
         }
-        return data;
+        if (Objects.nonNull(previous)) {
+            previous.setNext(second);
+        }
+        return second;
+    }
+
+    protected E insertAfter(final E list, final T data) {
+        return this.insertAfter(list, this.createNode(data));
+    }
+
+    protected E insertAfter(final E first, final E second) {
+        Objects.requireNonNull(first);
+        Objects.requireNonNull(second);
+        second.setNext(first.getNext());
+        first.setNext(second);
+        return second;
     }
 
     protected E partition(final E node, final T value) {
@@ -370,7 +390,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         E afterEnd = null;
         E current = node;
         while (Objects.nonNull(current)) {
-            E next = current.getNext();
+            final E next = current.getNext();
             current.setNext(null);
             if (Objects.compare(current.getData(), value, this.cmp) < 0) {
                 if (Objects.isNull(beforeStart)) {
