@@ -106,4 +106,19 @@ public class CHashMapSet<K, V> extends ACBaseExtended<K, V, Set<V>> {
     public Collection<Set<V>> values() {
         return this.map.values();
     }
+
+    @Override
+    public int size() {
+        return this.map.size();
+    }
+
+    @Override
+    public void clear() {
+        this.map.clear();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.map.isEmpty();
+    }
 }

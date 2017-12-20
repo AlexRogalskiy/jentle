@@ -35,4 +35,22 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  */
 public interface IBaseMap<K, V> {
 
+    /**
+     * Gets the size of the list
+     *
+     * @return size of the list
+     */
+    int size();
+
+    /**
+     * Removes all values from the list
+     */
+    void clear();
+
+    /**
+     * Checks if the list contains values
+     *
+     * @return boolean (true - if the list is empty, false - otherwise)
+     */
+    boolean isEmpty();
 }

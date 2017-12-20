@@ -25,47 +25,23 @@ package com.wildbeeslabs.jentle.collections.interfaces;
 
 /**
  *
- * Custom list interface declaration
+ * Custom sorted list interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface IList<T> extends IBaseList<T> {
+public interface ISortedList<T> extends IBaseList<T> {
+
+    void insert(final T value);
+
+    T find(final T value);
 
     /**
-     * Adds new value to the beginning of the list
+     * Validates the list according to the invariants
      *
-     * @param value - value to be added to list
-     * @return true (if the value was added, false - otherwise)
+     * @return true (true - if the list is valid, false - otherwise)
      */
-//    boolean offer(final T value);
-    /**
-     * Removes a value from the tail of the list
-     *
-     * @return value - value to be removed from the list
-     */
-//    T poll();
-    /**
-     * Adds new value to the tail of the list
-     *
-     * @param item - value to be added to the list
-     */
-    void addLast(final T item);
-
-    /**
-     * Adds new value to the head of the list
-     *
-     * @param item - value to be added to the list
-     */
-    void addFirst(final T item);
-
-    /**
-     * Adds new value to particular position of the list
-     *
-     * @param item - value to be added to the list
-     * @param index - position of new node
-     */
-    void insertAt(final T item, int index);
+//    public boolean validate();
 }

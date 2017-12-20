@@ -132,8 +132,7 @@ public class CCache<K, V> extends ACBaseMap<K, V> {
 
     private void insertAtFront(final CCache.CCacheNode<K, V> node) {
         if (Objects.isNull(this.head)) {
-            this.head = node;
-            this.tail = node;
+            this.head = this.tail = node;
         } else {
             this.head.setPrevious(node);
             node.setNext(this.head);
@@ -156,5 +155,42 @@ public class CCache<K, V> extends ACBaseMap<K, V> {
         final CCache.CCacheNode<K, V> node = new CCache.CCacheNode<>(key, value);
         this.insertAtFront(node);
         this.map.put(key, node);
+    }
+
+    protected CCache.CCacheNode<K, V> remove(CCache.CCacheNode<K, V> root) {
+        CCache.CCacheNode<K, V> backup = null;
+        while (Objects.nonNull(root) && root != this.tail) {
+            backup = root.getNext();
+            root.setNext(null);
+            root = backup;
+        }
+        return root;
+    }
+
+    protected int length(final CCache.CCacheNode<K, V> node) {
+        int size = 0;
+        CCache.CCacheNode<K, V> current = node;
+        while (Objects.nonNull(current)) {
+            size++;
+            current = current.getNext();
+        }
+        return size;
+    }
+
+    @Override
+    public void clear() {
+        this.remove(this.head);
+        this.head = this.tail = null;
+        this.map.clear();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.head == null;//return (0 == this.size());
+    }
+
+    @Override
+    public int size() {
+        return this.length(this.head);
     }
 }

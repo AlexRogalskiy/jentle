@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class ACBaseMap<K, V> implements IBaseMap<K, V> {
+public abstract class ACBaseMap<K, V> implements IBaseMap<K, V> {
 
     /**
      * Default Logger instance

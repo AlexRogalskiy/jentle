@@ -645,5 +645,10 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void iterator(final IVisitor<? extends T> visitor) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     protected abstract E createNode(final T value);
 }

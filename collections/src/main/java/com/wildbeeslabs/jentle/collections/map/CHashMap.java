@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.collections.map;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,5 +147,15 @@ public class CHashMap<K, V> extends ACMap<K, V> {
     protected int getIndexForKey(final K key) {
         Objects.requireNonNull(key);
         return Math.abs(key.hashCode() % this.array.size());
+    }
+
+    @Override
+    public Iterator<? extends K> iterateByKeys() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Iterator<? extends V> iterateByValues() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

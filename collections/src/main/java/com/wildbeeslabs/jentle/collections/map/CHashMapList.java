@@ -109,4 +109,19 @@ public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
     public Set<V> valueSet() {
         return this.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
     }
+
+    @Override
+    public int size() {
+        return this.map.size();
+    }
+
+    @Override
+    public void clear() {
+        this.map.clear();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.map.isEmpty();
+    }
 }

@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
+import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
@@ -49,9 +50,9 @@ import lombok.ToString;
 @ToString
 public class CCircularList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> {
 
-    protected CList.CListNode<T> first;
-    protected CList.CListNode<T> last;
-    protected int size;
+//    protected CList.CListNode<T> first;
+//    protected CList.CListNode<T> last;
+//    protected int size;
 
     public CCircularList() {
         this(null, CUtils.DEFAULT_SORT_COMPARATOR);
