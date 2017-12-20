@@ -28,8 +28,10 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended2;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -569,5 +571,24 @@ public final class CTree {
             return maxSum;
         }
         return Math.max(maxSumPathRoot2Leaf(root.getLeft(), path, index, sum, maxSum, result), maxSumPathRoot2Leaf(root.getRight(), path, index, sum, maxSum, result));
+    }
+
+    private static <T extends Number, U extends ACTreeNode<T, U>> void verticalOrder(final U root, int distance, final Map<Integer, Integer> map) {
+        if (Objects.isNull(root)) {
+            return;
+        }
+        int existingValue = 0;
+        if (map.containsKey(distance)) {
+            existingValue = map.get(distance);
+        }
+        map.put(distance, root.getData().intValue() + existingValue);
+        verticalOrder(root.getLeft(), distance - 1, map);
+        verticalOrder(root.getRight(), distance + 1, map);
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> Map<Integer, Integer> verticalOrderSumOfBTree(final U root) {
+        final Map<Integer, Integer> map = new HashMap<>();
+        verticalOrder(root, 0, map);
+        return map;
     }
 }
