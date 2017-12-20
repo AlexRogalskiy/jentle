@@ -74,7 +74,7 @@ public final class CCalculation {
     public static int fibonacci4(int n) {
         assert (n >= 0);
         if (0 == n) {
-            return 0;
+            return 1;
         }
         int a = 0, b = 1;
         for (int i = 2; i < n; i++) {
@@ -83,5 +83,17 @@ public final class CCalculation {
             b = c;
         }
         return (a + b);
+    }
+
+    public static int fibonacci5(int n) {
+        assert (n >= 0);
+        if (0 == n) {
+            return 1;
+        }
+        int facNumber = 1;
+        for (int i = 1; i < n; i++) {
+            facNumber *= (i + 1);
+        }
+        return facNumber;
     }
 }

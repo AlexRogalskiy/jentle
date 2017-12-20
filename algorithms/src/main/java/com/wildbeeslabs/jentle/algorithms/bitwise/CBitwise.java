@@ -419,4 +419,23 @@ public final class CBitwise {
             return (v << 1) | 1;
         }
     }
+
+    public static int findNumOfConsecutive1Bits(int number) {
+        int count = 0;
+        int numberOfOnes = 0;
+        while (number > 0) {
+
+            int remainder = number % 2;
+            if (remainder == 1) {
+                count++;
+                if (count > numberOfOnes) {
+                    numberOfOnes = count;
+                }
+            } else {
+                count = 0;
+            }
+            number = number / 2;
+        }
+        return numberOfOnes;
+    }
 }

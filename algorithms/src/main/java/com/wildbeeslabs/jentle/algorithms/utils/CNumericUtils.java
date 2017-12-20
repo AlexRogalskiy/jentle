@@ -285,20 +285,94 @@ public final class CNumericUtils {
         boolean[] isPrime = new boolean[maxNumber + 1];
         Arrays.fill(isPrime, true);
         int primeRange = (int) Math.sqrt(maxNumber);
-        for (int number = 2; number <= primeRange; number++) {
-            if (isPrime[number]) {
-                for (int iEliminate = number * number; iEliminate <= maxNumber; iEliminate += number) {
+        for (int num = 2; num <= primeRange; num++) {
+            if (isPrime[num]) {
+                for (int iEliminate = num * num; iEliminate <= maxNumber; iEliminate += num) {
                     isPrime[iEliminate] = false;
                 }
             }
         }
-        int number = 2;
-        while (number <= maxNumber) {
-            if (isPrime[number]) {
-                result.add(number);
+        int num = 2;
+        while (num <= maxNumber) {
+            if (isPrime[num]) {
+                result.add(num);
             }
-            number++;
+            num++;
         }
         return result;
+    }
+
+    public static boolean isPrime(int num) {
+        int sqrt = (int) Math.sqrt(num);
+        for (int range = 2; range <= sqrt; range++) {
+            if (num % range == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int lcm(int a, int b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    public static int gcd(int a, int b) {
+        int temp = 0;
+        while (b != 0) {
+            temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+
+    public static int gcd2(int a, int b) {
+        while (a != b) {
+            if (a > b) {
+                a -= b;
+            } else {
+                b -= a;
+            }
+        }
+        return a;
+    }
+
+    public static boolean isPalindrome(int num) {
+        if (num == reverse(num)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static int[] swap(int x, int y) {
+        x = x ^ y;
+        y = x ^ y;
+        x = x ^ y;
+        return new int[]{x, y};
+    }
+
+    private static int[] swap2(int x, int y) {
+        x = x + y;
+        y = x - y;
+        x = x - y;
+        return new int[]{x, y};
+    }
+
+    private static int[] swap3(int x, int y) {
+        x = x * y;
+        y = x / y;
+        x = x / y;
+        return new int[]{x, y};
+    }
+
+    public static int reverse(int num) {
+        int reverseNum = 0;
+        int digit = 0;
+        while (num > 0) {
+            digit = num % 10;
+            reverseNum = reverseNum * 10 + digit;
+            num /= 10;
+        }
+        return reverseNum;
     }
 }

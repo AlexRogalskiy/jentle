@@ -1017,8 +1017,42 @@ public final class CStringUtils {
     }
 
     private static void insertIntoHashMap(final List<String> strings, final CHashMapList<String, Integer> lookup, int index) {
-        for (final String string : strings) {
+        strings.stream().forEach((string) -> {
             lookup.put(string, index);
+        });
+    }
+
+    public static String reverseEachWordInString(final String value, final String delimiter) {
+        final StringBuilder builder = new StringBuilder();
+        for (final String word : value.trim().split(Pattern.quote(delimiter))) {
+            final StringBuilder eachWord = new StringBuilder(word).reverse();
+            builder.append(eachWord).append(delimiter);
         }
+        return builder.toString();
+    }
+
+    public static String reverseStringWordWise(final String value, final String delimiter) {
+        final String[] arrString = value.trim().split(Pattern.quote(delimiter));
+        final StringBuilder builder = new StringBuilder();
+        int length = arrString.length;
+        while (--length >= 0) {
+            builder.append(arrString[length]).append(delimiter);
+        }
+        return builder.toString();
+    }
+
+    public static String reverse(final String value) {
+        if (Objects.isNull(value) || value.length() == 0) {
+            return StringUtils.EMPTY;
+        }
+        int length = value.length();
+        char[] chInputArray = value.toCharArray();
+        for (int index = 0; index < length / 2; index++) {
+            char firstHalf = chInputArray[index];
+            char secondHalf = chInputArray[length - index - 1];
+            chInputArray[index] = secondHalf;
+            chInputArray[length - index - 1] = firstHalf;
+        }
+        return String.valueOf(chInputArray);
     }
 }
