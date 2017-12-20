@@ -747,4 +747,30 @@ public final class CTree {
         }
         return result;
     }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> List<T> getAncestorsOfNode(final U root, final T data, final Comparator<? super T> cmp) {
+        final List<T> result = new ArrayList<>();
+        getAncestorsOfNode(root, data, result, cmp);
+        return result;
+    }
+
+    private static <T extends Number, U extends ACTreeNode<T, U>> boolean getAncestorsOfNode(final U root, final T data, final List<T> result, final Comparator<? super T> cmp) {
+        if (Objects.isNull(root)) {
+            return false;
+        }
+        if (Objects.compare(root.getData(), data, cmp) == 0) {
+            return true;
+        }
+        boolean bFoundOnLeft = getAncestorsOfNode(root.getLeft(), data, result, cmp);
+        if (bFoundOnLeft) {
+            result.add(root.getData());
+            return bFoundOnLeft;
+        }
+        boolean bFoundOnRight = getAncestorsOfNode(root.getRight(), data, result, cmp);
+        if (bFoundOnRight) {
+            result.add(root.getData());
+            return bFoundOnRight;
+        }
+        return false;
+    }
 }
