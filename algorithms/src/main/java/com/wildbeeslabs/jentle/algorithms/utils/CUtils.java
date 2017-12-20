@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -125,5 +126,9 @@ public final class CUtils {
             }
         }
         return result;
+    }
+
+    public static <A, B, C> Function<A, C> compose(Function<A, B> f1, Function<B, C> f2) {
+        return f1.andThen(f2);
     }
 }
