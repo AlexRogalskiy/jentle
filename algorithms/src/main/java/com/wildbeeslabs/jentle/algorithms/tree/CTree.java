@@ -723,4 +723,28 @@ public final class CTree {
         }
         return result;
     }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> List<T> reverseLevelOrder(final U root) {
+        final List<T> result = new ArrayList<>();
+        if (Objects.isNull(root)) {
+            return result;
+        }
+        final Queue<U> queue = new LinkedList<>();
+        queue.offer(root);
+        final Stack<U> stack = new Stack<>();
+        while (!queue.isEmpty()) {
+            U node = queue.poll();
+            stack.push(node);
+            if (Objects.nonNull(node.getLeft())) {
+                queue.offer(node.getLeft());
+            }
+            if (Objects.nonNull(node.getRight())) {
+                queue.offer(node.getRight());
+            }
+        }
+        while (!stack.isEmpty()) {
+            result.add(stack.pop().getData());
+        }
+        return result;
+    }
 }
