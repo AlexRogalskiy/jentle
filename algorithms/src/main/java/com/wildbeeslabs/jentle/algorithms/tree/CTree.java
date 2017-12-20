@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.tree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -126,5 +127,23 @@ public final class CTree {
             }
         }
         return true;
+    }
+
+    public static <T, U extends ACTreeNode<T, U>> U ceilInBST(final U root, final T data, final Comparator<? super T> cmp) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        if (Objects.compare(root.getData(), data, cmp) == 0) {
+            return root;
+        }
+        if (Objects.compare(root.getData(), data, cmp) > 0) {
+            U left = ceilInBST(root.getLeft(), data, cmp);
+            if (Objects.isNull(left)) {
+                return root;
+            } else {
+                return left;
+            }
+        }
+        return ceilInBST(root.getRight(), data, cmp);
     }
 }
