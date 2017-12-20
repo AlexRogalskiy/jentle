@@ -591,4 +591,42 @@ public final class CTree {
         verticalOrder(root, 0, map);
         return map;
     }
+
+    private static <T extends Number, U extends ACTreeNode<T, U>> void verticalOrder2(final U root, int distance, final Map<Integer, List<T>> map) {
+        if (Objects.isNull(root)) {
+            return;
+        }
+        List<T> list = null;
+        if (map.containsKey(distance)) {
+            list = map.get(distance);
+        } else {
+            list = new ArrayList<>();
+        }
+        list.add(root.getData());
+        map.put(distance, list);
+        verticalOrder2(root.getLeft(), distance - 1, map);
+        verticalOrder2(root.getRight(), distance + 1, map);
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> Map<Integer, List<T>> verticalOrderOfBTree(final U root) {
+        final Map<Integer, List<T>> map = new HashMap<>();
+        verticalOrder2(root, 0, map);
+        return map;
+    }
+
+    private <T extends Number, U extends ACTreeNode<T, U>> int diameterOfBTree(final U root, int[] diameter) {
+        if (Objects.isNull(root)) {
+            return 0;
+        }
+        int left = diameterOfBTree(root.getLeft(), diameter);
+        int right = diameterOfBTree(root.getRight(), diameter);
+        diameter[0] = Math.max(diameter[0], left + right + 1);
+        return Math.max(left, right) + 1;
+    }
+
+    public <T extends Number, U extends ACTreeNode<T, U>> int getDiameter(final U root) {
+        int[] diameter = new int[]{0};
+        diameterOfBTree(root, diameter);
+        return diameter[0];
+    }
 }
