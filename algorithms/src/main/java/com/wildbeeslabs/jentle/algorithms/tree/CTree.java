@@ -502,4 +502,49 @@ public final class CTree {
         }
         return findNodeInBST(node.getRight(), value, cmp);
     }
+
+    public static <T, U extends ACTreeNode<T, U>> boolean isIdentical(final U node1, final U node2, final Comparator<? super T> cmp) {
+        if (Objects.isNull(node1) && Objects.isNull(node2)) {
+            return true;
+        }
+        if (Objects.isNull(node1) || Objects.isNull(node2)) {
+            return false;
+        }
+        if (Objects.compare(node1.getData(), node2.getData(), cmp) != 0) {
+            return false;
+        }
+        if (!isIdentical(node1.getLeft(), node2.getLeft(), cmp)) {
+            return false;
+        }
+        if (!isIdentical(node1.getRight(), node2.getRight(), cmp)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> List<T> sumInRoot2LeafPath(final U root, int sum) {
+        final List<T> result = new ArrayList<>();
+        final List<T> path = new ArrayList<>();
+        boolean sumExist = sumInRoot2LeafPath(root, path, 0, sum, result);
+        if (sumExist) {
+            return result;
+        }
+        return null;
+    }
+
+    private static <T extends Number, U extends ACTreeNode<T, U>> boolean sumInRoot2LeafPath(final U root, final List<T> path, int index, int sum, List<T> result) {
+        if (Objects.isNull(root)) {
+            return false;
+        }
+        path.set(index++, root.getData());
+        sum = sum - root.getData().intValue();
+        if (Objects.isNull(root.getLeft()) && Objects.isNull(root.getRight())) {
+            if (sum == 0) {
+                result.addAll(path.subList(index, path.size()));
+                return true;
+            }
+            return false;
+        }
+        return sumInRoot2LeafPath(root.getLeft(), path, index, sum, result) || sumInRoot2LeafPath(root.getRight(), path, index, sum, result);
+    }
 }
