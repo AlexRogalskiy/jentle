@@ -254,15 +254,26 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return (0 == this.size());
     }
 
+    public E remove(E root) {
+        E backup = null;
+        while (Objects.nonNull(root) && root != this.last) {
+            backup = root.getNext();
+            root.setNext(null);
+            root = backup;
+        }
+        return root;
+    }
+
     @Override
     public void clear() {
+        this.remove(this.first);
         this.first = this.last = null;
         this.size = 0;
     }
 
     @Override
     public int size() {
-        return this.size;
+        return this.length(this.first);//return this.size;
     }
 
     public boolean isDistinct() {
@@ -304,6 +315,35 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             }
             current = current.getNext();
         }
+    }
+
+    public int countTimes(final E root, final T value) {
+        int count = 0;
+        E current = root;
+        while (Objects.nonNull(current)) {
+            if (Objects.compare(current.getData(), value, this.cmp) == 0) {
+                count++;
+            }
+            current = current.getNext();
+        }
+        return count;
+    }
+
+    public E reverse(E root) {
+        E previous = root;
+        E newHead = root.getNext();
+        E temp = root.getNext();
+        while (Objects.nonNull(root) && Objects.nonNull(root.getNext())) {
+            previous.setNext(root.getNext());
+            root.setNext(temp.getNext());
+            temp.setNext(root);
+            if (Objects.nonNull(root.getNext())) {
+                previous = root;
+                root = root.getNext();
+                temp = root.getNext();
+            }
+        }
+        return newHead;
     }
 
     protected T getKthToLast(final E node, int k) {
@@ -557,6 +597,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return longer;
     }
 
+    //Floyd’s cycle detection algorithm
     protected E findLoop(final E node) {
         E slow = node;
         E fast = node;

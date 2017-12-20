@@ -304,6 +304,7 @@ public final class CSort {
     }
 
     public static void sortBlocks(final String[] array) {
+        Objects.requireNonNull(array);
         final CHashMapList<String, String> mapList = new CHashMapList<>();
         for (final String value : array) {
             final String key = CSort.sortChars(value);
@@ -315,6 +316,119 @@ public final class CSort {
             for (final String value : list) {
                 array[index] = value;
                 index++;
+            }
+        }
+    }
+
+    public static <T> void insertionSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int length = array.length;
+        int iArray = 1, iSortedArray;
+        T dataToBeInserted = null;
+
+        while (iArray < length) {
+            iSortedArray = iArray - 1;
+            dataToBeInserted = array[iArray];
+
+            while (iSortedArray >= 0 && Objects.compare(dataToBeInserted, array[iSortedArray], cmp) < 0) {
+                array[iSortedArray + 1] = array[iSortedArray];
+                iSortedArray--;
+            }
+            array[iSortedArray + 1] = dataToBeInserted;
+            iArray++;
+        }
+    }
+
+    public static <T> void selectionSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int length = array.length;
+        for (int outterIndex = 0; outterIndex < length - 1; outterIndex++) {
+            int iCurrentMin = outterIndex;
+            for (int innerIndex = iCurrentMin + 1; innerIndex < length; innerIndex++) {
+                if (Objects.compare(array[iCurrentMin], array[innerIndex], cmp) > 0) {
+                    iCurrentMin = innerIndex;
+                }
+            }
+            if (iCurrentMin != outterIndex) {
+                swap(array, iCurrentMin, outterIndex);
+            }
+        }
+    }
+
+    public static <T> void bubbleSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        boolean isSwapHappened = false;
+        for (int outterIndex = 0; outterIndex < array.length; outterIndex++) {
+            isSwapHappened = false;
+            for (int innerIndex = 0; innerIndex < array.length - outterIndex - 1; innerIndex++) {
+                if (Objects.compare(array[innerIndex], array[innerIndex + 1], cmp) > 0) {
+                    swap(array, innerIndex, innerIndex + 1);
+                    isSwapHappened = true;
+                }
+            }
+            if (!isSwapHappened) {
+                break;
+            }
+        }
+    }
+
+    //Dutch national flag (DNF)
+    public static <T> void segregateArray(final T[] array, final T[] borders, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        Objects.requireNonNull(borders);
+        assert (borders.length == 3);
+        int low = 0, mid = 0;
+        int high = array.length - 1;
+        while (mid <= high) {
+            if (Objects.compare(array[mid], borders[0], cmp) == 0) {
+                swap(array, low, mid);
+                low++;
+                mid++;
+            } else if (Objects.compare(array[mid], borders[1], cmp) == 0) {
+                mid++;
+            } else if (Objects.compare(array[mid], borders[2], cmp) == 0) {
+                swap(array, mid, high);
+                high--;
+            }
+        }
+    }
+
+    public static void segregateOddEvenArray(int[] array) {
+        int low = 0;
+        int high = array.length - 1;
+        while (low < high) {
+            while (array[low] % 2 == 0 && low < high) {
+                low++;
+            }
+            while (array[high] % 2 != 0 && low < high) {
+                high--;
+            }
+            if (low < high) {
+                int temp = array[low];
+                array[low] = array[high];
+                array[high] = temp;
+                low++;
+                high--;
+            }
+        }
+    }
+
+    public static void sortBinaryArray(int[] arr) {
+        int low = 0;
+        int high = arr.length - 1;
+        while (low < high) {
+            while (arr[low] == 0 && low < high) {
+                low++;
+            }
+            while (arr[high] == 1 && low < high) {
+                high--;
+            }
+            if (low < high) {
+                int temp = arr[low];
+                arr[low] = arr[high];
+                arr[high] = temp;
+                low++;
+                high--;
             }
         }
     }

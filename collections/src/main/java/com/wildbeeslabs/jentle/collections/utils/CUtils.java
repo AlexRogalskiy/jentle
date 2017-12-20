@@ -25,19 +25,12 @@ package com.wildbeeslabs.jentle.collections.utils;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.graph.CLGraph;
-import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -108,78 +101,6 @@ public final class CUtils {
             result.push(temp);
         }
         return result;
-    }
-
-    public static <T> boolean search(final CLGraph<T> graph, final CGraphNode<T> start, final CGraphNode<T> end) {//IGraph<T>
-        if (start == end) {
-            return true;
-        }
-        final Deque<CGraphNode<T>> listNode = new LinkedList<>();
-        for (final CGraphNode<T> node : graph.getNodes()) {
-            node.setState(CGraphNode.State.UNVISITED);
-        }
-        start.setState(CGraphNode.State.VISITING);
-        listNode.add(start);
-        while (!listNode.isEmpty()) {
-            CGraphNode<T> temp = listNode.removeFirst();
-            if (Objects.nonNull(temp)) {
-                for (final CGraphNode<T> v : temp.getAdjacents()) {
-                    if (Objects.equals(v.getState(), CGraphNode.State.UNVISITED)) {
-                        if (v == end) {
-                            return true;
-                        } else {
-                            v.setState(CGraphNode.State.VISITING);
-                            listNode.add(v);
-                        }
-                    }
-                }
-                temp.setState(CGraphNode.State.VISITED);
-            }
-        }
-        return false;
-    }
-
-    public static <T, U extends ACTreeNode<T, U>> List<LinkedList<ACTreeNode<T, U>>> createLevelNodeList(final ACTreeNode<T, U> root) {
-        final List<LinkedList<ACTreeNode<T, U>>> levelList = new ArrayList<>();
-        createLevelNodeList(root, levelList, 0);
-        return levelList;
-    }
-
-    private static <T, U extends ACTreeNode<T, U>> void createLevelNodeList(final ACTreeNode<T, U> root, final List<LinkedList<ACTreeNode<T, U>>> levelList, int level) {
-        if (Objects.isNull(root)) {
-            return;
-        }
-        LinkedList<ACTreeNode<T, U>> list = new LinkedList<>();
-        if (levelList.size() == level) {
-            levelList.add(list);
-        } else {
-            list = levelList.get(level);
-        }
-        list.add(root);
-        createLevelNodeList(root.getLeft(), levelList, level + 1);
-        createLevelNodeList(root.getRight(), levelList, level + 1);
-    }
-
-    public static <T, U extends ACTreeNode<T, U>> List<LinkedList<ACTreeNode<T, U>>> createLevelNodeList2(final ACTreeNode<T, U> root) {
-        final List<LinkedList<ACTreeNode<T, U>>> levelList = new ArrayList<>();
-        LinkedList<ACTreeNode<T, U>> current = new LinkedList<>();
-        if (Objects.nonNull(root)) {
-            current.add(root);
-        }
-        while (current.size() > 0) {
-            levelList.add(current);
-            LinkedList<ACTreeNode<T, U>> parents = current;
-            current = new LinkedList<>();
-            for (final ACTreeNode<T, U> parent : parents) {
-                if (Objects.nonNull(parent.getLeft())) {
-                    current.add(parent.getLeft());
-                }
-                if (Objects.nonNull(parent.getRight())) {
-                    current.add(parent.getRight());
-                }
-            }
-        }
-        return levelList;
     }
 
     public static <T> T[] newArray(final Class<? extends T[]> type, int size) {

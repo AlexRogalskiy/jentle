@@ -60,7 +60,7 @@ public class CBoundStack<T> extends ACStack<T> {
     @Override
     public void push(final T value) throws OverflowStackException {
         if (this.isFull()) {
-            throw new OverflowStackException(String.format("ERROR: CBoundStack (full size=%d)", this.size()));
+            throw new OverflowStackException(String.format("ERROR: %s (full size=%d)", this.getClass().getName(), this.size()));
         }
         this.stack[this.size++] = value;
     }
@@ -68,7 +68,7 @@ public class CBoundStack<T> extends ACStack<T> {
     @Override
     public T pop() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CBoundStack (empty size=%d)", this.size()));
+            throw new EmptyStackException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         final T removed = this.stack[--this.size];
         this.stack[this.size] = null;
@@ -78,19 +78,19 @@ public class CBoundStack<T> extends ACStack<T> {
     @Override
     public T peek() throws EmptyStackException {
         if (this.isEmpty()) {
-            throw new EmptyStackException(String.format("ERROR: CBoundStack (empty size=%d)", this.size));
+            throw new EmptyStackException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size));
         }
         return this.stack[this.size - 1];
     }
 
     @Override
     public boolean remove(final T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void clear() {
-        for (int i = 0; i < this.getSize(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             this.stack[i] = null;
         }
         this.size = 0;
@@ -98,7 +98,7 @@ public class CBoundStack<T> extends ACStack<T> {
 
     @Override
     public boolean contains(final T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -108,17 +108,17 @@ public class CBoundStack<T> extends ACStack<T> {
 
     @Override
     public boolean validate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Queue<? extends T> toLifoQueue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Collection<? extends T> toCollection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

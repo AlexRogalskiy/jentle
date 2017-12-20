@@ -37,6 +37,7 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -901,6 +902,7 @@ public final class CArrayUtils {
     }
 
     public static int computeHistogramVolume2(int[] histogram) {
+        Objects.requireNonNull(histogram);
         int[] leftMaxes = new int[histogram.length];
         int leftMax = histogram[0];
         for (int i = 0; i < histogram.length; i++) {
@@ -917,5 +919,182 @@ public final class CArrayUtils {
             }
         }
         return sum;
+    }
+
+    public static int missingNumber(int[] array1, int[] array2) {
+        Objects.requireNonNull(array1);
+        Objects.requireNonNull(array2);
+        int missingNumber = array1[0];
+        for (int index = 1; index < array1.length; index++) {
+            missingNumber ^= array1[index];
+        }
+        for (int index = 0; index < array2.length; index++) {
+            missingNumber ^= array2[index];
+        }
+        return missingNumber;
+    }
+
+    public static int missingNumber(int[] elements) {
+        int n = elements.length + 1;
+        int missingNumber = elements[0];
+        for (int index = 1; index <= n; index++) {
+            if (index < elements.length) {
+                missingNumber ^= elements[index];
+            }
+            missingNumber ^= index;
+        }
+        return missingNumber;
+    }
+
+    public static int missingNumber2(int[] elements) {
+        int arraySum = 0;
+        for (int element : elements) {
+            arraySum += element;
+        }
+        int n = elements.length + 1;
+        int sumOfNumbers = (n * (n + 1)) / 2;
+        return sumOfNumbers - arraySum;
+    }
+
+    public static int getOddNumber(int[] elements) {
+        int oddNumber = elements[0];
+        int length = elements.length;
+        for (int index = 1; index < length; index++) {
+            oddNumber ^= elements[index];
+        }
+        return oddNumber;
+    }
+
+    public static <T> void moveZeroToEnd(final T[] array, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int index = 0;
+        int nonZeros = 0;
+        int length = array.length;
+        while (index < length) {
+            if (Objects.compare(array[index], value, cmp) != 0) {
+                array[nonZeros++] = array[index];
+            }
+            index++;
+        }
+        while (nonZeros < length) {
+            array[nonZeros++] = value;
+        }
+    }
+
+    //Kadane’s algorithm
+    public static int maxSubArray(int[] array) {
+        Objects.requireNonNull(array);
+        int localMax = 0;
+        int maxSum = Integer.MIN_VALUE;
+        for (int index = 0; index < array.length; index++) {
+            localMax = localMax + array[index];
+            localMax = Math.max(0, localMax);
+            maxSum = Math.max(maxSum, localMax);
+        }
+        return maxSum;
+    }
+
+    public static <T> void reverseArrayIterative(final T[] array) {
+        Objects.requireNonNull(array);
+        int length = array.length;
+        int half = length / 2;
+        for (int index = 0; index < half; index++) {
+            T temp = array[index];
+            array[index] = array[length - 1 - index];
+            array[length - 1 - index] = temp;
+        }
+    }
+
+    public static <T> void reverseArrayRecursive(final T[] array, int low, int high) {
+        Objects.requireNonNull(array);
+        if (high < low) {
+            return;
+        }
+        T temp = array[low];
+        array[low] = array[high];
+        array[high] = temp;
+        reverseArrayRecursive(array, low + 1, high - 1);
+    }
+
+    public static <T> void replaceByGreatestRight(final T[] array, final T value, final Comparator<? super T> cmp) {
+        int lastIndex = array.length - 1;
+        T maxElement = array[lastIndex];
+        array[lastIndex--] = value;
+        while (lastIndex >= 0) {
+            T current = array[lastIndex];
+            array[lastIndex] = maxElement;
+            if (Objects.compare(current, maxElement, cmp) > 0) {
+                maxElement = current;
+            }
+            lastIndex--;
+        }
+    }
+
+    public static <T> List<T> getLeaders(final T[] array, final T value, final Comparator<? super T> cmp) {
+        final Stack<T> stack = new Stack<>();
+        final List<T> result = new ArrayList<>();
+
+        int lastIndex = array.length - 1;
+        T maxElement = array[lastIndex];
+        array[lastIndex--] = value;
+        stack.push(maxElement);
+
+        while (lastIndex >= 0) {
+            T current = array[lastIndex];
+            if (Objects.compare(current, maxElement, cmp) > 0) {
+                maxElement = current;
+                stack.push(maxElement);
+            }
+            lastIndex--;
+        }
+        while (!stack.isEmpty()) {
+            result.add(stack.pop());
+        }
+        return result;
+    }
+
+    //Boyer–Moore vote algorithm
+    public static <T> T majorityElement(final T[] array, final Comparator<? super T> cmp) {
+        T element = null;
+        int counter = 0;
+        int length = array.length;
+        int index = 0;
+        while (index < length) {
+            if (counter == 0) {
+                element = array[index];
+                counter++;
+            } else if (Objects.compare(element, array[index], cmp) == 0) {
+                counter++;
+            } else {
+                counter--;
+            }
+            index++;
+        }
+        if (counter == 0) {
+            return null;
+        }
+        index = -1;
+        counter = 0;
+        while (++index < length) {
+            if (Objects.compare(element, array[index], cmp) == 0) {
+                counter++;
+            }
+        }
+        if (counter > length / 2) {
+            return element;
+        }
+        return null;
+    }
+
+    public static Integer getDuplicate(int[] numbers) {
+        for (int index = 0; index < numbers.length; index++) {
+            int absIndex = Math.abs(numbers[index]);
+            if (numbers[absIndex] < 0) {
+                return index;
+            } else {
+                numbers[absIndex] = -numbers[absIndex];
+            }
+        }
+        return null;
     }
 }

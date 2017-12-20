@@ -54,25 +54,25 @@ public class CListUtils {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <T> List<? extends T> removeDuplicates(final List<? extends T> list) {
+    public static <T> List<? extends T> removeDuplicates(final Collection<? extends T> list) {
         Objects.requireNonNull(list);
         return list.stream().distinct().collect(Collectors.toList());
     }
 
-    public static <T> List<? extends T> removeNulls(final List<? extends T> list) {
+    public static <T> List<? extends T> removeNulls(final Collection<? extends T> list) {
         Objects.requireNonNull(list);
         return list.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
         //CollectionUtils.filter(list, PredicateUtils.notNullPredicate());
         //list.removeAll(Collections.singleton(null));
     }
 
-    public static <T> List<? extends T> filter(final List<? extends T> list, final Predicate<? super T> predicate) {
+    public static <T> List<? extends T> filter(final Collection<? extends T> list, final Predicate<? super T> predicate) {
         Objects.requireNonNull(list);
         Objects.requireNonNull(predicate);
         return list.stream().filter(predicate).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static <T> List<? extends T> filter(final List<? extends T> list, final Set<? extends T> matchSet) {
+    public static <T> List<? extends T> filter(final Collection<? extends T> list, final Set<? extends T> matchSet) {
         return filter(list, matchSet::contains);
     }
 
@@ -198,7 +198,7 @@ public class CListUtils {
         return maxElem;
     }
 
-    final static Predicate<Object> flip = predicate -> {
+    public final static Predicate<Object> flip = predicate -> {
         return new Random().nextBoolean();
     };
 

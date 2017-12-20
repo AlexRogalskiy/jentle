@@ -23,8 +23,10 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -75,5 +77,53 @@ public final class CUtils {
                 .map(String::trim)
                 .filter(next -> !next.isEmpty())
                 .collect(Collectors.toList());
+    }
+
+    public static <T> List<T> union(final T[] array1, final T[] array2, final Comparator<? super T> cmp) {
+        final List<T> result = new ArrayList<>();
+        int length1 = array1.length;
+        int length2 = array2.length;
+
+        int index1 = 0, index2 = 0;
+        while (index1 < length1 && index2 < length2) {
+            if (Objects.compare(array1[index1], array2[index2], cmp) < 0) {
+                result.add(array1[index1]);
+                index1++;
+
+            } else if (Objects.compare(array1[index1], array2[index2], cmp) > 0) {
+                result.add(array2[index2]);
+                index2++;
+            } else {
+                result.add(array1[index1]);
+                index1++;
+                index2++;
+            }
+        }
+        while (index1 < length1) {
+            result.add(array1[index1++]);
+        }
+        while (index2 < length2) {
+            result.add(array2[index2++]);
+        }
+        return result;
+    }
+
+    public static <T> List<T> intersect(final T[] array1, final T[] array2, final Comparator<? super T> cmp) {
+        final List<T> result = new ArrayList<>();
+        int length1 = array1.length;
+        int length2 = array2.length;
+        int index1 = 0, index2 = 0;
+        while (index1 < length1 && index2 < length2) {
+            if (Objects.compare(array1[index1], array2[index2], cmp) < 0) {
+                index1++;
+            } else if (Objects.compare(array1[index1], array2[index2], cmp) > 0) {
+                index2++;
+            } else {
+                result.add(array1[index1]);
+                index1++;
+                index2++;
+            }
+        }
+        return result;
     }
 }

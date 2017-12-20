@@ -76,7 +76,7 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
 
     @Override
     public int size() {
-        return this.size;//(Objects.isNull(this.root)) ? 0 : this.size;
+        return (Objects.isNull(this.root)) ? 0 : this.size;
     }
 
     @Override

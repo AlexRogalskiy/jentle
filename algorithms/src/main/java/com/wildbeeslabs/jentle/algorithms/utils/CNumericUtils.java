@@ -25,9 +25,11 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
@@ -276,5 +278,27 @@ public final class CNumericUtils {
             queue7.add(7 * val);
         }
         return val;
+    }
+
+    public static List<Integer> generatePrimeNumbers(int maxNumber) {
+        final List<Integer> result = new ArrayList<>();
+        boolean[] isPrime = new boolean[maxNumber + 1];
+        Arrays.fill(isPrime, true);
+        int primeRange = (int) Math.sqrt(maxNumber);
+        for (int number = 2; number <= primeRange; number++) {
+            if (isPrime[number]) {
+                for (int iEliminate = number * number; iEliminate <= maxNumber; iEliminate += number) {
+                    isPrime[iEliminate] = false;
+                }
+            }
+        }
+        int number = 2;
+        while (number <= maxNumber) {
+            if (isPrime[number]) {
+                result.add(number);
+            }
+            number++;
+        }
+        return result;
     }
 }
