@@ -532,7 +532,7 @@ public final class CTree {
         return null;
     }
 
-    private static <T extends Number, U extends ACTreeNode<T, U>> boolean sumInRoot2LeafPath(final U root, final List<T> path, int index, int sum, List<T> result) {
+    private static <T extends Number, U extends ACTreeNode<T, U>> boolean sumInRoot2LeafPath(final U root, final List<T> path, int index, int sum, final List<T> result) {
         if (Objects.isNull(root)) {
             return false;
         }
@@ -546,5 +546,28 @@ public final class CTree {
             return false;
         }
         return sumInRoot2LeafPath(root.getLeft(), path, index, sum, result) || sumInRoot2LeafPath(root.getRight(), path, index, sum, result);
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> List<T> maxSumPath(final U root) {
+        final List<T> result = new ArrayList<>();
+        final List<T> path = new ArrayList<>();
+        maxSumPathRoot2Leaf(root, path, 0, 0, Integer.MIN_VALUE, result);
+        return result;
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> int maxSumPathRoot2Leaf(final U root, final List<T> path, int index, int sum, int maxSum, final List<T> result) {
+        if (Objects.isNull(root)) {
+            return Integer.MIN_VALUE;
+        }
+        path.set(index++, root.getData());
+        sum += root.getData().intValue();
+        if (Objects.isNull(root.getLeft()) && Objects.isNull(root.getRight())) {
+            if (sum > maxSum) {
+                maxSum = sum;
+                result.addAll(path.subList(index, path.size()));
+            }
+            return maxSum;
+        }
+        return Math.max(maxSumPathRoot2Leaf(root.getLeft(), path, index, sum, maxSum, result), maxSumPathRoot2Leaf(root.getRight(), path, index, sum, maxSum, result));
     }
 }
