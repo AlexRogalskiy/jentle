@@ -27,6 +27,8 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -628,5 +631,96 @@ public final class CTree {
         int[] diameter = new int[]{0};
         diameterOfBTree(root, diameter);
         return diameter[0];
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> int nodesInBTree(final U root) {
+        if (Objects.isNull(root)) {
+            return 0;
+        }
+        int nLeftSubtree = nodesInBTree(root.getLeft());
+        int nRightSubtree = nodesInBTree(root.getRight());
+        return nLeftSubtree + nRightSubtree + 1;
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> T maxElementInBTree(final U root, final Comparator<? super T> cmp) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        T data = root.getData();
+        T left = maxElementInBTree(root.getLeft(), cmp);
+        T right = maxElementInBTree(root.getRight(), cmp);
+        return Collections.max(Arrays.asList(left, right, data), cmp);
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> T minElementInBTree(final U root, final Comparator<? super T> cmp) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        T data = root.getData();
+        T left = minElementInBTree(root.getLeft(), cmp);
+        T right = minElementInBTree(root.getRight(), cmp);
+        return Collections.min(Arrays.asList(left, right, data), cmp);
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> int heightOfTree(final U root) {
+        if (Objects.isNull(root)) {
+            return 0;
+        }
+        int left = heightOfTree(root.getLeft());
+        int right = heightOfTree(root.getRight());
+        return Math.max(left, right) + 1;
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> boolean isMirrorTree(final U node1, final U node2, final Comparator<? super T> cmp) {
+        if (Objects.isNull(node1) && Objects.isNull(node2)) {
+            return true;
+        }
+        if (Objects.isNull(node1) || Objects.isNull(node2)) {
+            return false;
+        }
+        if (Objects.compare(node1.getData(), node2.getData(), cmp) != 0) {
+            return false;
+        }
+        if (!isMirrorTree(node1.getLeft(), node2.getRight(), cmp)) {
+            return false;
+        }
+
+        if (!isMirrorTree(node1.getRight(), node2.getLeft(), cmp)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> List<T> spiralTraversal(final U root) {
+        final List<T> result = new ArrayList<>();
+        if (Objects.isNull(root)) {
+            return result;
+        }
+        final Stack<U> stackOne = new Stack<>();
+        final Stack<U> stackTwo = new Stack<>();
+        stackOne.push(root);
+        while (!stackOne.isEmpty() || !stackTwo.isEmpty()) {
+            while (!stackOne.isEmpty()) {
+                U node = stackOne.pop();
+                result.add(node.getData());
+                if (Objects.nonNull(node.getRight())) {
+                    stackTwo.push(node.getRight());
+                }
+                if (Objects.nonNull(node.getLeft())) {
+                    stackTwo.push(node.getLeft());
+                }
+            }
+            while (!stackTwo.isEmpty()) {
+                U node = stackTwo.pop();
+                result.add(node.getData());
+                if (Objects.nonNull(node.getLeft())) {
+                    stackOne.push(node.getLeft());
+                }
+                if (Objects.nonNull(node.getRight())) {
+                    stackOne.push(node.getRight());
+                }
+            }
+        }
+        return result;
     }
 }
