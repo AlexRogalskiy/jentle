@@ -147,9 +147,8 @@ public final class CTree {
             U left = ceilInBST(root.getLeft(), data, cmp);
             if (Objects.isNull(left)) {
                 return root;
-            } else {
-                return left;
             }
+            return left;
         }
         return ceilInBST(root.getRight(), data, cmp);
     }
@@ -541,7 +540,9 @@ public final class CTree {
             return false;
         }
         path.add(root.getData());
-        sum = sum - root.getData().intValue();
+        if (Objects.nonNull(root.getData())) {
+            sum -= root.getData().intValue();
+        }
         if (Objects.isNull(root.getLeft()) && Objects.isNull(root.getRight())) {
             if (sum == 0) {
                 return true;
@@ -562,7 +563,9 @@ public final class CTree {
             return Integer.MIN_VALUE;
         }
         path.add(root.getData());
-        sum += root.getData().intValue();
+        if (Objects.nonNull(root.getData())) {
+            sum += root.getData().intValue();
+        }
         if (Objects.isNull(root.getLeft()) && Objects.isNull(root.getRight())) {
             if (sum > maxSum) {
                 maxSum = sum;
@@ -902,9 +905,91 @@ public final class CTree {
                 if (Objects.nonNull(node.getRight())) {
                     queue.offer(node.getRight());
                 }
-                localSum += node.getData().intValue();
+                if (Objects.nonNull(node.getData())) {
+                    localSum += node.getData().intValue();
+                }
             }
         }
         return new int[]{maxSum, level};
+    }
+
+    public static <T extends Number, U extends ACTreeNode<T, U>> Integer sumOfNodes(final U root) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        final Queue<U> queue = new LinkedList<>();
+        queue.offer(root);
+        int totalSum = 0;
+        while (!queue.isEmpty()) {
+            U node = queue.poll();
+            if (Objects.nonNull(node.getData())) {
+                totalSum += node.getData().intValue();
+            }
+            if (Objects.nonNull(node.getLeft())) {
+                queue.offer(node.getLeft());
+            }
+            if (Objects.nonNull(node.getRight())) {
+                queue.offer(node.getRight());
+            }
+        }
+        return totalSum;
+    }
+
+    public static <T, U extends ACTreeNode<T, U>> int heightOfTree2(final U root) {
+        if (Objects.isNull(root)) {
+            return 0;
+        }
+        final Queue<U> queue = new LinkedList<>();
+        queue.offer(root);
+        queue.offer(null);
+        int height = 0;
+        while (!queue.isEmpty()) {
+            U node = queue.poll();
+            if (Objects.isNull(node)) {
+                if (!queue.isEmpty()) {
+                    queue.offer(null);
+                }
+                height++;
+            } else {
+                if (Objects.nonNull(node.getLeft())) {
+                    queue.offer(node.getLeft());
+                }
+                if (Objects.nonNull(node.getRight())) {
+                    queue.offer(node.getRight());
+                }
+            }
+        }
+        return height;
+    }
+
+    //level order traversal
+    public static <T, U extends ACTreeNode<T, U>> List<T> traverseBinaryTree(final U root) {
+        final List<T> result = new ArrayList<>();
+        if (Objects.isNull(root)) {
+            return result;
+        }
+        final Queue<U> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            U node = queue.poll();
+            result.add(node.getData());
+            if (Objects.nonNull(node.getLeft())) {
+                queue.offer(node.getLeft());
+            }
+            if (Objects.nonNull(node.getRight())) {
+                queue.offer(node.getRight());
+            }
+        }
+        return result;
+    }
+
+    public static <T, U extends ACTreeNode<T, U>> U deleteTree(U root) {
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        root.setLeft(deleteTree(root.getLeft()));
+        root.setRight(deleteTree(root.getRight()));
+        root = null;
+        return root;
     }
 }
