@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 /**
  *
@@ -85,5 +86,45 @@ public final class CTree {
             }
         }
         return levelList;
+    }
+
+    //breadth first search recursive algorithm
+    public static <T, U extends ACTreeNode<T, U>> boolean isLeavesAtSameLevel(final U root) {
+        if (Objects.isNull(root)) {
+            return false;
+        }
+        final Queue<U> queue = new LinkedList<>();
+        queue.offer(root);
+        queue.offer(null);
+        int level = 0;
+        boolean bLeafFound = false;
+        int leafLevel = -1;
+        while (!queue.isEmpty()) {
+            U node = queue.poll();
+            if (Objects.isNull(node)) {
+                if (!queue.isEmpty()) {
+                    queue.offer(null);
+                }
+                level++;
+            } else {
+                if (Objects.nonNull(node.getLeft()) && Objects.nonNull(node.getRight())) {
+                    if (!bLeafFound) {
+                        bLeafFound = true;
+                        leafLevel = level;
+                    } else {
+                        if (leafLevel != level) {
+                            return false;
+                        }
+                    }
+                }
+                if (Objects.nonNull(node.getLeft())) {
+                    queue.offer(node.getLeft());
+                }
+                if (Objects.nonNull(node.getRight())) {
+                    queue.offer(node.getRight());
+                }
+            }
+        }
+        return true;
     }
 }
