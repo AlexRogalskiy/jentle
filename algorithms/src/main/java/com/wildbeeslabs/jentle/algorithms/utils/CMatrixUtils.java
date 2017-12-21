@@ -301,4 +301,26 @@ public final class CMatrixUtils<T> {
         }
         return size;
     }
+
+    public static <T> boolean paintFill(final T[][] screen, int row, int column, final T value) {
+        Objects.requireNonNull(screen);
+        if (Objects.equals(value, screen[row][column])) {
+            return false;
+        }
+        return paintFill(screen, row, column, screen[row][column], value);
+    }
+
+    private static <T> boolean paintFill(final T[][] screen, int row, int column, final T oldValue, final T newValue) {
+        if (row < 0 || row >= screen.length || column < 0 || column >= screen[0].length) {
+            return false;
+        }
+        if (Objects.equals(oldValue, screen[row][column])) {
+            screen[row][column] = newValue;
+            paintFill(screen, row - 1, column, oldValue, newValue);
+            paintFill(screen, row + 1, column, oldValue, newValue);
+            paintFill(screen, row, column - 1, oldValue, newValue);
+            paintFill(screen, row, column + 1, oldValue, newValue);
+        }
+        return true;
+    }
 }

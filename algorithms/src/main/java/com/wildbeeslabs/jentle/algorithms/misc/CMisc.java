@@ -47,7 +47,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  *
- * Custom miscellaneous implementations
+ * Custom miscellaneous algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
