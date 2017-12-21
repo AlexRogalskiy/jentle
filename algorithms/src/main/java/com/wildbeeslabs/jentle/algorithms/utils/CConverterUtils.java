@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -105,6 +106,10 @@ public class CConverterUtils {
 
     public static <T, K> Map<K, Integer> getMapSumBy(final Stream<T> stream, final Function<T, K> keys, final Function<T, Integer> values) {
         return stream.collect(Collectors.toMap(keys, values, Integer::sum));
+    }
+
+    public static <T extends Number> T reduceStreamBy(final Stream<T> stream, final T identity, final BinaryOperator<T> accumulator) {
+        return stream.reduce(identity, accumulator);
     }
 
     public static <A, B, C> Function<A, C> compose(Function<A, B> f1, Function<B, C> f2) {
