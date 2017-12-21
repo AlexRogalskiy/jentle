@@ -42,10 +42,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -1054,5 +1056,181 @@ public final class CStringUtils {
             chInputArray[length - index - 1] = firstHalf;
         }
         return String.valueOf(chInputArray);
+    }
+
+    public static List<String> transform(final String start, final String stop, final String[] words) {
+        final CHashMapList<String, String> wordList = createWordMap(words);
+        final Set<String> visited = new HashSet<>();
+        return transform(visited, start, stop, wordList);
+    }
+
+    private static LinkedList<String> transform(final Set<String> visited, final String start, final String stop, final CHashMapList<String, String> wordList) {
+        if (start.equals(stop)) {
+            final LinkedList<String> path = new LinkedList<>();
+            path.add(start);
+            return path;
+        } else if (visited.contains(start)) {
+            return null;
+        }
+        visited.add(start);
+        final List<String> words = getValidLinkedWords(start, wordList);
+        for (final String word : words) {
+            final LinkedList<String> path = transform(visited, word, stop, wordList);
+            if (Objects.nonNull(path)) {
+                path.addFirst(start);
+                return path;
+            }
+        }
+        return null;
+    }
+
+    private static CHashMapList<String, String> createWordMap(final String[] words) {
+        final CHashMapList<String, String> wordList = new CHashMapList<>();
+        for (final String word : words) {
+            final List<String> linked = getWildCardRoots(word);
+            linked.stream().forEach((linkedWord) -> {
+                wordList.put(linkedWord, word);
+            });
+        }
+        return wordList;
+    }
+
+    private static List<String> getWildCardRoots(final String word) {
+        final List<String> words = new ArrayList<>();
+        for (int i = 0; i < word.length(); i++) {
+            String w = word.substring(0, i) + "_" + word.substring(i + 1);
+            words.add(w);
+        }
+        return words;
+    }
+
+    private static List<String> getValidLinkedWords(final String word, final CHashMapList<String, String> wordList) {
+        final List<String> wildCards = getWildCardRoots(word);
+        final List<String> linkedWords = new ArrayList<>();
+        wildCards.stream().map((wildCard) -> wordList.get(wildCard)).forEach((words) -> {
+            words.stream().filter((linkedWord) -> (!linkedWord.equals(word))).forEach((linkedWord) -> {
+                linkedWords.add(linkedWord);
+            });
+        });
+        return linkedWords;
+    }
+
+    public static List<String> transform2(final String start, final String stop, final String[] words) {
+        final CHashMapList<String, String> wordList = createWordMap(words);
+        final BFSData<String, PathNode> sourceData = new BFSData<>(new PathNode(start));
+        final BFSData<String, PathNode> destData = new BFSData<>(new PathNode(stop));
+        while (!sourceData.isFinished() && !destData.isFinished()) {
+            String collision = searchLevel(wordList, sourceData, destData);
+            if (Objects.nonNull(collision)) {
+                return mergePaths(sourceData, destData, collision);
+            }
+            collision = searchLevel(wordList, destData, sourceData);
+            if (Objects.nonNull(collision)) {
+                return mergePaths(sourceData, destData, collision);
+            }
+        }
+        return null;
+    }
+
+    private static String searchLevel(final CHashMapList<String, String> wordList, final BFSData<String, PathNode> primary, final BFSData<String, PathNode> secondary) {
+        int count = primary.toVisit.size();
+        for (int i = 0; i < count; i++) {
+            final PathNode pathNode = primary.toVisit.poll();
+            final String word = pathNode.getValue();
+            if (secondary.visited.containsKey(word)) {
+                return pathNode.getValue();
+            }
+            final List<String> words = getValidLinkedWords(word, wordList);
+            words.stream().filter((w) -> (!primary.visited.containsKey(w))).map((w) -> {
+                final PathNode next = new PathNode(w, pathNode);
+                primary.visited.put(w, next);
+                return next;
+            }).forEach((next) -> {
+                primary.toVisit.add(next);
+            });
+        }
+        return null;
+    }
+
+    private static List<String> mergePaths(final BFSData<String, PathNode> data1, final BFSData<String, PathNode> data2, final String connection) {
+        final PathNode end1 = data1.visited.get(connection);
+        final PathNode end2 = data2.visited.get(connection);
+        final LinkedList<String> pathOne = end1.collapse(false);
+        final LinkedList<String> pathTwo = end2.collapse(true);
+        pathTwo.removeFirst();
+        pathOne.addAll(pathTwo);
+        return pathOne;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class BFSData<T extends CharSequence, E extends APathNode<T, E>> {
+
+        public final Queue<E> toVisit = new LinkedList<>();
+        public final Map<T, E> visited = new HashMap<>();
+
+        public BFSData(final E node) {
+            toVisit.add(node);
+            visited.put(node.getValue(), node);
+        }
+
+        public boolean isFinished() {
+            return toVisit.isEmpty();
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static abstract class APathNode<T extends CharSequence, E extends APathNode<T, E>> {
+
+        protected T value = null;
+        protected E previous = null;
+
+        public APathNode() {
+            this(null);
+        }
+
+        public APathNode(final T value) {
+            this(value, null);
+        }
+
+        public APathNode(final T value, final E previous) {
+            this.value = value;
+            this.previous = previous;
+        }
+
+        public LinkedList<T> collapse(boolean startsWithRoot) {
+            final LinkedList<T> path = new LinkedList<>();
+            APathNode<T, E> node = this;
+            while (Objects.nonNull(node)) {
+                if (startsWithRoot) {
+                    path.addLast(node.value);
+                } else {
+                    path.addFirst(node.value);
+                }
+                node = node.previous;
+            }
+            return path;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @ToString
+    public static class PathNode extends APathNode<String, PathNode> {
+
+        public PathNode() {
+            this(null);
+        }
+
+        public PathNode(final String value) {
+            this(value, null);
+        }
+
+        public PathNode(final String value, final PathNode previous) {
+            super(value, previous);
+        }
     }
 }
