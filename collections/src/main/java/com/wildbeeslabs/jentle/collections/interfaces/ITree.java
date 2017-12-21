@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import java.util.Optional;
 
 /**
@@ -36,7 +36,7 @@ import java.util.Optional;
  * @param <T>
  * @param <U>
  */
-public interface ITree<T, U extends ACTreeNode<T, U>> extends IBaseTree<T, U> {
+public interface ITree<T, U extends ACBaseTreeNode<T, U>> extends IBaseTree<T, U> {
 
     /**
      * Creates new node as a left child of the current node

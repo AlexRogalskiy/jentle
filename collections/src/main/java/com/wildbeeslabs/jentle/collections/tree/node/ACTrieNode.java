@@ -23,7 +23,6 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.node;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,10 +47,9 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACNode<T> {
+public abstract class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACBaseTrieNode<T, U> {
 
     protected final Map<T, U> childs = new LinkedHashMap<>();
-    protected boolean isTerminated;
 
     public ACTrieNode() {
         this(null);
@@ -61,9 +59,8 @@ public class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACNode<T> {
         this(null, Boolean.FALSE);
     }
 
-    public ACTrieNode(final T data, boolean isTerminated) {
-        super(data);
-        this.isTerminated = isTerminated;
+    public ACTrieNode(final T data, boolean terminated) {
+        super(data, terminated);
     }
 
     public boolean hasChild(final T data) {

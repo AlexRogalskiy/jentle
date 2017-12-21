@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.node;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,7 +31,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom abstract tree node implementation
+ * Custom abstract trie node2 implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -42,22 +42,34 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T> {
+public abstract class ACTrieNode2<T, U extends ACTrieNode2<T, U>> extends ACBaseTrieNode<T, U> {
 
-    protected U left;
-    protected U right;
+    protected U child;
+    protected U brother;
 
-    public ACTreeNode() {
+    public ACTrieNode2() {
         this(null);
     }
 
-    public ACTreeNode(final T data) {
-        this(data, null, null);
+    public ACTrieNode2(final T data) {
+        this(null, Boolean.FALSE);
     }
 
-    public ACTreeNode(final T data, final U left, final U right) {
-        super(data);
-        this.left = left;
-        this.right = right;
+    public ACTrieNode2(final T data, boolean isTerminated) {
+        this(data, isTerminated, null, null);
+    }
+
+    public ACTrieNode2(final T data, boolean terminated, final U child, final U brother) {
+        super(data, terminated);
+        this.child = child;
+        this.brother = brother;
+    }
+
+    public boolean hasChild() {
+        return Objects.nonNull(this.child);
+    }
+
+    public boolean hasBrother() {
+        return Objects.nonNull(this.brother);
     }
 }

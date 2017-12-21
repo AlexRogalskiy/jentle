@@ -40,7 +40,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACTreeNode2<T, U extends ACTreeNode2<T, U>> extends ACTreeNode<T, U> {
+public abstract class ACTreeNode2<T, U extends ACTreeNode2<T, U>> extends ACBaseTreeNode<T, U> {
 
     protected boolean isYoungest;
 

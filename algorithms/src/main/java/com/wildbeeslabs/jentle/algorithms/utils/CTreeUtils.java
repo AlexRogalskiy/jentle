@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.io.Serializable;
@@ -98,7 +98,7 @@ public class CTreeUtils {
         return parent;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> boolean covers(final U root, final U node) {
+    private static <T, U extends ACBaseTreeNode<T, U>> boolean covers(final U root, final U node) {
         if (Objects.isNull(root)) {
             return false;
         }
@@ -116,14 +116,14 @@ public class CTreeUtils {
         return parent.getLeft() == node ? parent.getRight() : parent.getLeft();
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U commonAncestor3(final U root, final U firstNode, final U secondNode) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U commonAncestor3(final U root, final U firstNode, final U secondNode) {
         if (!covers(root, firstNode) || !covers(root, secondNode)) {
             return null;
         }
         return ancestorHelper(root, firstNode, secondNode);
     }
 
-    private static <T, U extends ACTreeNode<T, U>> U ancestorHelper(final U root, final U firstNode, final U secondNode) {
+    private static <T, U extends ACBaseTreeNode<T, U>> U ancestorHelper(final U root, final U firstNode, final U secondNode) {
         if (Objects.isNull(root) || root == firstNode || root == secondNode) {
             return root;
         }
@@ -136,7 +136,7 @@ public class CTreeUtils {
         return ancestorHelper(childSide, firstNode, secondNode);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U commonAncestor4(final U root, final U firstNode, final U secondNode) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U commonAncestor4(final U root, final U firstNode, final U secondNode) {
         final Result<T, U> result = commonAncestorHelper(root, firstNode, secondNode);
         if (result.isAncestor) {
             return result.node;
@@ -144,7 +144,7 @@ public class CTreeUtils {
         return null;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> Result<T, U> commonAncestorHelper(final U root, final U firstNode, final U secondNode) {
+    private static <T, U extends ACBaseTreeNode<T, U>> Result<T, U> commonAncestorHelper(final U root, final U firstNode, final U secondNode) {
         if (Objects.isNull(root)) {
             return new Result<>(null, false);
         }
@@ -172,7 +172,7 @@ public class CTreeUtils {
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
-    private static class Result<T, U extends ACTreeNode<T, U>> {
+    private static class Result<T, U extends ACBaseTreeNode<T, U>> {
 
         public U node;
         public boolean isAncestor;
@@ -183,7 +183,7 @@ public class CTreeUtils {
         }
     }
 
-    public static <T extends Serializable, U extends ACTreeNode<T, U>> List<LinkedList<T>> allSequences(final U node) {
+    public static <T extends Serializable, U extends ACBaseTreeNode<T, U>> List<LinkedList<T>> allSequences(final U node) {
         final List<LinkedList<T>> result = new ArrayList<>();
         if (Objects.isNull(node)) {
             result.add(new LinkedList<>());
@@ -226,7 +226,7 @@ public class CTreeUtils {
         second.addFirst(headSecond);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> boolean containsTree(final U firstNode, final U secondNode) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean containsTree(final U firstNode, final U secondNode) {
         final StringBuffer firstStr = new StringBuffer();
         final StringBuffer secondStr = new StringBuffer();
         getOrderString(firstNode, firstStr);
@@ -234,7 +234,7 @@ public class CTreeUtils {
         return firstStr.indexOf(secondStr.toString()) != -1;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> void getOrderString(final U node, final StringBuffer sBuffer) {
+    private static <T, U extends ACBaseTreeNode<T, U>> void getOrderString(final U node, final StringBuffer sBuffer) {
         if (Objects.isNull(node)) {
             sBuffer.append("-");
             return;
@@ -245,14 +245,14 @@ public class CTreeUtils {
 
     }
 
-    public static <T, U extends ACTreeNode<T, U>> boolean containsTree2(final U firstNode, final U secondNode) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean containsTree2(final U firstNode, final U secondNode) {
         if (Objects.isNull(secondNode)) {
             return true;
         }
         return subTree(firstNode, secondNode);
     }
 
-    private static <T, U extends ACTreeNode<T, U>> boolean subTree(final U firstNode, final U secondNode) {
+    private static <T, U extends ACBaseTreeNode<T, U>> boolean subTree(final U firstNode, final U secondNode) {
         if (Objects.isNull(firstNode)) {
             return false;
         } else if (Objects.equals(firstNode.getData(), secondNode.getData()) && matchTree(firstNode, secondNode)) {
@@ -261,7 +261,7 @@ public class CTreeUtils {
         return subTree(firstNode.getLeft(), secondNode) || subTree(firstNode.getRight(), secondNode);
     }
 
-    private static <T, U extends ACTreeNode<T, U>> boolean matchTree(final U firstNode, final U secondNode) {
+    private static <T, U extends ACBaseTreeNode<T, U>> boolean matchTree(final U firstNode, final U secondNode) {
         if (Objects.isNull(firstNode) && Objects.isNull(secondNode)) {
             return true;
         } else if (Objects.isNull(firstNode) || Objects.isNull(secondNode)) {
@@ -273,7 +273,7 @@ public class CTreeUtils {
         }
     }
 
-    public static <U extends ACTreeNode<Double, U>> Integer countPathsWithSum(final U root, double targetSum) {
+    public static <U extends ACBaseTreeNode<Double, U>> Integer countPathsWithSum(final U root, double targetSum) {
         if (Objects.isNull(root)) {
             return 0;
         }
@@ -283,7 +283,7 @@ public class CTreeUtils {
         return (pathsFromRoot + pathsOnLeft + pathsOnRight);
     }
 
-    private static <U extends ACTreeNode<Double, U>> int countPathWithSumFromNode(final U node, double targetSum, double currentSum) {
+    private static <U extends ACBaseTreeNode<Double, U>> int countPathWithSumFromNode(final U node, double targetSum, double currentSum) {
         if (Objects.isNull(node)) {
             return 0;
         }
@@ -297,11 +297,11 @@ public class CTreeUtils {
         return totalPaths;
     }
 
-    public static <U extends ACTreeNode<Double, U>> int countPathsWithSum2(final U root, final double targetSum) {
+    public static <U extends ACBaseTreeNode<Double, U>> int countPathsWithSum2(final U root, final double targetSum) {
         return countPathsWithSum(root, targetSum, 0.0, new HashMap<>());
     }
 
-    private static <U extends ACTreeNode<Double, U>> int countPathsWithSum(final U node, double targetSum, double currentSum, final Map<Double, Integer> pathCount) {
+    private static <U extends ACBaseTreeNode<Double, U>> int countPathsWithSum(final U node, double targetSum, double currentSum, final Map<Double, Integer> pathCount) {
         if (Objects.isNull(node)) {
             return 0;
         }
@@ -342,7 +342,7 @@ public class CTreeUtils {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CRankTreeNode<T> extends ACTreeNode<T, CRankTreeNode<T>> {
+    public static class CRankTreeNode<T> extends ACBaseTreeNode<T, CRankTreeNode<T>> {
 
         private int leftSize;
         private final Comparator<? super T> cmp;
@@ -400,7 +400,7 @@ public class CTreeUtils {
         }
     }
 
-    private static <U extends ACTreeNode<Double, U>> U convertToCircular(final U root) {
+    private static <U extends ACBaseTreeNode<Double, U>> U convertToCircular(final U root) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -429,12 +429,12 @@ public class CTreeUtils {
         return Objects.isNull(left) ? root : left;
     }
 
-    private static <U extends ACTreeNode<Double, U>> void concat(final U left, final U right) {
+    private static <U extends ACBaseTreeNode<Double, U>> void concat(final U left, final U right) {
         left.setRight(right);
         right.setLeft(left);
     }
 
-    public static <U extends ACTreeNode<Double, U>> U convert(final U root) {
+    public static <U extends ACBaseTreeNode<Double, U>> U convert(final U root) {
         final U head = convertToCircular(root);
         head.getLeft().setRight(null);;
         head.setLeft(null);

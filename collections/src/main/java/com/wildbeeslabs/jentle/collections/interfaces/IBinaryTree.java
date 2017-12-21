@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 /**
  *
@@ -35,7 +35,7 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
  * @param <T>
  * @param <U>
  */
-public interface IBinaryTree<T, U extends ACTreeNode<T, U>> extends IBaseTree<T, U> {
+public interface IBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends IBaseTree<T, U> {
 
     /**
      * Inserts new node with the current value based on tree order sequence

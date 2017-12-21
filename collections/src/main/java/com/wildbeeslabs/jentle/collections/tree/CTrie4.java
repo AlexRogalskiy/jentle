@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode2;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom trie implementation
+ * Custom trie3 implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -47,12 +47,14 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
+public class CTrie4 extends ACTrie<Integer, CTrie4.CTrieNode<Integer>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CTrieNode<T> extends ACTrieNode<T, CTrieNode<T>> {
+    public static class CTrieNode<T> extends ACTrieNode2<T, CTrieNode<T>> {
+
+        protected Object info;
 
         public CTrieNode() {
             this(null);
@@ -63,65 +65,67 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
         }
     }
 
-    public CTrie() {
+    public CTrie4() {
         this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final Comparator<? super Integer> cmp) {
+    public CTrie4(final Comparator<? super Integer> cmp) {
         this(null, cmp);
     }
 
-    public CTrie(final List<? extends CharSequence> list) {
+    public CTrie4(final List<? extends CharSequence> list) {
         this(list, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTrie(final CharSequence[] array) {
+    public CTrie4(final CharSequence[] array) {
         this(Arrays.asList(array), CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
-    public CTrie(final List<? extends CharSequence> list, final Comparator<? super Integer> cmp) {
+    public CTrie4(final List<? extends CharSequence> list, final Comparator<? super Integer> cmp) {
         super(cmp);
-        this.init(list);
+        //this.init(list);
     }
 
-    protected void init(final List<? extends CharSequence> list) {
-        if (Objects.nonNull(list)) {
-            list.stream().filter(Objects::nonNull).map((item) -> {
-                CTrie.CTrieNode<Integer> current = this.root;
-                for (final Integer charCode : item.codePoints().toArray()) {
-                    CTrie.CTrieNode<Integer> child = current.getChild(charCode);
-                    if (Objects.isNull(child)) {
-                        child = new CTrieNode<>(charCode);
-                        current.addChild(child);
-                        this.size++;
-                    }
-                    current = child;
-                }
-                return current;
-            }).forEach((current) -> {
-                current.setTerminated(Boolean.TRUE);
-            });
+    public Object get(final CharSequence value, final CTrie4.CTrieNode<Integer> node) {
+        CTrie4.CTrieNode<Integer> current = node;
+        for (int codePoint : value.codePoints().toArray()) {
+            while (Objects.nonNull(current) && (current.isTerminated() || current.getData() != codePoint)) {
+                current = current.getBrother();
+            }
+            if (Objects.isNull(current)) {
+                return null;
+            }
+            current = current.getChild();
         }
+        while (Objects.nonNull(current) && !current.isTerminated()) {
+            current = current.getBrother();
+        }
+        return (Objects.isNull(current) ? null : current.getInfo());
     }
 
     @Override
-    public boolean contains(final CharSequence value, final CTrie.CTrieNode<Integer> node,  boolean isExact) {
-        CTrie.CTrieNode<Integer> current = node;
-        for (final Integer charCode : value.codePoints().toArray()) {
-            current = current.getChild(charCode);
+    protected boolean contains(final CharSequence value, final CTrie4.CTrieNode<Integer> node, boolean isExact) {
+        CTrie4.CTrieNode<Integer> current = node;
+        for (int codePoint : value.codePoints().toArray()) {
+            while (Objects.nonNull(current) && (current.isTerminated() || current.getData() != codePoint)) {
+                current = current.getBrother();
+            }
             if (Objects.isNull(current)) {
                 return false;
             }
+            current = current.getChild();
         }
-        return current.isTerminated() || !isExact;
+        while (Objects.nonNull(current) && !current.isTerminated()) {
+            current = current.getBrother();
+        }
+        return Objects.nonNull(current) || !isExact;
     }
 
     @Override
-    protected CTrie.CTrieNode<Integer> createTrieNode(final Optional<? extends Integer> value) {
+    protected CTrie4.CTrieNode<Integer> createTrieNode(final Optional<? extends Integer> value) {
         if (value.isPresent()) {
-            return new CTrie.CTrieNode<>(value.get());
+            return new CTrie4.CTrieNode<>(value.get());
         }
-        return new CTrie.CTrieNode<>();
+        return new CTrie4.CTrieNode<>();
     }
 }

@@ -25,7 +25,7 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IBaseTree;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode2;
 
 import java.util.Comparator;
@@ -56,7 +56,7 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBaseTree<T, U> {
+public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements IBaseTree<T, U> {
 
     /**
      * Default Logger instance
@@ -97,7 +97,7 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
         return this.root;
     }
 
-    public boolean isBalanced(final ACTreeNode<T, U> root) {
+    public boolean isBalanced(final ACBaseTreeNode<T, U> root) {
         if (Objects.isNull(root)) {
             return true;
         }
@@ -108,7 +108,7 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
         return this.isBalanced(root.getLeft()) && this.isBalanced(root.getRight());
     }
 
-    private int checkHeight(final ACTreeNode<T, U> root) {
+    private int checkHeight(final ACBaseTreeNode<T, U> root) {
         if (Objects.isNull(root)) {
             return -1;
         }
@@ -127,15 +127,15 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
-    public boolean isBalanced2(final ACTreeNode<T, U> root) {
+    public boolean isBalanced2(final ACBaseTreeNode<T, U> root) {
         return (this.checkHeight(root) != Integer.MIN_VALUE);
     }
 
-    public boolean checkBST(final ACTreeNode<T, U> root) {
+    public boolean checkBST(final ACBaseTreeNode<T, U> root) {
         return this.checkBST(root, null, null);
     }
 
-    public boolean checkBST(final ACTreeNode<T, U> root, final T min, final T max) {
+    public boolean checkBST(final ACBaseTreeNode<T, U> root, final T min, final T max) {
         if (Objects.isNull(root)) {
             return true;
         }
@@ -197,7 +197,7 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
         return new BreadthFirstIterator<>(this);
     }
 
-    protected static class BreadthFirstIterator<T, U extends ACTreeNode<T, U>> implements Iterator<T> {
+    protected static class BreadthFirstIterator<T, U extends ACBaseTreeNode<T, U>> implements Iterator<T> {
 
         private Queue<U> queue = null;
 
@@ -255,6 +255,11 @@ public abstract class ACBaseTree<T, U extends ACTreeNode<T, U>> implements IBase
             }
             return current;
         }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     protected abstract U createTreeNode(final Optional<? extends T> value);

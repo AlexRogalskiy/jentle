@@ -152,15 +152,15 @@ public class CTrie2 extends ACTrie<Integer, CTrie2.CTrieNode<Integer>> {
     }
 
     @Override
-    protected boolean contains(final CharSequence value, boolean isExact) {
-        CTrie2.CTrieNode<Integer> current = this.root;
+    protected boolean contains(final CharSequence value, final CTrie2.CTrieNode<Integer> node,  boolean isExact) {
+        CTrie2.CTrieNode<Integer> current = node;
         for (final Integer charCode : value.codePoints().toArray()) {
             current = current.getChild(charCode);
             if (Objects.isNull(current)) {
                 return false;
             }
         }
-        return !isExact || current.isTerminated();
+        return current.isTerminated() || !isExact;
     }
 
     @Override

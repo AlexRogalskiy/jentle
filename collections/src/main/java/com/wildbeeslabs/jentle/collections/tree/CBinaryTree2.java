@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
@@ -54,7 +54,7 @@ public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>>
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CTreeNode2<T> extends ACTreeNode<T, CTreeNode2<T>> {
+    public static class CTreeNode2<T> extends ACBaseTreeNode<T, CTreeNode2<T>> {
 
         @Setter(AccessLevel.NONE)
         protected int size;

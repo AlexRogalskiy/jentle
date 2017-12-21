@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.tree;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended2;
 
 import java.util.ArrayList;
@@ -53,17 +53,17 @@ public final class CTree {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<LinkedList<ACTreeNode<T, U>>> createLevelNodeList(final ACTreeNode<T, U> root) {
-        final List<LinkedList<ACTreeNode<T, U>>> levelList = new ArrayList<>();
+    public static <T, U extends ACBaseTreeNode<T, U>> List<LinkedList<ACBaseTreeNode<T, U>>> createLevelNodeList(final ACBaseTreeNode<T, U> root) {
+        final List<LinkedList<ACBaseTreeNode<T, U>>> levelList = new ArrayList<>();
         createLevelNodeList(root, levelList, 0);
         return levelList;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> void createLevelNodeList(final ACTreeNode<T, U> root, final List<LinkedList<ACTreeNode<T, U>>> levelList, int level) {
+    private static <T, U extends ACBaseTreeNode<T, U>> void createLevelNodeList(final ACBaseTreeNode<T, U> root, final List<LinkedList<ACBaseTreeNode<T, U>>> levelList, int level) {
         if (Objects.isNull(root)) {
             return;
         }
-        LinkedList<ACTreeNode<T, U>> list = new LinkedList<>();
+        LinkedList<ACBaseTreeNode<T, U>> list = new LinkedList<>();
         if (levelList.size() == level) {
             levelList.add(list);
         } else {
@@ -74,17 +74,17 @@ public final class CTree {
         createLevelNodeList(root.getRight(), levelList, level + 1);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<LinkedList<ACTreeNode<T, U>>> createLevelNodeList2(final ACTreeNode<T, U> root) {
-        final List<LinkedList<ACTreeNode<T, U>>> levelList = new ArrayList<>();
-        LinkedList<ACTreeNode<T, U>> current = new LinkedList<>();
+    public static <T, U extends ACBaseTreeNode<T, U>> List<LinkedList<ACBaseTreeNode<T, U>>> createLevelNodeList2(final ACBaseTreeNode<T, U> root) {
+        final List<LinkedList<ACBaseTreeNode<T, U>>> levelList = new ArrayList<>();
+        LinkedList<ACBaseTreeNode<T, U>> current = new LinkedList<>();
         if (Objects.nonNull(root)) {
             current.add(root);
         }
         while (current.size() > 0) {
             levelList.add(current);
-            LinkedList<ACTreeNode<T, U>> parents = current;
+            LinkedList<ACBaseTreeNode<T, U>> parents = current;
             current = new LinkedList<>();
-            for (final ACTreeNode<T, U> parent : parents) {
+            for (final ACBaseTreeNode<T, U> parent : parents) {
                 if (Objects.nonNull(parent.getLeft())) {
                     current.add(parent.getLeft());
                 }
@@ -97,7 +97,7 @@ public final class CTree {
     }
 
     //breadth first search recursive algorithm
-    public static <T, U extends ACTreeNode<T, U>> boolean isLeavesAtSameLevel(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean isLeavesAtSameLevel(final U root) {
         if (Objects.isNull(root)) {
             return false;
         }
@@ -136,7 +136,7 @@ public final class CTree {
         return true;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U ceilInBST(final U root, final T data, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U ceilInBST(final U root, final T data, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -154,7 +154,7 @@ public final class CTree {
     }
 
     //depth first search recursive algorithm
-    public static <T, U extends ACTreeNode<T, U>> U floor(final U root, final T data, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U floor(final U root, final T data, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -205,11 +205,11 @@ public final class CTree {
         return result;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U kSmallestElement(final U root, int k) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U kSmallestElement(final U root, int k) {
         return kSmallestElement(root, k, new int[]{0});
     }
 
-    private static <T, U extends ACTreeNode<T, U>> U kSmallestElement(final U root, int k, int[] iElement) {
+    private static <T, U extends ACBaseTreeNode<T, U>> U kSmallestElement(final U root, int k, int[] iElement) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -224,7 +224,7 @@ public final class CTree {
         return kSmallestElement(root.getRight(), k, iElement);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> boolean quasiIsomorphicBinaryTree(final U node1, final U node2) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean quasiIsomorphicBinaryTree(final U node1, final U node2) {
         if (Objects.isNull(node1) && Objects.isNull(node2)) {
             return true;
         }
@@ -240,7 +240,7 @@ public final class CTree {
         return false;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> boolean isIsomorphicBinaryTree(final U node1, final U node2) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean isIsomorphicBinaryTree(final U node1, final U node2) {
         if (Objects.isNull(node1) && Objects.isNull(node2)) {
             return true;
         }
@@ -257,7 +257,7 @@ public final class CTree {
         return true;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> Integer levelOfNodeInBTree(final U root, final U inputNode, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> Integer levelOfNodeInBTree(final U root, final U inputNode, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -292,7 +292,7 @@ public final class CTree {
         return null;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int[] maxWidthOfBTree(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int[] maxWidthOfBTree(final U root) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -328,7 +328,7 @@ public final class CTree {
         return new int[]{maxWidth, level};
     }
 
-    private static <T, U extends ACTreeNode<T, U>> void getNodesKDistFromLeaf(final U root, int distance, int index, final List<T> data, final List<Boolean> isVisitedBefore) {
+    private static <T, U extends ACBaseTreeNode<T, U>> void getNodesKDistFromLeaf(final U root, int distance, int index, final List<T> data, final List<Boolean> isVisitedBefore) {
         if (Objects.isNull(root)) {
             return;
         }
@@ -342,14 +342,14 @@ public final class CTree {
         }
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<T> getNodesKDistFromLeaf(final U root, int distance) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> getNodesKDistFromLeaf(final U root, int distance) {
         final List<T> result = new ArrayList<>();
         final List<Boolean> visit = new ArrayList<>();
         getNodesKDistFromLeaf(root, distance, 0, result, visit);
         return result;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> void getNodesKDistFromRoot(final U root, int distance, final List<T> data) {
+    private static <T, U extends ACBaseTreeNode<T, U>> void getNodesKDistFromRoot(final U root, int distance, final List<T> data) {
         if (Objects.isNull(root)) {
             return;
         }
@@ -361,13 +361,13 @@ public final class CTree {
         }
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<T> getNodesKDistFromRoot(final U root, int distance) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> getNodesKDistFromRoot(final U root, int distance) {
         final List<T> result = new ArrayList<>();
         getNodesKDistFromRoot(root, distance, result);
         return result;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> void getNodesByRange(final U root, final T data1, final T data2, final List<T> result, final Comparator<? super T> cmp) {
+    private static <T, U extends ACBaseTreeNode<T, U>> void getNodesByRange(final U root, final T data1, final T data2, final List<T> result, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return;
         }
@@ -382,27 +382,27 @@ public final class CTree {
         }
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<T> getNodesByRange(final U root, final T data1, final T data2, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> getNodesByRange(final U root, final T data1, final T data2, final Comparator<? super T> cmp) {
         final List<T> result = new ArrayList<>();
         getNodesByRange(root, data1, data2, result, cmp);
         return result;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> U min(final U node) {
+    private static <T, U extends ACBaseTreeNode<T, U>> U min(final U node) {
         if (Objects.isNull(node.getLeft())) {
             return node;
         }
         return min(node.getLeft());
     }
 
-    private static <T, U extends ACTreeNode<T, U>> U max(final U root) {
+    private static <T, U extends ACBaseTreeNode<T, U>> U max(final U root) {
         if (Objects.isNull(root.getRight())) {
             return root;
         }
         return max(root.getRight());
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U deleteNodeInBST(U root, final T data, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U deleteNodeInBST(U root, final T data, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -428,7 +428,7 @@ public final class CTree {
         return root;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U predecessor(U root, final U node, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U predecessor(U root, final U node, final Comparator<? super T> cmp) {
         if (Objects.nonNull(node.getLeft())) {
             return max(node.getLeft());
         }
@@ -446,7 +446,7 @@ public final class CTree {
         return predecessor;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U successor(U root, final U node, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U successor(U root, final U node, final Comparator<? super T> cmp) {
         if (Objects.nonNull(node.getRight())) {
             return min(node.getRight());
         }
@@ -464,7 +464,7 @@ public final class CTree {
         return successor;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U leastCommonAncestor(final U root, final U node1, final U node2, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U leastCommonAncestor(final U root, final U node1, final U node2, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -477,7 +477,7 @@ public final class CTree {
         return root;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> boolean isBST(final U node, final T min, final T max, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean isBST(final U node, final T min, final T max, final Comparator<? super T> cmp) {
         if (Objects.isNull(node)) {
             return true;
         }
@@ -495,7 +495,7 @@ public final class CTree {
         return true;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U findNodeInBST(final U node, final T value, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U findNodeInBST(final U node, final T value, final Comparator<? super T> cmp) {
         if (Objects.isNull(node)) {
             return null;
         }
@@ -507,7 +507,7 @@ public final class CTree {
         return findNodeInBST(node.getRight(), value, cmp);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> boolean isIdentical(final U node1, final U node2, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean isIdentical(final U node1, final U node2, final Comparator<? super T> cmp) {
         if (Objects.isNull(node1) && Objects.isNull(node2)) {
             return true;
         }
@@ -526,7 +526,7 @@ public final class CTree {
         return true;
     }
 
-    public static <T extends Number, U extends ACTreeNode<T, U>> List<T> sumInRoot2LeafPath(final U root, int sum) {
+    public static <T extends Number, U extends ACBaseTreeNode<T, U>> List<T> sumInRoot2LeafPath(final U root, int sum) {
         final List<T> path = new ArrayList<>();
         boolean sumExist = sumInRoot2LeafPath(root, path, sum);
         if (sumExist) {
@@ -535,7 +535,7 @@ public final class CTree {
         return null;
     }
 
-    private static <T extends Number, U extends ACTreeNode<T, U>> boolean sumInRoot2LeafPath(final U root, final List<T> path, int sum) {
+    private static <T extends Number, U extends ACBaseTreeNode<T, U>> boolean sumInRoot2LeafPath(final U root, final List<T> path, int sum) {
         if (Objects.isNull(root)) {
             return false;
         }
@@ -552,13 +552,13 @@ public final class CTree {
         return sumInRoot2LeafPath(root.getLeft(), path, sum) || sumInRoot2LeafPath(root.getRight(), path, sum);
     }
 
-    public static <T extends Number, U extends ACTreeNode<T, U>> List<T> maxSumPath(final U root) {
+    public static <T extends Number, U extends ACBaseTreeNode<T, U>> List<T> maxSumPath(final U root) {
         final List<T> path = new ArrayList<>();
         maxSumPathRoot2Leaf(root, path, 0, Integer.MIN_VALUE);
         return path;
     }
 
-    public static <T extends Number, U extends ACTreeNode<T, U>> int maxSumPathRoot2Leaf(final U root, final List<T> path, int sum, int maxSum) {
+    public static <T extends Number, U extends ACBaseTreeNode<T, U>> int maxSumPathRoot2Leaf(final U root, final List<T> path, int sum, int maxSum) {
         if (Objects.isNull(root)) {
             return Integer.MIN_VALUE;
         }
@@ -575,7 +575,7 @@ public final class CTree {
         return Math.max(maxSumPathRoot2Leaf(root.getLeft(), path, sum, maxSum), maxSumPathRoot2Leaf(root.getRight(), path, sum, maxSum));
     }
 
-    private static <T extends Number, U extends ACTreeNode<T, U>> void verticalOrder(final U root, int distance, final Map<Integer, Integer> map) {
+    private static <T extends Number, U extends ACBaseTreeNode<T, U>> void verticalOrder(final U root, int distance, final Map<Integer, Integer> map) {
         if (Objects.isNull(root)) {
             return;
         }
@@ -588,13 +588,13 @@ public final class CTree {
         verticalOrder(root.getRight(), distance + 1, map);
     }
 
-    public static <T extends Number, U extends ACTreeNode<T, U>> Map<Integer, Integer> verticalOrderSumOfBTree(final U root) {
+    public static <T extends Number, U extends ACBaseTreeNode<T, U>> Map<Integer, Integer> verticalOrderSumOfBTree(final U root) {
         final Map<Integer, Integer> map = new HashMap<>();
         verticalOrder(root, 0, map);
         return map;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> void verticalOrder2(final U root, int distance, final Map<Integer, List<T>> map) {
+    private static <T, U extends ACBaseTreeNode<T, U>> void verticalOrder2(final U root, int distance, final Map<Integer, List<T>> map) {
         if (Objects.isNull(root)) {
             return;
         }
@@ -610,13 +610,13 @@ public final class CTree {
         verticalOrder2(root.getRight(), distance + 1, map);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> Map<Integer, List<T>> verticalOrderOfBTree(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> Map<Integer, List<T>> verticalOrderOfBTree(final U root) {
         final Map<Integer, List<T>> map = new HashMap<>();
         verticalOrder2(root, 0, map);
         return map;
     }
 
-    private <T, U extends ACTreeNode<T, U>> int diameterOfBTree(final U root, int[] diameter) {
+    private <T, U extends ACBaseTreeNode<T, U>> int diameterOfBTree(final U root, int[] diameter) {
         if (Objects.isNull(root)) {
             return 0;
         }
@@ -626,13 +626,13 @@ public final class CTree {
         return Math.max(left, right) + 1;
     }
 
-    public <T, U extends ACTreeNode<T, U>> int getDiameter(final U root) {
+    public <T, U extends ACBaseTreeNode<T, U>> int getDiameter(final U root) {
         int[] diameter = new int[]{0};
         diameterOfBTree(root, diameter);
         return diameter[0];
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int nodesInBTree(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int nodesInBTree(final U root) {
         if (Objects.isNull(root)) {
             return 0;
         }
@@ -641,7 +641,7 @@ public final class CTree {
         return nLeftSubtree + nRightSubtree + 1;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> T minMaxElement(final U root, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> T minMaxElement(final U root, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -651,7 +651,7 @@ public final class CTree {
         return Collections.max(Arrays.asList(left, right, data), cmp);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int heightOfTree(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int heightOfTree(final U root) {
         if (Objects.isNull(root)) {
             return 0;
         }
@@ -660,7 +660,7 @@ public final class CTree {
         return Math.max(left, right) + 1;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> boolean isMirrorTree(final U node1, final U node2, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> boolean isMirrorTree(final U node1, final U node2, final Comparator<? super T> cmp) {
         if (Objects.isNull(node1) && Objects.isNull(node2)) {
             return true;
         }
@@ -680,7 +680,7 @@ public final class CTree {
         return true;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<T> spiralTraversal(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> spiralTraversal(final U root) {
         final List<T> result = new ArrayList<>();
         if (Objects.isNull(root)) {
             return result;
@@ -713,7 +713,7 @@ public final class CTree {
         return result;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<T> reverseLevelOrder(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> reverseLevelOrder(final U root) {
         final List<T> result = new ArrayList<>();
         if (Objects.isNull(root)) {
             return result;
@@ -737,13 +737,13 @@ public final class CTree {
         return result;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<T> getAncestorsOfNode(final U root, final T data, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> getAncestorsOfNode(final U root, final T data, final Comparator<? super T> cmp) {
         final List<T> result = new ArrayList<>();
         getAncestorsOfNode(root, data, result, cmp);
         return result;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> boolean getAncestorsOfNode(final U root, final T data, final List<T> result, final Comparator<? super T> cmp) {
+    private static <T, U extends ACBaseTreeNode<T, U>> boolean getAncestorsOfNode(final U root, final T data, final List<T> result, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return false;
         }
@@ -763,13 +763,13 @@ public final class CTree {
         return false;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> List<T> root2LeafPath(final U root, int[] path) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> root2LeafPath(final U root, int[] path) {
         final List<T> result = new ArrayList<>();
         root2LeafPath(root, result);
         return result;
     }
 
-    private static <T, U extends ACTreeNode<T, U>> void root2LeafPath(final U root, final List<T> path) {
+    private static <T, U extends ACBaseTreeNode<T, U>> void root2LeafPath(final U root, final List<T> path) {
         if (Objects.isNull(root)) {
             return;
         }
@@ -781,7 +781,7 @@ public final class CTree {
         root2LeafPath(root.getRight(), path);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> void mirrorTree(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> void mirrorTree(final U root) {
         if (Objects.isNull(root)) {
             return;
         }
@@ -792,28 +792,28 @@ public final class CTree {
         root.setRight(swapNode);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int countNodes(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int countNodes(final U root) {
         return countNodes(root, (node) -> Boolean.TRUE);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int countFullNodes(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int countFullNodes(final U root) {
         return countNodes(root, (node) -> Objects.nonNull(node.getLeft()) && Objects.nonNull(node.getRight()));
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int countNonLeafNodes(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int countNonLeafNodes(final U root) {
         return countNodes(root, (node) -> Objects.nonNull(node.getLeft()) || Objects.nonNull(node.getRight()));
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int countNonLeafOneChild(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int countNonLeafOneChild(final U root) {
         final Function<U, Boolean> function = (node) -> (Objects.nonNull(node.getLeft()) && Objects.isNull(node.getRight())) || (Objects.isNull(node.getLeft()) && Objects.nonNull(node.getRight()));
         return countNodes(root, function);
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int countLeaves(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int countLeaves(final U root) {
         return countNodes(root, (node) -> Objects.isNull(node.getLeft()) && Objects.isNull(node.getRight()));
     }
 
-    private static <T, U extends ACTreeNode<T, U>> int countNodes(final U root, final Function<U, Boolean> function) {
+    private static <T, U extends ACBaseTreeNode<T, U>> int countNodes(final U root, final Function<U, Boolean> function) {
         if (Objects.isNull(root)) {
             return 0;
         }
@@ -835,7 +835,7 @@ public final class CTree {
         return nNodes;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> T minMaxElement2(final U root, final Comparator<? super T> cmp) {
+    public static <T, U extends ACBaseTreeNode<T, U>> T minMaxElement2(final U root, final Comparator<? super T> cmp) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -857,7 +857,7 @@ public final class CTree {
         return max;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U lowestCommonAncestor(final U root, final U node1, final U node2) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U lowestCommonAncestor(final U root, final U node1, final U node2) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -875,7 +875,7 @@ public final class CTree {
         return right;
     }
 
-    public static <T extends Number, U extends ACTreeNode<T, U>> int[] maxSumLevel(final U root) {
+    public static <T extends Number, U extends ACBaseTreeNode<T, U>> int[] maxSumLevel(final U root) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -913,7 +913,7 @@ public final class CTree {
         return new int[]{maxSum, level};
     }
 
-    public static <T extends Number, U extends ACTreeNode<T, U>> Integer sumOfNodes(final U root) {
+    public static <T extends Number, U extends ACBaseTreeNode<T, U>> Integer sumOfNodes(final U root) {
         if (Objects.isNull(root)) {
             return null;
         }
@@ -935,7 +935,7 @@ public final class CTree {
         return totalSum;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> int heightOfTree2(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> int heightOfTree2(final U root) {
         if (Objects.isNull(root)) {
             return 0;
         }
@@ -963,7 +963,7 @@ public final class CTree {
     }
 
     //level order traversal
-    public static <T, U extends ACTreeNode<T, U>> List<T> traverseBinaryTree(final U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> List<T> traverseBinaryTree(final U root) {
         final List<T> result = new ArrayList<>();
         if (Objects.isNull(root)) {
             return result;
@@ -983,7 +983,7 @@ public final class CTree {
         return result;
     }
 
-    public static <T, U extends ACTreeNode<T, U>> U deleteTree(U root) {
+    public static <T, U extends ACBaseTreeNode<T, U>> U deleteTree(U root) {
         if (Objects.isNull(root)) {
             return null;
         }

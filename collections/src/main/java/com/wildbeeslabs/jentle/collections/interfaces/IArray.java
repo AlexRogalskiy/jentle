@@ -34,6 +34,6 @@ import java.util.RandomAccess;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IArray<T> extends Iterable<T>, RandomAccess {
+public interface IArray<T> extends IBase<T>, RandomAccess {
     
 }

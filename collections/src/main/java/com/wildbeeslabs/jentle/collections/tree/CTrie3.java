@@ -159,15 +159,15 @@ public class CTrie3 extends ACTrie<Character, CTrie3.CTrieNode> {
     }
 
     @Override
-    protected boolean contains(final CharSequence value, boolean isExact) {
-        CTrie3.CTrieNode current = this.root;
+    protected boolean contains(final CharSequence value, final CTrie3.CTrieNode node, boolean isExact) {
+        CTrie3.CTrieNode current = node;
         for (int i = 0; i < value.length(); i++) {
             current = current.getChild(value.charAt(i));
             if (Objects.isNull(current)) {
                 return false;
             }
         }
-        return !isExact || current.isTerminated();
+        return current.isTerminated() || !isExact;
     }
 
     @Override

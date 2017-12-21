@@ -23,13 +23,15 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.node;
 
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract binary tree extended node implementation
+ * Custom abstract base tree node implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -40,34 +42,22 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACTreeNodeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACBaseTreeNode<T, U> {
+public abstract class ACBaseTreeNode<T, U extends ACBaseTreeNode<T, U>> extends ACNode<T> {
 
-    protected U parent;
+    protected U left;
+    protected U right;
 
-    public void setLeft(final U left) {
-        this.left = left;
-        this.left.parent = (U) this;
-    }
-
-    public void setRight(final U right) {
-        this.right = right;
-        this.right.parent = (U) this;
-    }
-
-    public ACTreeNodeExtended() {
+    public ACBaseTreeNode() {
         this(null);
     }
 
-    public ACTreeNodeExtended(final T data) {
+    public ACBaseTreeNode(final T data) {
         this(data, null, null);
     }
 
-    public ACTreeNodeExtended(final T data, final U left, final U right) {
-        this(data, left, right, null);
-    }
-
-    public ACTreeNodeExtended(final T data, final U left, final U right, final U parent) {
-        super(data, left, right);
-        this.parent = parent;
+    public ACBaseTreeNode(final T data, final U left, final U right) {
+        super(data);
+        this.left = left;
+        this.right = right;
     }
 }

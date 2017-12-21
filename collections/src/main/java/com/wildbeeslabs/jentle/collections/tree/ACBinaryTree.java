@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IBinaryTree;
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -47,7 +47,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACBinaryTree<T, U extends ACTreeNode<T, U>> extends ACBaseTree<T, U> implements IBinaryTree<T, U> {
+public abstract class ACBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTree<T, U> implements IBinaryTree<T, U> {
 
     public ACBinaryTree(final U root, final Comparator<? super T> cmp) {
         super(root, cmp);

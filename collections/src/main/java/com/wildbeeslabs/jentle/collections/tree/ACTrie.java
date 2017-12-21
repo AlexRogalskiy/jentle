@@ -24,9 +24,10 @@
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ITrie;
-import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Optional;
 import lombok.AccessLevel;
 
@@ -51,7 +52,7 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class ACTrie<T, U extends ACTrieNode<T, U>> implements ITrie<T, U> {
+public abstract class ACTrie<T, U extends ACBaseTrieNode<T, U>> implements ITrie<T, U> {
 
     /**
      * Default Logger instance
@@ -82,7 +83,7 @@ public abstract class ACTrie<T, U extends ACTrieNode<T, U>> implements ITrie<T, 
 
     @Override
     public boolean contains(final CharSequence value) {
-        return this.contains(value, false);
+        return this.contains(value, this.root, false);
     }
 
     @Override
@@ -90,7 +91,12 @@ public abstract class ACTrie<T, U extends ACTrieNode<T, U>> implements ITrie<T, 
         return this.root;
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     protected abstract U createTrieNode(final Optional<? extends T> value);
 
-    protected abstract boolean contains(final CharSequence value, boolean isExact);
+    protected abstract boolean contains(final CharSequence value, final U root, boolean isExact);
 }

@@ -23,10 +23,11 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CTreeNode<T> extends ACTreeNode<T, CTreeNode<T>> {
+    public static class CTreeNode<T> extends ACBaseTreeNode<T, CTreeNode<T>> {
 
         public CTreeNode() {
             this(null);

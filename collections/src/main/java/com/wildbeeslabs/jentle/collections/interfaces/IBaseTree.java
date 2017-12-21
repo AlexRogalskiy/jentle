@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -38,7 +38,7 @@ import java.util.Optional;
  * @param <T>
  * @param <U>
  */
-public interface IBaseTree<T, U extends ACTreeNode<T, U>> extends IBase<T, U> {
+public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends IBase<T> {
 
     /**
      * Get the size of the tree.

@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
 
 /**
  *
@@ -35,7 +35,7 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
  * @param <T>
  * @param <U>
  */
-public interface ITrie<T, U extends ACTrieNode<T, U>> extends IBase<T, U> {
+public interface ITrie<T, U extends ACBaseTrieNode<T, U>> extends IBase<T> {
 
     /**
      * Returns the size of the tree.

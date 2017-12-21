@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.interfaces;
-
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 /**
  *
@@ -36,6 +33,6 @@ import com.wildbeeslabs.jentle.collections.list.node.ACNode;
  * @param <T>
  * @param <U>
  */
-public interface IBase<T, U extends ACNode<T>> {
-    
+public interface IBase<T> extends Iterable<T> {//U extends ACNode<T>
+
 }
