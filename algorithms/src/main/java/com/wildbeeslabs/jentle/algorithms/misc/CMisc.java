@@ -904,12 +904,118 @@ public final class CMisc {
         int intersection = 0;
         final Set<Integer> set1 = new HashSet<>();
         set1.addAll(doc1.getWords());
-        for (int word : doc2.getWords()) {
-            if (set1.contains(word)) {
-                intersection++;
-            }
-        }
+        intersection = doc2.getWords().stream().filter((word) -> (set1.contains(word))).map((_item) -> 1).reduce(intersection, Integer::sum);
         double union = doc1.size() + doc2.size() - intersection;
         return intersection / union;
+    }
+
+    private static Map<DocPair, Double> computeSimilarities(final Map<Integer, Document> documents) {
+        final CHashMapList<Integer, Integer> wordToDocs = groupWords(documents);
+        final Map<DocPair, Double> similarities = computeIntersections(wordToDocs);
+        adjustToSimilarities(documents, similarities);
+        return similarities;
+    }
+
+    private static CHashMapList<Integer, Integer> groupWords(final Map<Integer, Document> documents) {
+        final CHashMapList<Integer, Integer> wordToDocs = new CHashMapList<>();
+        documents.values().stream().forEach((document) -> {
+            final List<Integer> words = document.getWords();
+            words.stream().forEach((word) -> {
+                wordToDocs.put(word, document.getId());
+            });
+        });
+        return wordToDocs;
+    }
+
+    private static Map<DocPair, Double> computeIntersections(final CHashMapList<Integer, Integer> wordToDocs) {
+        final Map<DocPair, Double> similarities = new HashMap<>();
+        final Set<Integer> words = wordToDocs.keySet();
+        words.stream().map((word) -> wordToDocs.get(word)).map((docs) -> {
+            Collections.sort(docs);
+            return docs;
+        }).forEach((docs) -> {
+            for (int i = 0; i < docs.size(); i++) {
+                for (int j = i + 1; j < docs.size(); j++) {
+                    increment(similarities, docs.get(i), docs.get(j));
+                }
+            }
+        });
+        return similarities;
+    }
+
+    private static void increment(final Map<DocPair, Double> similarities, int doc1, int doc2) {
+        final DocPair pair = new DocPair(doc1, doc2);
+        if (!similarities.containsKey(pair)) {
+            similarities.put(pair, 1.0);
+        } else {
+            similarities.put(pair, similarities.get(pair) + 1);
+        }
+    }
+
+    private static void adjustToSimilarities(final Map<Integer, Document> documents, final Map<DocPair, Double> similarities) {
+        similarities.entrySet().stream().forEach((entry) -> {
+            final DocPair pair = entry.getKey();
+            final Double intersection = entry.getValue();
+            final Document doc1 = documents.get(pair.doc1);
+            final Document doc2 = documents.get(pair.doc2);
+            double union = (double) doc1.size() + doc2.size() - intersection;
+            entry.setValue(intersection / union);
+        });
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Element implements Comparable<Element> {
+
+        public int word;
+        public int document;
+
+        public Element(int word, int document) {
+            this.word = word;
+            this.document = document;
+        }
+
+        @Override
+        public int compareTo(final Element element) {
+            if (word == element.word) {
+                return document - element.document;
+            }
+            return word - element.word;
+        }
+    }
+
+    public static Map<DocPair, Double> computeSimilarities2(final Map<Integer, Document> documents) {
+        final List<Element> elements = sortWords(documents);
+        final Map<DocPair, Double> similarities = computeIntersections(elements);
+        adjustToSimilarities(documents, similarities);
+        return similarities;
+    }
+
+    private static List<Element> sortWords(final Map<Integer, Document> documents) {
+        final List<Element> elements = new ArrayList<>();
+        for (final Document document : documents.values()) {
+            final List<Integer> words = document.getWords();
+            for (int word : words) {
+                elements.add(new Element(word, document.getId()));
+            }
+        }
+        Collections.sort(elements);
+        return elements;
+    }
+
+    private static Map<DocPair, Double> computeIntersections(final List<Element> elements) {
+        final Map<DocPair, Double> similarities = new HashMap<>();
+        for (int i = 0; i < elements.size(); i++) {
+            final Element left = elements.get(i);
+            for (int j = i + 1; j < elements.size(); j++) {
+                final Element right = elements.get(j);
+                if (left.word != right.word) {
+                    break;
+                }
+                increment(similarities, left.document, right.document);
+            }
+        }
+        return similarities;
     }
 }
