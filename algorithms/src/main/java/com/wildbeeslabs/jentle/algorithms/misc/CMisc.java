@@ -30,9 +30,11 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
@@ -72,7 +74,6 @@ public final class CMisc {
         if (offset < 0) {
             return -1;
         }
-
         return blockIndex * rangeSize + offset;
     }
 
@@ -849,5 +850,66 @@ public final class CMisc {
             }
             return false;
         }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class DocPair {
+
+        public int doc1;
+        public int doc2;
+
+        public DocPair(int doc1, int doc2) {
+            this.doc1 = doc1;
+            this.doc2 = doc2;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Document {
+
+        private List<Integer> words;
+        private int id;
+
+        public Document(int id, final List<Integer> words) {
+            this.id = id;
+            this.words = words;
+        }
+
+        public int size() {
+            return Objects.isNull(this.words) ? 0 : this.words.size();
+        }
+    }
+
+    private static Map<DocPair, Double> computeSimilarities(final List<Document> documents) {
+        final Map<DocPair, Double> similarities = new HashMap<>();
+        for (int i = 0; i < documents.size(); i++) {
+            for (int j = i + 1; j < documents.size(); j++) {
+                final Document doc1 = documents.get(i);
+                final Document doc2 = documents.get(j);
+                double sim = computeSimilarity(doc1, doc2);
+                if (sim > 0) {
+                    final DocPair pair = new DocPair(doc1.getId(), doc2.getId());
+                    similarities.put(pair, sim);
+                }
+            }
+        }
+        return similarities;
+    }
+
+    private static double computeSimilarity(final Document doc1, final Document doc2) {
+        int intersection = 0;
+        final Set<Integer> set1 = new HashSet<>();
+        set1.addAll(doc1.getWords());
+        for (int word : doc2.getWords()) {
+            if (set1.contains(word)) {
+                intersection++;
+            }
+        }
+        double union = doc1.size() + doc2.size() - intersection;
+        return intersection / union;
     }
 }

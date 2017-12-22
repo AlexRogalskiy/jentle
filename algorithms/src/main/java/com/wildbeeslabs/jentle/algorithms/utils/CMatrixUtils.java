@@ -23,10 +23,14 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.collections.tree.CTrie3;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -322,5 +326,443 @@ public final class CMatrixUtils<T> {
             paintFill(screen, row, column + 1, oldValue, newValue);
         }
         return true;
+    }
+
+    public static <T> Subsquare findSquare(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        for (int i = matrix.length; i >= 1; i--) {
+            final Subsquare square = findSquareWithSize(matrix, value, i, cmp);
+            if (Objects.nonNull(square)) {
+                return square;
+            }
+        }
+        return null;
+    }
+
+    private static <T> Subsquare findSquareWithSize(final T[][] matrix, final T value, int squareSize, final Comparator<? super T> cmp) {
+        int count = matrix.length - squareSize + 1;
+        for (int row = 0; row < count; row++) {
+            for (int col = 0; col < count; col++) {
+                if (isSquare(matrix, value, row, col, squareSize, cmp)) {
+                    return new Subsquare(row, col, squareSize);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static <T> boolean isSquare(final T[][] matrix, final T value, int row, int col, int size, final Comparator<? super T> cmp) {
+        for (int j = 0; j < size; j++) {
+            if (Objects.compare(matrix[row][col + j], value, cmp) == 0) {
+                return false;
+            }
+            if (Objects.compare(matrix[row + size - 1][col + j], value, cmp) == 0) {
+                return false;
+            }
+        }
+        for (int i = 1; i < size - 1; i++) {
+            if (Objects.compare(matrix[row + i][col], value, cmp) == 0) {
+                return false;
+            }
+            if (Objects.compare(matrix[row + i][col + size - 1], value, cmp) == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Subsquare {
+
+        private int row;
+        private int col;
+        private int size;
+
+        public Subsquare(int row, int col, int size) {
+            this.row = row;
+            this.col = col;
+            this.size = size;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class SquareCell {
+
+        public int zerosRight = 0;
+        public int zerosBelow = 0;
+
+        public SquareCell(int zerosRight, int zerosBelow) {
+            this.zerosRight = zerosRight;
+            this.zerosBelow = zerosBelow;
+        }
+    }
+
+    public static <T> Subsquare findSquare2(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        final SquareCell[][] processed = processSquare(matrix, value, cmp);
+        for (int i = matrix.length; i >= 1; i--) {
+            final Subsquare square = findSquareWithSize2(processed, 0, i);
+            if (Objects.nonNull(square)) {
+                return square;
+            }
+        }
+        return null;
+    }
+
+    private static Subsquare findSquareWithSize2(final SquareCell[][] matrix, int value, int squareSize) {
+        int count = matrix.length - squareSize + 1;
+        for (int row = 0; row < count; row++) {
+            for (int col = 0; col < count; col++) {
+                if (isSquare2(matrix, value, row, col, squareSize)) {
+                    return new Subsquare(row, col, squareSize);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static boolean isSquare2(final SquareCell[][] matrix, int value, int row, int col, int size) {
+        final SquareCell topLeft = matrix[row][col];
+        final SquareCell topRight = matrix[row][col + size - 1];
+        final SquareCell bottomLeft = matrix[row + size - 1][col];
+        if (topLeft.zerosRight < size || topLeft.zerosBelow < size || topRight.zerosBelow < size || bottomLeft.zerosRight < size) {
+            return false;
+        }
+        return true;
+    }
+
+    private static <T> SquareCell[][] processSquare(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+        final SquareCell[][] processed = new SquareCell[matrix.length][matrix[0].length];
+        for (int r = matrix.length - 1; r >= 0; r--) {
+            for (int c = matrix[0].length - 1; c >= 0; c--) {
+                int rightZeros = 0;
+                int belowZeros = 0;
+                if (Objects.compare(matrix[r][c], value, cmp) == 0) {
+                    rightZeros++;
+                    belowZeros++;
+                    if (c + 1 < matrix[0].length) {
+                        final SquareCell previous = processed[r][c + 1];
+                        rightZeros += previous.zerosRight;
+                    }
+                    if (r + 1 < matrix.length) {
+                        final SquareCell previous = processed[r + 1][c];
+                        belowZeros += previous.zerosBelow;
+                    }
+                }
+                processed[r][c] = new SquareCell(rightZeros, belowZeros);
+            }
+        }
+        return processed;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class SubMatrix {
+
+        private int row1;
+        private int row2;
+        private int col1;
+        private int col2;
+        private int sum;
+
+        public SubMatrix(int row1, int col1, int row2, int col2, int sum) {
+            {
+                this.row1 = row1;
+                this.col1 = col1;
+                this.row2 = row2;
+                this.col2 = col2;
+                this.sum = sum;
+            }
+
+        }
+    }
+
+    public static SubMatrix getMaxMatrix(int[][] matrix) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        SubMatrix best = null;
+        int rowCount = matrix.length;
+        int colCount = matrix[0].length;
+        int[][] sumThrough = precomputeSums(matrix);
+        for (int row1 = 0; row1 < rowCount; row1++) {
+            for (int row2 = row1; row2 < colCount; row2++) {
+                for (int col1 = 0; col1 < colCount; col1++) {
+                    for (int col2 = col1; col2 < colCount; col2++) {
+                        int sum = sum(sumThrough, row1, col1, row2, col2);
+                        if (Objects.isNull(best) || best.getSum() < sum) {
+                            best = new SubMatrix(row1, col1, row2, col2, sum);
+                        }
+                    }
+                }
+            }
+        }
+        return best;
+    }
+
+    private static int[][] precomputeSums(int[][] matrix) {
+        int[][] sumThrough = new int[matrix.length][matrix[0].length];
+        for (int r = 0; r < matrix.length; r++) {
+            for (int c = 0; c < matrix[0].length; c++) {
+                int left = c > 0 ? sumThrough[r][c - 1] : 0;
+                int top = r > 0 ? sumThrough[r - 1][c] : 0;
+                int overLap = r > 0 && c > 0 ? sumThrough[r - 1][c - 1] : 0;
+                sumThrough[r][c] = left + top - overLap + matrix[r][c];
+            }
+        }
+        return sumThrough;
+    }
+
+    private static int sum(int[][] sumThrough, int r1, int c1, int r2, int c2) {
+        int topAndLeft = r1 > 0 && c1 > 0 ? sumThrough[r1 - 1][c1 - 1] : 0;
+        int left = c1 > 0 ? sumThrough[r2][c1 - 1] : 0;
+        int top = r1 > 0 ? sumThrough[r1 - 1][c2] : 0;
+        int full = sumThrough[r2][c2];
+        return full - left - top + topAndLeft;
+    }
+
+    public static SubMatrix getMaxMatrix2(int[][] matrix) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        SubMatrix best = null;
+        int rowCount = matrix.length;
+        int colCount = matrix[0].length;
+        for (int rowStart = 0; rowStart < rowCount; rowStart++) {
+            int[] partialSum = new int[colCount];
+            for (int rowEnd = rowStart; rowEnd < rowCount; rowEnd++) {
+                for (int i = 0; i < colCount; i++) {
+                    partialSum[i] += matrix[rowEnd][i];
+                }
+                final Range bestRange = maxSubArray(partialSum, colCount);
+                if (Objects.isNull(best) || best.getSum() < bestRange.sum) {
+                    best = new SubMatrix(rowStart, bestRange.start, rowEnd, bestRange.end, bestRange.sum);
+                }
+            }
+        }
+        return best;
+    }
+
+    private static Range maxSubArray(int[] array, int n) {
+        Range best = null;
+        int start = 0;
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += array[i];
+            if (Objects.isNull(best) || sum > best.sum) {
+                best = new Range(start, i, sum);
+            }
+            if (sum < 0) {
+                start = i + 1;
+                sum = 0;
+            }
+        }
+        return best;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Range {
+
+        public int start;
+        public int end;
+        public int sum;
+
+        public Range(int start, int end, int sum) {
+            this.start = start;
+            this.end = end;
+            this.sum = sum;
+        }
+    }
+
+    public static void createCrossWord(final String[] list) {
+        final WordGroup[] groupList = WordGroup.createWordGroups(list);
+        int maxWordLength = groupList.length;
+        final CTrie3[] trieList = new CTrie3[maxWordLength];
+    }
+
+    private static Rectangle maxRectangle(int maxWordLength, final WordGroup[] groupList, final CTrie3[] trieList) {
+        int maxSize = maxWordLength * maxWordLength;
+        for (int z = maxSize; z > 0; z--) {
+            for (int i = 1; i <= maxWordLength; i++) {
+                if (z % i == 0) {
+                    int j = z / i;
+                    if (j <= maxWordLength) {
+                        final Rectangle rectangle = makeRectangle(i, j, groupList, trieList);
+                        if (Objects.nonNull(rectangle)) {
+                            return rectangle;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Rectangle makeRectangle(int length, int height, final WordGroup[] groupList, final CTrie3[] trieList) {
+        if (Objects.isNull(groupList[length - 1]) || Objects.isNull(groupList[height - 1])) {
+            return null;
+        }
+        if (Objects.isNull(trieList[height - 1])) {
+            final List<String> words = groupList[height - 1].getWords();
+            trieList[height - 1] = new CTrie3(words);
+        }
+        return makePartialRectangle(length, height, new Rectangle(length), groupList, trieList);
+    }
+
+    private static Rectangle makePartialRectangle(int l, int h, final Rectangle rectangle, final WordGroup[] groupList, final CTrie3[] trieList) {
+        if (rectangle.height == h) {
+            if (rectangle.isComplete(l, h, groupList[h - 1])) {
+                return rectangle;
+            }
+            return null;
+        }
+        if (!rectangle.isPartial(l, trieList[h - 1])) {
+            return null;
+        }
+        for (int i = 0; i < groupList[l - 1].length(); i++) {
+            final Rectangle orgPlus = rectangle.append(groupList[l - 1].getWord(i));
+            final Rectangle rect = makePartialRectangle(l, h, orgPlus, groupList, trieList);
+            if (Objects.nonNull(rect)) {
+                return rect;
+            }
+        }
+        return null;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Rectangle {
+
+        public int height;
+        public int length;
+        public char[][] matrix;
+
+        public Rectangle(int length) {
+            this.height = 0;
+            this.length = length;
+        }
+
+        public Rectangle(char[][] matrix) {
+            this.height = matrix.length;
+            this.length = matrix[0].length;
+            this.matrix = matrix;
+        }
+
+        public char getLetter(int i, int j) {
+            return this.matrix[i][j];
+        }
+
+        public String getColumn(int i) {
+            final StringBuffer sb = new StringBuffer();
+            for (int r = 0; r < this.height; r++) {
+                sb.append(this.matrix[r][i]);
+            }
+            return sb.toString();
+        }
+
+        public boolean isComplete(int length, int height, final WordGroup groupList) {
+            if (this.height == height) {
+                for (int i = 0; i < length; i++) {
+                    final String col = this.getColumn(i);
+                    if (!groupList.containsWord(col)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public boolean isPartial(int length, final CTrie3 trie) {
+            if (this.height == 0) {
+                return true;
+            }
+            for (int i = 0; i < length; i++) {
+                final String col = this.getColumn(i);
+                if (!trie.contains(col)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public Rectangle append(final String value) {
+            return null;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class WordGroup {
+
+        private final Map<String, Boolean> lookup = new HashMap<>();
+        private final List<String> group = new ArrayList<>();
+
+        public boolean containsWord(final String value) {
+            return this.lookup.containsKey(value);
+        }
+
+        public int length() {
+            return this.group.size();
+        }
+
+        public String getWord(int i) {
+            return this.group.get(i);
+        }
+
+        public List<String> getWords() {
+            return this.group;
+        }
+
+        public void addWord(final String word) {
+            if (Objects.nonNull(word)) {
+                this.group.add(word);
+                this.lookup.put(word, Boolean.TRUE);
+            }
+        }
+
+        public void setWords(final List<String> words) {
+            this.group.clear();
+            this.lookup.clear();
+            if (Objects.nonNull(words)) {
+                this.group.addAll(words);
+                words.stream().collect(Collectors.toMap((word) -> word, (word) -> Boolean.TRUE));
+            }
+        }
+
+        public void removeWord(final String word) {
+            if (Objects.nonNull(word)) {
+                this.group.remove(word);
+                this.lookup.remove(word);
+            }
+        }
+
+        public static WordGroup[] createWordGroups(final String[] list) {
+            WordGroup[] groupList = null;
+            int maxWordLength = 0;
+            for (final String item : list) {
+                if (item.length() > maxWordLength) {
+                    maxWordLength = item.length();
+                }
+            }
+            groupList = new WordGroup[maxWordLength];
+            for (final String item : list) {
+                int wordLength = item.length() - 1;
+                if (Objects.isNull(groupList[wordLength])) {
+                    groupList[wordLength] = new WordGroup();
+                }
+                groupList[wordLength].addWord(item);
+            }
+            return groupList;
+        }
     }
 }
