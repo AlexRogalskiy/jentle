@@ -24,10 +24,10 @@
 package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
-import com.wildbeeslabs.jentle.collections.exception.OverflowQueueException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Queue;
 
 import lombok.Data;
@@ -62,21 +62,22 @@ public class CBoundQueue<T> extends ACQueue<T> {
     }
 
     @Override
-    public void enqueue(final T value) throws OverflowQueueException {
+    public boolean offer(final T value) {
         if (this.isFull()) {
-            throw new OverflowQueueException(String.format("ERROR: %s (full size=%d)", this.getClass().getName(), this.size()));
+            throw new IllegalStateException(String.format("ERROR: %s (full size=%d)", this.getClass().getName(), this.size()));
         }
         if (++this.tail == this.getSize()) {
             this.tail = 0;
         }
         this.queue[this.tail] = value;
         this.size++;
+        return true;
     }
 
     @Override
-    public T dequeue() throws EmptyQueueException {
+    public T poll() {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+            return null;//throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         final T removed = this.queue[this.head];
         this.queue[this.head] = null;
@@ -104,11 +105,6 @@ public class CBoundQueue<T> extends ACQueue<T> {
     }
 
     @Override
-    public boolean remove(T value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public void clear() {
         for (int i = 0; i < this.getSize(); i++) {
             this.queue[i] = null;
@@ -117,12 +113,7 @@ public class CBoundQueue<T> extends ACQueue<T> {
         this.tail = this.queue.length - 1;
         this.size = 0;
     }
-
-    @Override
-    public boolean contains(T value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    
     @Override
     public int size() {
         return this.size;
@@ -143,12 +134,17 @@ public class CBoundQueue<T> extends ACQueue<T> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
     public boolean isFull() {
         return (this.size() == this.queue.length);
+    }
+
+    @Override
+    public T peek() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

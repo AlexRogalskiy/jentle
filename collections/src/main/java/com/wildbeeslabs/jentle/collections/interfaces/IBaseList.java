@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
-import java.util.Iterator;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -35,7 +35,7 @@ import java.util.Iterator;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IBaseList<T> {
+public interface IBaseList<T> extends IBase<T>, List<T>, Cloneable, Serializable {
 
     /**
      * Removes a value from the list
@@ -44,50 +44,43 @@ public interface IBaseList<T> {
      * @return true (if the value was removed, false - otherwise)
      * @throws com.wildbeeslabs.jentle.collections.exception.EmptyListException
      */
-    boolean remove(final T value) throws EmptyListException;
-
+    //boolean remove(final T value) throws EmptyListException;
     /**
      * Removes all values from the list
      */
-    void clear();
-
+    //void clear();
     /**
      * Checks if the list contains the value
      *
      * @param value - value to search for
      * @return boolean (true - if the list contains value, false - otherwise)
      */
-    boolean contains(final T value);
-
+    //boolean contains(final T value);
     /**
      * Gets the size of the list
      *
      * @return size of the list
      */
-    int size();
-
+    //int size();
     /**
      * Checks if the list contains values
      *
      * @return boolean (true - if the list is empty, false - otherwise)
      */
-    boolean isEmpty();
-
+    //boolean isEmpty();
     /**
      * Returns the value from the list by index
      *
      * @param index - node index
      * @return node value
      */
-    T getAt(int index);
-
+    //T getAt(int index);
     /**
      * Creates external iterator instance for the list values
      *
      * @return iterator instance
      */
-    Iterator<? extends T> iterator();
-
+    //Iterator<? extends T> iterator();
     /**
      * Creates internal iterator instance for the list values
      *

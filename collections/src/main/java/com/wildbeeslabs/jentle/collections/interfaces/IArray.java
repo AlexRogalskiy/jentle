@@ -21,19 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.interfaces;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.RandomAccess;
 
 /**
  *
  * Custom dynamic array interface declaration
+ *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface IArray<T> extends IBase<T>, RandomAccess {
-    
+public interface IArray<T> extends List<T>, RandomAccess, Cloneable, Serializable {
+
+    T set(final T item, int index) throws IndexOutOfBoundsException;
 }

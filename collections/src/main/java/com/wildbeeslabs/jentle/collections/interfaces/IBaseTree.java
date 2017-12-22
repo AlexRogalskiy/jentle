@@ -208,11 +208,11 @@ public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends IBase<T> {
      * @param node - current node
      * @param visitor - traversable visitor instance
      */
-    default void inOrderTraversal(final U node, final IVisitor<T> visitor) {
+    default void inOrderIterator(final U node, final IVisitor<T> visitor) {
         Objects.requireNonNull(node);
-        inOrderTraversal(node.getLeft(), visitor);
+        inOrderIterator(node.getLeft(), visitor);
         visitor.visit(node.getData());
-        inOrderTraversal(node.getRight(), visitor);
+        inOrderIterator(node.getRight(), visitor);
     }
 
     /**
@@ -221,11 +221,11 @@ public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends IBase<T> {
      * @param node - current node
      * @param visitor - traversable visitor instance
      */
-    default void preOrderTraversal(final U node, final IVisitor<T> visitor) {
+    default void preOrderIterator(final U node, final IVisitor<T> visitor) {
         Objects.requireNonNull(node);
         visitor.visit(node.getData());
-        preOrderTraversal(node.getLeft(), visitor);
-        preOrderTraversal(node.getRight(), visitor);
+        preOrderIterator(node.getLeft(), visitor);
+        preOrderIterator(node.getRight(), visitor);
     }
 
     /**
@@ -234,10 +234,10 @@ public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends IBase<T> {
      * @param node - current node
      * @param visitor - traversable visitor instance
      */
-    default void postOrderTraversal(final U node, final IVisitor<T> visitor) {
+    default void postOrderIterator(final U node, final IVisitor<T> visitor) {
         Objects.requireNonNull(node);
-        postOrderTraversal(node.getLeft(), visitor);
-        postOrderTraversal(node.getRight(), visitor);
+        postOrderIterator(node.getLeft(), visitor);
+        postOrderIterator(node.getRight(), visitor);
         visitor.visit(node.getData());
     }
 }

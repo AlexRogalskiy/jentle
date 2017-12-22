@@ -29,6 +29,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 
 import lombok.Data;
@@ -137,22 +138,22 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
     }
 
     @Override
-    public void addLast(final T item) {
-        this.addToLast(item);
-    }
-
-    @Override
-    public void addFirst(final T item) {
-        this.addToFirst(item);
-    }
-
-    @Override
     public void insertAt(final T item, int index) {
-        this.insertAt(item, index);
+        this.insertToAt(item, index);
+        final CCacheLinkedList.CCacheNode<T> temp1 = this.getToAt(index - 1);
+        final CCacheLinkedList.CCacheNode<T> temp2 = this.getToAt(index);
+        final CCacheLinkedList.CCacheNode<T> node = this.insertToAt(item, index);
+        temp2.setPrevious(node);
+        node.setPrevious(temp1);
     }
 
     @Override
-    public Iterator<? extends T> iterator() {
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

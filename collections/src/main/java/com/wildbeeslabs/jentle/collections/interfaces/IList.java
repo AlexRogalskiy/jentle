@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
+import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
+
 /**
  *
  * Custom list interface declaration
@@ -68,4 +70,20 @@ public interface IList<T> extends IBaseList<T> {
      * @param index - position of new node
      */
     void insertAt(final T item, int index);
+
+    /**
+     * Removes value from the tail of the list
+     *
+     * @return value removed from the tail of the list
+     * @throws EmptyListException
+     */
+    T removeLast() throws EmptyListException;
+
+    /**
+     * Removes value from the head of the list
+     *
+     * @return value removed from the head of the list
+     * @throws EmptyListException
+     */
+    T removeFirst() throws EmptyListException;
 }

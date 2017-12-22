@@ -24,22 +24,20 @@
 package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
-import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
-import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.interfaces.IResultVisitor;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
-import com.wildbeeslabs.jentle.collections.stack.CStack;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
+import java.util.AbstractSequentialList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.Deque;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Queue;
-import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -59,9 +57,9 @@ import org.apache.log4j.Logger;
  * @param <E>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> {
+public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequentialList<T> implements IList<T> {
 
     /**
      * Default Logger instance
@@ -115,7 +113,23 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         }
     }
 
+    @Override
+    public void addFirst(final T item) {
+        this.addToFirst(item);
+    }
+
+    @Override
+    public void addLast(final T item) {
+        this.addToLast(item);
+    }
+
+    @Override
+    public void insertAt(final T item, int index) {
+        this.insertToAt(item, index);
+    }
+
     protected E addToFirst(final T item) {
+        Deque a;
         final E temp = this.createNode(item);
         temp.setNext(this.first);
         if (Objects.isNull(this.first)) {
@@ -139,6 +153,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return this.last;
     }
 
+    @Override
     public T removeFirst() throws EmptyListException {
         if (this.isEmpty()) {
             throw new EmptyListException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
@@ -149,6 +164,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return removed;
     }
 
+    @Override
     public T removeLast() throws EmptyListException {
         if (this.isEmpty()) {
             throw new EmptyListException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
@@ -169,14 +185,14 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     }
 
     @Override
-    public boolean remove(final T item) throws EmptyListException {
+    public boolean remove(final Object item) {
         if (this.isEmpty()) {
-            throw new EmptyListException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+            throw new NoSuchElementException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         E previous = this.first, next = this.first;
         boolean removed = false;
         while (Objects.nonNull(next)) {
-            if (Objects.compare(item, next.getData(), this.cmp) == 0) {
+            if (Objects.compare((T) item, next.getData(), this.cmp) == 0) {
                 removed = true;
                 this.size--;
                 if (Objects.nonNull(previous)) {
@@ -225,7 +241,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     }
 
     @Override
-    public T getAt(int index) {
+    public T get(int index) {
         final E current = this.getToAt(index);
         if (Objects.nonNull(current)) {
             return current.getData();
@@ -234,9 +250,9 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     }
 
     @Override
-    public boolean contains(final T item) {
+    public boolean contains(final Object item) {
         for (Iterator<? extends T> i = this.iterator(); i.hasNext();) {
-            if (Objects.compare(i.next(), item, this.cmp) == 0) {
+            if (Objects.compare(i.next(), (T) item, this.cmp) == 0) {
                 return true;
             }
         }
@@ -247,11 +263,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         if (index <= 0 || index > this.size()) {
             throw new IndexOutOfBoundsException(String.format("ERROR: %s (index=%d is out of bounds [1, %d])", this.getClass().getName(), index, this.size));
         }
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
     }
 
     public E remove(E root) {
@@ -286,97 +297,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             }
         }
         return true;
-    }
-
-    protected void deleteDuplicates(final E node) {
-        final Set<T> set = new HashSet<>();
-        E previous = node, current = node;
-        while (Objects.nonNull(current)) {
-            if (set.contains(current.getData())) {
-                previous.setNext(current.getNext());
-            } else {
-                set.add(current.getData());
-                previous = current;
-            }
-            current = current.getNext();
-        }
-    }
-
-    protected void deleteDuplicates2(final E node) {
-        E current = node;
-        while (Objects.nonNull(current)) {
-            E runner = current;
-            while (Objects.nonNull(runner.getNext())) {
-                if (Objects.compare(runner.getNext().getData(), current.getData(), this.cmp) == 0) {
-                    runner.setNext(runner.getNext().getNext());
-                } else {
-                    runner = runner.getNext();
-                }
-            }
-            current = current.getNext();
-        }
-    }
-
-    public int countTimes(final E root, final T value) {
-        int count = 0;
-        E current = root;
-        while (Objects.nonNull(current)) {
-            if (Objects.compare(current.getData(), value, this.cmp) == 0) {
-                count++;
-            }
-            current = current.getNext();
-        }
-        return count;
-    }
-
-    public E reverse(E root) {
-        E previous = root;
-        E newHead = root.getNext();
-        E temp = root.getNext();
-        while (Objects.nonNull(root) && Objects.nonNull(root.getNext())) {
-            previous.setNext(root.getNext());
-            root.setNext(temp.getNext());
-            temp.setNext(root);
-            if (Objects.nonNull(root.getNext())) {
-                previous = root;
-                root = root.getNext();
-                temp = root.getNext();
-            }
-        }
-        return newHead;
-    }
-
-    protected T getKthToLast(final E node, int k) {
-        Integer idx = new Integer(0);
-        E current = this.getKthToLast(node, k, idx);
-        return Objects.nonNull(current) ? current.getData() : null;
-    }
-
-    private E getKthToLast(final E node, int k, Integer index) {
-        if (this.isEmpty()) {
-            return null;
-        }
-        E current = getKthToLast(node.getNext(), k, index);
-        index = index + 1;
-        if (index.intValue() == k) {
-            return node;
-        }
-        return current;
-    }
-
-    protected T getKthToLast2(final E node, int k) {
-        E p1 = node, p2 = node;
-        for (int i = 0; i < k; i++) {
-            if (Objects.isNull(p1)) {
-                return null;
-            }
-            p1 = p1.getNext();
-        }
-        while (Objects.nonNull(p1)) {
-            p1 = p1.getNext();
-            p2 = p2.getNext();
-        }
-        return p2.getData();
     }
 
     protected boolean delete(final E node) {
@@ -420,44 +340,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
         return second;
     }
 
-    protected E partition(final E node, final T value) {
-        if (this.isEmpty()) {
-            return null;
-        }
-        E beforeStart = null;
-        E beforeEnd = null;
-        E afterStart = null;
-        E afterEnd = null;
-        E current = node;
-        while (Objects.nonNull(current)) {
-            final E next = current.getNext();
-            current.setNext(null);
-            if (Objects.compare(current.getData(), value, this.cmp) < 0) {
-                if (Objects.isNull(beforeStart)) {
-                    beforeStart = current;
-                    beforeEnd = beforeStart;
-                } else {
-                    beforeEnd.setNext(current);
-                    beforeEnd = current;
-                }
-            } else {
-                if (Objects.nonNull(afterStart)) {
-                    afterStart = current;
-                    afterEnd = afterStart;
-                } else {
-                    afterEnd.setNext(current);
-                    afterEnd = current;
-                }
-            }
-            current = next;
-        }
-        if (Objects.isNull(beforeStart)) {
-            return afterStart;
-        }
-        beforeStart.setNext(afterStart);
-        return beforeStart;
-    }
-
     public void addLists(final E first, final E last, final ACList<T, E> result, final IResultVisitor<T, T> visitor) {
         if (Objects.isNull(first) && Objects.isNull(last) || Objects.isNull(visitor)) {
             return;
@@ -475,47 +357,9 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     }
 
     public void each(final IVisitor visitor) {
-        for (Iterator<? extends T> current = this.iterator(); current.hasNext();) {
+        for (final Iterator<? extends T> current = this.iterator(); current.hasNext();) {
             visitor.visit(current.next());
         }
-    }
-
-    protected boolean isEqual(final E first, final E last) {
-        E headFirst = first;
-        E headLast = last;
-        while (Objects.nonNull(headFirst) && Objects.nonNull(headLast)) {
-            if (Objects.compare(headFirst.getData(), headLast.getData(), this.cmp) != 0) {
-                return false;
-            }
-            headFirst = headFirst.getNext();
-            headLast = headLast.getNext();
-        }
-        return (Objects.nonNull(headFirst) && Objects.nonNull(headLast));
-    }
-
-    protected boolean isPalindrome(final E node) throws OverflowStackException {
-        E fast = node;
-        E slow = node;
-        final CStack<T> stack = new CStack<>();
-        while (Objects.nonNull(fast) && Objects.nonNull(fast.getNext())) {
-            stack.push(slow.getData());
-            slow = slow.getNext();
-            fast = fast.getNext().getNext();
-        }
-        if (Objects.nonNull(fast)) {
-            slow = slow.getNext();
-        }
-        try {
-            while (Objects.nonNull(slow)) {
-                if (Objects.compare(stack.pop(), slow.getData(), this.cmp) != 0) {
-                    return false;
-                }
-                slow = slow.getNext();
-            }
-        } catch (EmptyStackException ex) {
-            LOGGER.error(String.format("ERROR: empty stack, message=%s", ex.getMessage()));
-        }
-        return true;
     }
 
     protected int length(final E node) {
@@ -526,113 +370,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
             current = current.getNext();
         }
         return size;
-    }
-
-    protected E getKthToFirst(final E node, int k) {
-        E current = node;
-        while (k > 0 && Objects.nonNull(current)) {
-            current = current.getNext();
-            k--;
-        }
-        return current;
-    }
-
-    @Data
-    @EqualsAndHashCode(callSuper = false)
-    @ToString
-    private static final class ResultCNode<E> {
-
-        public E head;
-        public E tail;
-        public int size;
-
-        public ResultCNode() {
-            this(null, null, 0);
-        }
-
-        public ResultCNode(final E head, int size) {
-            this(head, null, size);
-        }
-
-        public ResultCNode(final E head, final E tail) {
-            this(head, tail, 0);
-        }
-
-        public ResultCNode(final E head, final E tail, int size) {
-            this.head = head;
-            this.tail = tail;
-            this.size = size;
-        }
-    }
-
-    private ResultCNode<E> getTailAndSize(final E node) {
-        if (Objects.isNull(node)) {
-            return null;
-        }
-        int size = 1;
-        E current = node;
-        while (Objects.nonNull(current.getNext())) {
-            size++;
-            current = current.getNext();
-        }
-        return new ResultCNode(null, current, size);
-    }
-
-    protected E findIntersection(final E first, final E last) {
-        if (Objects.isNull(first) || Objects.isNull(last)) {
-            return null;
-        }
-        ResultCNode<E> res1 = this.getTailAndSize(first);
-        ResultCNode<E> res2 = this.getTailAndSize(last);
-        if (res1.tail != res2.tail) {
-            return null;
-        }
-        E shorter = res1.size < res2.size ? first : last;
-        E longer = res2.size < res2.size ? last : first;
-        longer = this.getKthToFirst(longer, Math.abs(res1.size - res2.size));
-        while (shorter != longer) {
-            shorter = shorter.getNext();
-            longer = longer.getNext();
-        }
-        return longer;
-    }
-
-    //Floyd’s cycle detection algorithm
-    protected E findLoop(final E node) {
-        E slow = node;
-        E fast = node;
-        while (Objects.nonNull(fast) && Objects.nonNull(fast.getNext())) {
-            slow = slow.getNext();
-            fast = fast.getNext().getNext();
-            if (slow == fast) {
-                break;
-            }
-        }
-        if (Objects.isNull(fast) || Objects.isNull(fast.getNext())) {
-            return null;
-        }
-        slow = node;
-        while (slow != fast) {
-            slow = slow.getNext();
-            fast = fast.getNext();
-        }
-        return fast;
-    }
-
-    public void deleteDuplicates() {
-        this.deleteDuplicates(this.first);
-    }
-
-    public T getKthToLast2(int k) {
-        return this.getKthToLast2(this.first, k);
-    }
-
-    public E partition(final T value) {
-        return this.partition(this.first, value);
-    }
-
-    public boolean isPalindrome() throws OverflowStackException {
-        return this.isPalindrome(this.first);
     }
 
     @Override
@@ -648,6 +385,19 @@ public abstract class ACList<T, E extends ACListNode<T, E>> implements IList<T> 
     @Override
     public void iterator(final IVisitor<? extends T> visitor) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    protected boolean isEqual(final E last) {
+        E headFirst = this.first;
+        E headLast = last;
+        while (Objects.nonNull(headFirst) && Objects.nonNull(headLast)) {
+            if (Objects.compare(headFirst.getData(), headLast.getData(), this.cmp) != 0) {
+                return false;
+            }
+            headFirst = headFirst.getNext();
+            headLast = headLast.getNext();
+        }
+        return (Objects.nonNull(headFirst) && Objects.nonNull(headLast));
     }
 
     protected abstract E createNode(final T value);

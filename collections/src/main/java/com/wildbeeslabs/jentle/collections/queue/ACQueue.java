@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IQueue;
+import java.util.AbstractQueue;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,9 +43,9 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACQueue<T> implements IQueue<T> {
+public abstract class ACQueue<T> extends AbstractQueue<T> implements IQueue<T> {
 
     /**
      * Default Logger instance

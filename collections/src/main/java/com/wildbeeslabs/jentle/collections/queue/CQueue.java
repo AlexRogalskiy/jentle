@@ -24,10 +24,10 @@
 package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
-import com.wildbeeslabs.jentle.collections.exception.OverflowQueueException;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -47,7 +47,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CQueue<T> extends ACQueue<T> {//CCircularList
+public class CQueue<T> extends ACQueue<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = false)
@@ -96,7 +96,7 @@ public class CQueue<T> extends ACQueue<T> {//CCircularList
     }
 
     @Override
-    public void enqueue(final T value) throws OverflowQueueException {
+    public boolean offer(final T value) {
         final CQueueNode<T> temp = new CQueueNode<>(value);
         if (Objects.nonNull(this.tail)) {
             this.tail.next = temp;
@@ -106,11 +106,12 @@ public class CQueue<T> extends ACQueue<T> {//CCircularList
             this.head = this.tail;
         }
         this.size++;
+        return true;
     }
 
-    public T dequeue() throws EmptyQueueException {
+    public T poll() {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size()));
+            return null;//throw new EmptyQueueException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size()));
         }
         final T data = this.head.getData();
         this.head = this.head.next;
@@ -125,16 +126,7 @@ public class CQueue<T> extends ACQueue<T> {//CCircularList
     public int size() {
         return this.size;
     }
-
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
-    @Override
-    public boolean remove(final T value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    
     @Override
     public void clear() {
         @SuppressWarnings("UnusedAssignment")
@@ -149,10 +141,10 @@ public class CQueue<T> extends ACQueue<T> {//CCircularList
     }
 
     @Override
-    public boolean contains(final T value) {
+    public T peek() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public boolean validate() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -165,6 +157,11 @@ public class CQueue<T> extends ACQueue<T> {//CCircularList
 
     @Override
     public Collection<T> toCollection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

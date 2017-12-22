@@ -26,8 +26,10 @@ package com.wildbeeslabs.jentle.collections.list;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Objects;
 
 import lombok.Data;
@@ -44,7 +46,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CString {
+public class CString implements Serializable, Comparable<CString>, CharSequence {
 
     private final CStringList stringList;
 
@@ -69,26 +71,6 @@ public class CString {
          * Default string item size
          */
         public static final int DEFAULT_ITEM_SIZE = 16;
-
-        @Override
-        public void addLast(final StringItem item) {
-            this.addToLast(item);
-        }
-
-        @Override
-        public void addFirst(final StringItem item) {
-            this.addToFirst(item);
-        }
-
-        @Override
-        public void insertAt(final StringItem item, int index) {
-            this.insertAt(item, index);
-        }
-
-        @Override
-        public Iterator<? extends StringItem> iterator() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
 
         @Data
         @EqualsAndHashCode(callSuper = false)
@@ -225,6 +207,7 @@ public class CString {
             return new SymbolPosition(current, curIndex);
         }
 
+        @Override
         public CStringList.StringItemNode getLast() {
             CStringList.StringItemNode current = this.getFirst();
             CStringList.StringItemNode last = null;
@@ -241,6 +224,16 @@ public class CString {
                 current = current.getNext();
             }
             return last;
+        }
+
+        @Override
+        public Iterator<StringItem> iterator() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public ListIterator<StringItem> listIterator(int index) {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
@@ -282,6 +275,35 @@ public class CString {
     public void setCodePointAt(int index, int codePointAt) {
         final CStringList.SymbolPosition sp = this.stringList.findPosition(index);
         sp.item.getData().setSymbol(index, codePointAt);
+    }
+
+    @Override
+    public int compareTo(final CString o) {
+        CStringList.StringItemNode headFirst = this.stringList.first;
+        CStringList.StringItemNode headLast = o.stringList.first;
+        while (Objects.nonNull(headFirst) && Objects.nonNull(headLast)) {
+            int value = Objects.compare(headFirst.getData(), headLast.getData(), this.stringList.cmp);
+            if (value != 0) {
+                return value;
+            }
+            headFirst = headFirst.getNext();
+            headLast = headLast.getNext();
+        }
+        return (this.stringList.size - o.stringList.size);
+    }
+
+    @Override
+    public char charAt(int index) {
+//        char[] chars = this.charsAt(index);
+//        if(Objects.nonNull(chars) && chars.length > 0) {
+//            return chars[0];
+//        }
+        return 0;
+    }
+
+    @Override
+    public CharSequence subSequence(int start, int end) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void append(final String value) {

@@ -111,7 +111,7 @@ public class CLGraph<T> implements IGraph<T> {
     private CLGraphArc<T> getItem(int from, int to) {
         this.checkRange(from);
         this.checkRange(to);
-        return this.graph[from - 1].getAt(to);
+        return this.graph[from - 1].get(to);
     }
 
     public T get(int from, int to) {

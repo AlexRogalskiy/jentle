@@ -30,6 +30,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -138,6 +139,11 @@ public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> im
         public void remove() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

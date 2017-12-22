@@ -84,12 +84,14 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         }
     }
 
-    public T elementAt(int index) throws IndexOutOfBoundsException {
+    @Override
+    public T get(int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
         return this.array[index];
     }
 
-    public T setElementAt(final T item, int index) throws IndexOutOfBoundsException {
+    @Override
+    public T set(final T item, int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
         final T removed = this.array[index];
         this.array[index] = item;
@@ -105,16 +107,18 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         }
     }
 
-    public void add(final T item) {
-        this.addAt(item, this.size);
+    @Override
+    public boolean add(final T item) {
+        return this.addAt(item, this.size);
     }
 
-    public void addAt(final T item, int index) throws IndexOutOfBoundsException {
+    public boolean addAt(final T item, int index) throws IndexOutOfBoundsException {
         this.checkRange(index);
         this.resize(1);
         System.arraycopy(this.array, index, this.array, index + 1, this.size - index);
         this.array[index] = item;
         this.size++;
+        return true;
     }
 
     public boolean remove(final T item) {
@@ -170,12 +174,14 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         this.array = temp;
     }
 
+    @Override
     public void clear() {
         for (int i = 0; i < this.size(); i++) {
             this.array[i] = null;
         }
     }
 
+    @Override
     public boolean contains(final T item) {
         return (this.indexOf(item) >= 0);
     }

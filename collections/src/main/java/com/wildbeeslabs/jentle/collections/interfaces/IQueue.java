@@ -24,7 +24,9 @@
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
-import com.wildbeeslabs.jentle.collections.exception.OverflowQueueException;
+
+import java.io.Serializable;
+import java.util.Queue;
 
 /**
  *
@@ -35,7 +37,7 @@ import com.wildbeeslabs.jentle.collections.exception.OverflowQueueException;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IQueue<T> {
+public interface IQueue<T> extends Queue<T>, Cloneable, Serializable {
 
 //    /**
 //     * Add a value to the beginning of the queue.
@@ -56,17 +58,14 @@ public interface IQueue<T> {
      * Adds value to the tail of the current queue
      *
      * @param value - element value to enqueue to the queue.
-     * @throws OverflowQueueException
      */
-    void enqueue(final T value) throws OverflowQueueException;
-
+    //boolean offer(final T value);
     /**
      * Removes element from the head of the current queue
      *
      * @return element value to dequeue from the queue.
-     * @throws EmptyQueueException
      */
-    T dequeue() throws EmptyQueueException;
+    //T poll();
 
     /**
      * Returns but do not remove element value from the head of the current
@@ -92,12 +91,12 @@ public interface IQueue<T> {
      * @param value to remove from the current queue.
      * @return true if element was removed, false - otherwise
      */
-    boolean remove(final T value);
+    //boolean remove(final Object value);
 
     /**
      * Clears the current queue.
      */
-    void clear();
+    //void clear();
 
     /**
      * Checks if the current queue contains the value.
@@ -105,14 +104,14 @@ public interface IQueue<T> {
      * @param value to find in the queue.
      * @return true if the current queue contains the value, false - otherwise
      */
-    boolean contains(final T value);
+    //boolean contains(final Object value);
 
     /**
      * Returns the size of the current queue.
      *
      * @return size of the current queue.
      */
-    int size();
+    //int size();
 
     /**
      * Validates the current queue according to the invariants.
@@ -140,5 +139,5 @@ public interface IQueue<T> {
      *
      * @return true - if the current queue is empty, false - otherwise
      */
-    boolean isEmpty();
+    //boolean isEmpty();
 }

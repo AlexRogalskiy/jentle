@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IArray;
 import com.wildbeeslabs.jentle.collections.utils.CConverterUtils;
 
 import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -51,9 +52,9 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACArray<T extends Serializable> implements IArray<T> {
+public abstract class ACArray<T extends Serializable> extends AbstractList<T> implements IArray<T> {
 
     /**
      * Default Logger instance
@@ -80,7 +81,7 @@ public abstract class ACArray<T extends Serializable> implements IArray<T> {
         return -1;
     }
 
-    public void fill(final IntFunction<? extends T> generator) {
+    protected void fill(final IntFunction<? extends T> generator) {
         assert (Objects.nonNull(generator));
         Arrays.setAll(this.array, generator);
     }
@@ -89,7 +90,7 @@ public abstract class ACArray<T extends Serializable> implements IArray<T> {
         this.fill(value, 0, this.size() - 1);
     }
 
-    public void fill(final T value, int startIndex, int endIndex) {
+    protected void fill(final T value, int startIndex, int endIndex) {
         this.checkRange(startIndex);
         this.checkRange(endIndex);
         assert (startIndex <= endIndex);
@@ -100,6 +101,7 @@ public abstract class ACArray<T extends Serializable> implements IArray<T> {
         return (this.indexOf(item) >= 0);
     }
 
+    @Override
     public T[] toArray() {
         return Arrays.copyOf(this.array, this.size());
         //SerializationUtils.clone(this.array);
@@ -113,12 +115,9 @@ public abstract class ACArray<T extends Serializable> implements IArray<T> {
         return CConverterUtils.convertArrayToList(this.array);
     }
 
+    @Override
     public int size() {
         return this.size;
-    }
-
-    public boolean isEmpty() {
-        return (0 == this.size());
     }
 
     protected void checkRange(int index) throws IndexOutOfBoundsException {

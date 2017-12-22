@@ -473,7 +473,7 @@ public final class CSort {
     public static <T, E extends ACListNode<T, E>> int search(final ACList<T, E> list, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(list);
         int index = 1;
-        while (Objects.compare(list.getAt(index), value, cmp) < 0) {//list.getAt(index) != -1
+        while (Objects.compare(list.get(index), value, cmp) < 0) {//list.getAt(index) != -1
             index *= 2;
         }
         return binarySearch(list, value, index / 2, index, cmp);
@@ -482,7 +482,7 @@ public final class CSort {
     private static <T, E extends ACListNode<T, E>> int binarySearch(final ACList<T, E> list, final T value, int low, int high, final Comparator<? super T> cmp) {
         while (low <= high) {
             int middle = (low + high) / 2;
-            final T midValue = list.getAt(middle);
+            final T midValue = list.get(middle);
             if (Objects.compare(midValue, value, cmp) > 0) {//middle == -1
                 high = middle - 1;
             } else if (Objects.compare(midValue, value, cmp) < 0) {

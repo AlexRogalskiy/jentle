@@ -45,7 +45,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FilenameUtils;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -98,7 +97,7 @@ public final class FileUtils {
         Objects.requireNonNull(outputFile);
         Objects.requireNonNull(output);
         try (final PrintWriter writer = new PrintWriter(Files.newBufferedWriter(outputFile.toPath(), FileUtils.DEFAULT_FILE_CHARACTER_ENCODING))) {
-            output.stream().forEach(writer::println);
+            output.stream().forEach(writer::println);//String newLine = System.getProperty("line.separator");
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             LOGGER.error(String.format("ERROR: cannot create output file=%s, message=%s", String.valueOf(outputFile), ex.getMessage()));
         } catch (IOException ex) {
@@ -130,10 +129,11 @@ public final class FileUtils {
 
     public static List<File> listFiles(final File inputDirectory) throws IOException {
         final List<File> listFiles = new ArrayList<>();
-        return listFiles(listFiles, inputDirectory);
+        listFiles(listFiles, inputDirectory);
+        return listFiles;
     }
 
-    private static List<File> listFiles(final List<File> listFiles, final File inputDirectory) throws IOException {
+    private static void listFiles(final List<File> listFiles, final File inputDirectory) throws IOException {
         final File[] allFiles = inputDirectory.listFiles();
         for (final File file : allFiles) {
             if (file.isDirectory()) {
@@ -142,6 +142,33 @@ public final class FileUtils {
                 listFiles.add(file);
             }
         }
-        return listFiles;
+    }
+
+    public static List<File> listDirectories(final File inputDirectory) {
+        final List<File> listDirectories = new ArrayList<>();
+        listDirectories(listDirectories, inputDirectory);
+        return listDirectories;
+    }
+
+    private static void listDirectories(final List<File> listDirectories, final File inputDirectory) {
+        final File[] directories = inputDirectory.listFiles(File::isDirectory);
+        for (final File directory : directories) {
+            listDirectories.add(directory);
+            listDirectories(listDirectories, directory);
+        }
+    }
+
+    public static List<File> listDirectories2(final File inputDirectory) {
+        final List<File> listDirectories = new ArrayList<>();
+        listDirectories2(listDirectories, inputDirectory);
+        return listDirectories;
+    }
+
+    private static void listDirectories2(final List<File> listDirectories, final File inputFile) {
+        final File[] directories = inputFile.listFiles((File current, String name) -> new File(current, name).isDirectory());
+        for (final File directory : directories) {
+            listDirectories.add(directory);
+            listDirectories2(directory);
+        }
     }
 }

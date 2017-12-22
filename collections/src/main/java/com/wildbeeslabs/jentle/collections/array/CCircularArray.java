@@ -72,17 +72,20 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
         }
     }
 
-    public T elementAt(int index) throws IndexOutOfBoundsException {
+    @Override
+    public T get(int index) throws IndexOutOfBoundsException {
         return this.array[this.convert(index)];
     }
 
-    public T setElementAt(final T item, int index) throws IndexOutOfBoundsException {
+    @Override
+    public T set(final T item, int index) throws IndexOutOfBoundsException {
         index = this.convert(index);
         final T removed = this.array[index];
         this.array[index] = item;
         return removed;
     }
 
+    @Override
     public void fill(final T value, int startIndex, int endIndex) {
         startIndex = this.convert(startIndex);
         endIndex = this.convert(endIndex);
@@ -90,6 +93,7 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
         Arrays.fill(this.array, startIndex, endIndex, SerializationUtils.clone(value));
     }
 
+    @Override
     public void clear() {
         for (int i = 0; i < this.size(); i++) {
             this.array[i] = null;

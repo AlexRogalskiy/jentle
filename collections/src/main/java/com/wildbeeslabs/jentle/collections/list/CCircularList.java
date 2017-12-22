@@ -25,11 +25,11 @@ package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
-import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Objects;
 
 import lombok.Data;
@@ -53,7 +53,6 @@ public class CCircularList<T> extends ACList<T, CList.CListNode<T>> implements I
 //    protected CList.CListNode<T> first;
 //    protected CList.CListNode<T> last;
 //    protected int size;
-
     public CCircularList() {
         this(null, CUtils.DEFAULT_SORT_COMPARATOR);
     }
@@ -91,7 +90,8 @@ public class CCircularList<T> extends ACList<T, CList.CListNode<T>> implements I
         this.last = this.last.getNext();
     }
 
-    public T removeAtHead() throws EmptyListException {
+    @Override
+    public T removeFirst() throws EmptyListException {
         if (this.isEmpty()) {
             throw new EmptyListException(String.format("ERROR: CCircularList (empty size=%i)", this.getSize()));
         }
@@ -121,24 +121,24 @@ public class CCircularList<T> extends ACList<T, CList.CListNode<T>> implements I
         return this.last.getData();
     }
 
-    @Override
-    public int size() {
-        return this.size;
-    }
+//    @Override
+//    public int size() {
+//        return this.size;
+//    }
+//
+//    @Override
+//    public boolean isEmpty() {
+//        return (0 == this.size());//Objects.isNull(this.last)
+//    }
 
     @Override
-    public boolean isEmpty() {
-        return (0 == this.size());//Objects.isNull(this.last)
-    }
-
-    @Override
-    public void insertAt(T item, int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Iterator<? extends T> iterator() {
+    public Iterator<T> iterator() {
         return new CCircularListIterator<>(this);
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     protected static class CCircularListIterator<T> implements Iterator<T> {

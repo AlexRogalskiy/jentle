@@ -30,6 +30,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -84,21 +85,6 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> 
     }
 
     @Override
-    public void addLast(final T item) {
-        this.addToLast(item);
-    }
-
-    @Override
-    public void addFirst(final T item) {
-        this.addToFirst(item);
-    }
-
-    @Override
-    public void insertAt(final T item, int index) {
-        this.insertAt(item, index);
-    }
-
-    @Override
     public Iterator<T> iterator() {
         return new CListIterator<>(this);
     }
@@ -130,6 +116,11 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> 
         public void remove() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
