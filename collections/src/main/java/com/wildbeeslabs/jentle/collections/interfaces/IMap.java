@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -36,9 +37,9 @@ import java.util.Map;
  * @param <K>
  * @param <V>
  */
-public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
+public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V>, Cloneable, Serializable {
 
-    Iterator<? extends K> iterateByKeys();
+    Iterator<? extends K> keysIterator();
 
-    Iterator<? extends V> iterateByValues();
+    Iterator<? extends V> valuesIterator();
 }

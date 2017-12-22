@@ -121,16 +121,6 @@ public class CCircularList<T> extends ACList<T, CList.CListNode<T>> implements I
         return this.last.getData();
     }
 
-//    @Override
-//    public int size() {
-//        return this.size;
-//    }
-//
-//    @Override
-//    public boolean isEmpty() {
-//        return (0 == this.size());//Objects.isNull(this.last)
-//    }
-
     @Override
     public Iterator<T> iterator() {
         return new CCircularListIterator<>(this);

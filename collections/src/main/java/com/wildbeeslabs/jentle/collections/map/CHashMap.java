@@ -124,10 +124,10 @@ public class CHashMap<K, V> extends ACMap<K, V> {
 
     @Override
     public V get(final Object key) {
-        return this.getBy((K) key);
+        return this.getByKey((K) key);
     }
 
-    protected V getBy(final K key) {
+    protected V getByKey(final K key) {
         final CLinkedListNode<K, V> node = this.getNodeForKey(key);
         return (Objects.isNull(node) ? null : node.getData());
     }
@@ -150,12 +150,12 @@ public class CHashMap<K, V> extends ACMap<K, V> {
     }
 
     @Override
-    public Iterator<? extends K> iterateByKeys() {
+    public Iterator<? extends K> keysIterator() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public Iterator<? extends V> iterateByValues() {
+    public Iterator<? extends V> valuesIterator() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -220,7 +220,7 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
                     last.getData().symbols[i] = current.getData().symbols[i - last.getData().getSize()];
                 }
                 last.getData().size += current.getData().size;
-                last.setNext(current.getNext());;
+                last.setNext(current.getNext());
                 current = current.getNext();
             }
             return last;
@@ -294,10 +294,6 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
 
     @Override
     public char charAt(int index) {
-//        char[] chars = this.charsAt(index);
-//        if(Objects.nonNull(chars) && chars.length > 0) {
-//            return chars[0];
-//        }
         return 0;
     }
 

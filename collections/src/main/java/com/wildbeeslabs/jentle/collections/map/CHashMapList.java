@@ -67,6 +67,7 @@ public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
         this.map = new HashMap<>(size);
     }
 
+    @Override
     public void put(final K key, final V item) {
         if (!this.containsKey(key)) {
             this.map.put(key, Collections.EMPTY_LIST);
@@ -74,10 +75,12 @@ public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
         this.map.get(key).add(item);
     }
 
+    @Override
     public void put(final K key, final List<V> items) {
         this.map.put(key, items);
     }
 
+    @Override
     public List<V> get(final K key) {
         return this.map.get(key);
     }
@@ -86,10 +89,12 @@ public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
         return this.toSet(this.get(key));
     }
 
+    @Override
     public boolean containsKey(final K key) {
         return this.map.containsKey(key);
     }
 
+    @Override
     public boolean containsKeyValue(final K key, final V value) {
         final List<V> items = this.get(key);
         if (Objects.isNull(items)) {
@@ -98,10 +103,12 @@ public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
         return items.contains(value);
     }
 
+    @Override
     public Set<K> keySet() {
         return this.map.keySet();
     }
 
+    @Override
     public Collection<List<V>> values() {
         return this.map.values();
     }
