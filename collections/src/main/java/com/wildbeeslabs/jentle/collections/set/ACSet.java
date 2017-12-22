@@ -21,39 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.set;
 
-import java.io.Serializable;
-import java.util.Set;
+import com.wildbeeslabs.jentle.collections.interfaces.ISet;
+import java.util.AbstractSet;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Custom set interface declaration
+ * Custom abstract set implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface ISet<T> extends Set<T>, Cloneable, Serializable {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public abstract class ACSet<T> extends AbstractSet<T> implements ISet<T> {
 
     /**
-     * Checks if the current set contains the value
-     *
-     * @param item - the value to check
-     * @return true - if the current set contains value, false - otherwise
+     * Default Logger instance
      */
-    public boolean has(final T item);
-
-    /**
-     * Removes the value from the current set
-     *
-     * @param item - value to be removed
-     * @return the current set without remove value
-     */
-    public ISet<T> disjunct(final T item);
-
-    //public ISet<T> remove(final T item);
-    //public int size();
-    //public Iterator<? extends T> iterator();
+    protected final Logger LOGGER = LogManager.getLogger(getClass());
 }

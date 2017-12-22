@@ -24,17 +24,14 @@
 package com.wildbeeslabs.jentle.collections.set;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ISet;
-import java.util.Arrays;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -45,14 +42,9 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CBitSet implements ISet<Integer> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CBitSet extends ACSet<Integer> implements ISet<Integer> {
 
     /**
      * Default block size (in bits)
@@ -130,11 +122,12 @@ public class CBitSet implements ISet<Integer> {
     }
 
     @Override
-    public ISet<Integer> remove(Integer item) throws IndexOutOfBoundsException {
-        this.checkRange(item);
-        int bit = item - this.min;
+    public boolean remove(final Object item) throws IndexOutOfBoundsException {
+        int value = Integer.valueOf(String.valueOf(item));
+        this.checkRange(value);
+        int bit = value - this.min;
         this.array[bit / DEFAULT_BLOCK_SIZE] &= ~(1 << (bit % DEFAULT_BLOCK_SIZE));
-        return this;
+        return true;
     }
 
     public ISet<Integer> remove(final CBitSet bitset) throws IndexOutOfBoundsException {
@@ -203,6 +196,6 @@ public class CBitSet implements ISet<Integer> {
 
     @Override
     public Iterator<Integer> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

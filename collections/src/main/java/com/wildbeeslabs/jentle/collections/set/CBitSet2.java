@@ -30,9 +30,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  *
  * Custom bit-set2 implementation
@@ -42,14 +39,9 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class CBitSet2 implements ISet<Integer> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+public class CBitSet2 extends ACSet<Integer> implements ISet<Integer> {
 
     private int[] bitSet;
 
@@ -80,17 +72,12 @@ public class CBitSet2 implements ISet<Integer> {
     }
 
     @Override
-    public ISet<Integer> remove(Integer item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public int size() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Iterator<? extends Integer> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Iterator<Integer> iterator() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
