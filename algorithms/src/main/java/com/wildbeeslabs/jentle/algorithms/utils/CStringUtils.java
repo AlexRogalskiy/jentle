@@ -350,7 +350,7 @@ public final class CStringUtils {
         }
     }
 
-    public static String reverseEachWordInString(final String value, final String delimiter) {
+    public static String reverseEachTokenInString(final String value, final String delimiter) {
         final StringBuilder builder = new StringBuilder();
         for (final String word : value.trim().split(Pattern.quote(delimiter))) {
             final StringBuilder eachWord = new StringBuilder(word).reverse();
@@ -359,7 +359,7 @@ public final class CStringUtils {
         return builder.toString();
     }
 
-    public static String reverseStringWordWise(final String value, final String delimiter) {
+    public static String reverseStringTokensWise(final String value, final String delimiter) {
         final String[] arrString = value.trim().split(Pattern.quote(delimiter));
         final StringBuilder builder = new StringBuilder();
         int length = arrString.length;
@@ -382,5 +382,35 @@ public final class CStringUtils {
             chInputArray[length - index - 1] = firstHalf;
         }
         return String.valueOf(chInputArray);
+    }
+
+    public static int knuthMorrisPratt(final String value, int startIndex, final String pattern) {
+        if (Objects.isNull(pattern) || pattern.isEmpty()) {
+            return -1;
+        }
+        assert (startIndex >= 0);
+        int[] pf = new int[pattern.length()];
+        for (int k = 0, i = 1; i < pattern.length(); i++) {
+            while (k > 0 && pattern.charAt(i) != pattern.charAt(k)) {
+                k = pf[k - 1];
+            }
+            if (pattern.charAt(i) == pattern.charAt(k)) {
+                k++;
+            }
+            pf[i] = k;
+        }
+
+        for (int k = 0, i = startIndex; i < value.length(); i++) {
+            while (k > 0 && pattern.charAt(k) != value.charAt(i)) {
+                k = pf[k - 1];
+            }
+            if (pattern.charAt(k) == value.charAt(i)) {
+                k++;
+            }
+            if (k == pattern.length()) {
+                return (i - k + 1);
+            }
+        }
+        return -1;
     }
 }

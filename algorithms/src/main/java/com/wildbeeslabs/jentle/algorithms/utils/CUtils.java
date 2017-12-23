@@ -71,6 +71,26 @@ public final class CUtils {
         return result;
     }
 
+    public static <T> void merge(final T[] first, final T[] second, int lastFirst, int lastSecond, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(first);
+        Objects.requireNonNull(second);
+        assert (lastFirst >= 0 && lastSecond >= 0 && lastFirst < first.length && lastSecond < second.length);
+        int indexF = lastFirst - 1;
+        int indexS = lastSecond - 1;
+        int indexMerged = lastSecond + lastFirst - 1;
+
+        while (indexS >= 0) {
+            if (indexF >= 0 && Objects.compare(first[indexF], second[indexS], cmp) > 0) {
+                first[indexMerged] = first[indexF];
+                indexF--;
+            } else {
+                first[indexMerged] = second[indexS];
+                indexS--;
+            }
+            indexMerged--;
+        }
+    }
+
     public static <T> List<T> intersect(final T[] array1, final T[] array2, final Comparator<? super T> cmp) {
         final List<T> result = new ArrayList<>();
         int length1 = array1.length;

@@ -38,9 +38,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.PriorityQueue;
 import java.util.Set;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.SerializationUtils;
 
 /**
  *
@@ -52,8 +53,19 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public final class CSort {
 
+    /**
+     * Default shell sort steps
+     */
+    private static final int[] DEFAULT_SHELL_SORT_STEPS = new int[]{701, 301, 132, 57, 23, 10, 4, 1};
+
     private CSort() {
         // PRIVATE EMPTY CONSTRUCTOR
+    }
+
+    private static <T> void swap(final T[] array, int left, int right) {
+        final T temp = array[left];
+        array[left] = array[right];
+        array[right] = temp;
     }
 
     public static class CStringComparator extends CUtils.CSortComparator<String> {
@@ -114,22 +126,46 @@ public final class CSort {
 
     /**
      *
+     * @public @module sort
+     * @param array Input array.
      * @param <T>
-     * @param array
-     * @param left
-     * @param right
-     * @see
      *
-     * average - O(n*log(n)) /worst - O(n*n) / memory - O(log(n))
+     * @see average - O(n * log(n)) /worst - O(n * n) / memory - O(log(n))
+     */
+    public static <T extends Comparable<? super T>> void quickSort(final T[] array) {
+        Objects.requireNonNull(array);
+        CSort.quickSort(array, 0, array.length);
+    }
+
+    /**
+     *
+     * @public @module sort
+     * @param array Input array.
+     * @param left Left border.
+     * @param right Right border.
+     * @param <T>
+     *
+     * @see average - O(n * log(n)) /worst - O(n * n) / memory - O(log(n))
      */
     public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right) {
         CSort.quickSort(array, left, right, CUtils.<T>getDefaultSortComparator());
     }
 
-    public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param left Left border.
+     * @param right Right border.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     *
+     * @see average - O(n * log(n)) /worst - O(n * n) / memory - O(log(n))
+     */
+    public static <T> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
-        Objects.requireNonNull(cmp);
-        assert (left >= 0 && right >= 0 && left <= right && left < array.length && right <= array.length);
+        assert (left >= 0 && right >= 0 && left <= right && left < array.length && right < array.length);
         int index = partition(array, left, right, cmp);
         if (left < index - 1) {
             quickSort(array, left, index - 1, cmp);
@@ -140,7 +176,7 @@ public final class CSort {
     }
 
     private static <T> int partition(final T[] array, int left, int right, final Comparator<? super T> cmp) {
-        T pivot = array[(int) Math.floor((left + right) / 2)];
+        final T pivot = array[(left + right) / 2];
         while (left <= right) {
             while (Objects.compare(array[left], pivot, cmp) < 0) {
                 left++;
@@ -158,28 +194,253 @@ public final class CSort {
         return left;
     }
 
-    private static <T> void swap(final T[] array, int left, int right) {
-        final T temp = array[left];
-        array[left] = array[right];
-        array[right] = temp;
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     *
+     * @see best time: O(n * log(n)) average time: O(n * log(n)) worst time: O(n
+     * * n) memory: in-place stable: false
+     */
+    public static <T> void quickSort2(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int sp = 0;
+        int[] stackl = new int[array.length];
+        int[] stackr = new int[array.length];
+        int left, right, i, j;
+        stackl[sp] = 1;
+        stackr[sp] = array.length - 1;
+        while (sp >= 0) {
+            left = stackl[sp];
+            right = stackr[sp];
+            sp--;
+            while (left < right) {
+                i = left;
+                j = right;
+                T middle = array[(left + right) / 2];
+                while (i < j) {
+                    while (Objects.compare(array[i], middle, cmp) < 0) {
+                        i++;
+                    }
+                    while (Objects.compare(array[j], middle, cmp) > 0) {
+                        j--;
+                    }
+                    if (i <= j) {
+                        swap(array, i, j);
+                        i++;
+                        j--;
+                    }
+                }
+                if (i < right) {
+                    sp++;
+                    stackl[sp] = i;
+                    stackr[sp] = right;
+                }
+                right = j;
+            }
+        }
     }
 
     /**
-     *
+     * @public @module sort
+     * @param array Input array.
+     * @param left start index.
+     * @param right end index.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
      * @param <T>
-     * @param array
-     * @see
+     */
+    public static <T> void heapSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        left = (left > 0 && left < array.length) ? left : 0;
+        right = (right > 0 && right < array.length) ? right : array.length - 1;
+        assert (left <= right);
+        final PriorityQueue<T> heap = new PriorityQueue<>(right - left, cmp);
+        for (int i = left; i <= right; i++) {
+            heap.add(array[i]);
+        }
+        int j = left;
+        while (!heap.isEmpty()) {
+            array[j++] = heap.poll();
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void heapSort2(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int n = array.length;
+        for (int j = n / 2; j > 0; j--) {
+            adjust(array, j, n, cmp);
+        }
+        for (int j = n - 1; j > 0; j--) {
+            swap(array, 0, j);
+            adjust(array, 1, j, cmp);
+        }
+    }
+
+    private static <T> void adjust(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+        int j = left, k = 2 * left;
+        while (k <= right) {
+            if (k < right && Objects.compare(array[k - 1], array[k], cmp) < 0) {
+                ++k;
+            }
+            if (Objects.compare(array[j - 1], array[k - 1], cmp) < 0) {
+                swap(array, j - 1, k - 1);
+            }
+            j = k;
+            k *= 2;
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void heapSort3(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int n = array.length;
+        for (int i = n - 1; i >= 0; i--) {
+            siftup(array, i, n, cmp);
+        }
+        for (int i = n - 1; i > 0;) {
+            swap(array, 0, i);
+            siftup(array, 0, i--, cmp);
+        }
+        //for(var i=array.length-1; i>=1; i--) {
+        //	swap(array, 0, i, cmp);
+        //	siftdown(array, i-1, cmp);
+        //}
+    }
+
+    private static <T> void siftdown(final T[] array, int value, final Comparator<? super T> cmp) {
+        for (int c, order, i = value; (c = 2 * i) <= array.length; i = c) {
+            if ((c + 1) <= array.length && Objects.compare(array[c + 1], array[c], cmp) > 0) {
+                c++;
+            }
+            order = Objects.compare(array[i], array[c], cmp);
+            if (order >= 0) {
+                return;
+            }
+            swap(array, c, i);
+        }
+    }
+
+    private static <T> void siftup(final T[] array, int pos, int n, final Comparator<? super T> cmp) {
+        int temp, order;
+        while ((temp = 2 * pos + 1) < n) {
+            order = Objects.compare(array[2 * pos + 2], array[temp], cmp);
+            if (2 * pos + 2 < n && order >= 0) {
+                temp = 2 * pos + 2;
+            }
+            if (Objects.compare(array[pos], array[temp], cmp) < 0) {
+                swap(array, pos, temp);
+                pos = temp;
+            } else {
+                break;
+            }
+        }
+        //for(var p, i=pos; i>=1 && Objects.compare(array[p=(i/2)], array[i], cmp) < 0; i=p) {
+        //	swap(array, p, i);
+        //}
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param left Left border.
+     * @param right Right border.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
      *
-     * worst - O(n*log(n)) / average - O(n*log(n)) / memory - O(n)
+     * @see best time: O(n * log(n)) average time: O(n * log(n)) worst time: O(n
+     * * n) memory: in-place stable: false
+     */
+    public static <T> void quickSort3(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        assert (left >= 0 && right >= 0 && left <= right && left < array.length && right < array.length);
+        final T pivotValue = array[(left + right) / 2];
+        int i = left, j = right;
+        while (i <= j) {
+            while (Objects.compare(array[i], pivotValue, cmp) < 0) {
+                i++;
+            }
+            while (Objects.compare(array[j], pivotValue, cmp) > 0) {
+                j--;
+            }
+            if (i <= j) {
+                swap(array, i, j);
+                i++;
+                j--;
+            }
+        }
+        if (left < j) {
+            quickSort3(array, left, j, cmp);
+        }
+        if (i < right) {
+            quickSort3(array, i, right, cmp);
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     *
+     * @see best time: O(n * log(n)) average time: O(n * log(n)) worst time: O(n
+     * * n) memory: in-place stable: false
+     */
+    public static <T> void quickSort3(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        CSort.quickSort3(array, 0, array.length - 1, cmp);
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param <T>
+     *
+     * @see best time: O(n * log(n)) average time: O(n * log(n)) worst time: O(n
+     * * log(n)) memory: O(n) stable: false
      */
     public static <T extends Comparable<? super T>> void mergeSort(final T[] array) {
         CSort.mergeSort(array, CUtils.<T>getDefaultSortComparator());
     }
 
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     *
+     * @see best time: O(n * log(n)) average time: O(n * log(n)) worst time: O(n
+     * * log(n)) memory: O(n) stable: false
+     */
     public static <T extends Comparable<? super T>> void mergeSort(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         Objects.requireNonNull(cmp);
-        final T[] temp = ArrayUtils.clone(array);//CUtils.newArray((Class<? extends T[]>) array.getClass(), array.length);
+        final T[] temp = SerializationUtils.clone(array);//CUtils.newArray((Class<? extends T[]>) array.getClass(), array.length);
         mergeSort(array, temp, 0, array.length - 1, cmp);
     }
 
@@ -283,26 +544,6 @@ public final class CSort {
         return sortByValues(map, CUtils.<U>getDefaultSortComparator());
     }
 
-    public static <T> void merge(final T[] first, final T[] second, int lastFirst, int lastSecond, final Comparator<? super T> cmp) {
-        Objects.requireNonNull(first);
-        Objects.requireNonNull(second);
-        assert (lastFirst >= 0 && lastSecond >= 0 && lastFirst < first.length && lastSecond < second.length);
-        int indexF = lastFirst - 1;
-        int indexS = lastSecond - 1;
-        int indexMerged = lastSecond + lastFirst - 1;
-
-        while (indexS >= 0) {
-            if (indexF >= 0 && Objects.compare(first[indexF], second[indexS], cmp) > 0) {
-                first[indexMerged] = first[indexF];
-                indexF--;
-            } else {
-                first[indexMerged] = second[indexS];
-                indexS--;
-            }
-            indexMerged--;
-        }
-    }
-
     public static void sortBlocks(final String[] array) {
         Objects.requireNonNull(array);
         final CHashMapList<String, String> mapList = new CHashMapList<>();
@@ -320,6 +561,18 @@ public final class CSort {
         }
     }
 
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     *
+     * @see best time: O(n) average time: O(n * n) worst time: O(n * n) memory:
+     * local stable: true
+     *
+     */
     public static <T> void insertionSort(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         int length = array.length;
@@ -339,6 +592,159 @@ public final class CSort {
         }
     }
 
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param left start index.
+     * @param right end index.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void insertionSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        left = (left > 0) ? left : 0;
+        right = (right > 0) ? right : array.length - 1;
+        assert (left <= right);
+        for (int i = left; i < right; i++) {
+            for (int j = i; j > 0 && Objects.compare(array[j - 1], array[j], cmp) > 0; j--) {
+                swap(array, j - 1, j);
+            }
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void gnomeSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int n = array.length;
+        int i = 1;
+        int j = 2;
+        while (i < n) {
+            if (Objects.compare(array[i - 1], array[i], cmp) < 0) {
+                i = j;
+                j++;
+            } else {
+                swap(array, i - 1, i);
+                if (--i == 0) {
+                    i = j;
+                    j++;
+                }
+            }
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void cocktailSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int j = array.length - 1;
+        int i = 0;
+        boolean flag = true;
+        while (i < j && flag) {
+            flag = false;
+            for (int k = i; k < j; k++) {
+                if (Objects.compare(array[k], array[k + 1], cmp) > 0) {
+                    swap(array, k, k + 1);
+                    flag = true;
+                }
+            }
+            j--;
+            if (flag) {
+                flag = false;
+                for (int k = j; k > i; k--) {
+                    if (Objects.compare(array[k], array[k - 1], cmp) < 0) {
+                        swap(array, k, k - 1);
+                        flag = true;
+                    }
+                }
+            }
+            i++;
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @return Sorted Array
+     * @param <T>
+     */
+    public static <T> T[] simpleCountingSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int n = array.length;
+        int[] count = new int[n];
+        T[] res = CUtils.newArray2((Class<? extends T>) array.getClass(), n);
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (Objects.compare(array[i], array[j], cmp) < 0) {
+                    count[j]++;
+                } else {
+                    count[i]++;
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            res[count[i]] = array[i];
+        }
+        return res;
+    }
+
+    public static <T> void combSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int n = array.length;
+        int gap = n;
+        boolean flag;
+        do {
+            flag = false;
+            gap = getGap(gap, 0.77);
+            for (int i = 0; i < n - gap; i++) {
+                if (Objects.compare(array[i], array[i + gap], cmp) > 0) {
+                    flag = true;
+                    swap(array, i + gap, i);
+                }
+            }
+        } while (gap > 1 || flag);
+    }
+
+    public static <T> int getGap(int gap, double factor) {
+        assert (factor >= 0.0 && factor <= 1.0);
+        gap = (int) Math.floor(gap * factor);
+        if (gap == 9 || gap == 10) {
+            gap = 11;
+        }
+        if (gap < 1) {
+            return 1;
+        }
+        return gap;
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     *
+     * @see best time: O(n) average time: O(n * n) worst time: O(n * n) memory:
+     * in-place stable: false
+     */
     public static <T> void selectionSort(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         int length = array.length;
@@ -355,6 +761,17 @@ public final class CSort {
         }
     }
 
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp Function that defines an alternative sort order. The function
+     * should return a negative, zero, or positive value, depending on the
+     * arguments.
+     * @param <T>
+     *
+     * @see best time: O(n) average time: O(n * n) worst time: O(n * n) memory:
+     * in-place stable: true
+     */
     public static <T> void bubbleSort(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         boolean isSwapHappened = false;
@@ -370,6 +787,172 @@ public final class CSort {
                 break;
             }
         }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     *
+     */
+    public static void bucketSort(final int[] array) {
+        Objects.requireNonNull(array);
+        if (array.length < 2) {
+            return;
+        }
+        int minVal = array[0];
+        int maxVal = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > maxVal) {
+                maxVal = array[i];
+            }
+            if (array[i] < minVal) {
+                minVal = array[i];
+            }
+        }
+        final List<List<Integer>> buckets = new ArrayList<>(maxVal - minVal + 1);
+        for (int i = 0; i < array.length; i++) {
+            buckets.get(array[i] - minVal).add(array[i]);
+        }
+        int pos = 0;
+        for (final List<Integer> bucket : buckets) {
+            for (final Integer value : bucket) {
+                array[pos++] = value;
+            }
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp Function that defines an alternative sort order. The function
+     * should return a negative, zero, or positive value, depending on the
+     * arguments.
+     * @param <T>
+     */
+    public static <T> void shellSort(final T[] array, final Comparator<? super T> cmp) {
+        shellSort(array, CSort.DEFAULT_SHELL_SORT_STEPS, cmp);
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param steps Input array of sorting steps
+     * @param cmp Function that defines an alternative sort order. The function
+     * should return a negative, zero, or positive value, depending on the
+     * arguments.
+     * @param <T>
+     */
+    public static <T> void shellSort(final T[] array, int[] steps, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        Objects.requireNonNull(steps);
+        for (int k = 0; k < steps.length; k++) {
+            int gap = steps[k];
+            for (int i = gap; i < array.length; i += gap) {
+                final T current = array[i];
+                for (int j = i; j >= gap && Objects.compare(array[j - gap], current, cmp) > 0; j -= gap) {
+                    array[j] = array[j - gap];
+                }
+                array[i] = current;
+            }
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param step Sorting step.
+     * @param cmp Function that defines an alternative sort order. The function
+     * should return a negative, zero, or positive value, depending on the
+     * arguments.
+     * @param <T>
+     */
+    public static <T> void shellSort(final T[] array, int step, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        step = (step > 0) ? step : array.length;
+        int isSorted;
+        for (int gap = step / 2; gap > 0; gap /= 2) {
+            do {
+                isSorted = 0;
+                for (int i = 0, j = gap; j < step; i++, j++) {
+                    if (Objects.compare(array[i], array[j], cmp) > 0) {
+                        swap(array, i, j);
+                        isSorted = 1;
+                    }
+                }
+            } while (isSorted > 0);
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void shellSort2(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int gap = 1, n = array.length;
+        do {
+            gap = 3 * gap + 1;
+        } while (gap <= n);
+        for (gap /= 3; gap > 0; gap /= 3) {
+            for (int i = gap; i < n; i++) {
+                T temp = array[i];
+                for (int j = i - gap; j >= 0 && Objects.compare(array[j], temp, cmp) > 0; j -= gap) {
+                    array[j + gap] = array[j];
+                }
+                array[i + gap] = temp;
+            }
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void hooraSort(final T[] array, final Comparator<? super T> cmp) {
+        hooraSort_(array, 0, array.length, cmp);
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param left Left border.
+     * @param right Right border.
+     * @param cmp A function that defines an alternative sort order. The
+     * function should return a negative, zero, or positive value, depending on
+     * the arguments.
+     * @param <T>
+     */
+    public static <T> void hooraSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        assert (left >= 0 && right >= 0 && left <= right && left < array.length && right < array.length);
+        left = (left >= 0) ? left : 0;
+        right = (right >= 0) ? right : array.length;
+        hooraSort_(array, left, right, cmp);
+    }
+
+    private static <T> void hooraSort_(final T[] array, int left, int right, final Comparator<? super T> cmp) {
+        if (left >= right) {
+            return;
+        }
+        swap(array, left, (left + right) / 2);
+        int las = left;
+        for (int i = left + 1; i <= right; i++) {
+            if (Objects.compare(array[i], array[las], cmp) < 0) {
+                swap(array, las, i);
+                las++;
+            }
+        }
+        swap(array, left, las);
+        hooraSort_(array, left, las - 1, cmp);
+        hooraSort_(array, las + 1, right, cmp);
     }
 
     //Dutch national flag (DNF)
