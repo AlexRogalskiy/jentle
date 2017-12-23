@@ -93,7 +93,7 @@ public final class CArrayUtils {
     }
 
     public static <T> void swap(final T[] array, int m, int n) {
-        T temp = array[m];
+        final T temp = array[m];
         array[m] = array[n];
         array[n] = temp;
     }
@@ -434,9 +434,7 @@ public final class CArrayUtils {
         assert (k > 0 && k <= array.length);
         Arrays.sort(array, cmp);
         final T[] smallest = CUtils.newArray(clazz, k);
-        for (int i = 0; i < k; i++) {
-            smallest[i] = array[i];
-        }
+        System.arraycopy(array, 0, smallest, 0, k);
         return smallest;
     }
 
@@ -587,11 +585,11 @@ public final class CArrayUtils {
 
     private static int getClosureForIndex(int[][] nextElements, int index) {
         int max = -1;
-        for (int i = 0; i < nextElements.length; i++) {
-            if (nextElements[i][index] == -1) {
+        for (int[] nextElement : nextElements) {
+            if (nextElement[index] == -1) {
                 return -1;
             }
-            max = Math.max(max, nextElements[i][index]);
+            max = Math.max(max, nextElement[index]);
         }
         return max;
     }

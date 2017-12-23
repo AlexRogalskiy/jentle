@@ -436,8 +436,44 @@ public class CTreeUtils {
 
     public static <U extends ACBaseTreeNode<Double, U>> U convert(final U root) {
         final U head = convertToCircular(root);
-        head.getLeft().setRight(null);;
+        head.getLeft().setRight(null);
         head.setLeft(null);
         return head;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class Operator {
+
+        private char sign;
+        private ExpressionTree operand1;
+        private ExpressionTree operand2;
+
+        public Operator(char sign, final ExpressionTree operand1, final ExpressionTree operand2) {
+            this.sign = sign;
+            this.operand1 = operand1;
+            this.operand2 = operand2;
+        }
+
+        public String toFormatString() {
+            return "(" + this.operand1 + this.sign + this.operand2 + ")";
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class ExpressionTree {
+
+        private ExpressionTree root = null;
+
+        public static ExpressionTree parse(final String source) {
+            return null;
+        }
+
+        public String toFormatString() {
+            return this.root.toString();
+        }
     }
 }
