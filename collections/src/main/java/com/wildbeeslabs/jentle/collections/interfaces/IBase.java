@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
+import java.io.Serializable;
+
 /**
  *
  * Custom base interface declaration
@@ -33,6 +35,6 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  * @param <T>
  * @param <U>
  */
-public interface IBase<T> extends Iterable<T> {//U extends ACNode<T>
+public interface IBase<T> extends Serializable, Cloneable, Iterable<T> {//U extends ACNode<T>
 
 }

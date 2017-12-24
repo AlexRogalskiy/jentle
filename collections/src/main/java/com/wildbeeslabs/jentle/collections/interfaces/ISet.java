@@ -23,7 +23,6 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -35,7 +34,7 @@ import java.util.Set;
  * @since 2017-08-07
  * @param <T>
  */
-public interface ISet<T> extends Set<T>, Cloneable, Serializable {
+public interface ISet<T> extends IBase<T>, Set<T> {
 
     /**
      * Checks if the current set contains the value

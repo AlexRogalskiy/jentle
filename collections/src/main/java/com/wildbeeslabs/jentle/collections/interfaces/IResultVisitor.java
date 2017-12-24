@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 /**
  *
- * ResultIVisitor interface declaration
+ * Custom result visitor interface declaration
  *
  * @author Alex
  * @version 1.0.0
@@ -37,8 +36,9 @@ package com.wildbeeslabs.jentle.collections.interfaces;
 public interface IResultVisitor<T, E> extends IVisitor<T> {
 
     /**
-     * Get visitor result of a collection
+     * Returns visitor result of a processed collection
      *
+     * @return collection result set
      */
-    public E getResult();
+    E getResult();
 }

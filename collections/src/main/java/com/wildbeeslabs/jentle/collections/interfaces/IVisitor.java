@@ -21,21 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 /**
  *
- * IVisitor interface declaration
+ * Custom visitor interface declaration
+ *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
 public interface IVisitor<T> {
+
     /**
-     * Process item in collection
-     * @param item 
+     * Processes each item of a collection
+     *
+     * @param item - collection item
      */
     public void visit(final T item);
 }

@@ -32,10 +32,8 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IGraph<T> {
+public interface IGraph<T> extends IBase<T> {
 
 //    void add(int from, int to, final T data);
-
 //    Iterable<CGraphNode<T>> getNodes();
-
 }

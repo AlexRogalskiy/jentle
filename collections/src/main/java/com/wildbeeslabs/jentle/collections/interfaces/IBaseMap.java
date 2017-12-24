@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
+import java.util.Map;
+
 /**
  *
  * Custom base map interface declaration
@@ -33,7 +35,7 @@ package com.wildbeeslabs.jentle.collections.interfaces;
  * @param <K>
  * @param <V>
  */
-public interface IBaseMap<K, V> {
+public interface IBaseMap<K, V> extends IBase<Map.Entry<K, V>> {
 
     /**
      * Gets the size of the list

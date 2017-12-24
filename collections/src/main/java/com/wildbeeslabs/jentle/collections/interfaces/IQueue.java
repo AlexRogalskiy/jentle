@@ -25,7 +25,6 @@ package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 
-import java.io.Serializable;
 import java.util.Queue;
 
 /**
@@ -37,7 +36,7 @@ import java.util.Queue;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IQueue<T> extends Queue<T>, Cloneable, Serializable {
+public interface IQueue<T> extends IBase<T>, Queue<T> {
 
 //    /**
 //     * Add a value to the beginning of the queue.
@@ -66,7 +65,6 @@ public interface IQueue<T> extends Queue<T>, Cloneable, Serializable {
      * @return element value to dequeue from the queue.
      */
     //T poll();
-
     /**
      * Returns but do not remove element value from the head of the current
      * queue
@@ -92,12 +90,10 @@ public interface IQueue<T> extends Queue<T>, Cloneable, Serializable {
      * @return true if element was removed, false - otherwise
      */
     //boolean remove(final Object value);
-
     /**
      * Clears the current queue.
      */
     //void clear();
-
     /**
      * Checks if the current queue contains the value.
      *
@@ -105,14 +101,12 @@ public interface IQueue<T> extends Queue<T>, Cloneable, Serializable {
      * @return true if the current queue contains the value, false - otherwise
      */
     //boolean contains(final Object value);
-
     /**
      * Returns the size of the current queue.
      *
      * @return size of the current queue.
      */
     //int size();
-
     /**
      * Validates the current queue according to the invariants.
      *

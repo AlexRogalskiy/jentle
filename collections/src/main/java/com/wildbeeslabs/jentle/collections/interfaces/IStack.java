@@ -35,7 +35,7 @@ import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IStack<T> {
+public interface IStack<T> extends IBase<T> {
 
     /**
      * Adds value to the top of the current stack

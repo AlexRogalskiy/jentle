@@ -23,7 +23,6 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.RandomAccess;
 
@@ -36,7 +35,7 @@ import java.util.RandomAccess;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IArray<T> extends List<T>, RandomAccess, Cloneable, Serializable {
+public interface IArray<T> extends List<T>, IBase<T>, RandomAccess {
 
     T set(final T item, int index) throws IndexOutOfBoundsException;
 }

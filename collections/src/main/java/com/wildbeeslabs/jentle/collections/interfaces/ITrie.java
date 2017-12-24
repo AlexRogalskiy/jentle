@@ -27,7 +27,7 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
 
 /**
  *
- * Custom trie interface declaration
+ * Custom trie/retrieval interface declaration
  *
  * @author Alex
  * @version 1.0.0

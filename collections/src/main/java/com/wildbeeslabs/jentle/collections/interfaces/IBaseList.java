@@ -23,7 +23,6 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ import java.util.List;
  * @since 2017-08-07
  * @param <T>
  */
-public interface IBaseList<T> extends IBase<T>, List<T>, Cloneable, Serializable {
+public interface IBaseList<T> extends IBase<T>, List<T> {
 
     /**
      * Removes a value from the list
