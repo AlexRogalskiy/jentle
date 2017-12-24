@@ -54,6 +54,22 @@ public final class CMatrixUtils<T> {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
+    public static <T> boolean matricesAreEqual(final T[][] m1, final T[][] m2, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(m1);
+        Objects.requireNonNull(m2);
+        if (m1.length != m2.length || m1[0].length != m2[0].length) {
+            return false;
+        }
+        for (int k = 0; k < m1.length; k++) {
+            for (int j = 0; j < m1[0].length; j++) {
+                if (Objects.compare(m1[k][j], m2[k][j], cmp) != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private static <T> void updateColumn(final T[][] matrix, int col, final T value) {
         for (final T[] row : matrix) {
             row[col] = value;

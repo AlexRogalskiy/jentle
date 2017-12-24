@@ -277,7 +277,7 @@ public final class CList {
         return current;
     }
 
-    public static <T, U extends ACListNode<T, U>> boolean isEqual(final U first, final U last, final Comparator<? super T> cmp) {
+    public static <T, U extends ACListNode<T, U>> boolean areListsEqual(final U first, final U last, final Comparator<? super T> cmp) {
         U headFirst = first;
         U headLast = last;
         while (Objects.nonNull(headFirst) && Objects.nonNull(headLast)) {
@@ -326,6 +326,24 @@ public final class CList {
         }
         beforeStart.setNext(afterStart);
         return beforeStart;
+    }
+
+    public static <T, U extends ACListNode<T, U>> U partition2(U node, final T value, final Comparator<? super T> cmp) {
+        U head = node;
+        U tail = node;
+        while (Objects.nonNull(node)) {
+            U next = node.getNext();
+            if (Objects.compare(node.getData(), value, cmp) < 0) {
+                node.setNext(head);
+                head = node;
+            } else {
+                tail.setNext(node);
+                tail = node;
+            }
+            node = next;
+        }
+        tail.setNext(null);
+        return head;
     }
 
     public static <T, U extends ACListNode<T, U>> T getKthToLast(final U node, int k) {

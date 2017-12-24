@@ -171,6 +171,14 @@ public final class CNumericUtils {
         return a;
     }
 
+    public static boolean isApproxEqual(double d1, double d2) {
+        double epsilon = .001;
+        if (Math.abs(d1 - d2) < epsilon) {
+            return true;
+        }
+        return false;
+    }
+
     public static int divide(int a, int b) throws java.lang.ArithmeticException {
         if (0 == b) {
             throw new java.lang.ArithmeticException("ERROR: divider cannot be null");

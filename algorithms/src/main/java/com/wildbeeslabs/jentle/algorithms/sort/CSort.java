@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.Stack;
 
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -759,6 +760,18 @@ public final class CSort {
                 swap(array, iCurrentMin, outterIndex);
             }
         }
+    }
+
+    public static <T> Stack<T> sort(final Stack<T> s, final Comparator<? super T> cmp) {
+        final Stack<T> r = new Stack<>();
+        while (!s.isEmpty()) {
+            final T tmp = s.pop();
+            while (!r.isEmpty() && Objects.compare(r.peek(), tmp, cmp) > 0) {
+                s.push(r.pop());
+            }
+            r.push(tmp);
+        }
+        return r;
     }
 
     /**

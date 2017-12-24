@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -78,6 +79,16 @@ public final class CStringUtils {
         return value.codePoints().allMatch(new HashSet<>()::add);
     }
 
+    public static boolean isSubstring(final String first, final String last) {
+        if (Objects.isNull(first) || Objects.isNull(last)) {
+            return false;
+        }
+        if (first.indexOf(last) >= 0) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean permutation(final String first, final String last) {
         if (Objects.isNull(first) || Objects.isNull(last) || first.length() != last.length()) {
             return false;
@@ -85,6 +96,19 @@ public final class CStringUtils {
         Map<Character, Long> firstMap = first.codePoints().mapToObj(ch -> (char) ch).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         Map<Character, Long> secondMap = last.codePoints().mapToObj(ch -> (char) ch).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         return firstMap.equals(secondMap);
+    }
+
+    public static boolean permutation2(final String first, final String last) {
+        if (Objects.isNull(first) || Objects.isNull(last) || first.length() != last.length()) {
+            return false;
+        }
+        return sort(first).equals(sort(last));
+    }
+
+    public static String sort(final String s) {
+        char[] content = s.toCharArray();
+        Arrays.sort(content);
+        return new String(content);
     }
 
     public static boolean isPermutationOfPalindrome(final String value) {
