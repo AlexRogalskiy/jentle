@@ -1095,4 +1095,25 @@ public final class CArrayUtils {
         }
         return null;
     }
+
+    public static void getDistinctSortedArray(int[] array) {
+        Objects.requireNonNull(array);
+        Arrays.sort(array);
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] == array[i - 1]) {
+                array[i]++;
+            } else if (array[i] < array[i - 1]) {
+                array[i] = array[i - 1] + 1;
+            }
+        }
+    }
+
+    public static int[] randomArray(int size, int min, int max) {
+        assert (size > 0);
+        int[] array = new int[size];
+        for (int j = 0; j < size; j++) {
+            array[j] = CNumericUtils.generateRandomInt(min, max);
+        }
+        return array;
+    }
 }

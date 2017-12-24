@@ -21,13 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.exception.NoSpaceAvailableException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
@@ -71,7 +69,7 @@ public class CHeap<T> {
         this.size = 0;
         this.capacity = capacity;
         this.cmp = cmp;
-        this.array = this.newArray(clazz, this.capacity);
+        this.array = CUtils.newArray(clazz, this.capacity);
     }
 
     public void insert(final T item) throws NoSpaceAvailableException {
@@ -88,8 +86,10 @@ public class CHeap<T> {
 
     //@Override
     public void clear() {
+        for (int i = 0; i < this.capacity(); i++) {
+            this.array = null;
+        }
         this.size = 0;
-        this.array = this.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity());
     }
 
     public int size() {
@@ -103,10 +103,6 @@ public class CHeap<T> {
 
     public boolean isEmpty() {
         return (0 == this.size());
-    }
-
-    private T[] newArray(Class<? extends T[]> type, int size) {
-        return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
     @Override

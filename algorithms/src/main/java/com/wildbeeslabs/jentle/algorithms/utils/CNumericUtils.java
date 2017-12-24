@@ -383,4 +383,22 @@ public final class CNumericUtils {
         }
         return reverseNum;
     }
+
+    public static List<Integer> convertIntToSet(int x) {
+        final List<Integer> subset = new LinkedList<>();
+        for (int k = x; k > 0; k >>= 1) {
+            subset.add(k & 1);
+        }
+        Collections.reverse(subset);
+        return subset;
+    }
+
+    public static String toFullBinaryString(int a) {
+        final StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < Integer.BYTES * Byte.SIZE; i++) {
+            sb.append(a & 1);
+            a = a >> 1;
+        }
+        return sb.toString();
+    }
 }

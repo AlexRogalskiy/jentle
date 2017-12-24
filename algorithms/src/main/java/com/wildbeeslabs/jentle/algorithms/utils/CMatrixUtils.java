@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.tree.CTrie3;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang3.SerializationUtils;
 
 /**
  *
@@ -710,7 +712,15 @@ public final class CMatrixUtils<T> {
             return true;
         }
 
-        public Rectangle append(final String value) {
+        public Rectangle append(final String s) {
+            if (s.length() == this.length) {
+                char temp[][] = new char[this.height + 1][this.length];
+                for (int i = 0; i < this.height; i++) {
+                    System.arraycopy(this.matrix[i], 0, temp[i], 0, this.length);
+                }
+                s.getChars(0, this.length, temp[this.height], 0);
+                return new Rectangle(temp);
+            }
             return null;
         }
     }
@@ -780,5 +790,29 @@ public final class CMatrixUtils<T> {
             }
             return groupList;
         }
+    }
+
+    public static int[][] randomMatrix(int rows, int columns, int min, int max) {
+        assert (rows > 0);
+        assert (columns > 0);
+        final int[][] matrix = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = CNumericUtils.generateRandomInt(min, max);
+            }
+        }
+        return matrix;
+    }
+
+    public static <T extends Serializable> T[][] fillMatrix(int rows, int columns, final Class<? extends T> clazz, final T defaultValue) {
+        assert (rows > 0);
+        assert (columns > 0);
+        final T[][] matrix = com.wildbeeslabs.jentle.collections.utils.CUtils.newMatrix(clazz, rows, columns);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = SerializationUtils.clone(defaultValue);
+            }
+        }
+        return matrix;
     }
 }

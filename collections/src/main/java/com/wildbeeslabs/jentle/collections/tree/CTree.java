@@ -27,7 +27,6 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
@@ -108,7 +107,9 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
     }
 
     public static <T> CTree<T> fromArray(final T[] array, int start, int end) {
-        Objects.requireNonNull(array);
+        if (Objects.isNull(array) || array.length == 0) {
+            return null;
+        }
         assert (start < array.length && end < array.length && start <= end);
         final CTree.CTreeNode<T> rootNode = new CTreeNode<>(array[start]);
         if (end - start > 0) {
