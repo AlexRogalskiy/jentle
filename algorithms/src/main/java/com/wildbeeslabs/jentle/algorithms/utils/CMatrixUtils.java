@@ -38,6 +38,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import org.apache.commons.lang3.SerializationUtils;
 
 /**
@@ -284,11 +285,11 @@ public final class CMatrixUtils<T> {
         int column = isMainDiagonal ? 0 : matrix[0].length - 1;
         int direction = isMainDiagonal ? 1 : -1;
         final T first = matrix[0][column];
-        for (int i = 0; i < matrix.length; i++) {
+        for (final T[] subMatrix : matrix) {
             if (Objects.compare(matrix[row][column], first, cmp) != 0) {
                 return false;
             }
-            row += 1;
+            row++;
             column += direction;
         }
         return true;
@@ -773,14 +774,13 @@ public final class CMatrixUtils<T> {
         }
 
         public static WordGroup[] createWordGroups(final String[] list) {
-            WordGroup[] groupList = null;
             int maxWordLength = 0;
             for (final String item : list) {
                 if (item.length() > maxWordLength) {
                     maxWordLength = item.length();
                 }
             }
-            groupList = new WordGroup[maxWordLength];
+            final WordGroup[] groupList = new WordGroup[maxWordLength];
             for (final String item : list) {
                 int wordLength = item.length() - 1;
                 if (Objects.isNull(groupList[wordLength])) {
@@ -814,5 +814,15 @@ public final class CMatrixUtils<T> {
             }
         }
         return matrix;
+    }
+
+    public static int getFactorsOf(int i, int factor) {
+        assert (factor > 0);
+        int count = 0;
+        while (i % factor == 0) {
+            count++;
+            i /= factor;
+        }
+        return count;
     }
 }

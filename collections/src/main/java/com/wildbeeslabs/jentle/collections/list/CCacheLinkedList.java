@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -99,16 +100,50 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
         this.map = new HashMap<>();
     }
 
-    public void moveToFront(final CCacheLinkedList.CCacheNode<T> node) {
-
+    protected void moveToFront(final CCacheLinkedList.CCacheNode<T> node) {
+        if (node == this.first) {
+            return;
+        }
+        this.removeFromLinkedList(node);
+        node.setNext(this.first);
+        if (Objects.nonNull(this.first)) {
+            this.first.setPrevious(node);
+        }
+        this.first = node;
+        this.size++;
+        if (Objects.isNull(this.last)) {
+            this.last = node;
+        }
     }
 
-    public void movetoFront(final String query) {
-
+    protected void movetoFront(final String query) {
+        final CCacheLinkedList.CCacheNode<T> node = this.map.get(query);
+        this.moveToFront(node);
     }
 
-    public void removeFromLinkedList(final CCacheLinkedList.CCacheNode<T> node) {
-
+    protected void removeFromLinkedList(final CCacheLinkedList.CCacheNode<T> node) {
+        if (Objects.isNull(node)) {
+            return;
+        }
+        if (Objects.nonNull(node.getNext()) || Objects.nonNull(node.getPrevious())) {
+            this.size--;
+        }
+        final CCacheLinkedList.CCacheNode<T> prev = node.getPrevious();
+        if (Objects.nonNull(prev)) {
+            prev.setNext(node.getNext());
+        }
+        final CCacheLinkedList.CCacheNode<T> next = node.getNext();
+        if (Objects.nonNull(node.getNext())) {
+            next.setPrevious(prev);
+        }
+        if (node == this.first) {
+            this.first = next;
+        }
+        if (node == this.last) {
+            this.last = prev;
+        }
+        node.setNext(null);
+        node.setPrevious(null);
     }
 
     public T getData(final String query) {
@@ -122,18 +157,18 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
 
     public void insertData(final String query, final T data) {
         if (this.map.containsKey(query)) {
-            final CCacheLinkedList.CCacheNode<T> node = map.get(query);
+            final CCacheLinkedList.CCacheNode<T> node = this.map.get(query);
             node.setData(data);
-            moveToFront(node);
+            this.moveToFront(node);
             return;
         }
         final CCacheLinkedList.CCacheNode<T> node = new CCacheLinkedList.CCacheNode<>(data, query);
-        moveToFront(node);
+        this.moveToFront(node);
         this.map.put(query, node);
 
         if (this.size > CCacheLinkedList.DEFAULT_MAX_CACHE_SIZE) {
             this.map.remove(this.last.getQuery());
-            removeFromLinkedList(this.last);
+            this.removeFromLinkedList(this.last);
         }
     }
 

@@ -56,18 +56,18 @@ import org.apache.log4j.Logger;
  * @since 2017-12-12
  *
  */
-public final class FileUtils {
+public final class CFileUtils {
 
     /**
      * Default logger instance
      */
-    private static final Logger LOGGER = LogManager.getLogger(FileUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(CFileUtils.class);
     /**
      * Default file character encoding
      */
     public static final Charset DEFAULT_FILE_CHARACTER_ENCODING = StandardCharsets.UTF_8;
 
-    private FileUtils() {
+    private CFileUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -75,7 +75,7 @@ public final class FileUtils {
         Objects.requireNonNull(inputFile);
         List<String> resultList = Collections.EMPTY_LIST;
         try {
-            resultList = Files.readAllLines(inputFile.toPath(), FileUtils.DEFAULT_FILE_CHARACTER_ENCODING);
+            resultList = Files.readAllLines(inputFile.toPath(), CFileUtils.DEFAULT_FILE_CHARACTER_ENCODING);
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
         }
@@ -85,7 +85,7 @@ public final class FileUtils {
     public static List<String> readFileByFilter(final File inputFile, final Predicate<String> predicate) {
         Objects.requireNonNull(inputFile);
         List<String> resultList = Collections.EMPTY_LIST;
-        try (final BufferedReader br = Files.newBufferedReader(inputFile.toPath(), FileUtils.DEFAULT_FILE_CHARACTER_ENCODING)) {
+        try (final BufferedReader br = Files.newBufferedReader(inputFile.toPath(), CFileUtils.DEFAULT_FILE_CHARACTER_ENCODING)) {
             resultList = br.lines().filter(predicate).collect(Collectors.toList());
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
@@ -96,7 +96,7 @@ public final class FileUtils {
     public static <E> void writeFile(final File outputFile, final List<? extends E> output) {
         Objects.requireNonNull(outputFile);
         Objects.requireNonNull(output);
-        try (final PrintWriter writer = new PrintWriter(Files.newBufferedWriter(outputFile.toPath(), FileUtils.DEFAULT_FILE_CHARACTER_ENCODING))) {
+        try (final PrintWriter writer = new PrintWriter(Files.newBufferedWriter(outputFile.toPath(), CFileUtils.DEFAULT_FILE_CHARACTER_ENCODING))) {
             output.stream().forEach(writer::println);//String newLine = System.getProperty("line.separator");
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             LOGGER.error(String.format("ERROR: cannot create output file=%s, message=%s", String.valueOf(outputFile), ex.getMessage()));
