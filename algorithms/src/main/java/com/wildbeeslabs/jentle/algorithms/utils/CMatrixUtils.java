@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.collections.tree.CTrie3;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -276,6 +277,23 @@ public final class CMatrixUtils<T> {
             this.row = (min.row + max.row) / 2;
             this.column = (min.column + max.column) / 2;
         }
+    }
+
+    public static <T> Coordinate<T> findElement3(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[0]);
+        int l = matrix.length - 1;
+        int k = 0;
+        while (l >= 0 && k <= matrix[0].length - 1) {
+            if (Objects.compare(matrix[l][k], value, cmp) < 0) {
+                k++;
+            } else if (Objects.compare(matrix[l][k], value, cmp) > 0) {
+                l--;
+            } else {
+                break;
+            }
+        }
+        return (Objects.compare(matrix[l][k], value, cmp) == 0) ? new Coordinate<>(l, k) : null;
     }
 
     public static <T> boolean checkDiagonal(final T[][] matrix, boolean isMainDiagonal, final Comparator<? super T> cmp) {
