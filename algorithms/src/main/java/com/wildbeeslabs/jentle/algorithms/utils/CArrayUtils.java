@@ -38,8 +38,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
-import java.util.function.IntPredicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import lombok.AllArgsConstructor;
@@ -98,13 +96,58 @@ public final class CArrayUtils {
         array[n] = temp;
     }
 
-    public static <T> List<? extends T> getEvenIndexedStrings(final T[] array, final IntPredicate predicate) {
-        List<? extends T> result = IntStream
-                .range(0, array.length)
-                .filter(predicate)
-                .mapToObj(i -> array[i])
-                .collect(Collectors.toList());
-        return result;
+    public static <T> void swap2(final int[] array, int m, int n) {
+        array[m] = array[m] + array[n];
+        array[n] = array[m] - array[n];
+        array[m] = array[m] - array[n];
+    }
+
+    public static int[] squaresOf(final int[] array) {
+        return IntStream.range(0, array.length).map((i) -> i * i).toArray();
+    }
+
+    public static int[] squaresOf(final int num) {
+        assert (num > 0);
+        final int[] res = new int[num];
+        int k = 0;
+        res[k] = 0;
+        while (k++ <= num) {
+            res[k] = res[k - 1] + k + k - 1;
+        }
+        return res;
+    }
+
+    public static <T> void swapBy(final T[] array, int m) {
+        Objects.requireNonNull(array);
+        assert (m > 0 && m < array.length);
+        int p = 0, q = m, r = array.length - 1;
+        while (p < q && q < r) {
+            if ((q - p + 1) <= (r - q)) {
+                for (int i = p; i < q - p + 1; i++) {
+                    swap(array, i, i + q - p + 1);
+                }
+                int pnew = q;
+                int qnew = q - p + 1;
+                p = pnew;
+                q = qnew;
+            } else {
+                for (int i = q - (r - q) + 1; i < r - (r - q) + 1; i++) {
+                    swap(array, i, i + r - q);
+                }
+                int qnew = q - (r - q);
+                int rnew = q;
+                q = qnew;
+                r = rnew;
+            }
+        }
+    }
+
+    public static <T> void reverse(final T[] array) {
+        Objects.requireNonNull(array);
+        int len = array.length;
+        for (int i = 0; i < len / 2; i++) {
+            swap(array, i, len - 1 - i);
+        }
     }
 
     public static int getMagic(int[] array) {

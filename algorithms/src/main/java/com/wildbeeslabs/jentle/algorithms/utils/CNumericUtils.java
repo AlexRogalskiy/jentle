@@ -171,6 +171,21 @@ public final class CNumericUtils {
         return a;
     }
 
+    public static int power(int a, int n) {
+        assert (n > 0);
+        int b = 1, c = a;
+        while (n > 0) {
+            if (n % 2 == 0) {
+                n /= 2;
+                c *= c;
+            } else {
+                n--;
+                b *= c;
+            }
+        }
+        return b;
+    }
+
     public static boolean isApproxEqual(double d1, double d2) {
         double epsilon = .001;
         if (Math.abs(d1 - d2) < epsilon) {

@@ -35,9 +35,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.log4j.LogManager;
@@ -51,7 +54,7 @@ import org.apache.log4j.Logger;
  * @since 2017-12-12
  *
  */
-public class CConverterUtils {
+public final class CConverterUtils {
 
     /**
      * Default logger instance
@@ -112,7 +115,7 @@ public class CConverterUtils {
         return stream.reduce(identity, accumulator);
     }
 
-    public static <A, B, C> Function<A, C> compose(Function<A, B> f1, Function<B, C> f2) {
+    public static <A, B, C> Function<A, C> compose(final Function<A, B> f1, final Function<B, C> f2) {
         return f1.andThen(f2);
     }
 
@@ -144,10 +147,33 @@ public class CConverterUtils {
         return Arrays.stream(array).filter(predicate).toArray(size -> new String[size]);
     }
 
+    public static List<String> split(final String value, final String delimiter) {
+        return split(value, delimiter, (str) -> Boolean.TRUE);
+    }
+
     public static List<String> split(final String value, final String delimiter, final Predicate<? super String> predicate) {
         return Arrays.stream(String.valueOf(value).split(delimiter))
                 .map(String::trim)
                 .filter(predicate)
                 .collect(Collectors.toList());
+    }
+
+    public static <T> List<? extends T> convertToList(final T[] array, final IntPredicate indexPredicate) {
+//        final List<? extends T> result = IntStream
+//                .range(0, array.length)
+//                .filter(indexPredicate)
+//                .mapToObj(i -> array[i])
+//                .collect(Collectors.toList());
+//        return result;
+        return convertTo(array, indexPredicate, Collectors.toList());
+    }
+
+    public static <T, M> M convertTo(final T[] array, final IntPredicate indexPredicate, final Collector<T, ?, M> collector) {
+        final M result = IntStream
+                .range(0, array.length)
+                .filter(indexPredicate)
+                .mapToObj(i -> array[i])
+                .collect(collector);
+        return result;
     }
 }

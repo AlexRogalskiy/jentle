@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.calc;
 
+import java.util.Objects;
+
 /**
  *
  * Custom calculation implementations
@@ -95,5 +97,14 @@ public final class CCalculation {
             facNumber *= (i + 1);
         }
         return facNumber;
+    }
+
+    public static int gorner(final int[] array, int x) {
+        Objects.requireNonNull(array);
+        int k = 0, n = array.length - 1, y = array[n];
+        while (k++ <= n) {
+            y = y * x + array[n - k];
+        }
+        return y;
     }
 }
