@@ -117,6 +117,48 @@ public final class CArrayUtils {
         return res;
     }
 
+    public static <T> boolean isArray2SubArrayOfArray1(final T[] array1, final T[] array2, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array1);
+        Objects.requireNonNull(array2);
+        int len1 = array1.length - 1, len2 = array2.length - 1;
+        while (len1 >= 0 && len2 >= 0) {
+            if (Objects.compare(array1[len1], array2[len2], cmp) == 0) {
+                len1--;
+                len2--;
+            } else {
+                len1--;
+            }
+        }
+        if (len2 == 0) {
+            return true;
+        } else if (len2 != 0 && len1 == 0) {
+            return false;
+        }
+        return false;
+    }
+
+    public static <T> void split(final T[] array, final T value, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        split(array, value, 0, array.length, cmp);
+    }
+
+    public static <T> void split(final T[] array, final T value, int low, int high, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        assert (low >= 0 && low < array.length);
+        assert (high >= 0 && high < array.length);
+        assert (low <= high);
+        int l = low, h = high;
+        while (l <= h) {
+            if (Objects.compare(array[l], value, cmp) <= 0) {
+                l++;
+            } else if (Objects.compare(array[h], value, cmp) > 0) {
+                h--;
+            } else {
+                swap(array, l, h);
+            }
+        }
+    }
+
     public static <T> void swapBy(final T[] array, int m) {
         Objects.requireNonNull(array);
         assert (m > 0 && m < array.length);
