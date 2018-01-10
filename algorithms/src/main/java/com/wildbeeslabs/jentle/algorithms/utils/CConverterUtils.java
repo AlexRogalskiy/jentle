@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.Deque;
 import java.util.IntSummaryStatistics;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -182,12 +183,11 @@ public final class CConverterUtils {
     }
 
     public static <T, M> M convertTo(final T[] array, final IntPredicate indexPredicate, final Collector<T, ?, M> collector) {
-        final M result = IntStream
+        return IntStream
                 .range(0, array.length)
                 .filter(indexPredicate)
                 .mapToObj(i -> array[i])
                 .collect(collector);
-        return result;
     }
 
     public static <T> Collector<T, ?, List<T>> lastN(int n) {
@@ -203,5 +203,13 @@ public final class CConverterUtils {
             }
             return acc2;
         }, ArrayList::new);
+    }
+
+    public static <T> Collector<T, ?, LinkedList<T>> toLinkedList() {
+        return Collector.of(LinkedList::new, LinkedList::add,
+                (first, second) -> {
+                    first.addAll(second);
+                    return first;
+                });
     }
 }
