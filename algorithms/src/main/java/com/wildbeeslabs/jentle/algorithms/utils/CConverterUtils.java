@@ -86,6 +86,22 @@ public final class CConverterUtils {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.maxBy(cmp)));
     }
 
+    public static <T, K> Map<K, Optional<T>> getMapMinBy(final Stream<T> stream, final Function<T, K> groupingBy, final Comparator<? super T> cmp) {
+        return stream.collect(Collectors.groupingBy(groupingBy, Collectors.minBy(cmp)));
+    }
+
+    public static <T> Optional<T> getMaxBy(final Stream<T> stream, final Comparator<? super T> cmp) {
+        return getMinMaxBy(stream, Collectors.maxBy(cmp));
+    }
+
+    public static <T> Optional<T> getMinBy(final Stream<T> stream, final Comparator<? super T> cmp) {
+        return getMinMaxBy(stream, Collectors.minBy(cmp));
+    }
+
+    protected static <T> Optional<T> getMinMaxBy(final Stream<T> stream, final Collector<T, ?, Optional<T>> collector) {
+        return stream.collect(collector);
+    }
+
     public static <E> Map<Integer, Long> getMapCountBy(final Stream<E> stream, final Function<E, Integer> groupingBy) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.counting()));
     }
@@ -162,12 +178,6 @@ public final class CConverterUtils {
     }
 
     public static <T> List<? extends T> convertToList(final T[] array, final IntPredicate indexPredicate) {
-//        final List<? extends T> result = IntStream
-//                .range(0, array.length)
-//                .filter(indexPredicate)
-//                .mapToObj(i -> array[i])
-//                .collect(Collectors.toList());
-//        return result;
         return convertTo(array, indexPredicate, Collectors.toList());
     }
 
