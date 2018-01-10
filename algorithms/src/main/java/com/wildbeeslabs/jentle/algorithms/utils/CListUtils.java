@@ -48,7 +48,7 @@ import org.apache.commons.lang3.SerializationUtils;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CListUtils {
+public final class CListUtils {
 
     private CListUtils() {
         // PRIVATE EMPTY CONSTRUCTOR

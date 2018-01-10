@@ -102,6 +102,21 @@ public final class CArrayUtils {
         array[m] = array[m] - array[n];
     }
 
+    @FunctionalInterface
+    public static interface ShortToByteFunction {
+
+        byte applyAsByte(short s);
+    }
+
+    //byte[] transformedArray = transformArray(array, s -> (byte) (s * 2));
+    public byte[] transformArray(final short[] array, final ShortToByteFunction function) {
+        byte[] transformedArray = new byte[array.length];
+        for (int i = 0; i < array.length; i++) {
+            transformedArray[i] = function.applyAsByte(array[i]);
+        }
+        return transformedArray;
+    }
+
     public static int[] squaresOf(final int[] array) {
         return IntStream.range(0, array.length).map((i) -> i * i).toArray();
     }

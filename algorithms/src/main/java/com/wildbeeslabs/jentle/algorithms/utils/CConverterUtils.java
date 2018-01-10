@@ -23,9 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.IntSummaryStatistics;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -175,5 +178,20 @@ public final class CConverterUtils {
                 .mapToObj(i -> array[i])
                 .collect(collector);
         return result;
+    }
+
+    public static <T> Collector<T, ?, List<T>> lastN(int n) {
+        assert (n > 0);
+        return Collector.<T, Deque<T>, List<T>>of(ArrayDeque::new, (acc, t) -> {
+            if (acc.size() == n) {
+                acc.pollFirst();
+            }
+            acc.add(t);
+        }, (acc1, acc2) -> {
+            while (acc2.size() < n && !acc1.isEmpty()) {
+                acc2.addFirst(acc1.pollLast());
+            }
+            return acc2;
+        }, ArrayList::new);
     }
 }

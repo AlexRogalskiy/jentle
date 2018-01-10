@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.calc;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  *
@@ -87,7 +88,21 @@ public final class CCalculation {
         return (a + b);
     }
 
-    public static int fibonacci5(int n) {
+    public static int finonacci5(int n) {
+        assert (n >= 0);
+        final int[] fibs = {0, 1};
+        final Stream<Integer> fibonacci = Stream.generate(() -> {
+            int result = fibs[1];
+            int fib3 = fibs[0] + fibs[1];
+            fibs[0] = fibs[1];
+            fibs[1] = fib3;
+            return result;
+        });
+        return fibonacci.skip(n - 1).findFirst().get();
+        //return fibonacci.limit(n).collect(Collectors.toList());
+    }
+
+    public static int factorial(int n) {
         assert (n >= 0);
         if (0 == n) {
             return 1;

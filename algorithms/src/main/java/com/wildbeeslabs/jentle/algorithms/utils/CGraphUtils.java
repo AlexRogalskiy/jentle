@@ -50,7 +50,7 @@ import lombok.ToString;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CGraphUtils {
+public final class CGraphUtils {
 
     private CGraphUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
