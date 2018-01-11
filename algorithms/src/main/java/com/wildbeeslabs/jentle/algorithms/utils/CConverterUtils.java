@@ -38,6 +38,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
@@ -66,6 +67,7 @@ public final class CConverterUtils {
     private static final Logger LOGGER = LogManager.getLogger(CConverterUtils.class);
 
     private CConverterUtils() {
+        LOGGER.debug("Initializing convert utils toolset...");
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -143,20 +145,28 @@ public final class CConverterUtils {
         return Stream.concat(first.stream(), second.stream()).filter(predicate).collect(Collectors.toList());
     }
 
-    public static String join(final Collection<String> collection, final String delimiter) {
-        return collection.stream().collect(Collectors.joining(delimiter));
+    public static <T> String join(final Collection<T> collection, final String delimiter) {
+        return collection.stream().map(Objects::toString).collect(Collectors.joining(delimiter));
     }
 
     public static <K, V> String join(final Map<K, V> map, final String keyValueDelimiter, final String delimiter) {
         return map.entrySet().stream().map(entry -> entry.getKey() + keyValueDelimiter + entry.getValue()).collect(Collectors.joining(delimiter));
     }
 
-    public static String[] join(final String[] first, final String[] second) {
+    public static <T> String[] join(final T[] first, final T[] second) {
         return Stream.concat(Arrays.stream(first), Arrays.stream(second)).toArray(String[]::new);
     }
 
-    public static String join(final String[] array, final String delimiter) {
-        return Arrays.stream(array).collect(Collectors.joining(delimiter));
+    public static <T> String join(final T[] array, final String delimiter) {
+        return Arrays.stream(array).map(Objects::toString).collect(Collectors.joining(delimiter));
+    }
+
+    public static <T> String joinWithPrefixPostfix(final T[] array, final String delimiter, final String prefix, final String postfix) {
+        return joinWithPrefixPostfix(Arrays.asList(array), delimiter, prefix, postfix);
+    }
+
+    public static <T> String joinWithPrefixPostfix(final Collection<T> list, final String delimiter, final String prefix, final String postfix) {
+        return list.stream().map(Objects::toString).collect(Collectors.joining(delimiter, prefix, postfix));
     }
 
     public static Map<Integer, List<String>> getMapByLength(final String[] array) {
@@ -164,7 +174,11 @@ public final class CConverterUtils {
     }
 
     public static String[] getArrayBy(final String[] array, final Predicate<? super String> predicate) {
-        return Arrays.stream(array).filter(predicate).toArray(size -> new String[size]);
+        return getArrayBy(Arrays.asList(array), predicate);
+    }
+
+    public static String[] getArrayBy(final List<String> list, final Predicate<? super String> predicate) {
+        return list.stream().filter(predicate).toArray(size -> new String[size]);
     }
 
     public static List<String> split(final String value, final String delimiter) {
@@ -175,6 +189,12 @@ public final class CConverterUtils {
         return Arrays.stream(String.valueOf(value).split(delimiter))
                 .map(String::trim)
                 .filter(predicate)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Character> splitToListOfChars(final String value) {
+        return value.chars()
+                .mapToObj(item -> (char) item)
                 .collect(Collectors.toList());
     }
 
@@ -211,5 +231,57 @@ public final class CConverterUtils {
                     first.addAll(second);
                     return first;
                 });
+    }
+
+//    List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
+//    integers.forEach(lambdaWrapper(i -> System.out.println(50 / i), ArithmeticException.class));
+    public static <T, E extends Exception> Consumer<T> consumerWrapper(final Consumer<T> consumer, final Class<E> clazz) {
+        return i -> {
+            try {
+                consumer.accept(i);
+            } catch (Exception ex) {
+                try {
+                    final E exCast = clazz.cast(ex);
+                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
+                } catch (ClassCastException ccEx) {
+                    throw ex;
+                }
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public static interface ThrowingConsumer<T, E extends Exception> {
+
+        void accept(final T t) throws E;
+    }
+
+//    List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
+//    integers.forEach(throwingConsumerWrapper(i -> writeToFile(i)));
+    public static <T> Consumer<T> throwingConsumerWrapper(final ThrowingConsumer<T, Exception> throwingConsumer) {
+        return i -> {
+            try {
+                throwingConsumer.accept(i);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        };
+    }
+
+//    List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
+//    integers.forEach(handlingConsumerWrapper(i -> writeToFile(i), IOException.class));
+    public static <T, E extends Exception> Consumer<T> handlingConsumerWrapper(final ThrowingConsumer<T, E> throwingConsumer, final Class<E> exceptionClass) {
+        return i -> {
+            try {
+                throwingConsumer.accept(i);
+            } catch (Exception ex) {
+                try {
+                    final E exCast = exceptionClass.cast(ex);
+                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
+                } catch (ClassCastException ccEx) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
     }
 }
