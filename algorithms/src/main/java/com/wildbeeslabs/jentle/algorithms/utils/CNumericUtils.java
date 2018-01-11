@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -119,6 +122,39 @@ public final class CNumericUtils {
             }
         }
         return true;
+    }
+
+    public static List<Integer> sieveOfEratosthenes(int n) {
+        assert (n >= 0);
+        boolean prime[] = new boolean[n + 1];
+        Arrays.fill(prime, true);
+        for (int p = 2; p * p <= n; p++) {
+            if (prime[p]) {
+                for (int i = p * 2; i <= n; i += p) {
+                    prime[i] = false;
+                }
+            }
+        }
+        final List<Integer> primeNumbers = new LinkedList<>();
+        for (int i = 2; i <= n; i++) {
+            if (prime[i]) {
+                primeNumbers.add(i);
+            }
+        }
+        return primeNumbers;
+    }
+
+    public static List<Integer> primeNumbersTill(int n) {
+        assert (n >= 0);
+        return IntStream.rangeClosed(2, n)
+                .filter(x -> isPrime(x)).boxed()
+                .collect(Collectors.toList());
+    }
+
+    private static boolean isPrime(int n) {
+        return IntStream.rangeClosed(2, (int) (Math.sqrt(n)))
+                .filter(i -> (i & 0X1) != 0)
+                .allMatch(i -> n % i != 0);
     }
 
     public static int negate(int num) {
@@ -326,15 +362,15 @@ public final class CNumericUtils {
         return result;
     }
 
-    public static boolean isPrime(int num) {
-        int sqrt = (int) Math.sqrt(num);
-        for (int range = 2; range <= sqrt; range++) {
-            if (num % range == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    public static boolean isPrime(int num) {
+//        int sqrt = (int) Math.sqrt(num);
+//        for (int range = 2; range <= sqrt; range++) {
+//            if (num % range == 0) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
     public static int lcm(int a, int b) {
         return (a * b) / gcd(a, b);
