@@ -53,8 +53,6 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@ToString
 public class CLGraph<T> implements IGraph<T> {
 
     /**
@@ -102,6 +100,7 @@ public class CLGraph<T> implements IGraph<T> {
         this.add(from, to, null);
     }
 
+    @SuppressWarnings("element-type-mismatch")
     public void remove(int from, int to) throws EmptyListException {
         this.checkRange(from);
         this.checkRange(to);
@@ -157,8 +156,7 @@ public class CLGraph<T> implements IGraph<T> {
     public IGraph<Integer> toCSGraph() {
         final CSGraph sGraph = new CSGraph(this.size());
         for (int i = 0; i < this.size(); i++) {
-            for (Iterator<? extends CLGraphArc<T>> it = this.graph[i].iterator(); it.hasNext();) {
-                CLGraphArc<T> node = it.next();
+            for (final CLGraphArc<T> node : this.graph[i]) {
                 sGraph.add(i, node.end, null);
             }
         }
@@ -171,7 +169,7 @@ public class CLGraph<T> implements IGraph<T> {
 
     @Override
     public String toString() {
-        return String.format("CLGraph {graph: %s}", Arrays.toString(this.graph));
+        return String.format("%s {graph: %s}", this.getClass().getName(), Arrays.deepToString(this.graph));
     }
 
     @Override
@@ -194,5 +192,10 @@ public class CLGraph<T> implements IGraph<T> {
         int hash = 7;
         hash = 61 * hash + Arrays.deepHashCode(this.graph);
         return hash;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -28,6 +28,7 @@ import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Queue;
 
 import lombok.Data;
@@ -128,5 +129,10 @@ public class CBoundStack<T> extends ACStack<T> {
 
     public boolean isFull() {
         return (this.size() == this.stack.length);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

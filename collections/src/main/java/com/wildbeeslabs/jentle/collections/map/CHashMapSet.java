@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.collections.map;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -120,5 +121,10 @@ public class CHashMapSet<K, V> extends ACBaseExtended<K, V, Set<V>> {
     @Override
     public boolean isEmpty() {
         return this.map.isEmpty();
+    }
+
+    @Override
+    public Iterator<Map.Entry<K, V>> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

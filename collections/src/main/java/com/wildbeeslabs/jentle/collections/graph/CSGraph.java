@@ -31,8 +31,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -46,8 +44,6 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@ToString
 public class CSGraph implements IGraph<Integer> {
 
     /**
@@ -124,8 +120,13 @@ public class CSGraph implements IGraph<Integer> {
     }
 
     @Override
+    public Iterator<Integer> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public String toString() {
-        return String.format("CSGraph {graph: %s}", Arrays.toString(this.graph));
+        return String.format("%s {graph: %s}", this.getClass().getName(), Arrays.deepToString(this.graph));
     }
 
     @Override

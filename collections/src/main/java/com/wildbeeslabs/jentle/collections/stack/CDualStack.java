@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Queue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -178,5 +179,10 @@ public class CDualStack<T> extends ACStack<T> {
     @Override
     public boolean isEmpty() {
         return this.isEmpty1() && this.isEmpty2();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.string;
 
+import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
 import com.wildbeeslabs.jentle.algorithms.utils.CStringUtils;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.tree.CTrie;
@@ -414,6 +415,42 @@ public final class CString {
         return findMinDistancePair(locations1, locations2);
     }
 
+    public static int findClosest3(final String word1, final String word2) {
+        Objects.requireNonNull(word1);
+        Objects.requireNonNull(word2);
+        int[][] dp = new int[word1.length() + 1][word2.length() + 1];
+        for (int i = 0; i <= word1.length(); i++) {
+            for (int j = 0; j <= word2.length(); j++) {
+                if (i == 0) {
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    dp[i][j] = i;
+                } else {
+                    dp[i][j] = CNumericUtils.min(dp[i - 1][j - 1] + costOfSubstitution(word1.charAt(i - 1), word2.charAt(j - 1)), dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+                }
+            }
+        }
+
+        return dp[word1.length()][word2.length()];
+    }
+
+    public static int findClosest4(final String x, final String y) {
+        if (Objects.isNull(x) || x.isEmpty()) {
+            return y.length();
+        }
+        if (Objects.isNull(y) || y.isEmpty()) {
+            return x.length();
+        }
+        int substitution = findClosest4(x.substring(1), y.substring(1)) + costOfSubstitution(x.charAt(0), y.charAt(0));
+        int insertion = findClosest4(x, y.substring(1)) + 1;
+        int deletion = findClosest4(x.substring(1), y) + 1;
+        return CNumericUtils.min(substitution, insertion, deletion);
+    }
+
+    public static int costOfSubstitution(char a, char b) {
+        return a == b ? 0 : 1;
+    }
+
     private static LocationPair findMinDistancePair(final List<Integer> list1, final List<Integer> list2) {
         if (Objects.isNull(list1) || Objects.isNull(list2) || list1.isEmpty() || list2.isEmpty()) {
             return null;
@@ -679,7 +716,7 @@ public final class CString {
                 if (i >= sequence.length()) {
                     break;
                 }
-                CString.Operator op = parseNextOperator(sequence, i);
+                final CString.Operator op = parseNextOperator(sequence, i);
                 collapseTop(op, numberStack, operatorStack);
                 operatorStack.push(op);
             } catch (NumberFormatException ex) {

@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.collections.map;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -192,5 +193,10 @@ public class CCache<K, V> extends ACBaseMap<K, V> {
     @Override
     public int size() {
         return this.length(this.head);
+    }
+
+    @Override
+    public Iterator<Map.Entry<K, V>> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

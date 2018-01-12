@@ -30,12 +30,15 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
+import lombok.AccessLevel;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Setter;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  *
@@ -46,11 +49,9 @@ import org.apache.commons.lang3.SerializationUtils;
  * @since 2017-08-07
  * @param <T>
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@ToString
 public class CCircularArray<T extends Serializable> extends ACArray<T> {
 
+    @Setter(AccessLevel.NONE)
     private int head;
 
     public CCircularArray(final Class<? extends T[]> clazz) throws InvalidDimensionException {
@@ -149,31 +150,30 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
     }
 
     @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .appendSuper(super.toString())
+                .append("head", this.head)
+                .toString();
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (!(obj instanceof CCircularArray)) {
             return false;
         }
         final CCircularArray<T> other = (CCircularArray<T>) obj;
-        if (this.head != other.head) {
-            return false;
-        }
-        if (this.size() != other.size()) {
-            return false;
-        }
-        if (!Arrays.deepEquals(this.array, other.array)) {
-            return false;
-        }
-        return true;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(this.head, other.head)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + this.head;
-        hash = 79 * hash + Arrays.deepHashCode(this.array);
-        return hash;
+        return new HashCodeBuilder(7, 79)
+                .appendSuper(super.hashCode())
+                .append(this.head)
+                .toHashCode();
     }
 }

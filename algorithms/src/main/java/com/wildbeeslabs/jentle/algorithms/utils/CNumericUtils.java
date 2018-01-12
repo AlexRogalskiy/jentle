@@ -371,7 +371,6 @@ public final class CNumericUtils {
 //        }
 //        return true;
 //    }
-
     public static int lcm(int a, int b) {
         return (a * b) / gcd(a, b);
     }
@@ -452,5 +451,13 @@ public final class CNumericUtils {
             a = a >> 1;
         }
         return sb.toString();
+    }
+
+    public static int min(int... numbers) {
+        return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
+    }
+
+    public static int max(int... numbers) {
+        return Arrays.stream(numbers).max().orElse(Integer.MIN_VALUE);
     }
 }

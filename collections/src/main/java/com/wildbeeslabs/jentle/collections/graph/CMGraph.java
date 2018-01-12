@@ -27,11 +27,10 @@ import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -46,8 +45,6 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@ToString
 public class CMGraph<T> implements IGraph<T> {
 
     /**
@@ -147,7 +144,7 @@ public class CMGraph<T> implements IGraph<T> {
 
     @Override
     public String toString() {
-        return String.format("CMGraph {graph: %s}", Arrays.toString(this.graph));
+        return String.format("%s {graph: %s}", this.getClass().getName(), Arrays.deepToString(this.graph));
     }
 
     @Override
@@ -170,5 +167,10 @@ public class CMGraph<T> implements IGraph<T> {
         int hash = 7;
         hash = 29 * hash + Arrays.deepHashCode(this.graph);
         return hash;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -158,4 +158,9 @@ public class CHashMap<K, V> extends ACMap<K, V> {
     public Iterator<? extends V> valuesIterator() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public Iterator<Entry<K, V>> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

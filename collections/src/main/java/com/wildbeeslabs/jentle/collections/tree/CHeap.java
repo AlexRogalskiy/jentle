@@ -31,8 +31,6 @@ import java.util.Comparator;
 import java.util.Objects;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -47,8 +45,6 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@ToString
 public class CHeap<T> {
 
     /**
@@ -96,7 +92,6 @@ public class CHeap<T> {
         return this.size;
     }
 
-    //@Override
     public int capacity() {
         return this.capacity;
     }
@@ -107,7 +102,7 @@ public class CHeap<T> {
 
     @Override
     public String toString() {
-        return String.format("CHeap {data: %s, size: %d, capacity: %d}", this.array, this.size, this.capacity);
+        return String.format("%s {data: %s, size: %d, capacity: %d}", this.getClass().getName(), Arrays.deepToString(this.array), this.size, this.capacity);
     }
 
     @Override

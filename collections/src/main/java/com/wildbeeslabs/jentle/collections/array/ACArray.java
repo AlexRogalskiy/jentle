@@ -34,11 +34,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.IntFunction;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.apache.commons.lang3.SerializationUtils;
+import lombok.AccessLevel;
+import lombok.Setter;
 
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -51,9 +54,6 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  * @param <T>
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@ToString
 public abstract class ACArray<T extends Serializable> extends AbstractList<T> implements IArray<T> {
 
     /**
@@ -61,7 +61,9 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
      */
     protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
+    @Setter(AccessLevel.NONE)
     protected T[] array;
+    @Setter(AccessLevel.NONE)
     protected int size;
 
     public int indexOf(final T item) {
@@ -124,5 +126,34 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
         if (index < 0 || index >= this.size()) {
             throw new IndexOutOfBoundsException(String.format("ERROR: %s (index=%d is out of bounds [0, %d])", this.getClass().getName(), index, this.size() - 1));
         }
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .append(this.getClass().getName())
+                .append("data", Arrays.deepToString(this.array))
+                .append("size", this.size)
+                .toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ACArray)) {
+            return false;
+        }
+        final ACArray<T> other = (ACArray<T>) obj;
+        return new EqualsBuilder()
+                .append(this.size, other.size)
+                .append(Arrays.deepEquals(this.array, other.array), true)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(9, 71)
+                .append(this.size)
+                .append(Arrays.deepHashCode(this.array))
+                .toHashCode();
     }
 }

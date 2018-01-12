@@ -928,6 +928,7 @@ public final class CMisc {
     }
 
     private static Map<DocPair, Double> computeIntersections(final CHashMapList<Integer, Integer> wordToDocs) {
+        @SuppressWarnings("UnusedAssignment")
         final Map<DocPair, Double> similarities = new HashMap<>();
         final Set<Integer> words = wordToDocs.keySet();
         words.stream().map((word) -> wordToDocs.get(word)).map((docs) -> {

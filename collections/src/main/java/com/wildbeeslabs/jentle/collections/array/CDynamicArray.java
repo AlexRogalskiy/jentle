@@ -31,9 +31,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  *
@@ -44,9 +45,6 @@ import lombok.ToString;
  * @since 2017-08-07
  * @param <T>
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@ToString
 public class CDynamicArray<T extends Serializable> extends ACArray<T> {
 
     /**
@@ -235,32 +233,30 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
     }
 
     @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .appendSuper(super.toString())
+                .append("capacity", this.capacity)
+                .toString();
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (!(obj instanceof CDynamicArray)) {
             return false;
         }
         final CDynamicArray<T> other = (CDynamicArray<T>) obj;
-        if (this.size != other.size) {
-            return false;
-        }
-        if (this.capacity != other.capacity) {
-            return false;
-        }
-        if (!Arrays.deepEquals(this.array, other.array)) {
-            return false;
-        }
-        return true;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(this.capacity, other.capacity)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + this.size;
-        hash = 97 * hash + this.capacity;
-        hash = 97 * hash + Arrays.deepHashCode(this.array);
-        return hash;
+        return new HashCodeBuilder(19, 51)
+                .appendSuper(super.hashCode())
+                .append(this.capacity)
+                .toHashCode();
     }
 }
