@@ -25,17 +25,24 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -124,5 +131,63 @@ public final class CDate {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(rawOffset);
         minutes = Math.abs(minutes - TimeUnit.HOURS.toMinutes(hours));
         return String.format("%+03d:%02d", hours, Math.abs(minutes));
+    }
+
+    public static List<Date> getDatesBetween(final Date startDate, final Date endDate) {
+        final List<Date> datesInRange = new ArrayList<>();
+        final Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startDate);
+        final Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(endDate);
+        while (calendar.before(endCalendar)) {
+            Date result = calendar.getTime();
+            datesInRange.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+        return datesInRange;
+    }
+
+    public static List<LocalDate> getDatesBetween2(final LocalDate startDate, final LocalDate endDate) {
+        long numOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+        return IntStream.iterate(0, i -> i + 1)
+                .limit(numOfDaysBetween)
+                .mapToObj(i -> startDate.plusDays(i))
+                .collect(Collectors.toList());
+    }
+
+//    public static List<LocalDate> getDatesBetween(final LocalDate startDate, final LocalDate endDate) {
+//        return startDate.datesUntil(endDate).collect(Collectors.toList());
+//    }
+//    public LocalDate convertToLocalDate(final Date dateToConvert) {
+//        return LocalDate.ofInstant(
+//                dateToConvert.toInstant(), ZoneId.systemDefault());
+//    }
+//
+//    public LocalDateTime convertToLocalDateTime(final Date dateToConvert) {
+//        return LocalDateTime.ofInstant(
+//                dateToConvert.toInstant(), ZoneId.systemDefault());
+//    }
+
+    public static LocalDate convertToLocalDateViaInstant(final Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
+    public static LocalDateTime convertToLocalDateTimeViaInstant(final Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+
+    public static Date convertToDateViaInstant(final LocalDate dateToConvert) {
+        return java.util.Date.from(dateToConvert.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
+    }
+
+    public static Date convertToDateViaInstant(final LocalDateTime dateToConvert) {
+        return java.util.Date.from(dateToConvert.atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 }

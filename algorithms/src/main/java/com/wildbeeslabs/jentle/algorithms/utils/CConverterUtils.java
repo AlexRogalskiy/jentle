@@ -27,6 +27,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.IntSummaryStatistics;
@@ -192,8 +193,8 @@ public final class CConverterUtils {
                 .collect(Collectors.toList());
     }
 
-    public static List<Character> splitToListOfChars(final String value) {
-        return value.chars()
+    public static List<Character> splitToListOfChars(final CharSequence value) {
+        return String.valueOf(value).chars()
                 .mapToObj(item -> (char) item)
                 .collect(Collectors.toList());
     }
@@ -283,5 +284,13 @@ public final class CConverterUtils {
                 }
             }
         };
+    }
+
+    public static <T> Set<T> toImmutableSet(final T... args) {
+        return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::<T>unmodifiableSet));
+    }
+
+    public static <T> List<T> toImmutableList(final T... args) {
+        return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::<T>unmodifiableList));
     }
 }
