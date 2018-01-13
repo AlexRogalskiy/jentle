@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,12 @@ package com.wildbeeslabs.jentle.collections.graph.node;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import lombok.Data;
@@ -36,7 +39,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom abstract graph node implementation
+ * Custom abstract graph extended node implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -47,42 +50,72 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACBaseGraphNode<T, E> {
+public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>> extends ACBaseGraphNode<T, E> {
 
-    protected final Collection<E> adjacents = new ArrayList<>();
+    private BigDecimal distance;
+    private final LinkedList<E> pathNodes = new LinkedList<>();
+    private final Map<E, BigDecimal> adjacents = new HashMap<>();
 
-    public ACGraphNode() {
+    public ACGraphNodeExtended() {
         this(null);
     }
 
-    public ACGraphNode(final T data) {
+    public ACGraphNodeExtended(final T data) {
         this(data, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public ACGraphNode(final T data, final Comparator<? super T> cmp) {
-        super(data, cmp);
+    public ACGraphNodeExtended(final T data, final Comparator<? super T> cmp) {
+        this(data, BigDecimal.valueOf(Long.MAX_VALUE), CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public Collection<E> getAdjacents() {
+    public ACGraphNodeExtended(final T data, final BigDecimal distance, final Comparator<? super T> cmp) {
+        super(data, cmp);
+        this.distance = distance;
+    }
+
+    public Map<E, BigDecimal> getAdjacents() {
         return this.adjacents;
     }
 
-    public void setAdjacents(final Collection<E> adjacents) {
+    public void setAdjacents(final Map<E, BigDecimal> adjacents) {
         this.adjacents.clear();
         if (Objects.nonNull(adjacents)) {
-            this.adjacents.addAll(adjacents);
+            this.adjacents.putAll(adjacents);
         }
     }
 
-    public void addAdjacent(final E adjacent) {
+    public void addAjacent(final E adjacent, final BigDecimal distance) {
         if (Objects.nonNull(adjacent)) {
-            this.adjacents.add(adjacent);
+            this.adjacents.put(adjacent, distance);
         }
     }
 
     public void removeAdjacent(final E adjacent) {
         if (Objects.nonNull(adjacent)) {
             this.adjacents.remove(adjacent);
+        }
+    }
+
+    public List<E> getPathNodes() {
+        return this.pathNodes;
+    }
+
+    public void setPathNodes(final List<E> pathNodes) {
+        this.pathNodes.clear();
+        if (Objects.nonNull(pathNodes)) {
+            this.pathNodes.addAll(pathNodes);
+        }
+    }
+
+    public void addPathNode(final E pathNode) {
+        if (Objects.nonNull(pathNode)) {
+            this.pathNodes.add(pathNode);
+        }
+    }
+
+    public void removePathNode(final E pathNode) {
+        if (Objects.nonNull(pathNode)) {
+            this.pathNodes.remove(pathNode);
         }
     }
 }

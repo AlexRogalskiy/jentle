@@ -23,43 +23,38 @@
  */
 package com.wildbeeslabs.jentle.collections.graph;
 
+import com.wildbeeslabs.jentle.collections.graph.CGraph.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
-
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-import lombok.Data;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  *
- * Custom matrix-graph implementation
+ * Custom matrix graph implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-@Data
-public class CMGraph<T> implements IGraph<T> {
+public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    protected CGraphNode<T>[][] graph;
 
-    protected T[][] graph;
-
-    public CMGraph(final Class<? extends T> clazz, int numOfVertex) {
+    public CMGraph(final Class<? extends CGraphNode<T>> clazz, int numOfVertex) {
         this.graph = CUtils.newMatrix(clazz, numOfVertex, numOfVertex);
     }
 
     public boolean has(int from, int to) {
-        return (null != this.get(from, to));
+        return Objects.nonNull(this.get(from, to));
     }
 
     public void set(int from, int to, final T data) {
@@ -78,11 +73,10 @@ public class CMGraph<T> implements IGraph<T> {
         this.add(from, to, this.getDataByDefault());
     }
 
-    //@Override
     public void add(int from, int to, final T data) {
         this.checkRange(from);
         this.checkRange(to);
-        this.graph[from - 1][to - 1] = data;
+        this.graph[from - 1][to - 1] = new CGraphNode<>(data);
     }
 
     public void remove(int from, int to) {
@@ -94,7 +88,10 @@ public class CMGraph<T> implements IGraph<T> {
     public T get(int from, int to) {
         this.checkRange(from);
         this.checkRange(to);
-        return this.graph[from - 1][to - 1];
+        if (Objects.isNull(this.graph[from - 1][to - 1])) {
+            return null;
+        }
+        return this.graph[from - 1][to - 1].getData();
     }
 
     public int cardIn(int to) {
@@ -143,34 +140,36 @@ public class CMGraph<T> implements IGraph<T> {
     }
 
     @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public String toString() {
-        return String.format("%s {graph: %s}", this.getClass().getName(), Arrays.deepToString(this.graph));
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .appendSuper(super.toString())
+                .append("class", this.getClass().getName())
+                .append("data", Arrays.deepToString(this.graph))
+                .toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (!(obj instanceof CMGraph)) {
             return false;
         }
         final CMGraph<T> other = (CMGraph<T>) obj;
-        if (!Arrays.deepEquals(this.graph, other.graph)) {
-            return false;
-        }
-        return true;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(Arrays.deepEquals(this.graph, other.graph), true)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Arrays.deepHashCode(this.graph);
-        return hash;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new HashCodeBuilder(31, 61)
+                .appendSuper(super.hashCode())
+                .append(Arrays.deepHashCode(this.graph))
+                .toHashCode();
     }
 }

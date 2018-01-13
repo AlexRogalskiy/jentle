@@ -23,12 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.graph;
 
-import com.wildbeeslabs.jentle.collections.graph.CLGraph;
+import com.wildbeeslabs.jentle.collections.graph.CSGraph2;
+import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNodeExtended;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 
+import java.math.BigDecimal;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -40,18 +48,20 @@ import java.util.Objects;
  */
 public final class CGraph {
 
+    /**
+     * Default Logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CGraph.class);
+
     private CGraph() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <T> boolean search(final CLGraph<T> graph, final CGraphNode<T> start, final CGraphNode<T> end) {//IGraph<T>
+    public static <T> boolean search(final CGraphNode<T> start, final CGraphNode<T> end) {
         if (start == end) {
             return true;
         }
         final Deque<CGraphNode<T>> listNode = new LinkedList<>();
-        for (final CGraphNode<T> node : graph.getNodes()) {
-            node.setState(CGraphNode.State.UNVISITED);
-        }
         start.setState(CGraphNode.State.VISITING);
         listNode.add(start);
         while (!listNode.isEmpty()) {
@@ -71,5 +81,49 @@ public final class CGraph {
             }
         }
         return false;
+    }
+
+    public static <T, E extends ACGraphNodeExtended<T, E>> CSGraph2<T> calculateShortestPathFromSource(final CSGraph2<T> graph, final E source) {
+        source.setDistance(BigDecimal.ZERO);
+        final Set<E> settledNodes = new HashSet<>();
+        final Set<E> unsettledNodes = new HashSet<>();
+        unsettledNodes.add(source);
+        while (!unsettledNodes.isEmpty()) {
+            final E currentNode = getLowestDistanceNode(unsettledNodes);
+            unsettledNodes.remove(currentNode);
+            for (final Entry<E, BigDecimal> adjacencyPair : currentNode.getAdjacents().entrySet()) {
+                final E adjacentNode = adjacencyPair.getKey();
+                final BigDecimal edgeWeight = adjacencyPair.getValue();
+                if (!settledNodes.contains(adjacentNode)) {
+                    calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
+                    unsettledNodes.add(adjacentNode);
+                }
+            }
+            settledNodes.add(currentNode);
+        }
+        return graph;
+    }
+
+    private static <T, E extends ACGraphNodeExtended<T, E>> void calculateMinimumDistance(final E evaluationNode, final BigDecimal edgeWeight, final E sourceNode) {
+        final BigDecimal sourceDistance = sourceNode.getDistance();
+        if (sourceDistance.add(edgeWeight).compareTo(evaluationNode.getDistance()) < 0) {
+            evaluationNode.setDistance(sourceDistance.add(edgeWeight));
+            final LinkedList<E> shortestPath = new LinkedList<>(sourceNode.getPathNodes());
+            shortestPath.add(sourceNode);
+            evaluationNode.setPathNodes(shortestPath);
+        }
+    }
+
+    private static <T, E extends ACGraphNodeExtended<T, E>> E getLowestDistanceNode(final Set<E> unsettledNodes) {
+        E lowestDistanceNode = null;
+        BigDecimal lowestDistance = BigDecimal.valueOf(Long.MAX_VALUE);
+        for (final E node : unsettledNodes) {
+            final BigDecimal nodeDistance = node.getDistance();
+            if (nodeDistance.compareTo(lowestDistance) < 0) {
+                lowestDistance = nodeDistance;
+                lowestDistanceNode = node;
+            }
+        }
+        return lowestDistanceNode;
     }
 }

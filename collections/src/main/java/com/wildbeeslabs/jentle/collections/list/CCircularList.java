@@ -143,7 +143,7 @@ public class CCircularList<T> extends ACList<T, CList.CListNode<T>> implements I
 
         @Override
         public boolean hasNext() {
-            return (this.first != this.last);
+            return !Objects.equals(this.first, this.last);
         }
 
         @Override

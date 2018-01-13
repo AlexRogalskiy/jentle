@@ -131,7 +131,7 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .append(this.getClass().getName())
+                .append("class", this.getClass().getName())
                 .append("data", Arrays.deepToString(this.array))
                 .append("size", this.size)
                 .toString();

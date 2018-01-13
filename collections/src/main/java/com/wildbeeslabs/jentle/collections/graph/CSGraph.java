@@ -23,64 +23,54 @@
  */
 package com.wildbeeslabs.jentle.collections.graph;
 
+import com.wildbeeslabs.jentle.collections.graph.CGraph.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
-import com.wildbeeslabs.jentle.collections.interfaces.ISet;
-import com.wildbeeslabs.jentle.collections.set.CBitSet;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
-import lombok.Data;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  *
- * Custom set-graph implementation
+ * Custom set graph implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-@Data
-public class CSGraph implements IGraph<Integer> {
+public class CSGraph extends ACGraph<Integer, CGraphNode<Integer>> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
-
-    protected ISet<Integer>[] graph;
+    protected Set<CGraphNode<Integer>>[] graph;
 
     public CSGraph(int numOfVertex) {
-        this.graph = new CBitSet[numOfVertex];
+        this.graph = new HashSet[numOfVertex];
         for (int i = 0; i < numOfVertex; i++) {
-            this.graph[i] = new CBitSet(0, numOfVertex - 1);
+            this.graph[i] = new HashSet<>();
         }
     }
 
     public boolean has(int from, int to) {
         this.checkRange(from);
         this.checkRange(to);
-        return this.graph[from - 1].has(new Integer(to));
-    }
-
-    //@Override
-    public void add(int from, int to, final Integer data) {
-        this.add(from, to);
+        return this.graph[from - 1].contains(new CGraphNode<>(to));
     }
 
     public void add(int from, int to) {
         this.checkRange(from);
         this.checkRange(to);
-        this.graph[from - 1].disjunct(new Integer(to));
+        this.graph[from - 1].add(new CGraphNode<>(to));
     }
 
     public void remove(int from, int to) {
         this.checkRange(from);
         this.checkRange(to);
-        this.graph[from - 1].remove(new Integer(to));
+        this.graph[from - 1].remove(new CGraphNode<>(to));
     }
 
     public int cardIn(int to) {
@@ -104,10 +94,10 @@ public class CSGraph implements IGraph<Integer> {
     }
 
     public IGraph<Integer> toCMGraph() {
-        final CMGraph<Integer> mGraph = new CMGraph<>((Class<? extends Integer>) this.graph.getClass().getComponentType(), this.size());
+        final CMGraph<Integer> mGraph = new CMGraph<>((Class<? extends CGraphNode<Integer>>) this.graph.getClass().getComponentType(), this.size());
         for (int i = 0; i < this.size(); i++) {
-            for (Iterator<? extends Integer> it = this.graph[i].iterator(); it.hasNext();) {
-                mGraph.add(i, it.next().intValue(), 1);
+            for (Iterator<? extends CGraphNode<Integer>> it = this.graph[i].iterator(); it.hasNext();) {
+                mGraph.add(i, it.next().getData(), 1);
             }
         }
         return mGraph;
@@ -126,28 +116,30 @@ public class CSGraph implements IGraph<Integer> {
 
     @Override
     public String toString() {
-        return String.format("%s {graph: %s}", this.getClass().getName(), Arrays.deepToString(this.graph));
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .appendSuper(super.toString())
+                .append("class", this.getClass().getName())
+                .append("data", Arrays.deepToString(this.graph))
+                .toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (!(obj instanceof CSGraph)) {
             return false;
         }
         final CSGraph other = (CSGraph) obj;
-        if (!Arrays.deepEquals(this.graph, other.graph)) {
-            return false;
-        }
-        return true;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(Arrays.deepEquals(this.graph, other.graph), true)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Arrays.deepHashCode(this.graph);
-        return hash;
+        return new HashCodeBuilder(51, 31)
+                .appendSuper(super.hashCode())
+                .append(Arrays.deepHashCode(this.graph))
+                .toHashCode();
     }
 }

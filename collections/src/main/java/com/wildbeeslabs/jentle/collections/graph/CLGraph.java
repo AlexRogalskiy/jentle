@@ -24,10 +24,9 @@
 package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
-import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
+import com.wildbeeslabs.jentle.collections.graph.node.ACBaseGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.lang.reflect.Array;
@@ -40,30 +39,26 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  *
- * Custom list-graph implementation
+ * Custom list graph implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-@Data
-public class CLGraph<T> implements IGraph<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    protected static class CLGraphArc<T> extends ACNode<T> {
+    protected static class CLGraphArc<T> extends ACBaseGraphNode<T, CLGraphArc<T>> {
 
         private int end;
 
@@ -77,7 +72,7 @@ public class CLGraph<T> implements IGraph<T> {
         }
     }
 
-    protected IList<CLGraphArc<T>>[] graph;
+    protected IList<CLGraph.CLGraphArc<T>>[] graph;
     protected final Comparator<? super T> cmp;
 
     public CLGraph(int size) {
@@ -85,7 +80,7 @@ public class CLGraph<T> implements IGraph<T> {
     }
 
     public CLGraph(int size, final Comparator<? super T> cmp) {
-        this.graph = this.newArray((Class<? extends IList<CLGraphArc<T>>[]>) this.graph.getClass(), size);
+        this.graph = this.newArray((Class<? extends IList<CLGraph.CLGraphArc<T>>[]>) this.graph.getClass(), size);
         this.cmp = cmp;
     }
 
@@ -107,14 +102,14 @@ public class CLGraph<T> implements IGraph<T> {
         this.graph[from - 1].remove(new CLGraphArc<>(to));
     }
 
-    private CLGraphArc<T> getItem(int from, int to) {
+    private CLGraph.CLGraphArc<T> getItem(int from, int to) {
         this.checkRange(from);
         this.checkRange(to);
         return this.graph[from - 1].get(to);
     }
 
     public T get(int from, int to) {
-        CLGraphArc<T> temp = this.getItem(from, to);
+        final CLGraph.CLGraphArc<T> temp = this.getItem(from, to);
         if (Objects.nonNull(temp)) {
             return temp.getData();
         }
@@ -122,7 +117,7 @@ public class CLGraph<T> implements IGraph<T> {
     }
 
     public boolean set(int from, int to, final T data) {
-        CLGraphArc<T> temp = this.getItem(from, to);
+        final CLGraph.CLGraphArc<T> temp = this.getItem(from, to);
         if (Objects.nonNull(temp)) {
             temp.setData(data);
             return true;
@@ -135,7 +130,7 @@ public class CLGraph<T> implements IGraph<T> {
         return this.graph[from - 1].size();
     }
 
-    private IList<CLGraphArc<T>>[] newArray(Class<? extends IList<CLGraphArc<T>>[]> type, int size) {
+    private IList<CLGraph.CLGraphArc<T>>[] newArray(Class<? extends IList<CLGraph.CLGraphArc<T>>[]> type, int size) {
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
@@ -144,7 +139,7 @@ public class CLGraph<T> implements IGraph<T> {
     }
 
     public void clear() {
-        this.graph = this.newArray((Class<? extends IList<CLGraphArc<T>>[]>) this.graph.getClass(), this.size());
+        this.graph = this.newArray((Class<? extends IList<CLGraph.CLGraphArc<T>>[]>) this.graph.getClass(), this.size());
     }
 
     protected void checkRange(int index) throws IndexOutOfBoundsException {
@@ -156,46 +151,44 @@ public class CLGraph<T> implements IGraph<T> {
     public IGraph<Integer> toCSGraph() {
         final CSGraph sGraph = new CSGraph(this.size());
         for (int i = 0; i < this.size(); i++) {
-            for (final CLGraphArc<T> node : this.graph[i]) {
-                sGraph.add(i, node.end, null);
+            for (final CLGraph.CLGraphArc<T> node : this.graph[i]) {
+                sGraph.add(i, node.end);
             }
         }
         return sGraph;
     }
 
-    public Iterable<CGraphNode<T>> getNodes() {
+    @Override
+    public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String toString() {
-        return String.format("%s {graph: %s}", this.getClass().getName(), Arrays.deepToString(this.graph));
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .appendSuper(super.toString())
+                .append("class", this.getClass().getName())
+                .append("data", Arrays.deepToString(this.graph))
+                .toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (!(obj instanceof CLGraph)) {
             return false;
         }
         final CLGraph<T> other = (CLGraph<T>) obj;
-        if (!Arrays.deepEquals(this.graph, other.graph)) {
-            return false;
-        }
-        return true;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(Arrays.deepEquals(this.graph, other.graph), true)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 61 * hash + Arrays.deepHashCode(this.graph);
-        return hash;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new HashCodeBuilder(31, 61)
+                .appendSuper(super.hashCode())
+                .append(Arrays.deepHashCode(this.graph))
+                .toHashCode();
     }
 }

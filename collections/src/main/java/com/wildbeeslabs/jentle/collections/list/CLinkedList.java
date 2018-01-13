@@ -31,6 +31,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -122,7 +123,7 @@ public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> im
 
         @Override
         public boolean hasNext() {
-            return (null != this.cursor);
+            return Objects.nonNull(this.cursor);
         }
 
         @Override

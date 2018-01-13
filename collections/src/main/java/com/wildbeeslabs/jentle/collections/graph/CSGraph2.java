@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list;
+package com.wildbeeslabs.jentle.collections.graph;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IList;
-import com.wildbeeslabs.jentle.collections.list.CList.CListNode;
-import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
+import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNodeExtended;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,7 +39,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom list implementation
+ * Custom set graph 2 implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -49,58 +49,67 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> {
+public class CSGraph2<T> extends ACGraph<T, CSGraph2.CGraphNodeExtended<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
-    public static class CListNode<T> extends ACListNode<T, CListNode<T>> {
+    public static class CGraphNodeExtended<T> extends ACGraphNodeExtended<T, CGraphNodeExtended<T>> {
 
-        public CListNode() {
+        public CGraphNodeExtended() {
             this(null);
         }
 
-        public CListNode(final T data) {
-            this(data, null);
+        public CGraphNodeExtended(final T data) {
+            this(data, CUtils.DEFAULT_SORT_COMPARATOR);
         }
 
-        public CListNode(final T data, final CListNode<T> next) {
-            super(data, next);
+        public CGraphNodeExtended(final T data, final Comparator<? super T> cmp) {
+            super(data, cmp);
         }
     }
 
-    public CList() {
-        this(null, CUtils.DEFAULT_SORT_COMPARATOR);
+    protected final Set<CSGraph2.CGraphNodeExtended<T>> nodes = new HashSet<>();
+
+    public Collection<CSGraph2.CGraphNodeExtended<T>> getNodes() {
+        return this.nodes;
     }
 
-    public CList(final Comparator<? super T> cmp) {
-        this(null, cmp);
+    public void setAdjacents(final Collection<CSGraph2.CGraphNodeExtended<T>> nodes) {
+        this.nodes.clear();
+        if (Objects.nonNull(nodes)) {
+            this.nodes.addAll(nodes);
+        }
     }
 
-    public CList(final IList<T> source) {
-        this(source, CUtils.DEFAULT_SORT_COMPARATOR);
+    public void addNode(final CSGraph2.CGraphNodeExtended<T> node) {
+        if (Objects.nonNull(node)) {
+            this.nodes.add(node);
+        }
     }
 
-    public CList(final IList<T> source, final Comparator<? super T> cmp) {
-        super(source, cmp);
+    public void removeNode(final CSGraph2.CGraphNodeExtended<T> node) {
+        if (Objects.nonNull(node)) {
+            this.nodes.remove(node);
+        }
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new CListIterator<>(this);
+        return new CSGraph2.CSGraph2Iterator<>(this);
     }
 
-    protected static class CListIterator<T> implements Iterator<T> {
+    protected static class CSGraph2Iterator<T> implements Iterator<T> {
 
-        private CList.CListNode<? extends T> cursor = null;
+        private Iterator<? extends T> cursor = null;
 
-        public CListIterator(final CList<? extends T> source) {
-            this.cursor = source.first;
+        public CSGraph2Iterator(final CSGraph2<? extends T> source) {
+            this.cursor = source.iterator();
         }
 
         @Override
         public boolean hasNext() {
-            return Objects.nonNull(this.cursor);
+            return this.cursor.hasNext();
         }
 
         @Override
@@ -108,24 +117,12 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> 
             if (!this.hasNext()) {
                 return null;
             }
-            final T current = this.cursor.getData();
-            this.cursor = this.cursor.getNext();
-            return current;
+            return this.cursor.next();
         }
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            this.cursor.remove();
         }
-    }
-
-    @Override
-    public ListIterator<T> listIterator(int index) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected CList.CListNode<T> createNode(final T value) {
-        return new CList.CListNode<>(value);
     }
 }

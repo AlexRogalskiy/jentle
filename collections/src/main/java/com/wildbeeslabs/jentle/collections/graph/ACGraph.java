@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,39 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.graph.node;
+package com.wildbeeslabs.jentle.collections.graph;
 
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Comparator;
-
+import com.wildbeeslabs.jentle.collections.graph.node.ACBaseGraphNode;
+import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Custom graph node implementation
+ * Custom abstract graph implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString
-public class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
+public abstract class ACGraph<T, E extends ACBaseGraphNode<T, E>> implements IGraph<T> {
 
-    public CGraphNode() {
-        this(null);
-    }
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    public CGraphNode(final T data) {
-        this(data, CUtils.DEFAULT_SORT_COMPARATOR);
-    }
-
-    public CGraphNode(final T data, final Comparator<? super T> cmp) {
-        super(data, cmp);
-    }
 }

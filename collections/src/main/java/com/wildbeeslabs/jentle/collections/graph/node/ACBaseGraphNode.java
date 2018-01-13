@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.graph.node;
 
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;
@@ -33,27 +34,38 @@ import lombok.ToString;
 
 /**
  *
- * Custom graph node implementation
+ * Custom abstract base graph node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
+public abstract class ACBaseGraphNode<T, E extends ACBaseGraphNode<T, E>> extends ACNode<T> {
 
-    public CGraphNode() {
+    protected ACBaseGraphNode.State state;
+    protected final Comparator<? super T> comparator;
+
+    public static enum State {
+
+        UNVISITED, VISITED, VISITING;
+    }
+
+    public ACBaseGraphNode() {
         this(null);
     }
 
-    public CGraphNode(final T data) {
+    public ACBaseGraphNode(final T data) {
         this(data, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CGraphNode(final T data, final Comparator<? super T> cmp) {
-        super(data, cmp);
+    public ACBaseGraphNode(final T data, final Comparator<? super T> comparator) {
+        super(data);
+        this.state = ACBaseGraphNode.State.UNVISITED;
+        this.comparator = comparator;
     }
 }
