@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -37,6 +39,11 @@ import java.util.Objects;
  * @since 2017-08-07
  */
 public final class CUtils {
+
+    /**
+     * Default Logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CUtils.class);
 
     private CUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -108,5 +115,14 @@ public final class CUtils {
             }
         }
         return result;
+    }
+
+    public static <T> T getInstance(final Class<? extends T> clazz) {
+        try {
+            return (T) clazz.getComponentType().newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOGGER.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+        }
+        return null;
     }
 }

@@ -23,47 +23,44 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+/**
+ *
+ * Custom place implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CMemberSet<T extends CMember> {
+@ToString
+public class CPlace {
 
-    private List<T> population;
+    private double x;
+    private double y;
 
-    public CMemberSet(int size, boolean isNew) {
-        assert (size > 0);
-        this.population = new ArrayList<>(size);
-        if (isNew) {
-            createNewPopulation(size);
-        }
+    public CPlace() {
+        this(0, Integer.MAX_VALUE);
     }
 
-    protected T getMember(int index) {
-        return this.population.get(index);
+    public CPlace(int lowerBound, int upperBound) {
+        this(CNumericUtils.generateRandomDouble(lowerBound, upperBound), CNumericUtils.generateRandomDouble(lowerBound, upperBound));
     }
 
-    protected T getFittest() {
-        T fittest = this.population.get(0);
-        for (int i = 0; i < this.population.size(); i++) {
-            if (fittest.getFitness() <= this.getMember(i).getFitness()) {
-                fittest = getMember(i);
-            }
-        }
-        return fittest;
+    public CPlace(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
-    private void createNewPopulation(int size) {
-        final Class<? extends T> clazz = (Class<? extends T>) this.population.getClass();
-        for (int i = 0; i < size; i++) {
-            final T person = CUtils.getInstance(clazz);
-            this.population.add(i, person);
-        }
+    public double distance(final CPlace place) {
+        double diffX = Math.abs(getX() - place.getX());
+        double diffY = Math.abs(getY() - place.getY());
+        return Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
     }
 }

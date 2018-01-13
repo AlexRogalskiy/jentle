@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -842,5 +843,12 @@ public final class CMatrixUtils<T> {
             i /= factor;
         }
         return count;
+    }
+
+    public static double[][] generateRandomDoubleMatrix(int n, int lowerBound, int upperBound) {
+        assert (n > 0);
+        double[][] randomMatrix = new double[n][n];
+        IntStream.range(0, n).forEach(i -> IntStream.range(0, n).forEach(j -> randomMatrix[i][j] = CNumericUtils.generateRandomDouble(lowerBound, upperBound)));
+        return randomMatrix;
     }
 }

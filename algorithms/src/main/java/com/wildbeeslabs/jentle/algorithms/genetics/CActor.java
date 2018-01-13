@@ -23,47 +23,53 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+/**
+ *
+ * Custom item implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CMemberSet<T extends CMember> {
+@ToString
+public class CActor {
 
-    private List<T> population;
+    protected int trailSize;
+    protected int trail[];
+    protected boolean visited[];
 
-    public CMemberSet(int size, boolean isNew) {
-        assert (size > 0);
-        this.population = new ArrayList<>(size);
-        if (isNew) {
-            createNewPopulation(size);
+    public CActor(int trailSize) {
+        this.trailSize = trailSize;
+        this.trail = new int[trailSize];
+        this.visited = new boolean[trailSize];
+    }
+
+    protected void visit(int currentIndex, int value) {
+        this.trail[currentIndex + 1] = value;
+        this.visited[value] = true;
+    }
+
+    protected boolean visited(int i) {
+        return this.visited[i];
+    }
+
+    protected double trailLength(double graph[][]) {
+        double length = graph[trail[trailSize - 1]][trail[0]];
+        for (int i = 0; i < this.trailSize - 1; i++) {
+            length += graph[trail[i]][trail[i + 1]];
         }
+        return length;
     }
 
-    protected T getMember(int index) {
-        return this.population.get(index);
-    }
-
-    protected T getFittest() {
-        T fittest = this.population.get(0);
-        for (int i = 0; i < this.population.size(); i++) {
-            if (fittest.getFitness() <= this.getMember(i).getFitness()) {
-                fittest = getMember(i);
-            }
-        }
-        return fittest;
-    }
-
-    private void createNewPopulation(int size) {
-        final Class<? extends T> clazz = (Class<? extends T>) this.population.getClass();
-        for (int i = 0; i < size; i++) {
-            final T person = CUtils.getInstance(clazz);
-            this.population.add(i, person);
+    protected void clear() {
+        for (int i = 0; i < this.trailSize; i++) {
+            this.visited[i] = false;
         }
     }
 }

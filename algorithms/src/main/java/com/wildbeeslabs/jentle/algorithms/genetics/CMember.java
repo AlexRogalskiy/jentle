@@ -73,11 +73,11 @@ public class CMember {
 
     public int getFitness() {
         if (this.fitness == 0) {
-            this.fitness = CGenetics.SimpleGenetics.getFitness(this);
+            this.fitness = CGenetics.CMemberGenetics.getFitness(this);
         }
         return this.fitness;
     }
-    
+
     public int getGenLength() {
         return this.gens.length;
     }
