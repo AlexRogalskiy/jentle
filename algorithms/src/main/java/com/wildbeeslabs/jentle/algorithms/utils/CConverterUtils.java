@@ -35,14 +35,17 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -122,7 +125,7 @@ public final class CConverterUtils {
         return stream.collect(Collectors.mapping(mapper, Collectors.toList()));
     }
 
-    public static <E, U> Stream<U> getStreamBy(final Stream<E> stream, final Function<E, U> mapper, final Predicate<U> predicate) {
+    public static <E, U> Stream<U> getStreamBy(final Stream<E> stream, final Function<E, U> mapper, final Predicate<? super U> predicate) {
         return stream.map(mapper).filter(predicate);
     }
 
@@ -293,4 +296,51 @@ public final class CConverterUtils {
     public static <T> List<T> toImmutableList(final T... args) {
         return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::<T>unmodifiableList));
     }
+
+    public static <T, M> M convert(final List<Optional<T>> list, final Collector<T, ?, M> collector) {
+        return list.stream().flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty()).collect(collector);
+    }
+
+    public static <T> Stream<T> concatFlat(final Stream<T>... args) {
+        return Stream.of(args).flatMap(Function.identity());
+    }
+
+    public static <T> T max(final List<T> list, final Comparator<? super T> comparator) {
+        return list.stream().max(comparator).orElseThrow(NoSuchElementException::new);
+    }
+
+    public static <T> T min(final List<T> list, final Comparator<? super T> comparator) {
+        return list.stream().min(comparator).orElseThrow(NoSuchElementException::new);
+    }
+
+    public static <T> List<T> generate(final Supplier<T> supplier, int skip, int limit) {
+        final Stream<T> infiniteStreamOfRandomUUID = Stream.generate(supplier);
+        return infiniteStreamOfRandomUUID
+                .skip(skip)
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
+    public static List<UUID> generateUUID(int skip, int limit) {
+        Supplier<UUID> randomUUIDSupplier = UUID::randomUUID;
+        return generate(randomUUIDSupplier, skip, limit);
+    }
+
+    //TriFunction <Integer, String, Integer, Computer> c6Function = Computer::new;
+    //Computer c3 = c6Function.apply(2008, "black", 90);
+    @FunctionalInterface
+    interface TriFunction<A, B, C, R> {
+
+        R apply(A a, B b, C c);
+
+        default <V> TriFunction<A, B, C, V> andThen(Function<? super R, ? extends V> after) {
+            Objects.requireNonNull(after);
+            return (A a, B b, C c) -> after.apply(apply(a, b, c));
+        }
+    }
+
+    public static <T> Map<Boolean, List<T>> partitionBy(final List<T> list, final Predicate<? super T> predicate) {
+        return list.stream().collect(Collectors.partitioningBy(predicate));
+    }
+
 }

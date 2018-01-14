@@ -128,5 +128,11 @@
             <artifactId>commons-io</artifactId>
             <version>${apache.commons.io.version}</version>
         </dependency>
+        <!-- Jenetics libs -->
+        <dependency>
+            <groupId>io.jenetics</groupId>
+            <artifactId>jenetics</artifactId>
+            <version>4.0.0</version>
+        </dependency>
     </dependencies>
 </project>
