@@ -23,7 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
+import io.jenetics.util.ISeq;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,7 +32,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom member implementation
+ * Custom Springsteen item implementations
  *
  * @author Alex
  * @version 1.0.0
@@ -40,56 +41,17 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CMember {
+public class CSpringsteenItem {
 
-    /**
-     * Default gen length
-     */
-    protected static final Integer DEFAULT_GEN_LENGTH = 64;
+    protected String name;
+    protected double price;
+    protected ISeq<String> songs;
 
-    protected int fitness;
-    protected final long[] gens;
-
-    public CMember() {
-        this(CMember.DEFAULT_GEN_LENGTH);
-    }
-
-    public CMember(int genLength) {
-        assert (genLength > 0);
-        this.fitness = 0;
-        this.gens = new long[genLength];
-        for (int i = 0; i < genLength; i++) {
-            this.gens[i] = CNumericUtils.generateRandomLong();
-        }
-    }
-
-    protected long getSingleGene(int index) {
-        assert (index >= 0);
-        return this.gens[index];
-    }
-
-    protected void setSingleGene(int index, long value) {
-        assert (index >= 0);
-        this.gens[index] = value;
-        this.fitness = 0;
-    }
-
-    public int getFitness() {
-        if (this.fitness == 0) {
-            this.fitness = CGenetics.CMemberGenetics.getFitness(this);
-        }
-        return this.fitness;
-    }
-
-    public int getGenLength() {
-        return this.gens.length;
-    }
-
-    public String toFormatString() {
-        final StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < this.gens.length; i++) {
-            sb.append(this.getSingleGene(i));
-        }
-        return sb.toString();
+    public CSpringsteenItem(final String name, double price, final ISeq<String> songs) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(songs);
+        this.name = name;
+        this.price = price;
+        this.songs = songs;
     }
 }

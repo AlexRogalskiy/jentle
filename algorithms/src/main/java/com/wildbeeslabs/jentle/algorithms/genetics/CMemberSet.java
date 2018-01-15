@@ -26,32 +26,47 @@ package com.wildbeeslabs.jentle.algorithms.genetics;
 import com.wildbeeslabs.jentle.algorithms.utils.CUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
+import lombok.ToString;
 
+/**
+ *
+ * Custom member set implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
+ * @param <T>
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@ToString
 public class CMemberSet<T extends CMember> {
 
-    private List<T> population;
+    /**
+     * Default member set
+     */
+    @Setter(AccessLevel.NONE)
+    protected final List<T> members;
 
-    public CMemberSet(int size, boolean isNew) {
-        assert (size > 0);
-        this.population = new ArrayList<>(size);
+    public CMemberSet(int initialSize, boolean isNew) {
+        assert (initialSize > 0);
+        members = new ArrayList<>(initialSize);
         if (isNew) {
-            createNewPopulation(size);
+            createNewPopulation(initialSize);
         }
     }
 
-    protected T getMember(int index) {
-        return this.population.get(index);
-    }
-
     protected T getFittest() {
-        T fittest = this.population.get(0);
-        for (int i = 0; i < this.population.size(); i++) {
+        T fittest = this.members.get(0);
+        for (int i = 0; i < this.members.size(); i++) {
             if (fittest.getFitness() <= this.getMember(i).getFitness()) {
                 fittest = getMember(i);
             }
@@ -60,10 +75,44 @@ public class CMemberSet<T extends CMember> {
     }
 
     private void createNewPopulation(int size) {
-        final Class<? extends T> clazz = (Class<? extends T>) this.population.getClass();
+        final Class<? extends T> clazz = (Class<? extends T>) this.members.getClass();
         for (int i = 0; i < size; i++) {
             final T person = CUtils.getInstance(clazz);
-            this.population.add(i, person);
+            this.members.add(i, person);
+        }
+    }
+
+    public T getMember(int index) {
+        assert (index > 0);
+        if (Objects.nonNull(this.members) && index < this.members.size()) {
+            return this.members.get(index);
+        }
+        return null;
+    }
+
+    public void setMember(int index, final T value) {
+        assert (index > 0);
+        if (Objects.nonNull(this.members) && index < this.members.size()) {
+            this.members.set(index, value);
+        }
+    }
+
+    public void setMembers(final Collection<T> members) {
+        this.members.clear();
+        if (Objects.nonNull(members)) {
+            this.members.addAll(members);
+        }
+    }
+
+    public void addMember(final T member) {
+        if (Objects.nonNull(member)) {
+            this.members.add(member);
+        }
+    }
+
+    public void removeMember(final T member) {
+        if (Objects.nonNull(member)) {
+            this.members.remove(member);
         }
     }
 }

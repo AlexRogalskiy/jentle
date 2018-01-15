@@ -23,17 +23,6 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import io.jenetics.EnumGene;
-import io.jenetics.Optimize;
-import io.jenetics.PartiallyMatchedCrossover;
-import io.jenetics.Phenotype;
-import io.jenetics.SwapMutator;
-import io.jenetics.engine.Engine;
-import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import io.jenetics.engine.EvolutionStatistics;
-import static io.jenetics.engine.Limits.bySteadyFitness;
-import io.jenetics.engine.Codecs;
-
 import java.util.stream.IntStream;
 
 import lombok.Data;
@@ -59,19 +48,19 @@ public class CSalesman {
     /**
      * Default Logger instance
      */
-    private static final Logger LOGGER = LogManager.getLogger(CSalesman.class);
+    protected static final Logger LOGGER = LogManager.getLogger(CSalesman.class);
 
     /**
      * Default number of places to visit
      */
-    private static final int DEFAULT_PLACE_NUMBER = 50;
+    protected static final int DEFAULT_PLACE_NUMBER = 50;
     /**
      * Default place radius distance
      */
-    private static final double DEFAULT_PLACE_RADIUS = 50.0;
+    protected static final double DEFAULT_PLACE_RADIUS = 50.0;
 
-    private final double[][] adjacents;
-    private final int numOfPlaces;
+    protected final double[][] adjacents;
+    protected final int numOfPlaces;
 
     public CSalesman() {
         this(CSalesman.DEFAULT_PLACE_NUMBER, CSalesman.DEFAULT_PLACE_RADIUS);
@@ -98,30 +87,9 @@ public class CSalesman {
         return (2.0 * r * Math.abs(Math.sin(Math.PI * i / numOfPlaces)));
     }
 
-    private double distance(final int[] path) {
+    protected double distance(final int[] path) {
         return IntStream.range(0, this.numOfPlaces)
                 .mapToDouble(i -> adjacents[path[i]][path[(i + 1) % this.numOfPlaces]])
                 .sum();
-    }
-
-    public static void main(final String[] args) {
-        final CSalesman data = new CSalesman();
-        final Engine<EnumGene<Integer>, Double> engine = Engine.builder((path) -> data.distance(path), Codecs.ofPermutation(data.numOfPlaces))
-                .optimize(Optimize.MINIMUM)
-                .maximalPhenotypeAge(11)
-                .populationSize(500)
-                .alterers(new SwapMutator<>(0.2), new PartiallyMatchedCrossover<>(0.35))
-                .build();
-
-        final EvolutionStatistics<Double, ?> statistics = EvolutionStatistics.ofNumber();
-
-        final Phenotype<EnumGene<Integer>, Double> best = engine.stream()
-                .limit(bySteadyFitness(15))
-                .limit(250)
-                .peek(statistics)
-                .collect(toBestPhenotype());
-
-        LOGGER.debug("Evolution statistics: " + statistics);
-        LOGGER.debug("Best phenotype" + best);
     }
 }

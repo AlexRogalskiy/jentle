@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.genetics;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
 import com.wildbeeslabs.jentle.algorithms.utils.CUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,8 +56,8 @@ public class CTour<T extends CPlace> {
      */
     protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    private List<T> travel = new ArrayList<>();
-    private List<T> previousTravel = new ArrayList<>();
+    protected List<T> travel = new ArrayList<>();
+    protected List<T> previousTravel = new ArrayList<>();
 
     public CTour(int numOfPlaces) {
         this.generateInitialTravel(numOfPlaces);

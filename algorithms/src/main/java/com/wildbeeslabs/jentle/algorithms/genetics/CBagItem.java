@@ -31,7 +31,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom member implementation
+ * Custom bag item implementations
  *
  * @author Alex
  * @version 1.0.0
@@ -40,56 +40,17 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CMember {
+public class CBagItem {
 
-    /**
-     * Default gen length
-     */
-    protected static final Integer DEFAULT_GEN_LENGTH = 64;
+    protected double size;
+    protected double value;
 
-    protected int fitness;
-    protected final long[] gens;
-
-    public CMember() {
-        this(CMember.DEFAULT_GEN_LENGTH);
+    public CBagItem(double size, double value) {
+        this.size = size;
+        this.value = value;
     }
 
-    public CMember(int genLength) {
-        assert (genLength > 0);
-        this.fitness = 0;
-        this.gens = new long[genLength];
-        for (int i = 0; i < genLength; i++) {
-            this.gens[i] = CNumericUtils.generateRandomLong();
-        }
-    }
-
-    protected long getSingleGene(int index) {
-        assert (index >= 0);
-        return this.gens[index];
-    }
-
-    protected void setSingleGene(int index, long value) {
-        assert (index >= 0);
-        this.gens[index] = value;
-        this.fitness = 0;
-    }
-
-    public int getFitness() {
-        if (this.fitness == 0) {
-            this.fitness = CGenetics.CMemberGenetics.getFitness(this);
-        }
-        return this.fitness;
-    }
-
-    public int getGenLength() {
-        return this.gens.length;
-    }
-
-    public String toFormatString() {
-        final StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < this.gens.length; i++) {
-            sb.append(this.getSingleGene(i));
-        }
-        return sb.toString();
+    protected static CBagItem random(int lowerBound, int upperBound) {
+        return new CBagItem(CNumericUtils.generateRandomDouble(lowerBound, upperBound), CNumericUtils.generateRandomDouble(lowerBound, upperBound));
     }
 }

@@ -42,8 +42,8 @@ import lombok.ToString;
 @ToString
 public class CPlace {
 
-    private double x;
-    private double y;
+    protected double x;
+    protected double y;
 
     public CPlace() {
         this(0, Integer.MAX_VALUE);
@@ -59,8 +59,8 @@ public class CPlace {
     }
 
     public double distance(final CPlace place) {
-        double diffX = Math.abs(getX() - place.getX());
-        double diffY = Math.abs(getY() - place.getY());
+        double diffX = Math.abs(this.getX() - place.getX());
+        double diffY = Math.abs(this.getY() - place.getY());
         return Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
     }
 }

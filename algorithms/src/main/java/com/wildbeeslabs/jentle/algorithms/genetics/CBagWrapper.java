@@ -23,7 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
+import io.jenetics.BitChromosome;
+import io.jenetics.BitGene;
+import io.jenetics.Genotype;
+
+import java.util.function.Function;
+import java.util.stream.Collector;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,65 +36,42 @@ import lombok.ToString;
 
 /**
  *
- * Custom member implementation
+ * Custom bag wrapper implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CMember {
+public class CBagWrapper<T extends CBagItem> implements Function<Genotype<BitGene>, Double> {
 
-    /**
-     * Default gen length
-     */
-    protected static final Integer DEFAULT_GEN_LENGTH = 64;
+    protected T[] items;
+    protected double size;
 
-    protected int fitness;
-    protected final long[] gens;
-
-    public CMember() {
-        this(CMember.DEFAULT_GEN_LENGTH);
+    public CBagWrapper(final T[] items, double size) {
+        this.items = items;
+        this.size = size;
     }
 
-    public CMember(int genLength) {
-        assert (genLength > 0);
-        this.fitness = 0;
-        this.gens = new long[genLength];
-        for (int i = 0; i < genLength; i++) {
-            this.gens[i] = CNumericUtils.generateRandomLong();
-        }
+    @Override
+    public Double apply(final Genotype<BitGene> gt) {
+        final CBagItem sum = ((BitChromosome) gt.getChromosome()).ones()
+                .mapToObj(i -> items[i])
+                .collect(toSum());
+        return sum.size <= this.size ? sum.value : 0.0;
     }
 
-    protected long getSingleGene(int index) {
-        assert (index >= 0);
-        return this.gens[index];
-    }
-
-    protected void setSingleGene(int index, long value) {
-        assert (index >= 0);
-        this.gens[index] = value;
-        this.fitness = 0;
-    }
-
-    public int getFitness() {
-        if (this.fitness == 0) {
-            this.fitness = CGenetics.CMemberGenetics.getFitness(this);
-        }
-        return this.fitness;
-    }
-
-    public int getGenLength() {
-        return this.gens.length;
-    }
-
-    public String toFormatString() {
-        final StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < this.gens.length; i++) {
-            sb.append(this.getSingleGene(i));
-        }
-        return sb.toString();
+    protected Collector<CBagItem, ?, CBagItem> toSum() {
+        return Collector.of(() -> new double[2], (a, b) -> {
+            a[0] += b.size;
+            a[1] += b.value;
+        }, (a, b) -> {
+            a[0] += b[0];
+            a[1] += b[1];
+            return a;
+        }, r -> new CBagItem(r[0], r[1]));
     }
 }
