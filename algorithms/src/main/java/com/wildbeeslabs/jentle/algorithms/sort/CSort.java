@@ -68,7 +68,7 @@ public final class CSort {
         array[left] = array[right];
         array[right] = temp;
     }
-
+    //Comparator<String> cmp = (x, y) -> x.compareToIgnoreCase(y);
     public static class CStringComparator extends CUtils.CSortComparator<String> {
 
         @Override
