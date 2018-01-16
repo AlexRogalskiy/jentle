@@ -29,6 +29,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import lombok.Data;
@@ -52,8 +53,8 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
 
     protected U parent;
     protected ACTreeNode.State state;
-    protected final Comparator<? super T> comparator;
-    protected final Collection<U> childs = new ArrayList<>();
+    protected Comparator<? super T> comparator;
+    protected final List<U> childs = new ArrayList<>();
 
     public static enum State {
 
@@ -79,6 +80,14 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
         this.comparator = comparator;
     }
 
+    public void copy(final U node) {
+        Objects.requireNonNull(node);
+        this.comparator = node.getComparator();
+        this.parent = node.getParent();
+        this.state = node.getState();
+        this.setChilds(node.getChilds());
+    }
+
     public Collection<U> getChilds() {
         return this.childs;
     }
@@ -100,5 +109,10 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
         if (Objects.nonNull(child)) {
             this.childs.remove(child);
         }
+    }
+
+    public U getRandomChild() {
+        int selectRandom = (int) (Math.random() * ((this.childs.size() - 1) + 1));
+        return this.childs.get(selectRandom);
     }
 }
