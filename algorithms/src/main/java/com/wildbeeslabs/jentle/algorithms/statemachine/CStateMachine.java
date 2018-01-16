@@ -45,7 +45,7 @@ import lombok.ToString;
 public class CStateMachine<C, S extends ICState<C, ICTransition<C, S>>> implements ICStateMachine<C, S> {
 
     @Setter(AccessLevel.NONE)
-    private final S state;
+    protected final S state;
 
     public CStateMachine(final S state) {
         this.state = state;

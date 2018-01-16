@@ -36,8 +36,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,6 +48,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -56,6 +60,11 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2017-08-07
  */
 public final class CMisc {
+
+    /**
+     * Default Logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CMisc.class);
 
     private CMisc() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -1018,5 +1027,196 @@ public final class CMisc {
             }
         }
         return similarities;
+    }
+
+    public static class CClimbingAlgorithms {
+
+        @Data
+        @EqualsAndHashCode(callSuper = false)
+        @ToString
+        public static class State {
+
+            private List<Stack<String>> state;
+            private int heuristics;
+
+            public State(final List<Stack<String>> state) {
+                this.state = state;
+            }
+
+            public State(final List<Stack<String>> state, int heuristics) {
+                this.state = state;
+                this.heuristics = heuristics;
+            }
+
+            public State(final State state) {
+                if (Objects.nonNull(state)) {
+                    this.state = new ArrayList<>();
+                    for (final Stack s : state.getState()) {
+                        Stack s1;
+                        s1 = (Stack) s.clone();
+                        this.state.add(s1);
+                    }
+                    this.heuristics = state.getHeuristics();
+                }
+            }
+        }
+
+        @Data
+        @EqualsAndHashCode(callSuper = false)
+        @ToString
+        public static class CClimbing {
+
+            private static void printEachStep(final State state) {
+                final List<Stack<String>> stackList = state.getState();
+                stackList.forEach(stack -> {
+                    while (!stack.isEmpty()) {
+                        LOGGER.debug(stack.pop());
+                    }
+                    LOGGER.debug(" ");
+                });
+            }
+
+            private Stack<String> getStackWithValues(final String[] blocks) {
+                Stack<String> stack = new Stack<>();
+                for (final String block : blocks) {
+                    stack.push(block);
+                }
+                return stack;
+            }
+
+            public List<State> getRouteWithHillClimbing(final Stack<String> initStateStack, final Stack<String> goalStateStack) throws Exception {
+                List<Stack<String>> initStateStackList = new ArrayList<>();
+                initStateStackList.add(initStateStack);
+                int initStateHeuristics = getHeuristicsValue(initStateStackList, goalStateStack);
+                final State initState = new State(initStateStackList, initStateHeuristics);
+
+                List<State> resultPath = new ArrayList<>();
+                resultPath.add(new State(initState));
+
+                State currentState = initState;
+                boolean noStateFound = false;
+                while (!currentState.getState()
+                        .get(0)
+                        .equals(goalStateStack) || noStateFound) {
+                    noStateFound = true;
+                    State nextState = findNextState(currentState, goalStateStack);
+                    if (nextState != null) {
+                        noStateFound = false;
+                        currentState = nextState;
+                        resultPath.add(new State(nextState));
+                    }
+                }
+                return resultPath;
+            }
+
+            public State findNextState(final State currentState, final Stack<String> goalStateStack) {
+                List<Stack<String>> listOfStacks = currentState.getState();
+                int currentStateHeuristics = currentState.getHeuristics();
+                return listOfStacks.stream()
+                        .map(stack -> {
+                            return applyOperationsOnState(listOfStacks, stack, currentStateHeuristics, goalStateStack);
+                        })
+                        .filter(Objects::nonNull)
+                        .findFirst()
+                        .orElse(null);
+            }
+
+            public State applyOperationsOnState(final List<Stack<String>> listOfStacks, final Stack<String> stack, int currentStateHeuristics, final Stack<String> goalStateStack) {
+                State tempState;
+                List<Stack<String>> tempStackList = new ArrayList<>(listOfStacks);
+                String block = stack.pop();
+                if (stack.size() == 0) {
+                    tempStackList.remove(stack);
+                }
+                tempState = pushElementToNewStack(tempStackList, block, currentStateHeuristics, goalStateStack);
+                if (tempState == null) {
+                    tempState = pushElementToExistingStacks(stack, tempStackList, block, currentStateHeuristics, goalStateStack);
+                }
+                if (tempState == null) {
+                    stack.push(block);
+                }
+                return tempState;
+            }
+
+            private State pushElementToNewStack(final List<Stack<String>> currentStackList, final String block, int currentStateHeuristics, final Stack<String> goalStateStack) {
+                State newState = null;
+                final Stack<String> newStack = new Stack<>();
+                newStack.push(block);
+                currentStackList.add(newStack);
+                int newStateHeuristics = getHeuristicsValue(currentStackList, goalStateStack);
+                if (newStateHeuristics > currentStateHeuristics) {
+                    newState = new State(currentStackList, newStateHeuristics);
+                } else {
+                    currentStackList.remove(newStack);
+                }
+                return newState;
+            }
+
+            private State pushElementToExistingStacks(final Stack currentStack, final List<Stack<String>> currentStackList, String block, int currentStateHeuristics, Stack<String> goalStateStack) {
+                Optional<State> newState = currentStackList.stream()
+                        .filter(stack -> stack != currentStack)
+                        .map(stack -> {
+                            return pushElementToStack(stack, block, currentStackList, currentStateHeuristics, goalStateStack);
+                        })
+                        .filter(Objects::nonNull)
+                        .findFirst();
+
+                return newState.orElse(null);
+            }
+
+            /**
+             * This method pushes a block to the stack and returns new state if
+             * its closer to goal
+             */
+            private State pushElementToStack(Stack stack, String block, List<Stack<String>> currentStackList, int currentStateHeuristics, final Stack<String> goalStateStack) {
+                stack.push(block);
+                int newStateHeuristics = getHeuristicsValue(currentStackList, goalStateStack);
+                if (newStateHeuristics > currentStateHeuristics) {
+                    return new State(currentStackList, newStateHeuristics);
+                }
+                stack.pop();
+                return null;
+            }
+
+            public int getHeuristicsValue(final List<Stack<String>> currentState, final Stack<String> goalStateStack) {
+                Integer heuristicValue;
+                heuristicValue = currentState.stream()
+                        .mapToInt(stack -> {
+                            return getHeuristicsValueForStack(stack, currentState, goalStateStack);
+                        })
+                        .sum();
+                return heuristicValue;
+            }
+
+            public int getHeuristicsValueForStack(final Stack<String> stack, final List<Stack<String>> currentState, final Stack<String> goalStateStack) {
+                int stackHeuristics = 0;
+                boolean isPositioneCorrect = true;
+                int goalStartIndex = 0;
+                for (String currentBlock : stack) {
+                    if (isPositioneCorrect && currentBlock.equals(goalStateStack.get(goalStartIndex))) {
+                        stackHeuristics += goalStartIndex;
+                    } else {
+                        stackHeuristics -= goalStartIndex;
+                        isPositioneCorrect = false;
+                    }
+                    goalStartIndex++;
+                }
+                return stackHeuristics;
+            }
+        }
+
+        public void runTask() {
+            final CClimbing сlimbing = new CClimbing();
+            String blockArr[] = {"B", "C", "D", "A"};
+            final Stack<String> startState = сlimbing.getStackWithValues(blockArr);
+            String goalBlockArr[] = {"A", "B", "C", "D"};
+            final Stack<String> endState = сlimbing.getStackWithValues(goalBlockArr);
+            try {
+                final List<State> solutionSequence = сlimbing.getRouteWithHillClimbing(startState, endState);
+                solutionSequence.forEach(CClimbing::printEachStep);
+            } catch (Exception ex) {
+                LOGGER.debug("ERROR: cannot process climbing routes: message=" + ex.getMessage());
+            }
+        }
     }
 }

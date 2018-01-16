@@ -25,8 +25,8 @@ package com.wildbeeslabs.jentle.algorithms.statemachine;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -50,8 +50,8 @@ public class CState<C, T extends ICTransition<C, ICState<C, T>>> implements ICSt
 
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
-    private final List<T> transitions = new ArrayList<>();
-    private boolean isFinal;
+    protected final List<T> transitions = new ArrayList<>();
+    protected boolean isFinal;
 
     public CState() {
         this(Boolean.FALSE);

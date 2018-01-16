@@ -43,8 +43,8 @@ import lombok.ToString;
 @ToString
 public class CTransition<C, S extends ICState<C, ICTransition<C, S>>> implements ICTransition<C, S> {
 
-    private C value;
-    private S state;
+    protected C value;
+    protected S state;
 
     public CTransition(final C value, final S state) {
         this.value = value;

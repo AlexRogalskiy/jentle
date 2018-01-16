@@ -23,7 +23,9 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.algorithms.bitwise.CBitwise;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import java.util.ArrayList;
@@ -459,5 +461,15 @@ public final class CNumericUtils {
 
     public static int max(int... numbers) {
         return Arrays.stream(numbers).max().orElse(Integer.MIN_VALUE);
+    }
+
+    public static long getBiggerPrime(int m) {
+        final BigInteger prime = BigInteger.probablePrime(CBitwise.getNumberOfBits(m) + 1, new Random());
+        return prime.longValue();
+    }
+
+    public static long getLowerPrime(long number) {
+        final BigInteger prime = BigInteger.probablePrime(CBitwise.getNumberOfBits(number) - 1, new Random());
+        return prime.longValue();
     }
 }

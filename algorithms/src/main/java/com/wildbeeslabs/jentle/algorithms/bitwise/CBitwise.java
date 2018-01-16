@@ -89,7 +89,7 @@ public final class CBitwise {
 
     public static int clearBithsIthrough0(int num, int index) {
         assert (index >= 0);
-        int mask = ~(-1 >>> ((DEFAULT_INT_SIZE - 1) - index));
+        int mask = ~(-1 >>> ((CBitwise.DEFAULT_INT_SIZE - 1) - index));
         return num & mask;
     }
 
@@ -119,7 +119,7 @@ public final class CBitwise {
     }
 
     public static int sign(int num) {
-        return flip((num >> DEFAULT_INT_SIZE - 1) & 0x1);
+        return flip((num >> CBitwise.DEFAULT_INT_SIZE - 1) & 0x1);
     }
 
     public static int flip(int bit) {
@@ -130,7 +130,7 @@ public final class CBitwise {
         if (num != ~0) {
             return -1;
         }
-        for (int i = 0; i < DEFAULT_INT_SIZE; i++) {
+        for (int i = 0; i < CBitwise.DEFAULT_INT_SIZE; i++) {
             int mask = 1 << i;
             if ((num & mask) == 0) {
                 return i;
@@ -191,7 +191,7 @@ public final class CBitwise {
 
     public static int longestSequence(int num) {
         if (-1 == num) {
-            return DEFAULT_INT_SIZE;
+            return CBitwise.DEFAULT_INT_SIZE;
         }
         final List<Integer> sequences = getAlternatingSequences(num);
         return findLongestSequence(sequences);
@@ -201,7 +201,7 @@ public final class CBitwise {
         final List<Integer> sequences = new ArrayList<>();
         int searchingFor = 0;
         int counter = 0;
-        for (int i = 0; i < DEFAULT_INT_SIZE; i++) {
+        for (int i = 0; i < CBitwise.DEFAULT_INT_SIZE; i++) {
             if ((num & 1) != searchingFor) {
                 sequences.add(counter);
                 searchingFor = num & 1;
@@ -235,7 +235,7 @@ public final class CBitwise {
 
     public static int flipBit(int num) {
         if (0 == ~num) {
-            return DEFAULT_INT_SIZE;
+            return CBitwise.DEFAULT_INT_SIZE;
         }
         int currentLength = 0;
         int previousLength = 0;
@@ -265,7 +265,7 @@ public final class CBitwise {
             c1++;
             c >>= 1;
         }
-        if ((c0 + c1 == (DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
+        if ((c0 + c1 == (CBitwise.DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
             return -1;
         }
         int p = c0 + c1;
@@ -309,7 +309,7 @@ public final class CBitwise {
             c1++;
             c >>= 1;
         }
-        if ((c0 + c1 == (DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
+        if ((c0 + c1 == (CBitwise.DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
             return -1;
         }
         return num + (1 << c0) + (1 << (c1 - 1)) - 1;
@@ -437,5 +437,13 @@ public final class CBitwise {
             number = number / 2;
         }
         return numberOfOnes;
+    }
+
+    public static int getNumberOfBits(int number) {
+        return Integer.SIZE - Integer.numberOfLeadingZeros(number);
+    }
+
+    public static int getNumberOfBits(long number) {
+        return Long.SIZE - Long.numberOfLeadingZeros(number);
     }
 }
