@@ -56,7 +56,13 @@ public class CTour<T extends CPlace> {
      */
     protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
+    /**
+     * Default travel list
+     */
     protected List<T> travel = new ArrayList<>();
+    /**
+     * Default previous travel list
+     */
     protected List<T> previousTravel = new ArrayList<>();
 
     public CTour(int numOfPlaces) {
@@ -65,7 +71,7 @@ public class CTour<T extends CPlace> {
 
     public void generateInitialTravel(int num) {
         if (this.travel.isEmpty()) {
-            final Class<? extends T> clazz = (Class<? extends T>) this.travel.getClass();
+            final Class<? extends T> clazz = (Class<? extends T>) CPlace.class;
             for (int i = 0; i < num; i++) {
                 this.travel.add((T) CUtils.getInstance(clazz));
             }
@@ -104,5 +110,27 @@ public class CTour<T extends CPlace> {
             distance += starting.distance(destination);
         }
         return distance;
+    }
+
+    public double getBestDistance(int iterations, double temperature, double coolRate) {
+        LOGGER.debug("Initial state: iterations=" + iterations + ", temperature=" + temperature + ", coolRate=" + coolRate);
+        double t = temperature;
+        double bestDistance = this.getDistance();
+        LOGGER.debug("Initial travel distance=" + bestDistance);
+
+        final CTour<T> currentSolution = this;
+        for (int i = 0; i < iterations; i++) {
+            if (t > 0.1) {
+                currentSolution.swapPlaces();
+                double currentDistance = currentSolution.getDistance();
+                if (currentDistance < bestDistance) {
+                    bestDistance = currentDistance;
+                } else if (Math.exp((bestDistance - currentDistance) / t) < Math.random()) {
+                    currentSolution.revertSwapPlaces();
+                }
+                t *= coolRate;
+            }
+        }
+        return bestDistance;
     }
 }

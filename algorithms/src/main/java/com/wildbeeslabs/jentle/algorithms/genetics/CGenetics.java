@@ -53,6 +53,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.OptionalInt;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -365,44 +367,11 @@ public final class CGenetics {
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
-    public static class CTourGenetics<T extends CPlace, E extends CTour<T>> {
+    public static class CTourGenetics<T extends CPlace> {
 
-        /**
-         * Default tour size
-         */
-        private static final int DEFAULT_TOUR_SIZE = 10;
-
-        private E travel;
-
-        public CTourGenetics() {
-            this(CTourGenetics.DEFAULT_TOUR_SIZE);
-        }
-
-        public CTourGenetics(int tourSize) {
-            assert (tourSize > 0);
-            this.travel = (E) new CTour<>(tourSize);
-        }
-
-        public double getBestDistance(int iterations, double temperature, double coolRate) {
-            LOGGER.debug("Initial state: iterations=" + iterations + ", temperature=" + temperature + ", coolRate=" + coolRate);
-            double t = temperature;
-            double bestDistance = this.travel.getDistance();
-            LOGGER.debug("Initial travel distance=" + bestDistance);
-
-            final E currentSolution = this.travel;
-            for (int i = 0; i < iterations; i++) {
-                if (t > 0.1) {
-                    currentSolution.swapPlaces();
-                    double currentDistance = currentSolution.getDistance();
-                    if (currentDistance < bestDistance) {
-                        bestDistance = currentDistance;
-                    } else if (Math.exp((bestDistance - currentDistance) / t) < Math.random()) {
-                        currentSolution.revertSwapPlaces();
-                    }
-                    t *= coolRate;
-                }
-            }
-            return bestDistance;
+        public void runTask() {
+            final CTour<T> travel = new CTour<>(10);
+            travel.getBestDistance(100, 10.0, 0.5);
         }
     }
 
@@ -412,9 +381,7 @@ public final class CGenetics {
     public static class CSimpleGenetics {
 
         private static Integer eval(final Genotype<BitGene> gt) {
-            return gt.getChromosome()
-                    .as(BitChromosome.class)
-                    .bitCount();
+            return gt.getChromosome().as(BitChromosome.class).bitCount();
         }
 
         public void runTask() {
@@ -441,22 +408,19 @@ public final class CGenetics {
 
         public void runTask() {
             double size = CBagGenetics.DEFAULT_ITEMS_NUMBER * 100.0 / 3.0;
-
             final CBagWrapper wrapper = new CBagWrapper(Stream.generate(() -> CBagItem.random(0, 100)).limit(CBagGenetics.DEFAULT_ITEMS_NUMBER).toArray(CBagItem[]::new), size);
-
-            Engine<BitGene, Double> engine = Engine.builder(wrapper, BitChromosome.of(CBagGenetics.DEFAULT_ITEMS_NUMBER, 0.5))
+            final Engine<BitGene, Double> engine = Engine.builder(wrapper, BitChromosome.of(CBagGenetics.DEFAULT_ITEMS_NUMBER, 0.5))
                     .populationSize(500)
                     .survivorsSelector(new TournamentSelector<>(5))
                     .offspringSelector(new RouletteWheelSelector<>())
                     .alterers(new Mutator<>(0.115), new SinglePointCrossover<>(0.16))
                     .build();
-            EvolutionStatistics<Double, ?> statistics = EvolutionStatistics.ofNumber();
-            Phenotype<BitGene, Double> best = engine.stream()
+            final EvolutionStatistics<Double, ?> statistics = EvolutionStatistics.ofNumber();
+            final Phenotype<BitGene, Double> best = engine.stream()
                     .limit(bySteadyFitness(7))
                     .limit(100)
                     .peek(statistics)
                     .collect(toBestPhenotype());
-
             LOGGER.debug(statistics);
             LOGGER.debug(best);
         }
@@ -475,15 +439,12 @@ public final class CGenetics {
                     .populationSize(500)
                     .alterers(new SwapMutator<>(0.2), new PartiallyMatchedCrossover<>(0.35))
                     .build();
-
             final EvolutionStatistics<Double, ?> statistics = EvolutionStatistics.ofNumber();
-
             final Phenotype<EnumGene<Integer>, Double> best = engine.stream()
                     .limit(bySteadyFitness(15))
                     .limit(250)
                     .peek(statistics)
                     .collect(toBestPhenotype());
-
             LOGGER.debug("Evolution statistics: " + statistics);
             LOGGER.debug("Best phenotype" + best);
         }
@@ -497,17 +458,15 @@ public final class CGenetics {
         public void runTask() {
             double maxPricePerUniqueSong = 2.5;
             final CSpringsteen springsteen = new CSpringsteen(
-                    ISeq.of(new CSpringsteenItem("SpringsteenRecord1", 25, ISeq.of("Song1", "Song2", "Song3", "Song4", "Song5", "Song6")), new CSpringsteenItem("SpringsteenRecord2", 15, ISeq.of("Song2", "Song3", "Song4", "Song5", "Song6", "Song7")),
-                            new CSpringsteenItem("SpringsteenRecord3", 35, ISeq.of("Song5", "Song6", "Song7", "Song8", "Song9", "Song10")), new CSpringsteenItem("SpringsteenRecord4", 17, ISeq.of("Song9", "Song10", "Song12", "Song4", "Song13", "Song14")),
-                            new CSpringsteenItem("SpringsteenRecord5", 29, ISeq.of("Song1", "Song2", "Song13", "Song14", "Song15", "Song16")), new CSpringsteenItem("SpringsteenRecord6", 5, ISeq.of("Song18", "Song20", "Song30", "Song40"))),
+                    ISeq.of(new CSpringsteenItem("Item1", 25, ISeq.of("Song1", "Song2", "Song3", "Song4", "Song5", "Song6")), new CSpringsteenItem("Item2", 15, ISeq.of("Song2", "Song3", "Song4", "Song5", "Song6", "Song7")),
+                            new CSpringsteenItem("Item3", 35, ISeq.of("Song5", "Song6", "Song7", "Song8", "Song9", "Song10")), new CSpringsteenItem("Item4", 17, ISeq.of("Song9", "Song10", "Song12", "Song4", "Song13", "Song14")),
+                            new CSpringsteenItem("Item5", 29, ISeq.of("Song1", "Song2", "Song13", "Song14", "Song15", "Song16")), new CSpringsteenItem("Item6", 5, ISeq.of("Song18", "Song20", "Song30", "Song40"))),
                     maxPricePerUniqueSong);
 
-            Engine<BitGene, Double> engine = Engine.builder(springsteen).build();
-
-            ISeq<CSpringsteenItem> result = springsteen.codec()
+            final Engine<BitGene, Double> engine = Engine.builder(springsteen).build();
+            final ISeq<CSpringsteenItem> result = springsteen.codec()
                     .decoder()
                     .apply(engine.stream().limit(10).collect(EvolutionResult.toBestGenotype()));
-
             double cost = result.stream()
                     .mapToDouble(r -> r.price)
                     .sum();
@@ -516,15 +475,38 @@ public final class CGenetics {
                     .collect(Collectors.toSet())
                     .size();
             double pricePerUniqueSong = cost / uniqueSongCount;
-
-            LOGGER.debug("Total cost:  " + cost);
+            LOGGER.debug("Total cost: " + cost);
             LOGGER.debug("Unique songs:  " + uniqueSongCount);
             LOGGER.debug("Price per song: " + pricePerUniqueSong);
             LOGGER.debug("Items: " + result.map(r -> r.name).toString(", "));
         }
     }
 
-    public static void main(final String[] args) {
-        new CGenetics.CSimpleGenetics().runTask();
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class CSumGenetics {
+
+        public static <T, R extends Number> CSum<R> of(int limit, int groupSize, final Supplier<T> supplier, final Function<? super T, ? extends R> mapper) {
+            assert (limit > 0);
+            assert (groupSize > 0);
+            return new CSum(Stream.generate(supplier)
+                    .limit(limit)
+                    .map(mapper)
+                    .collect(ISeq.toISeq()), groupSize);
+        }
+
+        public void runTask() {
+            final CSum<Integer> task = CSumGenetics.of(500, 15, CNumericUtils::generateRandomDouble, d -> (int) ((d - 0.5) * 500));
+            final Engine<EnumGene<Integer>, Integer> engine = Engine.builder(task)
+                    .minimizing()
+                    .maximalPhenotypeAge(5)
+                    .alterers(new PartiallyMatchedCrossover<>(0.4), new Mutator<>(0.3))
+                    .build();
+            final Phenotype<EnumGene<Integer>, Integer> result = engine.stream()
+                    .limit(bySteadyFitness(55))
+                    .collect(EvolutionResult.toBestPhenotype());
+            LOGGER.debug(result);
+        }
     }
 }

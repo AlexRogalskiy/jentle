@@ -50,27 +50,25 @@ import lombok.ToString;
 @ToString
 public class CSpringsteen implements Problem<ISeq<CSpringsteenItem>, BitGene, Double> {
 
-    private ISeq<CSpringsteenItem> records;
+    private ISeq<CSpringsteenItem> items;
     private double maxPricePerUniqueSong;
 
-    public CSpringsteen(final ISeq<CSpringsteenItem> records, double maxPricePerUniqueSong) {
-        Objects.requireNonNull(records);
-        this.records = records;
+    public CSpringsteen(final ISeq<CSpringsteenItem> items, double maxPricePerUniqueSong) {
+        Objects.requireNonNull(items);
+        this.items = items;
         this.maxPricePerUniqueSong = maxPricePerUniqueSong;
     }
 
     @Override
     public Function<ISeq<CSpringsteenItem>, Double> fitness() {
-        return SpringsteenRecords -> {
-            double cost = SpringsteenRecords.stream()
+        return SpringsteenItemss -> {
+            double cost = SpringsteenItemss.stream()
                     .mapToDouble(r -> r.price)
                     .sum();
-
-            int uniqueSongCount = SpringsteenRecords.stream()
+            int uniqueSongCount = SpringsteenItemss.stream()
                     .flatMap(r -> r.songs.stream())
                     .collect(Collectors.toSet())
                     .size();
-
             double pricePerUniqueSong = cost / uniqueSongCount;
             return pricePerUniqueSong <= maxPricePerUniqueSong ? uniqueSongCount : 0.0;
         };
@@ -78,6 +76,6 @@ public class CSpringsteen implements Problem<ISeq<CSpringsteenItem>, BitGene, Do
 
     @Override
     public Codec<ISeq<CSpringsteenItem>, BitGene> codec() {
-        return Codecs.ofSubSet(records);
+        return Codecs.ofSubSet(this.items);
     }
 }

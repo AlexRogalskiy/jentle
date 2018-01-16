@@ -71,11 +71,11 @@ public final class CConverterUtils {
     private static final Logger LOGGER = LogManager.getLogger(CConverterUtils.class);
 
     private CConverterUtils() {
-        LOGGER.debug("Initializing convert utils toolset...");
+        LOGGER.debug("Initializing converter utils...");
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <T, K, V> Map<K, V> convertToMap(final Stream<T> stream, final Function<T, K> keys, final Function<T, V> values) {
+    public static <T, K, V> Map<K, V> convertToMap(final Stream<? extends T> stream, final Function<? super T, ? extends K> keys, final Function<? super T, ? extends V> values) {
         return stream.collect(Collectors.toMap(keys, values));
     }
 
@@ -85,55 +85,55 @@ public final class CConverterUtils {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
-    public static <T> Map<Integer, IntSummaryStatistics> getMapStatisticsBy(final Stream<T> stream, final Function<T, Integer> groupingBy, final ToIntFunction<? super T> mapper) {
+    public static <T> Map<Integer, IntSummaryStatistics> getMapStatisticsBy(final Stream<? extends T> stream, final Function<? super T, ? extends Integer> groupingBy, final ToIntFunction<? super T> mapper) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.summarizingInt(mapper)));
     }
 
-    public static <T, K> Map<K, Optional<T>> getMapMaxBy(final Stream<T> stream, final Function<T, K> groupingBy, final Comparator<? super T> cmp) {
+    public static <T, K> Map<K, Optional<T>> getMapMaxBy(final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.maxBy(cmp)));
     }
 
-    public static <T, K> Map<K, Optional<T>> getMapMinBy(final Stream<T> stream, final Function<T, K> groupingBy, final Comparator<? super T> cmp) {
+    public static <T, K> Map<K, Optional<T>> getMapMinBy(final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.minBy(cmp)));
     }
 
-    public static <T> Optional<T> getMaxBy(final Stream<T> stream, final Comparator<? super T> cmp) {
+    public static <T> Optional<T> getMaxBy(final Stream<? extends T> stream, final Comparator<? super T> cmp) {
         return getMinMaxBy(stream, Collectors.maxBy(cmp));
     }
 
-    public static <T> Optional<T> getMinBy(final Stream<T> stream, final Comparator<? super T> cmp) {
+    public static <T> Optional<T> getMinBy(final Stream<? extends T> stream, final Comparator<? super T> cmp) {
         return getMinMaxBy(stream, Collectors.minBy(cmp));
     }
 
-    protected static <T> Optional<T> getMinMaxBy(final Stream<T> stream, final Collector<T, ?, Optional<T>> collector) {
+    protected static <T> Optional<T> getMinMaxBy(final Stream<? extends T> stream, final Collector<T, ?, Optional<T>> collector) {
         return stream.collect(collector);
     }
 
-    public static <E> Map<Integer, Long> getMapCountBy(final Stream<E> stream, final Function<E, Integer> groupingBy) {
+    public static <E> Map<Integer, Long> getMapCountBy(final Stream<? extends E> stream, final Function<? super E, ? extends Integer> groupingBy) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.counting()));
     }
 
-    public static <E, K, U> Map<K, List<U>> convertToMapList(final Stream<E> stream, final Function<E, K> groupingBy, final Function<E, U> mapper) {
+    public static <E, K, U> Map<K, List<U>> convertToMapList(final Stream<? extends E> stream, final Function<? super E, ? extends K> groupingBy, final Function<? super E, ? extends U> mapper) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.mapping(mapper, Collectors.toList())));
     }
 
-    public static <E, K, U> Map<K, Set<U>> convertToMapSet(final Stream<E> stream, final Function<E, K> groupingBy, final Function<E, U> mapper) {
+    public static <E, K, U> Map<K, Set<U>> convertToMapSet(final Stream<? extends E> stream, final Function<? super E, ? extends K> groupingBy, final Function<? super E, ? extends U> mapper) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.mapping(mapper, Collectors.toSet())));
     }
 
-    public static <E, U> List<U> convertToList(final Stream<E> stream, final Function<E, U> mapper) {
+    public static <E, U> List<U> convertToList(final Stream<? extends E> stream, final Function<? super E, ? extends U> mapper) {
         return stream.collect(Collectors.mapping(mapper, Collectors.toList()));
     }
 
-    public static <E, U> Stream<U> getStreamBy(final Stream<E> stream, final Function<E, U> mapper, final Predicate<? super U> predicate) {
+    public static <E, U> Stream<U> getStreamBy(final Stream<? extends E> stream, final Function<? super E, ? extends U> mapper, final Predicate<? super U> predicate) {
         return stream.map(mapper).filter(predicate);
     }
 
-    public static <E> Stream<E> getStreamSortedBy(final Stream<E> stream, final Comparator<? super E> cmp) {
+    public static <E> Stream<? extends E> getStreamSortedBy(final Stream<? extends E> stream, final Comparator<? super E> cmp) {
         return stream.sorted(cmp);
     }
 
-    public static <T, K> Map<K, Integer> getMapSumBy(final Stream<T> stream, final Function<T, K> keys, final Function<T, Integer> values) {
+    public static <T, K> Map<K, Integer> getMapSumBy(final Stream<? extends T> stream, final Function<T, K> keys, final Function<T, Integer> values) {
         return stream.collect(Collectors.toMap(keys, values, Integer::sum));
     }
 
@@ -141,8 +141,8 @@ public final class CConverterUtils {
         return stream.reduce(identity, accumulator);
     }
 
-    public static <A, B, C> Function<A, C> compose(final Function<A, B> f1, final Function<B, C> f2) {
-        return f1.andThen(f2);
+    public static <A, B, C> Function<A, C> compose(final Function<A, B> function1, final Function<B, C> function2) {
+        return function1.andThen(function2);
     }
 
     public static <T> Collection<T> join(final Collection<T> first, final Collection<T> second, final Predicate<? super T> predicate) {
@@ -297,20 +297,28 @@ public final class CConverterUtils {
         return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::<T>unmodifiableList));
     }
 
-    public static <T, M> M convert(final List<Optional<T>> list, final Collector<T, ?, M> collector) {
-        return list.stream().flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty()).collect(collector);
+    public static <T, M> M convert(final Stream<Optional<T>> stream, final Collector<T, ?, M> collector) {
+        return stream.flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty()).collect(collector);
     }
 
-    public static <T> Stream<T> concatFlat(final Stream<T>... args) {
+    public static <T> Stream<T> concatFlat(final Stream<? extends T>... args) {
         return Stream.of(args).flatMap(Function.identity());
     }
 
-    public static <T> T max(final List<T> list, final Comparator<? super T> comparator) {
-        return list.stream().max(comparator).orElseThrow(NoSuchElementException::new);
+    public static <T> Stream<T> concat(final Stream<? extends T> stream1, final Stream<? extends T> stream2) {
+        return Stream.concat(stream1, stream2);
     }
 
-    public static <T> T min(final List<T> list, final Comparator<? super T> comparator) {
-        return list.stream().min(comparator).orElseThrow(NoSuchElementException::new);
+    public static <T> Stream<T> concat(final Stream<? extends T> stream, final T item) {
+        return Stream.concat(stream, Stream.of(item));
+    }
+
+    public static <T> T max(final Stream<? extends T> stream, final Comparator<? super T> comparator) {
+        return stream.max(comparator).orElseThrow(NoSuchElementException::new);
+    }
+
+    public static <T> T min(final Stream<? extends T> stream, final Comparator<? super T> comparator) {
+        return stream.min(comparator).orElseThrow(NoSuchElementException::new);
     }
 
     public static <T> List<T> generate(final Supplier<T> supplier, int skip, int limit) {

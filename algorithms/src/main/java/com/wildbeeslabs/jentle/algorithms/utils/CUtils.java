@@ -119,7 +119,7 @@ public final class CUtils {
 
     public static <T> T getInstance(final Class<? extends T> clazz) {
         try {
-            return (T) clazz.getComponentType().newInstance();
+            return (T) clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
             LOGGER.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
         }

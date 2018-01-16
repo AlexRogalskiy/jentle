@@ -152,6 +152,11 @@ public final class CArrayUtils {
         return false;
     }
 
+    public static <T> T getNthMax(int n, final List<T> list, final Comparator<? super T> cmp) {
+        assert (n > 0);
+        return list.stream().sorted(cmp).limit(n).skip(n - 1).findFirst().get();
+    }
+
     public static <T> void split(final T[] array, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         split(array, value, 0, array.length, cmp);

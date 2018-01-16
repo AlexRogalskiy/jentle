@@ -23,54 +23,51 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
+import io.jenetics.EnumGene;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.ISeq;
+
+import java.util.Objects;
+import java.util.function.Function;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Custom item implementation
+ * Custom sum implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CActor {
+public class CSum<T extends Number> implements Problem<ISeq<T>, EnumGene<T>, Integer> {
 
-    protected int trailSize;
-    protected int trail[];
-    protected boolean visited[];
+    private ISeq<T> set;
+    private int size;
 
-    public CActor(int trailSize) {
-        assert (trailSize > 0);
-        this.trailSize = trailSize;
-        this.trail = new int[trailSize];
-        this.visited = new boolean[trailSize];
+    public CSum(final ISeq<T> set, int size) {
+        Objects.requireNonNull(set);
+        this.set = set;
+        this.size = size;
     }
 
-    protected void visit(int currentIndex, int value) {
-        this.trail[currentIndex + 1] = value;
-        this.visited[value] = true;
+    @Override
+    public Function<ISeq<T>, Integer> fitness() {
+        return subset -> Math.abs(subset.stream()
+                .mapToInt(Number::intValue)
+                .sum());
     }
 
-    protected boolean visited(int i) {
-        return this.visited[i];
-    }
-
-    protected double trailLength(double graph[][]) {
-        double length = graph[trail[trailSize - 1]][trail[0]];
-        for (int i = 0; i < this.trailSize - 1; i++) {
-            length += graph[trail[i]][trail[i + 1]];
-        }
-        return length;
-    }
-
-    protected void clear() {
-        for (int i = 0; i < this.trailSize; i++) {
-            this.visited[i] = false;
-        }
+    @Override
+    public Codec<ISeq<T>, EnumGene<T>> codec() {
+        return Codecs.ofSubSet(this.set, this.size);
     }
 }
