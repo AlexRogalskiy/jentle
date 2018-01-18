@@ -1289,4 +1289,14 @@ public final class CArrayUtils {
         }
         return array;
     }
+
+    public static <T, V extends T> boolean contains(final T value, final V[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        for (int i = 0; i < array.length; i++) {
+            if (Objects.compare(value, array[i], cmp) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.collections.set.CCheckedSet;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
@@ -139,5 +140,9 @@ public final class CCollectionUtils {
         return new ArrayList<>(set);
         //List<? extends T> targetList = new ArrayList<>(set.size());
         //CollectionUtils.addAll(targetList, set);
+    }
+
+    public static <T> Set<T> toSet(final Set rawSet, final Class<? extends T> type, boolean strict) {
+        return new CCheckedSet<>(rawSet, type, strict);
     }
 }
