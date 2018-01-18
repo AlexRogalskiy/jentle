@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -144,5 +145,28 @@ public final class CCollectionUtils {
 
     public static <T> Set<T> toSet(final Set rawSet, final Class<? extends T> type, boolean strict) {
         return new CCheckedSet<>(rawSet, type, strict);
+    }
+
+    public static <T> void fill(final Collection<T> list, final T value, int count) {
+        Objects.requireNonNull(list);
+        for (int i = 0; i < count; i++) {
+            list.add(value);
+        }
+    }
+
+    public static <T, E extends T> void append(final Collection<T> list1, final Collection<E> list2, int count) {
+        Objects.requireNonNull(list1);
+        Objects.requireNonNull(list2);
+        final Iterator<E> it2 = list2.iterator();
+        for (int i = 0; i < count && it2.hasNext(); i++) {
+            list1.add(it2.next());
+        }
+    }
+
+    public static <T> void fillWithDefault(final Collection<T> list, final Class<? extends T> clazz, int count) {
+        Objects.requireNonNull(list);
+        for (int i = 0; i < count; i++) {
+            list.add(CUtils.getInstance(clazz));
+        }
     }
 }

@@ -1299,4 +1299,14 @@ public final class CArrayUtils {
         }
         return false;
     }
+
+    public static double average(final List<? extends Number> list) {
+        Objects.requireNonNull(list);
+        return list.stream().mapToDouble((number) -> number.doubleValue()).average().getAsDouble();
+    }
+
+    public static double sum(final List<? extends Number> list, double initialValue) {
+        Objects.requireNonNull(list);
+        return list.stream().map((element) -> element.doubleValue()).reduce(initialValue, (accumulator, _item) -> accumulator + _item);
+    }
 }

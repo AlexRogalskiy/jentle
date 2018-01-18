@@ -26,10 +26,10 @@ package com.wildbeeslabs.jentle.collections.graph.node;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -96,11 +96,11 @@ public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>
         }
     }
 
-    public List<E> getPathNodes() {
+    public Collection<E> getPathNodes() {
         return this.pathNodes;
     }
 
-    public void setPathNodes(final List<E> pathNodes) {
+    public void setPathNodes(final Collection<E> pathNodes) {
         this.pathNodes.clear();
         if (Objects.nonNull(pathNodes)) {
             this.pathNodes.addAll(pathNodes);
