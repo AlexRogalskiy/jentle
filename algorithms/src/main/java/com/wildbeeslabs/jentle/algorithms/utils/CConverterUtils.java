@@ -27,7 +27,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.IntSummaryStatistics;
@@ -43,6 +42,7 @@ import java.util.UUID;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -71,7 +71,7 @@ public final class CConverterUtils {
     private static final Logger LOGGER = LogManager.getLogger(CConverterUtils.class);
 
     private CConverterUtils() {
-        LOGGER.debug("Initializing converter utils...");
+        LOGGER.debug("Initializing converter utilities...");
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -289,14 +289,6 @@ public final class CConverterUtils {
         };
     }
 
-    public static <T> Set<T> toImmutableSet(final T... args) {
-        return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::<T>unmodifiableSet));
-    }
-
-    public static <T> List<T> toImmutableList(final T... args) {
-        return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::<T>unmodifiableList));
-    }
-
     public static <T, M> M convert(final Stream<Optional<T>> stream, final Collector<T, ?, M> collector) {
         return stream.flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty()).collect(collector);
     }
@@ -351,4 +343,20 @@ public final class CConverterUtils {
         return list.stream().collect(Collectors.partitioningBy(predicate));
     }
 
+    /**
+     * Converts supplied objects to array by function converter
+     *
+     * @param <T>
+     * @param <U>
+     * @param func
+     * @param generator
+     * @param objects
+     * @return
+     *
+     * @see String[] stringArr = {"1","2","3"}; Double[] doubleArr =
+     * toArray(Double::parseDouble, Double[]::new, stringArr);
+     */
+    public static <T, U> U[] toArray(final Function<? super T, ? extends U> func, final IntFunction<U[]> generator, final T... objects) {
+        return Arrays.stream(objects).map(func).toArray(generator);
+    }
 }

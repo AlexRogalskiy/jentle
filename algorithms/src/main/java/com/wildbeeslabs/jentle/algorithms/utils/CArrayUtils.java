@@ -62,6 +62,74 @@ public final class CArrayUtils {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
+    public static <T> List<T> union(final T[] array1, final T[] array2, final Comparator<? super T> cmp) {
+        final List<T> result = new ArrayList<>();
+        int length1 = array1.length;
+        int length2 = array2.length;
+
+        int index1 = 0, index2 = 0;
+        while (index1 < length1 && index2 < length2) {
+            if (Objects.compare(array1[index1], array2[index2], cmp) < 0) {
+                result.add(array1[index1]);
+                index1++;
+
+            } else if (Objects.compare(array1[index1], array2[index2], cmp) > 0) {
+                result.add(array2[index2]);
+                index2++;
+            } else {
+                result.add(array1[index1]);
+                index1++;
+                index2++;
+            }
+        }
+        while (index1 < length1) {
+            result.add(array1[index1++]);
+        }
+        while (index2 < length2) {
+            result.add(array2[index2++]);
+        }
+        return result;
+    }
+
+    public static <T> void merge(final T[] first, final T[] second, int lastFirst, int lastSecond, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(first);
+        Objects.requireNonNull(second);
+        assert (lastFirst >= 0 && lastSecond >= 0 && lastFirst < first.length && lastSecond < second.length);
+        int indexF = lastFirst - 1;
+        int indexS = lastSecond - 1;
+        int indexMerged = lastSecond + lastFirst - 1;
+
+        while (indexS >= 0) {
+            if (indexF >= 0 && Objects.compare(first[indexF], second[indexS], cmp) > 0) {
+                first[indexMerged] = first[indexF];
+                indexF--;
+            } else {
+                first[indexMerged] = second[indexS];
+                indexS--;
+            }
+            indexMerged--;
+        }
+    }
+
+    public static <T> List<T> intersect(final T[] array1, final T[] array2, final Comparator<? super T> cmp) {
+        final List<T> result = new ArrayList<>();
+        int length1 = array1.length;
+        int length2 = array2.length;
+        int index1 = 0, index2 = 0;
+        while (index1 < length1 && index2 < length2) {
+            if (Objects.compare(array1[index1], array2[index2], cmp) < 0) {
+                index1++;
+            } else if (Objects.compare(array1[index1], array2[index2], cmp) > 0) {
+                index2++;
+            } else {
+                result.add(array1[index1]);
+                index1++;
+                index2++;
+            }
+        }
+        return result;
+    }
+
     public static <T extends Comparable<? super T>> int getMinIndex(final T[] array) {
         return getMinIndex(array, CUtils.<T>getDefaultSortComparator());
     }

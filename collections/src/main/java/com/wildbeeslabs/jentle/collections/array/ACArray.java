@@ -24,11 +24,12 @@
 package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IArray;
-import com.wildbeeslabs.jentle.collections.utils.CConverterUtils;
 
 import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -42,6 +43,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -110,11 +112,11 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
     }
 
     public Set<? extends T> toSet() {
-        return CConverterUtils.convertArrayToSet(this.array);
+        return new HashSet<>(Arrays.asList(this.array));
     }
 
     public List<? extends T> toList() {
-        return CConverterUtils.convertArrayToList(this.array);
+        return new ArrayList<>(Arrays.asList(this.array));
     }
 
     @Override

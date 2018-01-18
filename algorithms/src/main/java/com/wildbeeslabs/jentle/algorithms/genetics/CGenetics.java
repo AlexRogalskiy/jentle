@@ -25,7 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.genetics;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CMatrixUtils;
 import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
-import com.wildbeeslabs.jentle.algorithms.utils.CUtils;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;

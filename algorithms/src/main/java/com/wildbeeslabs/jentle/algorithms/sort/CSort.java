@@ -23,10 +23,10 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sort;
 
+import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.list.ACList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
-import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
@@ -68,6 +68,7 @@ public final class CSort {
         array[left] = array[right];
         array[right] = temp;
     }
+
     //Comparator<String> cmp = (x, y) -> x.compareToIgnoreCase(y);
     public static class CStringComparator extends CUtils.CSortComparator<String> {
 

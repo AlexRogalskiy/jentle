@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
-import com.wildbeeslabs.jentle.algorithms.utils.CUtils;
+import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

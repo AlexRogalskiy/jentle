@@ -37,6 +37,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import static org.apache.commons.lang3.ArrayUtils.toArray;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 /**
  *
  * Collection utilities implementation
@@ -46,6 +49,11 @@ import static org.apache.commons.lang3.ArrayUtils.toArray;
  * @since 2017-08-07
  */
 public final class CUtils {
+
+    /**
+     * Default Logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CUtils.class);
 
     private CUtils() {
         // PRIVATE CONSTRUCTOR
@@ -119,5 +127,14 @@ public final class CUtils {
         assert (Objects.nonNull(type));
         assert (rows >= 0 && columns >= 0);
         return (T[][]) Array.newInstance(type, rows, columns);
+    }
+
+    public static <T> T getInstance(final Class<? extends T> clazz) {
+        try {
+            return (T) clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOGGER.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+        }
+        return null;
     }
 }
