@@ -27,9 +27,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 /*
  *
- * Custom bitwise implementation
+ * Custom bitwise algorithms implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -53,7 +56,10 @@ import java.util.List;
  */
 public final class CBitwise {
 
-    public static final Integer DEFAULT_INT_SIZE = Integer.BYTES * Byte.SIZE;
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CBitwise.class);
 
     private CBitwise() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -89,7 +95,7 @@ public final class CBitwise {
 
     public static int clearBithsIthrough0(int num, int index) {
         assert (index >= 0);
-        int mask = ~(-1 >>> ((CBitwise.DEFAULT_INT_SIZE - 1) - index));
+        int mask = ~(-1 >>> ((Integer.SIZE - 1) - index));
         return num & mask;
     }
 
@@ -119,7 +125,7 @@ public final class CBitwise {
     }
 
     public static int sign(int num) {
-        return flip((num >> CBitwise.DEFAULT_INT_SIZE - 1) & 0x1);
+        return flip((num >> Integer.SIZE - 1) & 0x1);
     }
 
     public static int flip(int bit) {
@@ -130,7 +136,7 @@ public final class CBitwise {
         if (num != ~0) {
             return -1;
         }
-        for (int i = 0; i < CBitwise.DEFAULT_INT_SIZE; i++) {
+        for (int i = 0; i < Integer.SIZE; i++) {
             int mask = 1 << i;
             if ((num & mask) == 0) {
                 return i;
@@ -191,7 +197,7 @@ public final class CBitwise {
 
     public static int longestSequence(int num) {
         if (-1 == num) {
-            return CBitwise.DEFAULT_INT_SIZE;
+            return Integer.SIZE;
         }
         final List<Integer> sequences = getAlternatingSequences(num);
         return findLongestSequence(sequences);
@@ -201,7 +207,7 @@ public final class CBitwise {
         final List<Integer> sequences = new ArrayList<>();
         int searchingFor = 0;
         int counter = 0;
-        for (int i = 0; i < CBitwise.DEFAULT_INT_SIZE; i++) {
+        for (int i = 0; i < Integer.SIZE; i++) {
             if ((num & 1) != searchingFor) {
                 sequences.add(counter);
                 searchingFor = num & 1;
@@ -235,7 +241,7 @@ public final class CBitwise {
 
     public static int flipBit(int num) {
         if (0 == ~num) {
-            return CBitwise.DEFAULT_INT_SIZE;
+            return Integer.SIZE;
         }
         int currentLength = 0;
         int previousLength = 0;
@@ -265,7 +271,7 @@ public final class CBitwise {
             c1++;
             c >>= 1;
         }
-        if ((c0 + c1 == (CBitwise.DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
+        if ((c0 + c1 == (Integer.SIZE - 1)) || (c0 + c1 == 0)) {
             return -1;
         }
         int p = c0 + c1;
@@ -309,7 +315,7 @@ public final class CBitwise {
             c1++;
             c >>= 1;
         }
-        if ((c0 + c1 == (CBitwise.DEFAULT_INT_SIZE - 1)) || (c0 + c1 == 0)) {
+        if ((c0 + c1 == (Integer.SIZE - 1)) || (c0 + c1 == 0)) {
             return -1;
         }
         return num + (1 << c0) + (1 << (c1 - 1)) - 1;
@@ -445,5 +451,20 @@ public final class CBitwise {
 
     public static int getNumberOfBits(long number) {
         return Long.SIZE - Long.numberOfLeadingZeros(number);
+    }
+
+    /**
+     * Returns a 64 length String with the first flag on the right and the 64th
+     * flag on the left. A 1 indicates the flag is on, a 0 means it's off.
+     *
+     * @param flags - flags value
+     * @return string representation of this object.
+     */
+    public static String toBinaryString(long flags) {
+        final StringBuffer bin = new StringBuffer(Long.toBinaryString(flags));
+        for (int i = Long.SIZE - bin.length(); i > 0; i--) {
+            bin.insert(0, "0");
+        }
+        return bin.toString();
     }
 }

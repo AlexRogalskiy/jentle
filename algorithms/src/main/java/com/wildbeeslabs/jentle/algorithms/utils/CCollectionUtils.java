@@ -28,6 +28,7 @@ import com.wildbeeslabs.jentle.collections.set.CCheckedSet;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -179,6 +180,7 @@ public final class CCollectionUtils {
     }
 
     public static <K, V> Map<K, V> toCheckedMapCopy(final Map rawMap, final Class<? extends K> keyType, final Class<? extends V> valueType, boolean strict) throws ClassCastException {
+        Objects.requireNonNull(rawMap);
         final Map<K, V> m2 = new HashMap<>(rawMap.size() * 4 / 3 + 1);
         final Iterator it = rawMap.entrySet().iterator();
         while (it.hasNext()) {
@@ -196,6 +198,7 @@ public final class CCollectionUtils {
     }
 
     public static <E> List<E> toCheckedList(final List rawList, final Class<? extends E> type, boolean strict) throws ClassCastException {
+        Objects.requireNonNull(rawList);
         final List<E> l = (rawList instanceof RandomAccess) ? new ArrayList<>(rawList.size()) : new LinkedList<>();
         final Iterator it = rawList.iterator();
         while (it.hasNext()) {
@@ -210,5 +213,27 @@ public final class CCollectionUtils {
             }
         }
         return l;
+    }
+
+    public static byte[] toByteArray(final BitSet bits) {
+        Objects.requireNonNull(bits);
+        final byte[] bytes = new byte[bits.length() / 8 + 1];
+        for (int i = 0; i < bits.length(); i++) {
+            if (bits.get(i)) {
+                bytes[bytes.length - i / 8 - 1] |= 1 << (i % 8);
+            }
+        }
+        return bytes;
+    }
+
+    public static BitSet fromByteArray(byte[] bytes) {
+        Objects.requireNonNull(bytes);
+        final BitSet bits = new BitSet();
+        for (int i = 0; i < bytes.length * 8; i++) {
+            if ((bytes[bytes.length - i / 8 - 1] & (1 << (i % 8))) > 0) {
+                bits.set(i);
+            }
+        }
+        return bits;
     }
 }
