@@ -52,7 +52,7 @@ public class CHashMap<K, V> extends ACMap<K, V> {
     /**
      * Default map capacity
      */
-    protected static final Integer DEFAULT_MAP_CAPACITY = 4;
+    protected static final Integer DEFAULT_CAPACITY = 4;
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -78,7 +78,7 @@ public class CHashMap<K, V> extends ACMap<K, V> {
     protected final List<CLinkedListNode<K, V>> array;
 
     public CHashMap() {
-        this(CHashMap.DEFAULT_MAP_CAPACITY);
+        this(CHashMap.DEFAULT_CAPACITY);
     }
 
     public CHashMap(int capacity) {

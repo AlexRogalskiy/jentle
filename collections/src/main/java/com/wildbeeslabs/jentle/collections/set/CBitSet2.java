@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.set;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ISet;
+
 import java.util.Iterator;
 
 import lombok.Data;
@@ -43,31 +44,40 @@ import lombok.ToString;
 @ToString
 public class CBitSet2 extends ACSet<Integer> implements ISet<Integer> {
 
-    private int[] bitSet;
+    /**
+     * Default max power rate
+     */
+    protected static final int DEFAULT_MAX_POWER_RATE = 5;
+    /**
+     * Default max chunk size
+     */
+    protected static final int DEFAULT_MAX_CHUNK_SIZE = Integer.BYTES * Byte.SIZE;//0x1F;
+
+    protected int[] bitSet;
 
     public CBitSet2(int size) {
-        this.bitSet = new int[(size >> 5) + 1];
+        this.bitSet = new int[(size >> CBitSet2.DEFAULT_MAX_POWER_RATE) + 1];
     }
 
-    public boolean get(int pos) {
-        int wordNumber = (pos >> 5);
-        int bitNumber = (pos & 0x1F);
+    public boolean get(final Integer pos) {
+        int wordNumber = (pos >> CBitSet2.DEFAULT_MAX_POWER_RATE);
+        int bitNumber = (pos & CBitSet2.DEFAULT_MAX_CHUNK_SIZE);
         return (this.bitSet[wordNumber] & (1 << bitNumber)) != 0;
     }
 
-    public void set(int pos) {
-        int wordNumber = (pos >> 5);
-        int bitNumber = (pos & 0x1F);
+    public void set(final Integer pos) {
+        int wordNumber = (pos >> CBitSet2.DEFAULT_MAX_POWER_RATE);
+        int bitNumber = (pos & CBitSet2.DEFAULT_MAX_CHUNK_SIZE);
         this.bitSet[wordNumber] |= 1 << bitNumber;
     }
 
     @Override
-    public boolean has(Integer item) {
+    public boolean has(final Integer item) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ISet<Integer> disjunct(Integer item) {
+    public ISet<Integer> disjunct(final Integer item) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

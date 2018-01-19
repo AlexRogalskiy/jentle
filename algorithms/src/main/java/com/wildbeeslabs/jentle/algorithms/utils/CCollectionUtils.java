@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.collections.map.CCheckedMap;
 import com.wildbeeslabs.jentle.collections.set.CCheckedSet;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
@@ -143,8 +144,12 @@ public final class CCollectionUtils {
         //CollectionUtils.addAll(targetList, set);
     }
 
-    public static <T> Set<T> toSet(final Set rawSet, final Class<? extends T> type, boolean strict) {
+    public static <T> Set<T> toCheckedSet(final Set rawSet, final Class<? extends T> type, boolean strict) {
         return new CCheckedSet<>(rawSet, type, strict);
+    }
+
+    public static <K, V> Map<K, V> toCheckedMap(final Map rawMap, final Class<? extends K> keyType, final Class<? extends V> valueType, boolean strict) {
+        return new CCheckedMap<>(rawMap, keyType, valueType, strict);
     }
 
     public static <T> void fill(final Collection<T> list, final T value, int count) {

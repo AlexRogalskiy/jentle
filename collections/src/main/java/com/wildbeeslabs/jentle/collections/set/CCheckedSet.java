@@ -67,20 +67,19 @@ public class CCheckedSet<T> extends ACSet<T> implements ISet<T> {
     }
 
     private boolean acceptEntry(final Object o) {
-        if (o == null) {
+        if (Objects.isNull(o)) {
             return true;
         } else if (this.type.isInstance(o)) {
             return true;
         } else if (this.strict) {
-            throw new ClassCastException(o + " was not a " + type.getName()); // NOI18N
-        } else {
-            return false;
+            throw new ClassCastException(String.format("Class: %s cannot be cast to type=%s", o.getClass(), this.type.getName()));
         }
+        return false;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new CCheckedSetIterator<T>(this.rawSet) {
+        return new CCheckedSetIterator<T>(this.rawSet.iterator()) {
             @Override
             protected boolean accept(final Object o) {
                 return acceptEntry(o);
@@ -89,13 +88,14 @@ public class CCheckedSet<T> extends ACSet<T> implements ISet<T> {
     }
 
     @Override
-    public boolean has(T item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean has(final T item) {
+        return this.rawSet.contains(item);
     }
 
     @Override
-    public ISet<T> disjunct(T item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ISet<T> disjunct(final T item) {
+        this.rawSet.remove(item);
+        return this;
     }
 
     protected abstract static class CCheckedSetIterator<T> implements Iterator<T> {
@@ -104,12 +104,12 @@ public class CCheckedSet<T> extends ACSet<T> implements ISet<T> {
         private final Iterator it;
         private Object next = WAITING;
 
-        public CCheckedSetIterator(final Set source) {
-            this.it = source.iterator();
+        public CCheckedSetIterator(final Iterator it) {
+            this.it = it;
         }
 
         public boolean hasNext() {
-            if (this.next != CCheckedSetIterator.WAITING) {
+            if (!Objects.equals(this.next, CCheckedSetIterator.WAITING)) {
                 return true;
             }
             while (this.it.hasNext()) {
@@ -123,10 +123,10 @@ public class CCheckedSet<T> extends ACSet<T> implements ISet<T> {
         }
 
         public T next() {
-            if (this.next == CCheckedSetIterator.WAITING && !this.hasNext()) {
+            if (Objects.equals(this.next, CCheckedSetIterator.WAITING) && !this.hasNext()) {
                 throw new NoSuchElementException();
             }
-            assert (this.next != CCheckedSetIterator.WAITING);
+            assert (!Objects.equals(this.next, CCheckedSetIterator.WAITING));
             final T x = (T) this.next;
             this.next = CCheckedSetIterator.WAITING;
             return x;

@@ -28,8 +28,10 @@ import com.wildbeeslabs.jentle.collections.interfaces.IMap;
 import java.util.AbstractMap;
 import java.util.Set;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import org.apache.log4j.LogManager;
@@ -53,6 +55,7 @@ public abstract class ACMap<K, V> extends AbstractMap<K, V> implements IMap<K, V
     /**
      * Default Logger instance
      */
+    @Getter(AccessLevel.NONE)
     protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Override
@@ -64,8 +67,12 @@ public abstract class ACMap<K, V> extends AbstractMap<K, V> implements IMap<K, V
         try {
             return clazz.cast(obj);
         } catch (ClassCastException ex) {
-            LOGGER.error(String.format("ERROR: cannot convert obj=(%s) to clazz=(%s)", String.valueOf(obj), String.valueOf(clazz)));
+            this.getLogger().error(String.format("ERROR: cannot convert obj=(%s) to clazz=(%s)", String.valueOf(obj), String.valueOf(clazz)));
             return null;
         }
+    }
+
+    protected Logger getLogger() {
+        return this.LOGGER;
     }
 }

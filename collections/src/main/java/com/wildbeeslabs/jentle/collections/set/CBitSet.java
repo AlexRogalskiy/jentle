@@ -47,23 +47,24 @@ import lombok.ToString;
 public class CBitSet extends ACSet<Integer> implements ISet<Integer> {
 
     /**
-     * Default block size (in bits)
+     * Default max power rate
      */
-    private static final int DEFAULT_BLOCK_SIZE = 32;
+    protected static final int DEFAULT_MAX_POWER_RATE = 5;
     /**
-     * Default number size (in bits)
+     * Default max chunk size
      */
-    private static final int DEFAULT_NUMBER_SIZE = Integer.BYTES * Byte.SIZE;
-    private int min;
-    private int max;
-    private int[] array;
+    protected static final int DEFAULT_MAX_CHUNK_SIZE = Integer.BYTES * Byte.SIZE;//0x1F;
+
+    protected int min;
+    protected int max;
+    protected int[] array;
 
     public CBitSet(int min, int max) {
         this(min, max, null);
     }
 
     public CBitSet(int min, int max, final int[] bitset) {
-        int numOfBlocks = (getSize(min, max) * DEFAULT_NUMBER_SIZE + DEFAULT_BLOCK_SIZE - 1) / DEFAULT_BLOCK_SIZE;
+        int numOfBlocks = (this.getSize(min, max) >> CBitSet.DEFAULT_MAX_POWER_RATE) + 1;
         this.array = new int[numOfBlocks];
         if (Objects.nonNull(bitset)) {
             this.array = Arrays.copyOfRange(bitset, 0, bitset.length);
@@ -90,14 +91,18 @@ public class CBitSet extends ACSet<Integer> implements ISet<Integer> {
     public boolean has(final Integer item) throws IndexOutOfBoundsException {
         this.checkRange(item);
         int bit = item - this.min;
-        return (this.array[bit / DEFAULT_BLOCK_SIZE] & (1 << (bit % DEFAULT_BLOCK_SIZE))) != 0;
+        int wordNumber = (bit >> CBitSet.DEFAULT_MAX_POWER_RATE);
+        int bitNumber = (bit & CBitSet.DEFAULT_MAX_CHUNK_SIZE);
+        return (this.array[wordNumber] & (1 << bitNumber)) != 0;
     }
 
     @Override
     public ISet<Integer> disjunct(final Integer item) throws IndexOutOfBoundsException {
         this.checkRange(item);
         int bit = item - this.min;
-        this.array[bit / DEFAULT_BLOCK_SIZE] |= (1 << (bit % DEFAULT_BLOCK_SIZE));
+        int wordNumber = (bit >> CBitSet.DEFAULT_MAX_POWER_RATE);
+        int bitNumber = (bit & CBitSet.DEFAULT_MAX_CHUNK_SIZE);
+        this.array[wordNumber] |= (1 << bitNumber);
         return this;
     }
 
@@ -126,7 +131,9 @@ public class CBitSet extends ACSet<Integer> implements ISet<Integer> {
         int value = Integer.valueOf(String.valueOf(item));
         this.checkRange(value);
         int bit = value - this.min;
-        this.array[bit / DEFAULT_BLOCK_SIZE] &= ~(1 << (bit % DEFAULT_BLOCK_SIZE));
+        int wordNumber = (bit >> CBitSet.DEFAULT_MAX_POWER_RATE);
+        int bitNumber = (bit & CBitSet.DEFAULT_MAX_CHUNK_SIZE);
+        this.array[wordNumber] &= ~(1 << bitNumber);
         return true;
     }
 

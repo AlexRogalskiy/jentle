@@ -26,8 +26,10 @@ package com.wildbeeslabs.jentle.collections.set;
 import com.wildbeeslabs.jentle.collections.interfaces.ISet;
 import java.util.AbstractSet;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import org.apache.log4j.LogManager;
@@ -50,5 +52,10 @@ public abstract class ACSet<T> extends AbstractSet<T> implements ISet<T> {
     /**
      * Default Logger instance
      */
+    @Getter(AccessLevel.NONE)
     protected final Logger LOGGER = LogManager.getLogger(getClass());
+
+    protected Logger getLogger() {
+        return this.LOGGER;
+    }
 }

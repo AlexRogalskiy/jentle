@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.interfaces.IBaseMapExtended;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,10 +52,12 @@ import lombok.ToString;
 public abstract class ACBaseExtended<K, V, T extends Collection<V>> extends ACBaseMap<K, V> implements IBaseMapExtended<K, V, T> {
 
     protected Set<V> toSet(final T list) {
+        Objects.requireNonNull(list);
         return list.stream().collect(Collectors.toSet());
     }
 
     protected List<V> toList(final T set) {
+        Objects.requireNonNull(set);
         return set.stream().collect(Collectors.toList());
     }
 }
