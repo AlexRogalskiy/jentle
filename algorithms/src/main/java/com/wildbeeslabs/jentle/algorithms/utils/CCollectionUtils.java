@@ -47,8 +47,12 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 /**
+ * Custom collection utilities implementation
  *
- * @author Alex
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
+ *
  */
 public final class CCollectionUtils {
 
