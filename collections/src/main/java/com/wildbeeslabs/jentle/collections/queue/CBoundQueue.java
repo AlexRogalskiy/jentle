@@ -113,7 +113,7 @@ public class CBoundQueue<T> extends ACQueue<T> {
         this.tail = this.queue.length - 1;
         this.size = 0;
     }
-    
+
     @Override
     public int size() {
         return this.size;
@@ -145,6 +145,32 @@ public class CBoundQueue<T> extends ACQueue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new CBoundQueue.CBoundQueueIterator<>(this);
+    }
+
+    protected static class CBoundQueueIterator<T> implements Iterator<T> {
+
+        private final CBoundQueue<? extends T> source;
+        private int cursor;
+
+        public CBoundQueueIterator(final CBoundQueue<? extends T> source) {
+            this.source = source;
+            this.cursor = 0;
+        }
+
+        public boolean hasNext() {
+            return this.cursor < this.source.size;
+        }
+
+        public T next() {
+            int index = (this.source.head + this.cursor);// % this.source.queue.length;
+            final T r = (T) this.source.queue[index];
+            this.cursor++;
+            return r;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

@@ -30,11 +30,14 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.RandomAccess;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -173,5 +176,39 @@ public final class CCollectionUtils {
         for (int i = 0; i < count; i++) {
             list.add(CUtils.getInstance(clazz));
         }
+    }
+
+    public static <K, V> Map<K, V> toCheckedMapCopy(final Map rawMap, final Class<? extends K> keyType, final Class<? extends V> valueType, boolean strict) throws ClassCastException {
+        final Map<K, V> m2 = new HashMap<>(rawMap.size() * 4 / 3 + 1);
+        final Iterator it = rawMap.entrySet().iterator();
+        while (it.hasNext()) {
+            final Map.Entry e = (Map.Entry) it.next();
+            try {
+                m2.put(keyType.cast(e.getKey()), valueType.cast(e.getValue()));
+            } catch (ClassCastException ex) {
+                LOGGER.error(String.format("ERROR: cannot convert map key=%s, value=%s to key type=%s, key value=%s, message=%s", e.getKey(), e.getValue(), keyType, valueType, ex.getMessage()));
+                if (strict) {
+                    throw ex;
+                }
+            }
+        }
+        return m2;
+    }
+
+    public static <E> List<E> toCheckedList(final List rawList, final Class<? extends E> type, boolean strict) throws ClassCastException {
+        final List<E> l = (rawList instanceof RandomAccess) ? new ArrayList<>(rawList.size()) : new LinkedList<>();
+        final Iterator it = rawList.iterator();
+        while (it.hasNext()) {
+            final Object e = it.next();
+            try {
+                l.add(type.cast(e));
+            } catch (ClassCastException ex) {
+                LOGGER.error(String.format("ERROR: cannot convert list value=%s to type=%s, message=%s", e, type, ex.getMessage()));
+                if (strict) {
+                    throw ex;
+                }
+            }
+        }
+        return l;
     }
 }
