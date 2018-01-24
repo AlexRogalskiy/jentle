@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -55,18 +56,18 @@ import org.apache.log4j.Logger;
  * @since 2017-12-12
  *
  */
-public final class CDate {
+public final class CDateUtils {
 
     /**
      * Default logger instance
      */
-    private static final Logger LOGGER = LogManager.getLogger(CFileUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(CDateUtils.class);
     /**
      * Default file character encoding
      */
     public static final Charset DEFAULT_FILE_CHARACTER_ENCODING = StandardCharsets.UTF_8;
 
-    private CDate() {
+    private CDateUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -76,11 +77,11 @@ public final class CDate {
     }
 
     public static List<String> getTimeZoneGMTList() {
-        return getTimeZoneList(CDate.TimeZoneOffsetBase.GMT);
+        return getTimeZoneList(CDateUtils.TimeZoneOffsetBase.GMT);
     }
 
     public static List<String> getTimeZoneUTCList() {
-        return getTimeZoneList(CDate.TimeZoneOffsetBase.UTC);
+        return getTimeZoneList(CDateUtils.TimeZoneOffsetBase.UTC);
     }
 
     private static List<String> getTimeZoneList(final TimeZoneOffsetBase base) {
@@ -167,7 +168,6 @@ public final class CDate {
 //        return LocalDateTime.ofInstant(
 //                dateToConvert.toInstant(), ZoneId.systemDefault());
 //    }
-
     public static LocalDate convertToLocalDateViaInstant(final Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -189,5 +189,16 @@ public final class CDate {
     public static Date convertToDateViaInstant(final LocalDateTime dateToConvert) {
         return java.util.Date.from(dateToConvert.atZone(ZoneId.systemDefault())
                 .toInstant());
+    }
+
+    public static boolean isValidDate(final String date, final String format) {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(date.trim());
+        } catch (java.text.ParseException ex) {
+            LOGGER.error(String.format("ERROR: cannot parse input date=%s by format=%s, message=%s", date, format, ex.getMessage()));
+        }
+        return true;
     }
 }
