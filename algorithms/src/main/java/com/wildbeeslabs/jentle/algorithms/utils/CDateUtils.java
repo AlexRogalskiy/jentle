@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.time.LocalDate;
@@ -40,6 +40,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -63,9 +65,23 @@ public final class CDateUtils {
      */
     private static final Logger LOGGER = LogManager.getLogger(CDateUtils.class);
     /**
-     * Default file character encoding
+     * Default date format locale
      */
-    public static final Charset DEFAULT_FILE_CHARACTER_ENCODING = StandardCharsets.UTF_8;
+    public static final Locale DEFAULT_DATE_FORMAT_LOCALE = Locale.ENGLISH;
+
+    /**
+     * Default date format pattern
+     */
+    public static final String DEFAULT_DATE_FORMAT_PATTERN_EXT = "yyyy-MM-dd HH:mm:ss.SSSZ";
+
+    /**
+     * Default date format pattern
+     */
+    public static final String DEFAULT_DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * Default time zone pattern
+     */
+    public static final String DEFAULT_TIMEZONE_PATTERN = Calendar.getInstance().getTimeZone().getID();
 
     private CDateUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -74,6 +90,44 @@ public final class CDateUtils {
     public static enum TimeZoneOffsetBase {
 
         GMT, UTC
+    }
+
+    public static Date toDate(final String value) {
+        return toDate(value, CDateUtils.DEFAULT_TIMEZONE_PATTERN);
+    }
+
+    public static Date toDate(final String value, final String timezone) {
+        return toDate(value, timezone, CDateUtils.DEFAULT_DATE_FORMAT_PATTERN, CDateUtils.DEFAULT_DATE_FORMAT_LOCALE);
+    }
+
+    public static Date toDate(final String value, final String timezone, final String format, final Locale locale) {
+        try {
+            final DateFormat df = new SimpleDateFormat(format, locale);
+            df.setTimeZone(TimeZone.getTimeZone(timezone));
+            df.setLenient(false);
+            return df.parse(value);
+        } catch (ParseException ex) {
+            LOGGER.error(String.format("ERROR: cannot parse input string=%s, timezone=%s, format=%s, locale=%s, message=%s", value, timezone, format, locale, ex.getMessage()));
+        }
+        return null;
+    }
+
+    public static String toString(final Date date) {
+        return toString(date, CDateUtils.DEFAULT_TIMEZONE_PATTERN);
+    }
+
+    public static String toString(final Date date, final String timezone) {
+        return toString(date, timezone, CDateUtils.DEFAULT_DATE_FORMAT_PATTERN, CDateUtils.DEFAULT_DATE_FORMAT_LOCALE);
+    }
+
+    public static String toString(final Date date, final String timezone, final Locale locale) {
+        return toString(date, timezone, CDateUtils.DEFAULT_DATE_FORMAT_PATTERN, locale);
+    }
+
+    public static String toString(final Date date, final String timezone, final String format, final Locale locale) {
+        final DateFormat df = new SimpleDateFormat(format, locale);
+        df.setTimeZone(TimeZone.getTimeZone(timezone));
+        return df.format(date);
     }
 
     public static List<String> getTimeZoneGMTList() {
@@ -192,13 +246,6 @@ public final class CDateUtils {
     }
 
     public static boolean isValidDate(final String date, final String format) {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(date.trim());
-        } catch (java.text.ParseException ex) {
-            LOGGER.error(String.format("ERROR: cannot parse input date=%s by format=%s, message=%s", date, format, ex.getMessage()));
-        }
-        return true;
+        return Objects.nonNull(toDate(date, format));
     }
 }
