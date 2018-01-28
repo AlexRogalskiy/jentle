@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.util.Objects;
 
 import org.apache.log4j.LogManager;
@@ -47,13 +49,39 @@ public class CExceptionUtils {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static Throwable getDeepestThrowable(final Throwable t) {
-        Throwable parent = t;
-        Throwable child = t.getCause();
+    /**
+     * Returns the deepest cause of the supplied exception
+     *
+     * @param throwable the exception for which the stack trace is to be
+     * returned
+     * @return the deepest cause of the supplied exception
+     */
+    public static Throwable getDeepestThrowable(final Throwable throwable) {
+        Objects.requireNonNull(throwable);
+        Throwable parent = throwable;
+        Throwable child = throwable.getCause();
         while (Objects.nonNull(child)) {
             parent = child;
             child = parent.getCause();
         }
         return parent;
+    }
+
+    /**
+     * Returns the stack trace of the supplied exception.
+     *
+     * @param throwable the exception for which the stack trace is to be
+     * returned
+     * @return the stack trace, or null if the supplied exception is null
+     */
+    public static String getStackTrace(final Throwable throwable) {
+        if (Objects.isNull(throwable)) {
+            return null;
+        }
+        final ByteArrayOutputStream bas = new ByteArrayOutputStream();
+        final PrintWriter pw = new PrintWriter(bas);
+        throwable.printStackTrace(pw);
+        pw.close();
+        return bas.toString();
     }
 }

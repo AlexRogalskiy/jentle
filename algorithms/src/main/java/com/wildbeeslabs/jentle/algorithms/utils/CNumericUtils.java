@@ -398,6 +398,27 @@ public final class CNumericUtils {
         return a;
     }
 
+    /**
+     * Calculates the Greatest Common Divisor (GCD) of the supplied array of
+     * positive integer numbers.
+     *
+     * @param array the supplied array of positive integer numbers
+     * @return GCD of the supplied array
+     */
+    public static final int gcd(int[] array) {
+        if (array.length < 2) {
+            throw new IllegalArgumentException(String.format("ERROR: invalid input argument, array=(%s) has less than 2 elements", array));
+        }
+        int tmp = gcd(array[array.length - 1], array[array.length - 2]);
+        for (int i = array.length - 3; i >= 0; i--) {
+            if (array[i] < 0) {
+                throw new IllegalArgumentException(String.format("ERROR: invalid input argument, array=(%s) has several numbers where one, at least, is negative.", array));
+            }
+            tmp = gcd(tmp, array[i]);
+        }
+        return tmp;
+    }
+
     public static boolean isPalindrome(int num) {
         if (num == reverse(num)) {
             return true;
