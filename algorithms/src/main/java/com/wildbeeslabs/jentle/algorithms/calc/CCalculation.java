@@ -23,8 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.calc;
 
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.stream.Stream;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
@@ -121,5 +125,51 @@ public final class CCalculation {
             y = y * x + array[n - k];
         }
         return y;
+    }
+
+    /**
+     * Simple Moving Average algorithm implementation
+     */
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
+    public static class CSimpleMovingAverage {
+
+        private final LinkedList<Double> values = new LinkedList<>();
+
+        private int length;
+        private double sum = 0;
+        private double average = 0;
+
+        /**
+         *
+         * @param length the maximum length
+         */
+        public CSimpleMovingAverage(int length) {
+            if (length <= 0) {
+                throw new IllegalArgumentException("length must be greater than zero");
+            }
+            this.length = length;
+        }
+
+        public double currentAverage() {
+            return this.average;
+        }
+
+        /**
+         * Computes the moving average.
+         *
+         * @param value The value
+         * @return The average
+         */
+        public synchronized double compute(final double value) {
+            if (this.values.size() == this.length && this.length > 0) {
+                this.sum -= this.values.removeFirst();
+            }
+            this.sum += value;
+            this.values.addLast(value);
+            this.average = this.sum / this.values.size();
+            return this.average;
+        }
     }
 }

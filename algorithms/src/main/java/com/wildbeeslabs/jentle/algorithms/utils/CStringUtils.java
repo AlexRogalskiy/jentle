@@ -375,6 +375,7 @@ public final class CStringUtils {
 
     public static class StringLengthComparator implements Comparator<String> {
 
+        @Override
         public int compare(final String first, final String second) {
             //return first.length() - second.length();
             if (first.length() < second.length()) {

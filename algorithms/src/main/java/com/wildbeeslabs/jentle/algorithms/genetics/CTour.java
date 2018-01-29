@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
@@ -80,8 +80,8 @@ public class CTour<T extends CPlace> {
     }
 
     public void swapPlaces() {
-        int a = CNumericUtils.generateRandomInt(0, this.travel.size());
-        int b = CNumericUtils.generateRandomInt(0, this.travel.size());
+        int a = CRandom.generateRandomInt(0, this.travel.size());
+        int b = CRandom.generateRandomInt(0, this.travel.size());
         this.previousTravel = this.travel;
         final T x = this.travel.get(a);
         final T y = this.travel.get(b);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2018 WildBees Labs.
+ * Copyright 2017 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,46 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
+package com.wildbeeslabs.jentle.algorithms.format;
 
-import com.wildbeeslabs.jentle.algorithms.random.CRandom;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.text.DecimalFormat;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
+ * Helper class to handle number format operations
  *
- * Custom place implementation
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
  *
- * @author Alex
- * @version 1.0.0
- * @since 2017-08-07
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@ToString
-public class CPlace {
+public final class CNumberFormatter {
 
-    protected double x;
-    protected double y;
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CNumberFormatter.class);
+    /**
+     * Default number format pattern
+     */
+    public static final String DEFAULT_NUMBER_FORMAT_PATTERN = "#.##";
+    /**
+     * Default number format instance
+     */
+    private static final DecimalFormat numberFormat = new DecimalFormat(CNumberFormatter.DEFAULT_NUMBER_FORMAT_PATTERN);
 
-    public CPlace() {
-        this(0, Integer.MAX_VALUE);
+    private CNumberFormatter() {
+        // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public CPlace(int lowerBound, int upperBound) {
-        this(CRandom.generateRandomDouble(lowerBound, upperBound), CRandom.generateRandomDouble(lowerBound, upperBound));
+    public static String format(final Double value) {
+        return numberFormat.format(value);
     }
 
-    public CPlace(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public double distance(final CPlace place) {
-        double diffX = Math.abs(this.getX() - place.getX());
-        double diffY = Math.abs(this.getY() - place.getY());
-        return Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
+    public static String formatByPattern(final Double value, final String pattern) {
+        final DecimalFormat formatter = new DecimalFormat(pattern);
+        return formatter.format(value);
     }
 }

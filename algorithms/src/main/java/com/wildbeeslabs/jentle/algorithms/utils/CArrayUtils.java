@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
@@ -509,7 +510,7 @@ public final class CArrayUtils {
     public static <T> void shuffle(final T[] array) {
         Objects.requireNonNull(array);
         for (int i = 0; i < array.length; i++) {
-            int k = CNumericUtils.generateRandomInt(0, i);
+            int k = CRandom.generateRandomInt(0, i);
             swap(array, k, i);
         }
     }
@@ -519,7 +520,7 @@ public final class CArrayUtils {
         Objects.requireNonNull(subset);
         subset = Arrays.copyOfRange(array, 0, m);
         for (int i = m; i < array.length; i++) {
-            int k = CNumericUtils.generateRandomInt(0, i);
+            int k = CRandom.generateRandomInt(0, i);
             if (k < m) {
                 subset[k] = array[i];
             }
@@ -676,7 +677,7 @@ public final class CArrayUtils {
     }
 
     private static <T> T rank(final T[] array, int k, int start, int end, final Comparator<? super T> cmp) {
-        final T pivot = array[CNumericUtils.generateRandomInt(start, end)];
+        final T pivot = array[CRandom.generateRandomInt(start, end)];
         final PartitionResult partition = partition(array, start, end, pivot, cmp);
         int leftSize = partition.leftSize;
         int middleSize = partition.middleSize;
@@ -1285,15 +1286,15 @@ public final class CArrayUtils {
         assert (size > 0);
         int[] array = new int[size];
         for (int j = 0; j < size; j++) {
-            array[j] = CNumericUtils.generateRandomInt(min, max);
+            array[j] = CRandom.generateRandomInt(min, max);
         }
         return array;
     }
 
     public static <T, V extends T> boolean contains(final T value, final V[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
-        for (int i = 0; i < array.length; i++) {
-            if (Objects.compare(value, array[i], cmp) == 0) {
+        for (final V current : array) {
+            if (Objects.compare(value, current, cmp) == 0) {
                 return true;
             }
         }

@@ -24,10 +24,11 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.bitwise.CBitwise;
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,58 +49,25 @@ import java.util.stream.IntStream;
  */
 public final class CNumericUtils {
 
+    /**
+     * Default two pi constance
+     */
+    private final static double TWO_PI = 2 * Math.PI;
+    /**
+     * Default three pi over two constant
+     */
+    private final static double THREE_PI_OVER_TWO = 3 * Math.PI / 2;
+    /**
+     * Default pi over two constant
+     */
+    private final static double PI_OVER_TWO = Math.PI / 2;
+    /**
+     * Default near delta error (precision)
+     */
+    public static final double NEAR_DELTA = .00001;
+
     private CNumericUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
-    }
-
-    public static long generateRandomLong() {
-        return new Random().nextLong();
-        //new RandomDataGenerator().getRandomGenerator().nextLong();
-    }
-
-    public static int generateRandomInt() {
-        return new Random().nextInt();
-        //new RandomDataGenerator().getRandomGenerator().nextInt();
-    }
-
-    public static float generateRandomFloat() {
-        return new Random().nextFloat();
-        //new RandomDataGenerator().getRandomGenerator().nextFloat();
-    }
-
-    public static double generateRandomDouble() {
-        return new Random().nextDouble();
-        //new RandomDataGenerator().getRandomGenerator().nextDouble();
-    }
-
-    public static long generateRandomLong(long bottomLimit, long upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + (long) (Math.random() * (upLimit - bottomLimit)));
-        //new RandomDataGenerator().nextLong(bottomLimit, upLimit);
-    }
-
-    public static int generateRandomInt(int bottomLimit, int upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + (int) (new Random().nextFloat() * (upLimit - bottomLimit)));
-        //new RandomDataGenerator().nextInt(bottomLimit, upLimit);
-    }
-
-    public static float generateRandomFloat(float bottomLimit, float upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + new Random().nextFloat() * (upLimit - bottomLimit));
-        //float randomFloat = new RandomDataGenerator().getRandomGenerator().nextFloat();
-        //bottomLimit + randomFloat * (upLimit - bottomLimit);
-    }
-
-    public static double generateRandomDouble(double bottomLimit, double upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + new Random().nextDouble() * (upLimit - bottomLimit));
-        //new RandomDataGenerator().nextUniform(bottomLimit, upLimit);
-    }
-
-    public static boolean generateRandomBoolean() {
-        return new Random().nextBoolean();
-        //new RandomDataGenerator().getRandomGenerator().nextBoolean();
     }
 
     public static double round(double value, int places) {
@@ -275,7 +243,7 @@ public final class CNumericUtils {
     }
 
     public static int rand5() {
-        return CNumericUtils.generateRandomInt(0, 5);
+        return CRandom.generateRandomInt(0, 5);
     }
 
     public static int add(int a, int b) {
@@ -419,6 +387,27 @@ public final class CNumericUtils {
         return tmp;
     }
 
+    /**
+     * Calculates the Least Common Multiplier (LCM) of the supplied array of
+     * positive integer numbers.
+     *
+     * @param array the supplied array of positive integer numbers
+     * @return LCM of the supplied array
+     */
+    public static final int lcm(int[] array) {
+        if (array.length < 2) {
+            throw new IllegalArgumentException(String.format("ERROR: invalid input argument, array=(%s) has less than 2 elements", array));
+        }
+        int tmp = lcm(array[array.length - 1], array[array.length - 2]);
+        for (int i = array.length - 3; i >= 0; i--) {
+            if (array[i] <= 0) {
+                throw new IllegalArgumentException(String.format("ERROR: invalid input argument, array=(%s) has several numbers where one, at least, is negative or zero.", array));
+            }
+            tmp = lcm(tmp, array[i]);
+        }
+        return tmp;
+    }
+
     public static boolean isPalindrome(int num) {
         if (num == reverse(num)) {
             return true;
@@ -493,4 +482,94 @@ public final class CNumericUtils {
         final BigInteger prime = BigInteger.probablePrime(CBitwise.getNumberOfBits(number) - 1, new Random());
         return prime.longValue();
     }
+
+    /**
+     * Normalizes an angle to be near an absolute angle. The normalized angle
+     * will be in the range from 0 to 2*PI, where 2*PI itself is not included.
+     * If the normalized angle is near to 0, PI/2, PI, 3*PI/2 or 2*PI, that
+     * angle will be returned.
+     *
+     * @param angle the angle to normalize
+     * @return the normalized angle that will be in the range of [0,2*PI[
+     * @see #normalAbsoluteAngle(double)
+     * @see #isNear(double, double)
+     */
+    public static double normalNearAbsoluteAngle(double angle) {
+        angle = ((angle %= CNumericUtils.TWO_PI) >= 0) ? angle : (angle + CNumericUtils.TWO_PI);
+        if (isNear(angle, Math.PI)) {
+            return Math.PI;
+        } else if (angle < Math.PI) {
+            if (isNear(angle, 0)) {
+                return 0;
+            } else if (isNear(angle, CNumericUtils.PI_OVER_TWO)) {
+                return CNumericUtils.PI_OVER_TWO;
+            }
+        } else {
+            if (isNear(angle, CNumericUtils.THREE_PI_OVER_TWO)) {
+                return CNumericUtils.THREE_PI_OVER_TWO;
+            } else if (isNear(angle, CNumericUtils.TWO_PI)) {
+                return 0;
+            }
+        }
+        return angle;
+    }
+
+    /**
+     * Tests if the two {@code double} values are near to each other.
+     *
+     * @param value1 the first double value
+     * @param value2 the second double value
+     * @return {@code true} if the two doubles are near to each other;
+     * {@code false} otherwise.
+     */
+    public static boolean isNear(double value1, double value2) {
+        return (Math.abs(value1 - value2) < CNumericUtils.NEAR_DELTA);
+    }
+
+    /**
+     * Normalizes an angle to an absolute angle. The normalized angle will be in
+     * the range from 0 to 360, where 360 itself is not included.
+     *
+     * @param angle the angle to normalize
+     * @return the normalized angle that will be in the range of [0,360[
+     */
+    public static double normalAbsoluteAngleDegrees(double angle) {
+        return (angle %= 360) >= 0 ? angle : (angle + 360);
+    }
+
+    /**
+     * Normalizes an angle to a relative angle. The normalized angle will be in
+     * the range from -PI to PI, where PI itself is not included.
+     *
+     * @param angle the angle to normalize
+     * @return the normalized angle that will be in the range of [-PI,PI)
+     */
+    public static double normalRelativeAngle(double angle) {
+        return (angle %= CNumericUtils.TWO_PI) >= 0 ? (angle < Math.PI) ? angle : (angle - CNumericUtils.TWO_PI) : (angle >= -Math.PI) ? angle : angle + CNumericUtils.TWO_PI;
+    }
+
+    /**
+     * Normalize an angle in a 2*Math.PI wide interval around a center value.
+     * This method has three main uses:
+     * <ul>
+     * <li>normalize an angle between 0 and 2&pi;:<br/>
+     * <code>a = MathUtils.normalizeAngle(a, Math.PI);</code></li>
+     * <li>normalize an angle between -&pi; and +&pi;<br/>
+     * <code>a = MathUtils.normalizeAngle(a, 0.0);</code></li>
+     * <li>compute the angle between two defining angular positions:<br>
+     * <code>angle = MathUtils.normalizeAngle(end, start) - start;</code></li>
+     * </ul>
+     * Note that due to numerical accuracy and since &pi; cannot be represented
+     * exactly, the result interval is <em>closed</em>, it cannot be half-closed
+     * as would be more satisfactory in a purely mathematical view.
+     *
+     * @param a angle to normalize
+     * @param center center of the desired 2&pi; interval for the result
+     * @return a-2k * Math.PI; with integer k and center-Math.pi; &lt;= a-2k *
+     * Math.PI; &lt;= center+Math.PI;
+     */
+    public static double normalizeAngle(double a, double center) {
+        return a - CNumericUtils.TWO_PI * Math.floor((a + Math.PI - center) / CNumericUtils.TWO_PI);
+    }
+
 }

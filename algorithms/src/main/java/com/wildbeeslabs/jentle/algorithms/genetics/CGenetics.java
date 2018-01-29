@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.algorithms.utils.CMatrixUtils;
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import io.jenetics.BitChromosome;
@@ -151,7 +151,7 @@ public final class CGenetics {
         private void mutate(final T indiv) {
             for (int i = 0; i < indiv.getGenLength(); i++) {
                 if (Math.random() <= mutationRate) {
-                    indiv.setSingleGene(i, CNumericUtils.generateRandomLong());
+                    indiv.setSingleGene(i, CRandom.generateRandomLong());
                 }
             }
         }
@@ -273,7 +273,7 @@ public final class CGenetics {
                     .forEach(i -> {
                         this.actors.forEach(actor -> {
                             actor.clear();
-                            actor.visit(-1, CNumericUtils.generateRandomInt(0, this.numOfPlaces));
+                            actor.visit(-1, CRandom.generateRandomInt(0, this.numOfPlaces));
                         });
                     });
             this.currentIndex = 0;
@@ -288,8 +288,8 @@ public final class CGenetics {
         }
 
         private Integer getNextPlace(final T actor) {
-            int t = CNumericUtils.generateRandomInt(0, this.numOfPlaces - this.currentIndex);
-            if (CNumericUtils.generateRandomDouble() < CActorGenetics.randomFactor) {
+            int t = CRandom.generateRandomInt(0, this.numOfPlaces - this.currentIndex);
+            if (CRandom.generateRandomDouble() < CActorGenetics.randomFactor) {
                 OptionalInt cityIndex = IntStream.range(0, this.numOfPlaces)
                         .filter(i -> i == t && !actor.visited(i))
                         .findFirst();
@@ -298,7 +298,7 @@ public final class CGenetics {
                 }
             }
             calculateProbabilities(actor);
-            double r = CNumericUtils.generateRandomDouble();
+            double r = CRandom.generateRandomDouble();
             double total = 0;
             for (int i = 0; i < this.numOfPlaces; i++) {
                 total += this.probabilities[i];
@@ -497,7 +497,7 @@ public final class CGenetics {
         }
 
         public void runTask() {
-            final CSum<Integer> task = CSumGenetics.of(500, 15, CNumericUtils::generateRandomDouble, d -> (int) ((d - 0.5) * 500));
+            final CSum<Integer> task = CSumGenetics.of(500, 15, CRandom::generateRandomDouble, d -> (int) ((d - 0.5) * 500));
             final Engine<EnumGene<Integer>, Integer> engine = Engine.builder(task)
                     .minimizing()
                     .maximalPhenotypeAge(5)

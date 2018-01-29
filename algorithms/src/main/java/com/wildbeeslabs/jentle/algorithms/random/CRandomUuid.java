@@ -24,45 +24,51 @@
 package com.wildbeeslabs.jentle.algorithms.random;
 
 import java.security.SecureRandom;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Custom random UUID factory implementations
+ * Custom random UUID utility implementation.
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CRandomUuidFactory {
+public class CRandomUuid {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CRandomUuid.class);
 
     /**
      * Default singleton instance
      */
-    private static final CRandomUuidFactory _SINGLETON = new CRandomUuidFactory();
+    private static final CRandomUuid DEFAULT_SINGLETON_INSTANCE = new CRandomUuid();
     /**
      * Default array of hex values
      */
-    private static final char[] _HEX_VALUES = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-
+    private static final char[] DEFAULT_HEX_VALUES = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     /**
      * Default random generator
      */
-    private static final SecureRandom _RNG = new SecureRandom();
+    private static final SecureRandom DEFAULT_RANDOM_INSTANCE = new SecureRandom();
 
     /**
      * Private constructor by singleton pattern implementation
      */
-    private CRandomUuidFactory() {
+    private CRandomUuid() {
     }
 
     /**
-     * Creates unique UUID identifier
+     * Creates unique UUID identifier.
      *
      * @return a unique UUID identifier.
      */
     public String createUUID() {
         final byte[] bytes = new byte[16];
-        _RNG.nextBytes(bytes);
+        CRandomUuid.DEFAULT_RANDOM_INSTANCE.nextBytes(bytes);
         final StringBuffer uuid = new StringBuffer(41);
         uuid.append("uuid:");
         for (int n = 0; n < Character.SIZE; n++) {
@@ -70,18 +76,18 @@ public class CRandomUuidFactory {
                 uuid.append('-');
             }
             int hex = bytes[n] & 255;
-            uuid.append(_HEX_VALUES[hex >> 4]);
-            uuid.append(_HEX_VALUES[hex & Character.SIZE - 1]);
+            uuid.append(CRandomUuid.DEFAULT_HEX_VALUES[hex >> 4]);
+            uuid.append(CRandomUuid.DEFAULT_HEX_VALUES[hex & Character.SIZE - 1]);
         }
         return uuid.toString();
     }
 
     /**
-     * Returns singleton random UUID factory instance
+     * Returns singleton random UUID factory instance.
      *
      * @return random UUID factory instance
      */
-    public static CRandomUuidFactory getInstance() {
-        return CRandomUuidFactory._SINGLETON;
+    public static CRandomUuid getInstance() {
+        return CRandomUuid.DEFAULT_SINGLETON_INSTANCE;
     }
 }

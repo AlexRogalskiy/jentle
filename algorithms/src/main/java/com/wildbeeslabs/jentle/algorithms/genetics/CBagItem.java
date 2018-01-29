@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,6 +51,6 @@ public class CBagItem {
     }
 
     protected static CBagItem random(int lowerBound, int upperBound) {
-        return new CBagItem(CNumericUtils.generateRandomDouble(lowerBound, upperBound), CNumericUtils.generateRandomDouble(lowerBound, upperBound));
+        return new CBagItem(CRandom.generateRandomDouble(lowerBound, upperBound), CRandom.generateRandomDouble(lowerBound, upperBound));
     }
 }

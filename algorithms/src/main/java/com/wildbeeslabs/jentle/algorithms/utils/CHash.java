@@ -27,8 +27,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import java.util.Objects;
 import javax.xml.bind.DatatypeConverter;
 
@@ -42,28 +44,31 @@ import javax.xml.bind.DatatypeConverter;
  */
 public final class CHash {
 
-    private static final String DEFAULT_HASH_MD5 = "MD5";
+    private static final String DEFAULT_MD5_HASH = "MD5";
 
     private CHash() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static String md5(final String value) throws NoSuchAlgorithmException {
-        assert (Objects.nonNull(value));
+    public static byte[] md5(final String value) throws NoSuchAlgorithmException {
+        Objects.requireNonNull(value);
         return md5(value.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String md5sum(final String filename) throws NoSuchAlgorithmException, IOException {
-        assert (Objects.nonNull(filename));
+    public static byte[] md5sum(final String filename) throws NoSuchAlgorithmException, IOException {
+        Objects.requireNonNull(filename);
         return md5(Files.readAllBytes(Paths.get(filename)));
     }
 
-    public static String md5(byte[] bArray) throws NoSuchAlgorithmException {
-        assert (Objects.nonNull(bArray));
-        final MessageDigest md = MessageDigest.getInstance(DEFAULT_HASH_MD5);
+    public static byte[] md5(byte[] bArray) throws NoSuchAlgorithmException {
+        Objects.requireNonNull(bArray);
+        final MessageDigest md = MessageDigest.getInstance(CHash.DEFAULT_MD5_HASH);
         md.update(bArray);
-        byte[] digest = md.digest();
-        return DatatypeConverter.printHexBinary(digest);
+        return md.digest();
         //DigestUtils.md5Hex(password)
+    }
+
+    public static String toHexString(byte[] digest) throws NoSuchAlgorithmException {
+        return DatatypeConverter.printHexBinary(digest);
     }
 }

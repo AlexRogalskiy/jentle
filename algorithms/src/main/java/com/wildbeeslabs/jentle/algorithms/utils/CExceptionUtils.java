@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Objects;
 
 import org.apache.log4j.LogManager;
@@ -79,9 +80,49 @@ public class CExceptionUtils {
             return null;
         }
         final ByteArrayOutputStream bas = new ByteArrayOutputStream();
-        final PrintWriter pw = new PrintWriter(bas);
-        throwable.printStackTrace(pw);
-        pw.close();
+        try (final PrintWriter pw = new PrintWriter(bas)) {
+            throwable.printStackTrace(pw);
+        }
         return bas.toString();
+    }
+
+    /**
+     * Returns whether the supplied exception is a checked exception
+     *
+     * @param throwable the supplied exception to check
+     * @return true if supplied exception is checked, false - otherwise
+     * @see java.lang.Exception
+     * @see java.lang.RuntimeException
+     * @see java.lang.Error
+     */
+    public static boolean isCheckedException(final Throwable throwable) {
+        return !(throwable instanceof RuntimeException || throwable instanceof Error);
+    }
+
+    public static String stringify(final Throwable throwable) {
+        final StringWriter stm = new StringWriter();
+        try (final PrintWriter wrt = new PrintWriter(stm)) {
+            throwable.printStackTrace(wrt);
+        }
+        return stm.toString();
+    }
+
+    /**
+     * Locates a particular type of the supplied exception
+     *
+     * @param throwable the supplied exception
+     * @param type the type of exception to search for
+     * @return the first exception of the given type, if found, or null
+     * @param <T>
+     */
+    public static <T extends Throwable> T findCause(final Throwable throwable, final Class<? extends T> type) {
+        Throwable current = throwable;
+        while (Objects.nonNull(current)) {
+            if (type.isInstance(current)) {
+                return type.cast(current);
+            }
+            current = current.getCause();
+        }
+        return null;
     }
 }

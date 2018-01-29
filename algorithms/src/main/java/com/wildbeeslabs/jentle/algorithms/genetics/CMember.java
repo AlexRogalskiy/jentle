@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -59,7 +59,7 @@ public class CMember {
         this.fitness = 0;
         this.gens = new long[genLength];
         for (int i = 0; i < genLength; i++) {
-            this.gens[i] = CNumericUtils.generateRandomLong();
+            this.gens[i] = CRandom.generateRandomLong();
         }
     }
 

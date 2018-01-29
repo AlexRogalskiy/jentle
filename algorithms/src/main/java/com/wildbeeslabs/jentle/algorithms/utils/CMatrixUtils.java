@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.tree.CTrie3;
 
 import java.io.Serializable;
@@ -159,7 +160,7 @@ public final class CMatrixUtils<T> {
         int nColumns = matrix[0].length;
         int num = nRows * nColumns;
         for (int i = 0; i < num; i++) {
-            int j = i + CNumericUtils.generateRandomInt(0, num - i);
+            int j = i + CRandom.generateRandomInt(0, num - i);
             if (i != j) {
                 int row1 = i / nColumns;
                 int column1 = (i - row1 * nColumns) % nColumns;
@@ -817,7 +818,7 @@ public final class CMatrixUtils<T> {
         final int[][] matrix = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                matrix[i][j] = CNumericUtils.generateRandomInt(min, max);
+                matrix[i][j] = CRandom.generateRandomInt(min, max);
             }
         }
         return matrix;
@@ -848,7 +849,7 @@ public final class CMatrixUtils<T> {
     public static double[][] generateRandomDoubleMatrix(int n, int lowerBound, int upperBound) {
         assert (n > 0);
         double[][] randomMatrix = new double[n][n];
-        IntStream.range(0, n).forEach(i -> IntStream.range(0, n).forEach(j -> randomMatrix[i][j] = CNumericUtils.generateRandomDouble(lowerBound, upperBound)));
+        IntStream.range(0, n).forEach(i -> IntStream.range(0, n).forEach(j -> randomMatrix[i][j] = CRandom.generateRandomDouble(lowerBound, upperBound)));
         return randomMatrix;
     }
 }
