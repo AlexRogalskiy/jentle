@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.calc;
+package com.wildbeeslabs.jentle.algorithms.math;
 
-import java.util.LinkedList;
 import java.util.Objects;
 import java.util.stream.Stream;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Custom calculation implementations
+ * Custom math algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CCalculation {
+public final class CMath {
 
-    private CCalculation() {
+    /**
+     * Default Logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CMath.class);
+
+    private CMath() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -118,6 +122,17 @@ public final class CCalculation {
         return facNumber;
     }
 
+    public static double factorialLog(final int n) {
+        if (n < 0) {
+            throw new IllegalArgumentException(String.format("ERROR: invalid input argument n=%i (n > 0 for n!)", n));
+        }
+        double logSum = 0;
+        for (int i = 2; i <= n; i++) {
+            logSum += Math.log((double) i);
+        }
+        return logSum;
+    }
+
     public static int gorner(final int[] array, int x) {
         Objects.requireNonNull(array);
         int k = 0, n = array.length - 1, y = array[n];
@@ -128,48 +143,68 @@ public final class CCalculation {
     }
 
     /**
-     * Simple Moving Average algorithm implementation
+     * Returns the <a href="http://mathworld.wolfram.com/HyperbolicCosine.html">
+     * hyperbolic cosine</a> of x.
+     *
+     * @param x double value for which to find the hyperbolic cosine
+     * @return hyperbolic cosine of x
      */
-    @Data
-    @EqualsAndHashCode(callSuper = false)
-    @ToString
-    public static class CSimpleMovingAverage {
+    public static double cosh(double x) {
+        return (Math.exp(x) + Math.exp(-x)) / 2.0;
+    }
 
-        private final LinkedList<Double> values = new LinkedList<>();
+    /**
+     * Returns the <a href="http://mathworld.wolfram.com/HyperbolicSine.html">
+     * hyperbolic sine</a> of x.
+     *
+     * @param x double value for which to find the hyperbolic sine
+     * @return hyperbolic sine of x
+     */
+    public static double sinh(double x) {
+        return (Math.exp(x) - Math.exp(-x)) / 2.0;
+    }
 
-        private int length;
-        private double sum = 0;
-        private double average = 0;
-
-        /**
-         *
-         * @param length the maximum length
-         */
-        public CSimpleMovingAverage(int length) {
-            if (length <= 0) {
-                throw new IllegalArgumentException("length must be greater than zero");
-            }
-            this.length = length;
+    /**
+     * Returns the natural <code>log</code> of the <a
+     * href="http://mathworld.wolfram.com/BinomialCoefficient.html"> Binomial
+     * Coefficient</a>, "<code>n choose k</code>", the number of
+     * <code>k</code>-element subsets that can be selected from an
+     * <code>n</code>-element set.
+     *
+     * <Strong>Preconditions</strong>:
+     * <ul>
+     * <li> <code>0 <= k <= n </code> (otherwise
+     * <code>IllegalArgumentException</code> is thrown)</li>
+     * </ul>
+     *
+     * @param n the size of the set
+     * @param k the size of the subsets to be counted
+     * @return <code>n choose k</code>
+     * @throws IllegalArgumentException if preconditions are not met.
+     */
+    public static double binomialCoefficientLog(final int n, final int k) {
+        if (n < k) {
+            throw new IllegalArgumentException(String.format("ERROR: invalid input arguments n=%i, k=%i (n >= k for binomial coefficient (n,k))", n, k));
+        }
+        if (n < 0) {
+            throw new IllegalArgumentException(String.format("ERROR: invalid input arguments n=%i, k=%i (n >= 0 for binomial coefficient (n,k))", n, k));
+        }
+        if ((n == k) || (k == 0)) {
+            return 0;
+        }
+        if ((k == 1) || (k == n - 1)) {
+            return Math.log((double) n);
         }
 
-        public double currentAverage() {
-            return this.average;
+        double logSum = 0;
+        // n!/k!
+        for (int i = k + 1; i <= n; i++) {
+            logSum += Math.log((double) i);
         }
-
-        /**
-         * Computes the moving average.
-         *
-         * @param value The value
-         * @return The average
-         */
-        public synchronized double compute(final double value) {
-            if (this.values.size() == this.length && this.length > 0) {
-                this.sum -= this.values.removeFirst();
-            }
-            this.sum += value;
-            this.values.addLast(value);
-            this.average = this.sum / this.values.size();
-            return this.average;
+        // divide by (n-k)!
+        for (int i = 2; i <= n - k; i++) {
+            logSum -= Math.log((double) i);
         }
+        return logSum;
     }
 }

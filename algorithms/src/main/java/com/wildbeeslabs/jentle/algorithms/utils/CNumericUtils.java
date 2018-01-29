@@ -571,5 +571,4 @@ public final class CNumericUtils {
     public static double normalizeAngle(double a, double center) {
         return a - CNumericUtils.TWO_PI * Math.floor((a + Math.PI - center) / CNumericUtils.TWO_PI);
     }
-
 }
