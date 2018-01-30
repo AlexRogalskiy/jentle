@@ -23,7 +23,9 @@
  */
 package com.wildbeeslabs.jentle.algorithms.format;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -61,5 +63,44 @@ public final class CNumberFormatter {
     public static String formatByPattern(final Double value, final String pattern) {
         final DecimalFormat formatter = new DecimalFormat(pattern);
         return formatter.format(value);
+    }
+
+    /**
+     * Round the given value to the specified number of decimal places. The
+     * value is rounded using the {@link BigDecimal#ROUND_HALF_UP} method.
+     *
+     * @param x the value to round.
+     * @param scale the number of digits to the right of the decimal point.
+     * @return the rounded value.
+     * @since 1.1
+     */
+    public static double round(double x, int scale) {
+        return CNumberFormatter.round(x, scale, BigDecimal.ROUND_HALF_UP);
+    }
+
+    /**
+     * Round the given value to the specified number of decimal places. The
+     * value is rounded using the given method which is any method defined in
+     * {@link BigDecimal}.
+     *
+     * @param x the value to round.
+     * @param scale the number of digits to the right of the decimal point.
+     * @param roundingMethod the rounding method as defined in
+     * {@link BigDecimal}.
+     * @return the rounded value.
+     * @since 1.1
+     */
+    public static double round(double x, int scale, int roundingMethod) {
+        try {
+            return (new BigDecimal(Double.toString(x))
+                    .setScale(scale, roundingMethod))
+                    .doubleValue();
+        } catch (NumberFormatException ex) {
+            if (Double.isInfinite(x)) {
+                return x;
+            } else {
+                return Double.NaN;
+            }
+        }
     }
 }

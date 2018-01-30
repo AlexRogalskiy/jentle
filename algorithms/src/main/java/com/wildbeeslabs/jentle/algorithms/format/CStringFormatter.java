@@ -387,22 +387,22 @@ public final class CStringFormatter {
     /**
      * Returns the number of bytes that hold an UniCode char.
      *
-     * @param car The character to be decoded
+     * @param c The character to be decoded
      * @return The number of bytes to hold the char. TODO : Should stop after
      * the third byte, as a char is only 2 bytes long.
      */
-    public static final int countNbBytesPerChar(char car) {
-        if ((car & CHAR_ONE_BYTE_MASK) == 0) {
+    public static final int countNbBytesPerChar(char c) {
+        if ((c & CHAR_ONE_BYTE_MASK) == 0) {
             return 1;
-        } else if ((car & CHAR_TWO_BYTES_MASK) == 0) {
+        } else if ((c & CHAR_TWO_BYTES_MASK) == 0) {
             return 2;
-        } else if ((car & CHAR_THREE_BYTES_MASK) == 0) {
+        } else if ((c & CHAR_THREE_BYTES_MASK) == 0) {
             return 3;
-        } else if ((car & CHAR_FOUR_BYTES_MASK) == 0) {
+        } else if ((c & CHAR_FOUR_BYTES_MASK) == 0) {
             return 4;
-        } else if ((car & CHAR_FIVE_BYTES_MASK) == 0) {
+        } else if ((c & CHAR_FIVE_BYTES_MASK) == 0) {
             return 5;
-        } else if ((car & CHAR_SIX_BYTES_MASK) == 0) {
+        } else if ((c & CHAR_SIX_BYTES_MASK) == 0) {
             return 6;
         } else {
             return -1;

@@ -30,9 +30,11 @@ import java.nio.file.Paths;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import java.util.Objects;
 import javax.xml.bind.DatatypeConverter;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -42,11 +44,16 @@ import javax.xml.bind.DatatypeConverter;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CHash {
+public final class CDigest {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CDigest.class);
 
     private static final String DEFAULT_MD5_HASH = "MD5";
 
-    private CHash() {
+    private CDigest() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -62,7 +69,7 @@ public final class CHash {
 
     public static byte[] md5(byte[] bArray) throws NoSuchAlgorithmException {
         Objects.requireNonNull(bArray);
-        final MessageDigest md = MessageDigest.getInstance(CHash.DEFAULT_MD5_HASH);
+        final MessageDigest md = MessageDigest.getInstance(CDigest.DEFAULT_MD5_HASH);
         md.update(bArray);
         return md.digest();
         //DigestUtils.md5Hex(password)
@@ -70,5 +77,20 @@ public final class CHash {
 
     public static String toHexString(byte[] digest) throws NoSuchAlgorithmException {
         return DatatypeConverter.printHexBinary(digest);
+    }
+
+    /**
+     * Returns the MessageDigest instance
+     *
+     * @param algorithm supplied digest algorithm
+     * @return The hashing algorithm
+     */
+    public static MessageDigest getDigest(final String algorithm) {
+        try {
+            return MessageDigest.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException ex) {
+            LOGGER.error(String.format("ERROR: cannot create digest instance for algorithm=%s, message=%s", algorithm, ex.getMessage()));
+        }
+        return null;
     }
 }

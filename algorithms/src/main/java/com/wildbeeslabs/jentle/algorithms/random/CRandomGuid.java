@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.random;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CHash;
+import com.wildbeeslabs.jentle.algorithms.utils.CDigest;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -94,7 +94,7 @@ public class CRandomGuid {
             sbBeforeMD5.append(Long.toString(rand));
             this.valueBeforeMD5 = sbBeforeMD5.toString();
 
-            final byte[] array = CHash.md5(this.valueBeforeMD5);
+            final byte[] array = CDigest.md5(this.valueBeforeMD5);
             final StringBuffer sbAfterMD5 = new StringBuffer();
             for (int j = 0; j < array.length; ++j) {
                 int b = array[j] & 0xFF;
