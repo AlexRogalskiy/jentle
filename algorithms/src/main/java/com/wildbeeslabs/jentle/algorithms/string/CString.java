@@ -55,17 +55,17 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2017-08-07
  */
 public final class CString {
-
+    
     private CString() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
-
+    
     public static List<String> transform(final String start, final String stop, final String[] words) {
         final CHashMapList<String, String> wordList = createWordMap(words);
         final Set<String> visited = new HashSet<>();
         return transform(visited, start, stop, wordList);
     }
-
+    
     private static LinkedList<String> transform(final Set<String> visited, final String start, final String stop, final CHashMapList<String, String> wordList) {
         if (start.equals(stop)) {
             final LinkedList<String> path = new LinkedList<>();
@@ -85,7 +85,7 @@ public final class CString {
         }
         return null;
     }
-
+    
     private static CHashMapList<String, String> createWordMap(final String[] words) {
         final CHashMapList<String, String> wordList = new CHashMapList<>();
         for (final String word : words) {
@@ -96,7 +96,7 @@ public final class CString {
         }
         return wordList;
     }
-
+    
     private static List<String> getWildCardRoots(final String word) {
         final List<String> words = new ArrayList<>();
         for (int i = 0; i < word.length(); i++) {
@@ -105,7 +105,7 @@ public final class CString {
         }
         return words;
     }
-
+    
     private static List<String> getValidLinkedWords(final String word, final CHashMapList<String, String> wordList) {
         final List<String> wildCards = getWildCardRoots(word);
         final List<String> linkedWords = new ArrayList<>();
@@ -116,7 +116,7 @@ public final class CString {
         });
         return linkedWords;
     }
-
+    
     public static List<String> transform2(final String start, final String stop, final String[] words) {
         final CHashMapList<String, String> wordList = createWordMap(words);
         final BFSData<String, PathNode> sourceData = new BFSData<>(new PathNode(start));
@@ -133,7 +133,7 @@ public final class CString {
         }
         return null;
     }
-
+    
     private static String searchLevel(final CHashMapList<String, String> wordList, final BFSData<String, PathNode> primary, final BFSData<String, PathNode> secondary) {
         int count = primary.toVisit.size();
         for (int i = 0; i < count; i++) {
@@ -153,7 +153,7 @@ public final class CString {
         }
         return null;
     }
-
+    
     private static List<String> mergePaths(final BFSData<String, PathNode> data1, final BFSData<String, PathNode> data2, final String connection) {
         final PathNode end1 = data1.visited.get(connection);
         final PathNode end2 = data2.visited.get(connection);
@@ -163,46 +163,46 @@ public final class CString {
         pathOne.addAll(pathTwo);
         return pathOne;
     }
-
+    
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
     public static class BFSData<T extends CharSequence, E extends APathNode<T, E>> {
-
+        
         public final Queue<E> toVisit = new LinkedList<>();
         public final Map<T, E> visited = new HashMap<>();
-
+        
         public BFSData(final E node) {
             toVisit.add(node);
             visited.put(node.getValue(), node);
         }
-
+        
         public boolean isFinished() {
             return toVisit.isEmpty();
         }
     }
-
+    
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
     public static abstract class APathNode<T extends CharSequence, E extends APathNode<T, E>> {
-
+        
         protected T value = null;
         protected E previous = null;
-
+        
         public APathNode() {
             this(null);
         }
-
+        
         public APathNode(final T value) {
             this(value, null);
         }
-
+        
         public APathNode(final T value, final E previous) {
             this.value = value;
             this.previous = previous;
         }
-
+        
         public LinkedList<T> collapse(boolean startsWithRoot) {
             final LinkedList<T> path = new LinkedList<>();
             APathNode<T, E> node = this;
@@ -217,25 +217,25 @@ public final class CString {
             return path;
         }
     }
-
+    
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString
     public static class PathNode extends APathNode<String, PathNode> {
-
+        
         public PathNode() {
             this(null);
         }
-
+        
         public PathNode(final String value) {
             this(value, null);
         }
-
+        
         public PathNode(final String value, final PathNode previous) {
             super(value, previous);
         }
     }
-
+    
     public static CHashMapList<String, Integer> searchAll2(final String value, final String[] smalls) {
         final CHashMapList<String, Integer> lookup = new CHashMapList<>();
         int maxLen = value.length();
@@ -246,7 +246,7 @@ public final class CString {
         }
         return lookup;
     }
-
+    
     private static CTrie3 createTreeFromStrings(final String[] smalls, int maxLen) {
         final CTrie3 tree = new CTrie3();
         tree.setRoot("");
@@ -257,7 +257,7 @@ public final class CString {
         }
         return tree;
     }
-
+    
     private static List<String> findStringsAtLocation(CTrie3.CTrieNode root, final String value, int start) {
         final List<String> strings = new ArrayList<>();
         int index = start;
@@ -273,13 +273,13 @@ public final class CString {
         }
         return strings;
     }
-
+    
     private static void insertIntoHashMap(final List<String> strings, final CHashMapList<String, Integer> lookup, int index) {
         strings.stream().forEach((string) -> {
             lookup.put(string, index);
         });
     }
-
+    
     public static CHashMapList<String, Integer> searchAll(final String value, final String[] smalls) {
         final CHashMapList<String, Integer> lookup = new CHashMapList<>();
         final CTrie3 tree = createTrieFromString(value);
@@ -290,7 +290,7 @@ public final class CString {
         }
         return lookup;
     }
-
+    
     private static CTrie3 createTrieFromString(final String value) {
         final CTrie3 trie = new CTrie3();
         for (int i = 0; i < value.length(); i++) {
@@ -299,7 +299,7 @@ public final class CString {
         }
         return trie;
     }
-
+    
     private static void subtractValue(final List<Integer> locations, int delta) {
         if (Objects.isNull(locations)) {
             return;
@@ -308,7 +308,7 @@ public final class CString {
             locations.set(i, locations.get(i) - delta);
         }
     }
-
+    
     public static String getLongestToken(final String[] array) {
         final Map<String, Boolean> map = new HashMap<>();
         for (final String elem : array) {
@@ -322,7 +322,7 @@ public final class CString {
         }
         return null;
     }
-
+    
     private static boolean canBuildWord(final String value, boolean isOriginalWord, final Map<String, Boolean> map) {
         if (map.containsKey(value) && !isOriginalWord) {
             return map.get(value);
@@ -337,31 +337,31 @@ public final class CString {
         map.put(value, false);
         return false;
     }
-
+    
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
     public static class ParseResult {
-
+        
         public int invalid;
         public String parsed;
-
+        
         public ParseResult() {
             this(Integer.MAX_VALUE, " ");
         }
-
+        
         public ParseResult(int invalid, final String parsed) {
             this.invalid = invalid;
             this.parsed = parsed;
         }
     }
-
+    
     public static String bestSplit(final Set<String> dictionary, final String sentence) {
         final ParseResult[] memo = new ParseResult[sentence.length()];
         final ParseResult r = split(dictionary, sentence, 0, memo);
         return Objects.isNull(r) ? null : r.parsed;
     }
-
+    
     private static ParseResult split(final Set<String> dictionary, final String sentence, int start, final ParseResult[] memo) {
         if (start >= sentence.length()) {
             return new ParseResult(0, "");
@@ -392,7 +392,7 @@ public final class CString {
         memo[start] = new ParseResult(bestInvalid, bestParsing);
         return memo[start];
     }
-
+    
     public static LocationPair findClosest(final String[] words, final String word1, final String word2) {
         final LocationPair best = new LocationPair(-1, -1);
         LocationPair current = new LocationPair(-1, -1);
@@ -408,13 +408,13 @@ public final class CString {
         }
         return best;
     }
-
+    
     public static LocationPair findClosest2(final String word1, final String word2, final CHashMapList<String, Integer> locations) {
         final List<Integer> locations1 = locations.get(word1);
         final List<Integer> locations2 = locations.get(word2);
         return findMinDistancePair(locations1, locations2);
     }
-
+    
     public static int findClosest3(final String word1, final String word2) {
         Objects.requireNonNull(word1);
         Objects.requireNonNull(word2);
@@ -430,10 +430,10 @@ public final class CString {
                 }
             }
         }
-
+        
         return dp[word1.length()][word2.length()];
     }
-
+    
     public static int findClosest4(final String x, final String y) {
         if (Objects.isNull(x) || x.isEmpty()) {
             return y.length();
@@ -446,11 +446,11 @@ public final class CString {
         int deletion = findClosest4(x.substring(1), y) + 1;
         return CNumericUtils.min(substitution, insertion, deletion);
     }
-
+    
     public static int costOfSubstitution(char a, char b) {
         return a == b ? 0 : 1;
     }
-
+    
     private static LocationPair findMinDistancePair(final List<Integer> list1, final List<Integer> list2) {
         if (Objects.isNull(list1) || Objects.isNull(list2) || list1.isEmpty() || list2.isEmpty()) {
             return null;
@@ -470,7 +470,7 @@ public final class CString {
         }
         return best;
     }
-
+    
     private static CHashMapList<String, Integer> getWordLocations(final String[] words) {
         final CHashMapList<String, Integer> locations = new CHashMapList<>();
         for (int i = 0; i < words.length; i++) {
@@ -478,37 +478,37 @@ public final class CString {
         }
         return locations;
     }
-
+    
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
     public static class LocationPair {
-
+        
         public int location1;
         public int location2;
-
+        
         @SuppressWarnings("OverridableMethodCallInConstructor")
         public LocationPair(int first, int second) {
             this.setLocations(first, second);
         }
-
+        
         public void setLocations(int first, int second) {
             this.location1 = first;
             this.location2 = second;
         }
-
+        
         public void setLocations(final LocationPair location) {
             this.setLocations(location.location1, location.location2);
         }
-
+        
         public int distance() {
             return Math.abs(location1 - location2);
         }
-
+        
         public boolean isValid() {
             return this.location1 >= 0 && this.location2 >= 0;
         }
-
+        
         public void updateWithMin(final LocationPair location) {
             if (!this.isValid() || location.distance() < distance()) {
                 this.setLocations(location);
@@ -570,7 +570,7 @@ public final class CString {
         mergeClasses(groups, synonyms);
         return convertToMap(groups);
     }
-
+    
     private static void mergeClasses(final Map<String, NameSet> groups, final String[][] synonyms) {
         for (final String[] entry : synonyms) {
             String name1 = entry[0];
@@ -589,7 +589,7 @@ public final class CString {
             }
         }
     }
-
+    
     private static Map<String, NameSet> constructGroups(final Map<String, Integer> names) {
         final Map<String, NameSet> groups = new HashMap<>();
         names.entrySet().stream().forEach((entry) -> {
@@ -600,7 +600,7 @@ public final class CString {
         });
         return groups;
     }
-
+    
     private static Map<String, Integer> convertToMap(final Map<String, NameSet> groups) {
         final Map<String, Integer> list = new HashMap<>();
         groups.values().stream().forEach((group) -> {
@@ -608,32 +608,32 @@ public final class CString {
         });
         return list;
     }
-
+    
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
     public static class NameSet {
-
+        
         private final Set<String> names = new HashSet<>();
         private String rootName;
         private int frequency;
-
+        
         public NameSet(final String name, int frequency) {
             this.names.add(name);
             this.rootName = name;
             this.frequency = frequency;
         }
-
+        
         public void copyNamesWithFrequency(final Set<String> names, int frequency) {
             this.names.addAll(names);
             this.frequency += frequency;
         }
-
+        
         public int size() {
             return this.names.size();
         }
     }
-
+    
     public static Double compute(final String sequence) {
         final List<Term> terms = Term.parseTermSequence(sequence);
         if (Objects.isNull(terms)) {
@@ -652,7 +652,7 @@ public final class CString {
         }
         return result;
     }
-
+    
     private static Term collapseTerm(final Term primary, final Term secondary) {
         if (Objects.isNull(primary)) {
             return secondary;
@@ -664,7 +664,7 @@ public final class CString {
         primary.setNumber(value);
         return primary;
     }
-
+    
     private static double applyOp(double left, final Operator op, double right) {
         if (Objects.equals(Operator.ADD, op)) {
             return left + right;
@@ -677,34 +677,34 @@ public final class CString {
         }
         return right;
     }
-
+    
     public static enum Operator {
-
+        
         ADD, SUBTRACT, MULTIPLY, DIVIDE, BLANK
     }
-
+    
     @Data
     @EqualsAndHashCode(callSuper = false)
     @ToString
     public static class Term {
-
+        
         private double number;
         private Operator operator;
-
+        
         public Term() {
             this(0.0, Operator.BLANK);
         }
-
+        
         public Term(double number, final Operator operator) {
             this.number = number;
             this.operator = operator;
         }
-
+        
         public static List<Term> parseTermSequence(final String sequence) {
             return null;
         }
     }
-
+    
     public static Double compute2(final String sequence) {
         final Stack<Double> numberStack = new Stack<>();
         final Stack<CString.Operator> operatorStack = new Stack<>();
@@ -729,7 +729,7 @@ public final class CString {
         }
         return 0.0;
     }
-
+    
     private static void collapseTop(final CString.Operator futureTop, final Stack<Double> numberStack, final Stack<CString.Operator> operatorStack) {
         while (operatorStack.size() >= 1 && numberStack.size() >= 2) {
             if (priorityOfOperator(futureTop) <= priorityOfOperator(operatorStack.peek())) {
@@ -743,7 +743,7 @@ public final class CString {
             }
         }
     }
-
+    
     private static int priorityOfOperator(final CString.Operator op) {
         switch (op) {
             case ADD:
@@ -759,7 +759,7 @@ public final class CString {
         }
         return 0;
     }
-
+    
     private static double parseNextNumber(final String sequence, int offset) {
         final StringBuffer sb = new StringBuffer();
         while (offset < sequence.length() && Character.isDigit(sequence.charAt(offset))) {
@@ -768,7 +768,7 @@ public final class CString {
         }
         return Double.parseDouble(sb.toString());
     }
-
+    
     private static CString.Operator parseNextOperator(final String sequence, int offset) {
         if (offset < sequence.length()) {
             char op = sequence.charAt(offset);
@@ -785,11 +785,11 @@ public final class CString {
         }
         return CString.Operator.BLANK;
     }
-
+    
     public static List<String> getValidT9Words(final String numbers, final CHashMapList<String, String> dictionary) {
         return dictionary.get(numbers);
     }
-
+    
     private static CHashMapList<String, String> initializeDictionary(final String[] words) {
         final Map<Integer, Character> letterToNumberMap = createLetterToNumberMap();
         final CHashMapList<String, String> wordsToNumbers = new CHashMapList<>();
@@ -799,7 +799,7 @@ public final class CString {
         }
         return wordsToNumbers;
     }
-
+    
     private static Map<Integer, Character> createLetterToNumberMap() {
         final Map<Integer, Character> letterToNumberMap = new HashMap<>();
         for (int i = 0; i < T9.letters.length; i++) {
@@ -813,7 +813,7 @@ public final class CString {
         }
         return letterToNumberMap;
     }
-
+    
     private static String convertToT9(final String word, final Map<Integer, Character> letterToNumberMap) {
         final StringBuffer sb = new StringBuffer();
         for (int c : word.codePoints().toArray()) {
@@ -824,7 +824,7 @@ public final class CString {
         }
         return sb.toString();
     }
-
+    
     private static String convertToT92(final String word, final Map<Integer, Character> letterToNumberMap) {
         final StringBuffer sb = new StringBuffer();
         for (int c : word.codePoints().toArray()) {
@@ -835,13 +835,13 @@ public final class CString {
         }
         return sb.toString();
     }
-
+    
     public static List<String> getValidT9Words(final String number, final CTrie trie) {
         final List<String> results = new ArrayList<>();
         getValidWords(number, 0, StringUtils.EMPTY, trie.getRoot(), results);
         return results;
     }
-
+    
     private static void getValidWords(final String number, int index, final String prefix, final CTrie.CTrieNode<Integer> node, final List<String> results) {
         if (number.length() == index) {
             if (node.isTerminated()) {
@@ -860,7 +860,7 @@ public final class CString {
             }
         }
     }
-
+    
     private static int[] getT9Chars(char digit) {
         if (!Character.isDigit(digit)) {
             return null;
@@ -868,9 +868,9 @@ public final class CString {
         int dig = Character.getNumericValue(digit) - Character.getNumericValue('0');
         return T9.letters[dig];
     }
-
+    
     private static class T9 {
-
+        
         public static final int[][] letters = {
             null,
             null,
@@ -883,16 +883,16 @@ public final class CString {
             {getCodePointAtZero("t"), getCodePointAtZero("u"), getCodePointAtZero("v")},
             {getCodePointAtZero("w"), getCodePointAtZero("x"), getCodePointAtZero("y"), getCodePointAtZero("z")}
         };
-
+        
         public static int getCodePointAtZero(final String str) {
             return getCodePoint(str, 0);
         }
-
+        
         public static int getCodePoint(final String str, int index) {
             return Character.codePointAt(str, index);
         }
     }
-
+    
     public static boolean doesMatch(final String pattern, final String value) {
         if (pattern.length() == 0) {
             return value.length() == 0;
@@ -900,12 +900,12 @@ public final class CString {
         char mainChar = pattern.charAt(0);
         char altChar = mainChar == 'a' ? 'b' : 'a';
         int size = value.length();
-
+        
         int countOfMain = CStringUtils.countOf(pattern, mainChar);
         int countOfAlt = pattern.length() - countOfMain;
         int firstAlt = pattern.indexOf(altChar);
         int maxMainSize = size / countOfMain;
-
+        
         for (int i = 0; i <= maxMainSize; i++) {
             int remainLength = size - i * countOfMain;
             if (0 == countOfAlt || remainLength % countOfAlt == 0) {
@@ -918,7 +918,7 @@ public final class CString {
         }
         return false;
     }
-
+    
     private static boolean matches(final String pattern, final String value, int mainSize, int altSize, int firstAlt) {
         int stringIndex = mainSize;
         for (int i = 1; i < pattern.length(); i++) {
@@ -931,7 +931,7 @@ public final class CString {
         }
         return true;
     }
-
+    
     public static int simpleTextSearch(char[] pattern, char[] text) {
         int patternSize = pattern.length;
         int textSize = text.length;
@@ -948,7 +948,7 @@ public final class CString {
         }
         return -1;
     }
-
+    
     public static int RabinKarpMethod(char[] pattern, char[] text) {
         int patternSize = pattern.length; // m
         int textSize = text.length; // n
@@ -988,7 +988,7 @@ public final class CString {
         }
         return -1;
     }
-
+    
     public static int KnuthMorrisPrattSearch(char[] pattern, char[] text) {
         int patternSize = pattern.length;
         int textSize = text.length;
@@ -1011,7 +1011,7 @@ public final class CString {
         }
         return -1;
     }
-
+    
     public static int[] KnuthMorrisPrattShift(char[] pattern) {
         int patternSize = pattern.length;
         int[] shift = new int[patternSize];
@@ -1036,7 +1036,7 @@ public final class CString {
         }
         return shift;
     }
-
+    
     public static int BoyerMooreHorspoolSimpleSearch(char[] pattern, char[] text) {
         int patternSize = pattern.length;
         int textSize = text.length;
@@ -1053,7 +1053,7 @@ public final class CString {
         }
         return -1;
     }
-
+    
     public static int BoyerMooreHorspoolSearch(char[] pattern, char[] text) {
         int shift[] = new int[256];
         for (int k = 0; k < 256; k++) {
@@ -1074,5 +1074,21 @@ public final class CString {
             i = i + shift[text[i + pattern.length - 1]];
         }
         return -1;
+    }
+    
+    public static int getUTFSize(final String value) {
+        int len = (Objects.isNull(value)) ? 0 : value.length();
+        int l = 0;
+        for (int i = 0; i < len; i++) {
+            int c = value.charAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                l++;
+            } else if (c > 0x07FF) {
+                l += 3;
+            } else {
+                l += 2;
+            }
+        }
+        return l;
     }
 }
