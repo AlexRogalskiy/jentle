@@ -248,4 +248,10 @@ public final class CDateUtils {
     public static boolean isValidDate(final String date, final String format) {
         return Objects.nonNull(toDate(date, format));
     }
+
+    public static long getDifference(final Calendar first, final Calendar last, final TimeUnit units) {
+        Objects.requireNonNull(first);
+        Objects.requireNonNull(last);
+        return units.convert(last.getTimeInMillis() - first.getTimeInMillis(), TimeUnit.MILLISECONDS);
+    }
 }
