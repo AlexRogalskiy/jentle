@@ -219,4 +219,18 @@ public final class CMath {
         }
         return r;
     }
+
+    public static int log2(int x) {
+        int y, v;
+        if (x <= 0) {
+            throw new IllegalArgumentException(String.format("ERROR: invalid input arguments n=%i (n > 0)", x));
+        }
+        v = x;
+        y = -1;
+        while (v > 0) {
+            v >>= 1;
+            y++;
+        }
+        return y;
+    }
 }
