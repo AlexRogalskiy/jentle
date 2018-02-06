@@ -35,7 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  *
- * Custom stop watch algorithm implementation
+ * Custom stop watch implementation
  *
  * @author Alex
  * @version 1.0.0

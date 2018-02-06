@@ -142,7 +142,7 @@ public final class CComparatorUtils<T> {
      */
     public static int stringCompareTo(final String str1, final String str2) {
         final boolean f1, f2;
-        return (f1 = Objects.isNull(str1)) ^ (f2 = Objects.isNull(str2)) ? f1 ? -1 : 1 : f1 && f2 ? 0 : str1.compareToIgnoreCase(str2);
+        return (f1 = Objects.isNull(str1)) ^ (f2 = Objects.isNull(str2)) ? (f1 ? -1 : 1) : (f1 && f2 ? 0 : str1.compareToIgnoreCase(str2));
     }
 
     /**

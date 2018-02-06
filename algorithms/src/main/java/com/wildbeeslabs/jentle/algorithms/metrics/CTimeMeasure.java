@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  *
- * Custom time measure algorithm implementation
+ * Custom time measure implementation
  *
  * @author Alex
  * @version 1.0.0

@@ -29,6 +29,7 @@ import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,11 +71,50 @@ public final class CSort {
     }
 
     //Comparator<String> cmp = (x, y) -> x.compareToIgnoreCase(y);
+    /**
+     * Default string comparator.
+     */
     public static class CStringComparator extends CUtils.CSortComparator<String> {
 
         @Override
         public int compare(final String first, final String last) {
+            return CComparatorUtils.stringCompareTo(first, last);
+        }
+    }
+
+    /**
+     * Default string sort comparator.
+     */
+    public static class CStringSortComparator extends CUtils.CSortComparator<String> {
+
+        @Override
+        public int compare(final String first, final String last) {
             return CComparatorUtils.stringCompareTo(CSort.sortChars(first), CSort.sortChars(last));
+        }
+    }
+
+    /**
+     * Default method comparator by name, number of parameters, parameter types.
+     */
+    public static class CMethodComparator implements Comparator<Method> {
+
+        @Override
+        public int compare(final Method m1, final Method m2) {
+            int val = m1.getName().compareTo(m2.getName());
+            if (val == 0) {
+                val = m1.getParameterTypes().length - m2.getParameterTypes().length;
+                if (val == 0) {
+                    final Class[] types1 = m1.getParameterTypes();
+                    final Class[] types2 = m2.getParameterTypes();
+                    for (int i = 0; i < types1.length; i++) {
+                        val = types1[i].getName().compareTo(types2[i].getName());
+                        if (val != 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+            return val;
         }
     }
 
@@ -121,9 +161,8 @@ public final class CSort {
             return binarySearchRecursive(array, value, middle + 1, high, cmp);
         } else if (Objects.compare(array[middle], value, cmp) > 0) {
             return binarySearchRecursive(array, value, low, middle - 1, cmp);
-        } else {
-            return middle;
         }
+        return middle;
     }
 
     /**
@@ -580,11 +619,9 @@ public final class CSort {
         int length = array.length;
         int iArray = 1, iSortedArray;
         T dataToBeInserted = null;
-
         while (iArray < length) {
             iSortedArray = iArray - 1;
             dataToBeInserted = array[iArray];
-
             while (iSortedArray >= 0 && Objects.compare(dataToBeInserted, array[iSortedArray], cmp) < 0) {
                 array[iSortedArray + 1] = array[iSortedArray];
                 iSortedArray--;
