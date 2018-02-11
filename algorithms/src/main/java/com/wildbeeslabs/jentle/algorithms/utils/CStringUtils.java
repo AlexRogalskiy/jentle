@@ -31,6 +31,8 @@ import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +61,8 @@ import org.apache.commons.lang3.StringUtils;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ *
+ * @see http://www-igm.univ-mlv.fr/%7Elecroq/string/
  */
 public final class CStringUtils {
 
@@ -534,5 +538,49 @@ public final class CStringUtils {
     private static char toHex(int nibble) {
         final char[] hexDigit = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         return hexDigit[nibble & 0xF];
+    }
+
+    public static byte[] stringToBytesAscii(final String str) {
+        final byte[] b = new byte[str.length()];
+        for (int i = 0; i < b.length; i++) {
+            b[i] = (byte) str.charAt(i);
+        }
+        return b;
+    }
+
+    public static byte[] stringToBytesUTFCustom(final String str) {
+        final byte[] b = new byte[str.length() << 1];
+        for (int i = 0; i < str.length(); i++) {
+            char strChar = str.charAt(i);
+            int bpos = i << 1;
+            b[bpos] = (byte) ((strChar & 0xFF00) >> 8);
+            b[bpos + 1] = (byte) (strChar & 0x00FF);
+        }
+        return b;
+    }
+
+    public static String bytesToStringUTFCustom(final byte[] bytes) {
+        final char[] buffer = new char[bytes.length >> 1];
+        for (int i = 0; i < buffer.length; i++) {
+            int bpos = i << 1;
+            char c = (char) (((bytes[bpos] & 0x00FF) << 8) + (bytes[bpos + 1] & 0x00FF));
+            buffer[i] = c;
+        }
+        return new String(buffer);
+    }
+
+    public static String bytesToStringUTFNIO(final byte[] bytes) {
+        final CharBuffer cBuffer = ByteBuffer.wrap(bytes).asCharBuffer();
+        return cBuffer.toString();
+    }
+
+    public static byte[] stringToBytesUTFNIO(final String str) {
+        final char[] buffer = str.toCharArray();
+        final byte[] b = new byte[buffer.length << 1];
+        final CharBuffer cBuffer = ByteBuffer.wrap(b).asCharBuffer();
+        for (int i = 0; i < buffer.length; i++) {
+            cBuffer.put(buffer[i]);
+        }
+        return b;
     }
 }
