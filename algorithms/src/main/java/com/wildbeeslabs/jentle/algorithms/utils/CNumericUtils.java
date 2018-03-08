@@ -571,4 +571,26 @@ public final class CNumericUtils {
     public static double normalizeAngle(double a, double center) {
         return a - CNumericUtils.TWO_PI * Math.floor((a + Math.PI - center) / CNumericUtils.TWO_PI);
     }
+
+    public List<Integer> noNegative(final List<Integer> nums) {
+        return nums.stream()
+                .filter(n -> n >= 0)
+                .collect(Collectors.toList());
+    }
+
+    public List<Integer> noNegative2(final List<Integer> nums) {
+        nums.removeIf(n -> n < 0);
+        return nums;
+    }
+
+    public List<Integer> doubling(final List<Integer> nums) {
+        nums.replaceAll(n -> n * 2);
+        return nums;
+    }
+
+    public List<Integer> doubling2(List<Integer> nums) {
+        return nums.stream()
+                .map(n -> n * 2)
+                .collect(Collectors.toList());
+    }
 }

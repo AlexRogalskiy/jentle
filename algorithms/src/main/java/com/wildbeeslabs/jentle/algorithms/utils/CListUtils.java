@@ -121,7 +121,7 @@ public final class CListUtils {
 
     public static <T> List<? extends T> toList(final Iterable<? extends T> iterable) {
         final List<T> list = new ArrayList<>();
-        for (T item : iterable) {
+        for (final T item : iterable) {
             list.add(item);
         }
         return list;
@@ -198,11 +198,7 @@ public final class CListUtils {
         return maxElem;
     }
 
-    public final static Predicate<Object> flip = predicate -> {
-        return new Random().nextBoolean();
-    };
-
-    public static <T> List<T> getRandomSubset(final List<T> list) {
+    public static <T> List<T> getRandomSubset(final List<? extends T> list) {
         final Random random = new Random();
         return list.stream().filter(f -> {
             return random.nextBoolean();
