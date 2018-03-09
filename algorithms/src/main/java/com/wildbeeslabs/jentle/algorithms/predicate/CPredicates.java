@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.predicate;
 
 import java.util.Random;
 import java.util.function.Predicate;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -40,7 +41,14 @@ public final class CPredicates {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public final static Predicate<Object> RANDOM_BOOLEAN = predicate -> {
+    public final static Predicate<Object> randBoolean = predicate -> {
         return new Random().nextBoolean();
     };
+
+    public static final Predicate<String> notEmpty = (String it) -> StringUtils.isNotEmpty(it);
+    public static final Predicate<String> notBlank = (String it) -> StringUtils.isNotBlank(it);
+
+    public static <T> Predicate<T> not(final Predicate<T> t) {
+        return t.negate();
+    }
 }
