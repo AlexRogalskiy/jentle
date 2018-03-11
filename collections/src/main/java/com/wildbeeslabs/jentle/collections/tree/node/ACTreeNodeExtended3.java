@@ -29,7 +29,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom abstract binary tree extended node 2 implementation
+ * Custom abstract binary tree extended node 3 implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -40,24 +40,31 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class ACTreeNodeExtended2<T, U extends ACTreeNodeExtended2<T, U>> extends ACBaseTreeNode<T, U> {
+public abstract class ACTreeNodeExtended3<T, U extends ACTreeNodeExtended3<T, U>> extends ACBaseTreeNode<T, U> {
 
-    protected U nextSibling;
+    protected ACTreeNodeExtended3.Color color;
+    protected U node;
 
-    public ACTreeNodeExtended2() {
+    public static enum Color {
+
+        RED, BLACK;
+    }
+
+    public ACTreeNodeExtended3() {
         this(null);
     }
 
-    public ACTreeNodeExtended2(final T data) {
-        this(data, null, null);
+    public ACTreeNodeExtended3(final T data) {
+        this(data, null, null, null);
     }
 
-    public ACTreeNodeExtended2(final T data, final U left, final U right) {
-        this(data, left, right, null);
+    public ACTreeNodeExtended3(final T data, final U node, final U left, final U right) {
+        this(data, node, left, right, ACTreeNodeExtended3.Color.BLACK);
     }
 
-    public ACTreeNodeExtended2(final T data, final U left, final U right, final U nextSibling) {
+    public ACTreeNodeExtended3(final T data, final U node, final U left, final U right, final ACTreeNodeExtended3.Color color) {
         super(data, left, right);
-        this.nextSibling = nextSibling;
+        this.node = node;
+        this.color = color;
     }
 }

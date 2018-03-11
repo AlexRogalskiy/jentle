@@ -51,7 +51,7 @@ public class CTree2<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected T data;
     protected CTree2<T> left;

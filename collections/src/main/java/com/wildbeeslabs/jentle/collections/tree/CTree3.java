@@ -55,7 +55,7 @@ public class CTree3<T> {
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
     /**
      * Default indent of formatted output
      */
@@ -136,7 +136,7 @@ public class CTree3<T> {
         return Collections.EMPTY_LIST;
     }
 
-    private String toFormatString(int increment) {
+    public String toFormatString(int increment) {
         final StringBuffer sb = new StringBuffer();
         final StringBuffer inc = new StringBuffer();
         for (int i = 0; i < increment; ++i) {

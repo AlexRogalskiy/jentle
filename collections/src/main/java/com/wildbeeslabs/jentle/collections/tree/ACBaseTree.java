@@ -61,7 +61,7 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected U root;
     protected int size;
@@ -193,7 +193,7 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
         return root;
     }
 
-    public Iterator<? extends T> breadthFirstIterator() {
+    public Iterator<T> breadthFirstIterator() {
         return new BreadthFirstIterator<>(this);
     }
 
@@ -260,6 +260,10 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
     @Override
     public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    protected Logger getLogger() {
+        return this.LOGGER;
     }
 
     protected abstract U createTreeNode(final Optional<? extends T> value);
