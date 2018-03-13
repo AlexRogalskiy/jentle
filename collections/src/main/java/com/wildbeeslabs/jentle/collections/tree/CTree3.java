@@ -82,22 +82,22 @@ public class CTree3<T> {
     }
 
     public CTree3<T> addLeaf(final T leaf) {
-        final CTree3<T> t = new CTree3<>(leaf);
-        this.leafs.add(t);
-        t.parent = this;
-        t.setPathNodes(this.getPathNodes());
-        this.addPathNode(t);
-        return t;
+        final CTree3<T> tree = new CTree3<>(leaf);
+        this.leafs.add(tree);
+        tree.parent = this;
+        tree.setPathNodes(this.getPathNodes());
+        this.addPathNode(tree);
+        return tree;
     }
 
     public CTree3<T> setAsParent(final T parentRoot) {
-        final CTree3<T> t = new CTree3<>(parentRoot);
-        t.leafs.add(this);
-        this.parent = t;
-        t.setPathNodes(this.getPathNodes());
-        t.addPathNode(this);
-        t.addPathNode(t);
-        return t;
+        final CTree3<T> tree = new CTree3<>(parentRoot);
+        tree.leafs.add(this);
+        this.parent = tree;
+        tree.setPathNodes(this.getPathNodes());
+        tree.addPathNode(this);
+        tree.addPathNode(tree);
+        return tree;
     }
 
     public T getHead() {

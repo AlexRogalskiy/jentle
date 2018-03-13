@@ -61,7 +61,7 @@ public abstract class ACBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends AC
         final U node = this.createTreeNode(Optional.ofNullable(value));
         if (this.isEmpty()) {
             this.root = node;
-            this.size = 1;
+            //this.size = 1;
         } else {
             if (!this.insert(this.getRoot(), node, isExact)) {
                 return null;
@@ -88,7 +88,7 @@ public abstract class ACBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends AC
                 return this.insert(node.getRight(), newNode, isExact);
             }
         }
-        this.size++;
+        //this.size++;
         return true;
     }
 
@@ -132,7 +132,7 @@ public abstract class ACBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends AC
         } else {
             nodeRight.setRight(null);
         }
-        this.size++;
+        //this.size++;
     }
 
     public void remove(final U root, final T value) {
@@ -190,7 +190,7 @@ public abstract class ACBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends AC
                 parent.setLeft(nodeToReplace.getRight());
             }
         }
-        this.size--;
+        //this.size--;
         return true;
     }
 

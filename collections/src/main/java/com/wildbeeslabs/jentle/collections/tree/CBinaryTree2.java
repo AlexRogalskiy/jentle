@@ -110,7 +110,7 @@ public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>>
             return null;
         }
         int index = new Random().nextInt(this.size());
-        return this.root.getIthNode(index);
+        return this.getRoot().getIthNode(index);
     }
 
     @Override

@@ -86,7 +86,7 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
 
     @Override
     public void insertLeft(final CTree.CTreeNode<T> node, final Optional<? extends T> value) {
-        this.insertLeft(null, value);
+        this.insertLeft(node, value);
     }
 
     @Override
@@ -95,11 +95,11 @@ public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
     }
 
     public int height() {
-        return this.height(this.root);
+        return this.height(this.getRoot());
     }
 
     public int nodesOnLevel(int level) {
-        return this.nodesOnLevel(this.root, level);
+        return this.nodesOnLevel(this.getRoot(), level);
     }
 
     public static <T> CTree<T> fromArray(final T[] array) {

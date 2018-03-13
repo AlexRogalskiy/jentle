@@ -61,7 +61,7 @@ public abstract class ACTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTr
         }
         final U newNode = this.createTreeNode(value);
         node.setLeft(newNode);
-        this.size++;
+        //this.size++;
         return newNode;
     }
 
@@ -73,7 +73,7 @@ public abstract class ACTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTr
         }
         final U newNode = this.createTreeNode(value);
         node.setRight(newNode);
-        this.size++;
+        //this.size++;
         return newNode;
     }
 

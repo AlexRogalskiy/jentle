@@ -87,7 +87,7 @@ public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedT
 
     @Override
     public void insertLeft(final CTreeExtended.CExtendedTreeNode<T> node, final Optional<? extends T> value) {
-        this.insertLeft(null, value);
+        this.insertLeft(node, value);
     }
 
     @Override

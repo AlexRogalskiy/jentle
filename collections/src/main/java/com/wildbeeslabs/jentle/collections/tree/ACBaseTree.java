@@ -64,36 +64,36 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
     protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected U root;
-    protected int size;
+    //protected int size;
     protected final Comparator<? super T> cmp;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public ACBaseTree(final U root, final Comparator<? super T> cmp) {
         this.root = root;
         this.cmp = cmp;
-        this.size = this.nodeSize(this.root);
+        //this.size = this.nodeSize(this.root);
     }
 
     @Override
     public int size() {
-        return (Objects.isNull(this.root)) ? 0 : this.size;
+        //return (Objects.isNull(this.root)) ? 0 : this.size;
+        return this.nodeSize(this.getRoot());
     }
 
     @Override
     public void setRoot(final Optional<? extends T> value) {
-        this.root = this.createTreeNode(value);
+        this.setRoot(this.createTreeNode(value));
     }
 
     protected void setRoot(final U node) {
         this.root = node;
-        this.size = 1;
     }
 
     @Override
     public U getRoot() {
-        if (this.isEmpty()) {
-            return null;
-        }
+//        if (this.isEmpty()) {
+//            return null;
+//        }
         return this.root;
     }
 
@@ -108,15 +108,15 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
         return this.isBalanced(root.getLeft()) && this.isBalanced(root.getRight());
     }
 
-    private int checkHeight(final ACBaseTreeNode<T, U> root) {
-        if (Objects.isNull(root)) {
+    private int checkHeight(final ACBaseTreeNode<T, U> node) {
+        if (Objects.isNull(node)) {
             return -1;
         }
-        int leftHeight = this.checkHeight(root.getLeft());
+        int leftHeight = this.checkHeight(node.getLeft());
         if (Objects.equals(leftHeight, Integer.MIN_VALUE)) {
             return Integer.MIN_VALUE;
         }
-        int rightHeight = this.checkHeight(root.getRight());
+        int rightHeight = this.checkHeight(node.getRight());
         if (Objects.equals(rightHeight, Integer.MIN_VALUE)) {
             return Integer.MIN_VALUE;
         }
@@ -127,31 +127,31 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
-    public boolean isBalanced2(final ACBaseTreeNode<T, U> root) {
-        return (this.checkHeight(root) != Integer.MIN_VALUE);
+    public boolean isBalanced2(final ACBaseTreeNode<T, U> node) {
+        return (this.checkHeight(node) != Integer.MIN_VALUE);
     }
 
-    public boolean checkBST(final ACBaseTreeNode<T, U> root) {
-        return this.checkBST(root, null, null);
+    public boolean checkBST(final ACBaseTreeNode<T, U> node) {
+        return this.checkBST(node, null, null);
     }
 
-    public boolean checkBST(final ACBaseTreeNode<T, U> root, final T min, final T max) {
-        if (Objects.isNull(root)) {
+    public boolean checkBST(final ACBaseTreeNode<T, U> node, final T min, final T max) {
+        if (Objects.isNull(node)) {
             return true;
         }
-        if ((Objects.nonNull(min) && Objects.compare(root.getData(), min, this.cmp) <= 0) || (Objects.nonNull(max) && Objects.compare(root.getData(), max, this.cmp) > 0)) {
+        if ((Objects.nonNull(min) && Objects.compare(node.getData(), min, this.cmp) <= 0) || (Objects.nonNull(max) && Objects.compare(node.getData(), max, this.cmp) > 0)) {
             return false;
         }
-        if (!this.checkBST(root.getLeft(), min, root.getData()) || !this.checkBST(root.getRight(), root.getData(), max)) {
+        if (!this.checkBST(node.getLeft(), min, node.getData()) || !this.checkBST(node.getRight(), node.getData(), max)) {
             return false;
         }
         return true;
     }
 
-    protected void traverseUpDown(final U root, final IVisitor<T> visitor) {
-        Objects.requireNonNull(root);
+    protected void traverseUpDown(final U node, final IVisitor<T> visitor) {
+        Objects.requireNonNull(node);
         final Stack<U> stack = new Stack<>();
-        U current = root;
+        U current = node;
         while (true) {
             visitor.visit(current.getData());
             if (Objects.nonNull(current.getRight())) {
@@ -165,10 +165,10 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
         }
     }
 
-    protected void traverseInfix(final U root, final IVisitor<T> visitor) {
-        Objects.requireNonNull(root);
+    protected void traverseInfix(final U node, final IVisitor<T> visitor) {
+        Objects.requireNonNull(node);
         final Stack<U> stack = new Stack<>();
-        U current = root;
+        U current = node;
         while (true) {
             stack.push(current);
             if (Objects.nonNull(current.getLeft())) {
@@ -183,14 +183,14 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
         }
     }
 
-    protected U leftMostChild(U root) {
-        if (Objects.isNull(root)) {
+    protected U leftMostChild(U node) {
+        if (Objects.isNull(node)) {
             return null;
         }
-        while (Objects.nonNull(root.getLeft())) {
-            root = root.getLeft();
+        while (Objects.nonNull(node.getLeft())) {
+            node = node.getLeft();
         }
-        return root;
+        return node;
     }
 
     public Iterator<T> breadthFirstIterator() {
