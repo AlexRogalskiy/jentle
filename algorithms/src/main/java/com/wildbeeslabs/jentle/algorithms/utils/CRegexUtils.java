@@ -35,9 +35,9 @@ import java.util.regex.Pattern;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CRegex {
+public final class CRegexUtils {
 
-    private CRegex() {
+    private CRegexUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 

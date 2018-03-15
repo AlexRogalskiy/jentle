@@ -26,7 +26,12 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -39,7 +44,7 @@ import org.apache.log4j.Logger;
  * @since 2017-12-12
  *
  */
-public class CExceptionUtils {
+public final class CExceptionUtils {
 
     /**
      * Default logger instance
@@ -48,6 +53,194 @@ public class CExceptionUtils {
 
     private CExceptionUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
+    }
+
+    @FunctionalInterface
+    public interface UnaryConsumerFunction<T, E extends Exception> {
+
+        void accept(final T t) throws E;
+    }
+
+    @FunctionalInterface
+    public interface BinaryConsumerFunction<T, U, E extends Exception> {
+
+        void accept(final T t, final U u) throws E;
+    }
+
+    @FunctionalInterface
+    public interface BindingFunction<T, R, E extends Exception> {
+
+        R apply(final T t) throws E;
+    }
+
+    @FunctionalInterface
+    public interface SupplierFunction<T, E extends Exception> {
+
+        T get() throws E;
+    }
+
+    @FunctionalInterface
+    public interface RunnableFunction<E extends Exception> {
+
+        void run() throws E;
+    }
+
+    /**
+     * Wrap unary consumer exceptions
+     *
+     * .forEach(wrapUnaryConsumer(name ->
+     * System.out.println(Class.forName(name))));
+     * .forEach(wrapUnaryConsumer(ClassNameUtil::println));
+     *
+     * @param <T>
+     * @param <E>
+     * @param unaryConsumer
+     * @return unary consumer function
+     */
+    public static <T, E extends Exception> Consumer<T> wrapUnaryConsumer(final UnaryConsumerFunction<T, E> unaryConsumer) {
+        return (t) -> {
+            try {
+                unaryConsumer.accept(t);
+            } catch (Exception exception) {
+                throwAsUnchecked(exception);
+            }
+        };
+    }
+
+    /**
+     * Wrap binary consumer exceptions
+     *
+     * .forEach(wrapBinaryConsumer(name ->
+     * System.out.println(Class.forName(name))));
+     * .forEach(wrapBinaryConsumer(ClassNameUtil::println));
+     *
+     * @param <T>
+     * @param <E>
+     * @param <U>
+     * @param binaryConsumer
+     * @return binary consumer function
+     */
+    public static <T, U, E extends Exception> BiConsumer<T, U> wrapBinaryConsumer(final BinaryConsumerFunction<T, U, E> binaryConsumer) {
+        return (t, u) -> {
+            try {
+                binaryConsumer.accept(t, u);
+            } catch (Exception exception) {
+                throwAsUnchecked(exception);
+            }
+        };
+    }
+
+    /**
+     * Wrap function exceptions with binding context
+     *
+     * .map(wrapFunction(name -> Class.forName(name)));
+     * .map(wrapFunction(Class::forName));
+     *
+     * @param <T>
+     * @param <R>
+     * @param <E>
+     * @param function
+     * @return function with binding context
+     */
+    public static <T, R, E extends Exception> Function<T, R> wrapFunction(final BindingFunction<T, R, E> function) {
+        return (t) -> {
+            try {
+                return function.apply(t);
+            } catch (Exception exception) {
+                throwAsUnchecked(exception);
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Wrap supplier exceptions
+     *
+     * wrapSupplier(() -> new StringJoiner(new String(new byte[]{77, 97, 114,
+     * 107}, "UTF-8")));
+     *
+     * @param <T>
+     * @param <E>
+     * @param function
+     * @return function result set
+     */
+    public static <T, E extends Exception> Supplier<T> wrapSupplier(final SupplierFunction<T, E> function) {
+        return () -> {
+            try {
+                return function.get();
+            } catch (Exception exception) {
+                throwAsUnchecked(exception);
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Uncheck runnable exceptions
+     *
+     * uncheck(() -> Class.forName("default"));
+     *
+     * @param <E>
+     * @param t
+     */
+    public static <E extends Exception> void uncheck(final RunnableFunction<E> t) {
+        try {
+            t.run();
+        } catch (Exception exception) {
+            throwAsUnchecked(exception);
+        }
+    }
+
+    /**
+     * Uncheck supplier exceptions
+     *
+     * uncheck(() -> Class.forName("default"));
+     *
+     * @param <R>
+     * @param <E>
+     * @param supplier
+     * @return supplier result set
+     */
+    public static <R, E extends Exception> R uncheck(final SupplierFunction<R, E> supplier) {
+        try {
+            return supplier.get();
+        } catch (Exception exception) {
+            throwAsUnchecked(exception);
+            return null;
+        }
+    }
+
+    /**
+     * Uncheck function exceptions with binding context
+     *
+     * uncheck(Class::forName, "default");
+     *
+     * @param <T>
+     * @param <R>
+     * @param <E>
+     * @param function
+     * @param t
+     * @return function with binding context result set
+     */
+    public static <T, R, E extends Exception> R uncheck(final BindingFunction<T, R, E> function, final T t) {
+        try {
+            return function.apply(t);
+        } catch (Exception exception) {
+            throwAsUnchecked(exception);
+            return null;
+        }
+    }
+
+    /**
+     * Rethrow exception as unchecked
+     *
+     * @param <E>
+     * @param exception
+     * @throws E
+     */
+    @SuppressWarnings("unchecked")
+    private static <E extends Throwable> void throwAsUnchecked(final Exception exception) throws E {
+        throw (E) exception;
     }
 
     /**
