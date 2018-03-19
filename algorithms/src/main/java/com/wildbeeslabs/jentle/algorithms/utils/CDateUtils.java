@@ -29,9 +29,16 @@ import java.text.SimpleDateFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +53,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import lombok.NonNull;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -83,6 +91,29 @@ public final class CDateUtils {
      */
     public static final String DEFAULT_TIMEZONE_PATTERN = Calendar.getInstance().getTimeZone().getID();
 
+    /**
+     * Custom date time formatter
+     */
+    public final static DateTimeFormatter DATE_TIME_FORMAT = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .append(DateTimeFormatter.ISO_LOCAL_DATE)
+            .appendOptional(new DateTimeFormatterBuilder()
+                    .parseCaseInsensitive()
+                    .appendLiteral('T')
+                    .append(DateTimeFormatter.ISO_TIME)
+                    .toFormatter()).toFormatter();
+
+    /**
+     * Custom time formatter
+     */
+    public static final DateTimeFormatter TIME_FORMAT = new DateTimeFormatterBuilder()
+            .appendValue(ChronoField.HOUR_OF_DAY, 2)
+            .appendLiteral(':')
+            .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+            .appendLiteral(':')
+            .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+            .toFormatter();
+
     private CDateUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
@@ -90,6 +121,10 @@ public final class CDateUtils {
     public static enum TimeZoneOffsetBase {
 
         GMT, UTC
+    }
+
+    public static String getDefaultTimeZone() {
+        return System.getProperty("app.time.zone");
     }
 
     public static Date toDate(final String value) {
@@ -147,7 +182,7 @@ public final class CDateUtils {
                 .collect(Collectors.toList());
     }
 
-    private static String getOffset(final LocalDateTime dateTime, final ZoneId id) {
+    private static String getOffset(@NonNull final LocalDateTime dateTime, final ZoneId id) {
         return dateTime
                 .atZone(id)
                 .getOffset()
@@ -168,7 +203,7 @@ public final class CDateUtils {
 
     public static List<String> getTimeZoneList2(final TimeZoneOffsetBase base) {
         String[] availableZoneIds = TimeZone.getAvailableIDs();
-        List<String> result = new ArrayList<>(availableZoneIds.length);
+        final List<String> result = new ArrayList<>(availableZoneIds.length);
         for (final String zoneId : availableZoneIds) {
             TimeZone curTimeZone = TimeZone.getTimeZone(zoneId);
             String offset = calculateOffset(curTimeZone.getRawOffset());
@@ -188,7 +223,7 @@ public final class CDateUtils {
         return String.format("%+03d:%02d", hours, Math.abs(minutes));
     }
 
-    public static List<Date> getDatesBetween(final Date startDate, final Date endDate) {
+    public static List<Date> getDatesBetween(@NonNull final Date startDate, @NonNull final Date endDate) {
         final List<Date> datesInRange = new ArrayList<>();
         final Calendar calendar = new GregorianCalendar();
         calendar.setTime(startDate);
@@ -202,7 +237,7 @@ public final class CDateUtils {
         return datesInRange;
     }
 
-    public static List<LocalDate> getDatesBetween2(final LocalDate startDate, final LocalDate endDate) {
+    public static List<LocalDate> getDatesBetween2(@NonNull final LocalDate startDate, @NonNull final LocalDate endDate) {
         long numOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
         return IntStream.iterate(0, i -> i + 1)
                 .limit(numOfDaysBetween)
@@ -222,25 +257,25 @@ public final class CDateUtils {
 //        return LocalDateTime.ofInstant(
 //                dateToConvert.toInstant(), ZoneId.systemDefault());
 //    }
-    public static LocalDate convertToLocalDateViaInstant(final Date dateToConvert) {
+    public static LocalDate convertToLocalDateViaInstant(@NonNull final Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
 
-    public static LocalDateTime convertToLocalDateTimeViaInstant(final Date dateToConvert) {
+    public static LocalDateTime convertToLocalDateTimeViaInstant(@NonNull final Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
     }
 
-    public static Date convertToDateViaInstant(final LocalDate dateToConvert) {
+    public static Date convertToDateViaInstant(@NonNull final LocalDate dateToConvert) {
         return java.util.Date.from(dateToConvert.atStartOfDay()
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
     }
 
-    public static Date convertToDateViaInstant(final LocalDateTime dateToConvert) {
+    public static Date convertToDateViaInstant(@NonNull final LocalDateTime dateToConvert) {
         return java.util.Date.from(dateToConvert.atZone(ZoneId.systemDefault())
                 .toInstant());
     }
@@ -249,9 +284,45 @@ public final class CDateUtils {
         return Objects.nonNull(toDate(date, format));
     }
 
-    public static long getDifference(final Calendar first, final Calendar last, final TimeUnit units) {
-        Objects.requireNonNull(first);
-        Objects.requireNonNull(last);
+    public static long getDifference(@NonNull final Calendar first, @NonNull final Calendar last, @NonNull final TimeUnit units) {
         return units.convert(last.getTimeInMillis() - first.getTimeInMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    public static LocalDateTime endOfDay(@NonNull final LocalDate date) {
+        return date.atStartOfDay().plusHours(24).minus(1, ChronoUnit.MICROS);
+    }
+
+    public static LocalDateTime withoutSecond(@NonNull final LocalDateTime dateTime) {
+        return dateTime.truncatedTo(ChronoUnit.MINUTES);
+    }
+
+    public static String format(@NonNull final LocalDate localDate) {
+        return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    public static LocalDate parseDate(final String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    public static String format(@NonNull final LocalDateTime localTimeDate) {
+        return localTimeDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    public static LocalDateTime parseDateTime(final String dateTime) {
+        return LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    public static String print(final LocalDateTime localDateTime) {
+        return ZonedDateTime.of(localDateTime, ZoneOffset.of(getDefaultTimeZone())).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+    }
+
+    public static LocalDateTime parse(final String dateTime) {
+        final TemporalAccessor accessor = DATE_TIME_FORMAT.parse(dateTime);
+        final LocalDate date = LocalDate.from(accessor);
+        final LocalTime time = accessor.query(TemporalQueries.localTime());
+        if (Objects.isNull(time)) {
+            return LocalDateTime.of(date, LocalTime.MIN);
+        }
+        return LocalDateTime.of(date, time);
     }
 }
