@@ -36,6 +36,8 @@ import java.util.function.Supplier;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import lombok.NonNull;
+
 /**
  * Custom exception utilities implementation
  *
@@ -92,17 +94,37 @@ public final class CExceptionUtils {
      * System.out.println(Class.forName(name))));
      * .forEach(wrapUnaryConsumer(ClassNameUtil::println));
      *
+     * List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
+     * integers.forEach(throwingConsumerWrapper(i -> writeToFile(i)));
+     *
      * @param <T>
      * @param <E>
      * @param unaryConsumer
      * @return unary consumer function
      */
-    public static <T, E extends Exception> Consumer<T> wrapUnaryConsumer(final UnaryConsumerFunction<T, E> unaryConsumer) {
+    public static <T, E extends Exception> Consumer<T> wrapUnaryConsumer(@NonNull final UnaryConsumerFunction<T, E> unaryConsumer) {
         return (t) -> {
             try {
                 unaryConsumer.accept(t);
             } catch (Exception exception) {
                 throwAsUnchecked(exception);
+            }
+        };
+    }
+
+    // List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
+    // integers.forEach(handlingConsumerWrapper(i -> writeToFile(i), IOException.class));
+    public static <T, E extends Exception> Consumer<T> handlingConsumerWrapper(@NonNull final UnaryConsumerFunction<T, E> unaryConsumer, @NonNull final Class<E> exClass) {
+        return i -> {
+            try {
+                unaryConsumer.accept(i);
+            } catch (Exception ex) {
+                try {
+                    final E exCast = exClass.cast(ex);
+                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
+                } catch (ClassCastException ccEx) {
+                    throw new RuntimeException(ex);
+                }
             }
         };
     }
@@ -120,7 +142,7 @@ public final class CExceptionUtils {
      * @param binaryConsumer
      * @return binary consumer function
      */
-    public static <T, U, E extends Exception> BiConsumer<T, U> wrapBinaryConsumer(final BinaryConsumerFunction<T, U, E> binaryConsumer) {
+    public static <T, U, E extends Exception> BiConsumer<T, U> wrapBinaryConsumer(@NonNull final BinaryConsumerFunction<T, U, E> binaryConsumer) {
         return (t, u) -> {
             try {
                 binaryConsumer.accept(t, u);
@@ -142,7 +164,7 @@ public final class CExceptionUtils {
      * @param function
      * @return function with binding context
      */
-    public static <T, R, E extends Exception> Function<T, R> wrapFunction(final BindingFunction<T, R, E> function) {
+    public static <T, R, E extends Exception> Function<T, R> wrapFunction(@NonNull final BindingFunction<T, R, E> function) {
         return (t) -> {
             try {
                 return function.apply(t);
@@ -164,7 +186,7 @@ public final class CExceptionUtils {
      * @param function
      * @return function result set
      */
-    public static <T, E extends Exception> Supplier<T> wrapSupplier(final SupplierFunction<T, E> function) {
+    public static <T, E extends Exception> Supplier<T> wrapSupplier(@NonNull final SupplierFunction<T, E> function) {
         return () -> {
             try {
                 return function.get();
@@ -183,7 +205,7 @@ public final class CExceptionUtils {
      * @param <E>
      * @param t
      */
-    public static <E extends Exception> void uncheck(final RunnableFunction<E> t) {
+    public static <E extends Exception> void uncheck(@NonNull final RunnableFunction<E> t) {
         try {
             t.run();
         } catch (Exception exception) {
@@ -201,7 +223,7 @@ public final class CExceptionUtils {
      * @param supplier
      * @return supplier result set
      */
-    public static <R, E extends Exception> R uncheck(final SupplierFunction<R, E> supplier) {
+    public static <R, E extends Exception> R uncheck(@NonNull final SupplierFunction<R, E> supplier) {
         try {
             return supplier.get();
         } catch (Exception exception) {
@@ -222,7 +244,7 @@ public final class CExceptionUtils {
      * @param t
      * @return function with binding context result set
      */
-    public static <T, R, E extends Exception> R uncheck(final BindingFunction<T, R, E> function, final T t) {
+    public static <T, R, E extends Exception> R uncheck(@NonNull final BindingFunction<T, R, E> function, final T t) {
         try {
             return function.apply(t);
         } catch (Exception exception) {
@@ -251,7 +273,9 @@ public final class CExceptionUtils {
      * @return the deepest cause of the supplied exception
      */
     public static Throwable getDeepestThrowable(final Throwable throwable) {
-        Objects.requireNonNull(throwable);
+        if (Objects.isNull(throwable)) {
+            return null;
+        }
         Throwable parent = throwable;
         Throwable child = throwable.getCause();
         while (Objects.nonNull(child)) {
@@ -293,6 +317,9 @@ public final class CExceptionUtils {
     }
 
     public static String stringify(final Throwable throwable) {
+        if (Objects.isNull(throwable)) {
+            return null;
+        }
         final StringWriter stm = new StringWriter();
         try (final PrintWriter wrt = new PrintWriter(stm)) {
             throwable.printStackTrace(wrt);
@@ -317,5 +344,22 @@ public final class CExceptionUtils {
             current = current.getCause();
         }
         return null;
+    }
+
+    //    List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
+    //    integers.forEach(lambdaWrapper(i -> System.out.println(50 / i), ArithmeticException.class));
+    public static <T, E extends Exception> Consumer<T> consumerWrapper(@NonNull final Consumer<T> consumer, @NonNull final Class<E> exClass) {
+        return i -> {
+            try {
+                consumer.accept(i);
+            } catch (Exception ex) {
+                try {
+                    final E exCast = exClass.cast(ex);
+                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
+                } catch (ClassCastException ccEx) {
+                    throw ex;
+                }
+            }
+        };
     }
 }

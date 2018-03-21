@@ -38,6 +38,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
@@ -51,6 +52,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import lombok.NonNull;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -259,6 +261,13 @@ public final class CConverterUtils {
         }, ArrayList::new);
     }
 
+    public static <T> T getFindFirst(final List<? extends T> list) {
+        return list.stream()
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
+
     public static <T> Collector<T, ?, LinkedList<T>> toLinkedList() {
         return Collector.of(LinkedList::new, LinkedList::add,
                 (first, second) -> {
@@ -267,59 +276,7 @@ public final class CConverterUtils {
                 });
     }
 
-//    List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
-//    integers.forEach(lambdaWrapper(i -> System.out.println(50 / i), ArithmeticException.class));
-    public static <T, E extends Exception> Consumer<T> consumerWrapper(final Consumer<T> consumer, final Class<E> clazz) {
-        return i -> {
-            try {
-                consumer.accept(i);
-            } catch (Exception ex) {
-                try {
-                    final E exCast = clazz.cast(ex);
-                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
-                } catch (ClassCastException ccEx) {
-                    throw ex;
-                }
-            }
-        };
-    }
-
-    @FunctionalInterface
-    public static interface ThrowingConsumer<T, E extends Exception> {
-
-        void accept(final T t) throws E;
-    }
-
-//    List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
-//    integers.forEach(throwingConsumerWrapper(i -> writeToFile(i)));
-    public static <T> Consumer<T> throwingConsumerWrapper(final ThrowingConsumer<T, Exception> throwingConsumer) {
-        return i -> {
-            try {
-                throwingConsumer.accept(i);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        };
-    }
-
-//    List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
-//    integers.forEach(handlingConsumerWrapper(i -> writeToFile(i), IOException.class));
-    public static <T, E extends Exception> Consumer<T> handlingConsumerWrapper(final ThrowingConsumer<T, E> throwingConsumer, final Class<E> exceptionClass) {
-        return i -> {
-            try {
-                throwingConsumer.accept(i);
-            } catch (Exception ex) {
-                try {
-                    final E exCast = exceptionClass.cast(ex);
-                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
-                } catch (ClassCastException ccEx) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-    }
-
-    public static <T, M> M convert(final Stream<Optional<T>> stream, final Collector<T, ?, M> collector) {
+    public static <T, M> M convert(@NonNull final Stream<Optional<T>> stream, final Collector<T, ?, M> collector) {
         return stream.flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty()).collect(collector);
     }
 
@@ -335,11 +292,11 @@ public final class CConverterUtils {
         return Stream.concat(stream, Stream.of(item));
     }
 
-    public static <T> T max(final Stream<? extends T> stream, final Comparator<? super T> comparator) {
+    public static <T> T max(@NonNull final Stream<? extends T> stream, final Comparator<? super T> comparator) {
         return stream.max(comparator).orElseThrow(NoSuchElementException::new);
     }
 
-    public static <T> T min(final Stream<? extends T> stream, final Comparator<? super T> comparator) {
+    public static <T> T min(@NonNull final Stream<? extends T> stream, final Comparator<? super T> comparator) {
         return stream.min(comparator).orElseThrow(NoSuchElementException::new);
     }
 
@@ -363,13 +320,12 @@ public final class CConverterUtils {
 
         R apply(A a, B b, C c);
 
-        default <V> TriFunction<A, B, C, V> andThen(Function<? super R, ? extends V> after) {
-            Objects.requireNonNull(after);
+        default <V> TriFunction<A, B, C, V> andThen(@NonNull Function<? super R, ? extends V> after) {
             return (A a, B b, C c) -> after.apply(apply(a, b, c));
         }
     }
 
-    public static <T> Map<Boolean, List<T>> partitionBy(final List<T> list, final Predicate<? super T> predicate) {
+    public static <T> Map<Boolean, List<T>> partitionBy(@NonNull final List<T> list, final Predicate<? super T> predicate) {
         return list.stream().collect(Collectors.partitioningBy(predicate));
     }
 
@@ -388,5 +344,17 @@ public final class CConverterUtils {
      */
     public static <T, U> U[] toArray(final Function<? super T, ? extends U> func, final IntFunction<U[]> generator, final T... objects) {
         return Arrays.stream(objects).map(func).toArray(generator);
+    }
+
+    public static <K, V> List<V> getMapValues(final Map<K, V> map, final Comparator<? super K> comparator) {
+        final Map<K, V> reverse = new TreeMap<>(comparator);
+        reverse.putAll(map);
+        return reverse.entrySet().stream().map(e -> e.getValue()).collect(Collectors.toList());
+    }
+
+    public static <K, V> List<K> getMapKeys(final Map<K, V> map, final Comparator<? super K> comparator) {
+        final Map<K, V> reverse = new TreeMap<>(comparator);
+        reverse.putAll(map);
+        return reverse.entrySet().stream().map(e -> e.getKey()).collect(Collectors.toList());
     }
 }

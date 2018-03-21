@@ -37,6 +37,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import lombok.NonNull;
 
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -198,7 +199,7 @@ public final class CListUtils {
         return maxElem;
     }
 
-    public static <T> List<T> getRandomSubset(final List<? extends T> list) {
+    public static <T> List<T> getRandomSubset(@NonNull final List<? extends T> list) {
         final Random random = new Random();
         return list.stream().filter(f -> {
             return random.nextBoolean();
