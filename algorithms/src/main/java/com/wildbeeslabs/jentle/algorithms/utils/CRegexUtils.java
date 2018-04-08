@@ -23,9 +23,11 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.NonNull;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 /**
  *
@@ -37,16 +39,28 @@ import java.util.regex.Pattern;
  */
 public final class CRegexUtils {
 
+    private static final Pattern DEFAULT_PASSWORD_STRENGH_PATTERN = Pattern.compile("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&amp;*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$");
+
+    private static final Pattern DEFAULT_HEX_COLOR_PATTERN = Pattern.compile("^\\#([a-fA-F]|[0-9]){3,6}$");
+
+    private static final Pattern DEFAULT_EMAIL_PATTERN = Pattern.compile("^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");//S "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+
+    private static final Pattern DEFAULT_IPV4_PATTERN = Pattern.compile("^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
+
+    private static final Pattern DEFAULT_IPV6_STD_PATTERN = Pattern.compile("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
+
+    private static final Pattern DEFAUL_IPV6_HEX_COMPRESSED_PATTERN = Pattern.compile("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
+
     private CRegexUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
     public static int execute(final String regex, final String text) {
-        return execute(regex, text, 0);
+        return CRegexUtils.execute(regex, text, 0);
     }
 
     public static int execute(final String regex, final String text, int flags) {
-        Matcher matcher = matcher(regex, text, flags);
+        final Matcher matcher = CRegexUtils.matcher(regex, text, flags);
         int matches = 0;
         while (matcher.find()) {
             matches++;
@@ -54,11 +68,41 @@ public final class CRegexUtils {
         return matches;
     }
 
-    public static Matcher matcher(final String regex, final String text, int flags) {
-        Objects.requireNonNull(regex);
-        Objects.requireNonNull(text);
+    public static Matcher matcher(@NonNull final String regex, @NonNull final String text, int flags) {
         assert (flags >= 0);
-        Pattern pattern = Pattern.compile(regex, flags);
+        final Pattern pattern = Pattern.compile(regex, flags);
         return pattern.matcher(text);
+    }
+
+    public static boolean isIPv4Address(final String input) {
+        return CRegexUtils.DEFAULT_IPV4_PATTERN.matcher(input).matches();
+    }
+
+    public static boolean isIPv6StdAddress(final String input) {
+        return CRegexUtils.DEFAULT_IPV6_STD_PATTERN.matcher(input).matches();
+    }
+
+    public static boolean isIPv6HexCompressedAddress(final String input) {
+        return CRegexUtils.DEFAUL_IPV6_HEX_COMPRESSED_PATTERN.matcher(input).matches();
+    }
+
+    public static boolean isIPv6Address(final String input) {
+        return CRegexUtils.isIPv6StdAddress(input) || CRegexUtils.isIPv6HexCompressedAddress(input);
+    }
+
+    public static boolean isValidEmailAddress(final String value, final Boolean allowLocal) {
+        return EmailValidator.getInstance(allowLocal).isValid(value);
+    }
+
+    public boolean isValidEmailAddress(final String input) {
+        return CRegexUtils.DEFAULT_EMAIL_PATTERN.matcher(input).matches();
+    }
+
+    public boolean isValidHexColor(final String input) {
+        return CRegexUtils.DEFAULT_HEX_COLOR_PATTERN.matcher(input).matches();
+    }
+
+    public boolean isValidStrengthPassword(final String input) {
+        return CRegexUtils.DEFAULT_PASSWORD_STRENGH_PATTERN.matcher(input).matches();
     }
 }

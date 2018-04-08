@@ -41,7 +41,7 @@ import lombok.ToString;
 @ToString
 public class GenericMatcher<T> implements IGenericMatcher<T> {
 
-    protected IMatches marcher;
+    protected final IMatches marcher;
 
     public GenericMatcher(final IMatches<T> marcher) {
         this.marcher = marcher;
