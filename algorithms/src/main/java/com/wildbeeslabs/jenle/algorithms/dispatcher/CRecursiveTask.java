@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jenle.algorithms.pool;
+package com.wildbeeslabs.jenle.algorithms.dispatcher;
 
 import java.util.List;
 import java.util.concurrent.Callable;
