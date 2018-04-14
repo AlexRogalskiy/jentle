@@ -161,7 +161,7 @@ public enum TimeUnit {
      */
     public static TimeUnit getByCode(final String code) {
         if (!StringUtils.isEmpty(code)) {
-            for (final TimeUnit unit : values()) {
+            for (final TimeUnit unit : TimeUnit.values()) {
                 if (unit.name().equalsIgnoreCase(code)) {
                     return unit;
                 }
@@ -171,18 +171,22 @@ public enum TimeUnit {
     }
 
     /**
-     * Get duration of datetime period
+     * Returns duration {@link Duration} instance that represents the current
+     * quantity of milliseconds
      *
-     * @param value - datetime period
-     * @return duration of datetime period
+     * @param value - quantity of milliseconds
+     * @return duration {@link IDuration} instance of the current quantity of
+     * milliseconds
      */
     public abstract Optional<Duration> getDuration(long value);
 
     /**
-     * Get amount of datetime by period
+     * Returns temporal amount {@link TemporalAmount} instance that represents
+     * the current quantity of milliseconds
      *
-     * @param value - datetime period
-     * @return amount of time by period
+     * @param value - quantity of milliseconds
+     * @return temporal amount {@link TemporalAmount} instance of the current
+     * quantity of milliseconds
      */
     public abstract Optional<TemporalAmount> getPeriod(long value);
 

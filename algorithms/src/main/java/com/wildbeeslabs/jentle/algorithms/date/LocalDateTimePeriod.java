@@ -41,7 +41,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom local date time period implementation
+ * Custom local datetime period implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -64,20 +64,15 @@ public class LocalDateTimePeriod {
         if (Objects.isNull(periods1) || periods1.isEmpty() || Objects.isNull(periods2) || periods2.isEmpty()) {
             return Collections.<LocalDateTimePeriod>emptyList();
         }
+        final List<LocalDateTimePeriod> commonList = new ArrayList<>();
         if (!periods1.isEmpty()) {
-            final List<LocalDateTimePeriod> commonList = new ArrayList<>();
             periods1.stream().forEach(s -> {
-                for (final LocalDateTimePeriod s2 : periods2) {
-                    final LocalDateTimePeriod interval = LocalDateTimePeriod.getIntersection(s, s2);
-                    if (Objects.nonNull(interval)) {
-                        commonList.add(interval);
-                    }
-                }
+                periods2.stream().map((s2) -> LocalDateTimePeriod.getIntersection(s, s2)).filter(Objects::nonNull).forEach((interval) -> {
+                    commonList.add(interval);
+                });
             });
-            periods1.clear();
-            periods1.addAll(commonList);
         }
-        return periods1;
+        return commonList;
     }
 
     public static Set<LocalDateTimePeriod> getOverlap(final List<LocalDateTimePeriod> periods) {

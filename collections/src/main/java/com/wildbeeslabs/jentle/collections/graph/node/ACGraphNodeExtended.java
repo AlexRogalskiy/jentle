@@ -28,10 +28,11 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,9 +53,9 @@ import lombok.ToString;
 @ToString
 public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>> extends ACBaseGraphNode<T, E> {
 
-    private BigDecimal distance;
-    private final LinkedList<E> pathNodes = new LinkedList<>();
-    private final Map<E, BigDecimal> adjacents = new HashMap<>();
+    protected BigDecimal distance;
+    protected final LinkedList<E> pathNodes = new LinkedList<>();
+    protected final ConcurrentMap<E, BigDecimal> adjacents = new ConcurrentHashMap<>();
 
     public ACGraphNodeExtended() {
         this(null);

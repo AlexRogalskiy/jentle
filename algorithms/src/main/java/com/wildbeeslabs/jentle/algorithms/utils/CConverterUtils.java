@@ -41,7 +41,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.IntPredicate;
@@ -52,6 +51,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 import lombok.NonNull;
 
 import org.apache.log4j.LogManager;
@@ -344,6 +344,14 @@ public final class CConverterUtils {
      */
     public static <T, U> U[] toArray(final Function<? super T, ? extends U> func, final IntFunction<U[]> generator, final T... objects) {
         return Arrays.stream(objects).map(func).toArray(generator);
+    }
+
+    public static <T> Collector<T, ?, T[]> toArray(final IntFunction<T[]> converter) {
+        return Collectors.collectingAndThen(Collectors.toList(), list -> list.toArray(converter.apply(list.size())));
+    }
+
+    public static String[] toArray(@NonNull final String value, @NonNull final String delimeter) {
+        return Arrays.stream(value.split(delimeter)).map(String::trim).toArray(String[]::new);
     }
 
     public static <K, V> List<V> getMapValues(final Map<K, V> map, final Comparator<? super K> comparator) {
