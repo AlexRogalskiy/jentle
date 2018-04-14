@@ -21,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentel.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date;
 
-import java.time.Duration;
-import java.time.temporal.TemporalAmount;
-import java.util.Objects;
+import java.time.Instant;
+import java.time.ZoneOffset;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +32,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom class to track operational transactions by datetime units
+ * Default local time implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -42,30 +41,21 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class BaseTransaction {
+public class DefaultLocalTime implements ILocalTime {
 
-    private Long id;
-    private Long paramType;
-    private Long value;
-    private TimeUnit unit;
-    private Long version;
-    private String settingType;
+    private String timeZone;
 
-    public Long getValue() {
-        return !TimeUnit.NONE.equals(this.unit) ? this.value : null;
+    public DefaultLocalTime(final String timeZone) {
+        this.timeZone = timeZone;
     }
 
-    public Duration getDurationValue() {
-        if (TimeUnit.MILLISECOND.equals(this.unit) || TimeUnit.SECOND.equals(this.unit) || TimeUnit.MINUTE.equals(this.unit) || TimeUnit.HOUR.equals(this.unit)) {
-            return Objects.nonNull(this.value) ? this.unit.getDuration(this.value).orElse(null) : null;
-        }
-        return null;
+    @Override
+    public Instant nowInstant() {
+        return Instant.now();
     }
 
-    public TemporalAmount getPeriodValue() {
-        if (TimeUnit.DAY.equals(this.unit) || TimeUnit.WORKING_DAY.equals(this.unit) || TimeUnit.WEEK.equals(this.unit) || TimeUnit.MONTH.equals(this.unit) || TimeUnit.YEAR.equals(this.unit)) {
-            return Objects.nonNull(this.value) ? this.unit.getPeriod(this.value).orElse(null) : null;
-        }
-        return null;
+    @Override
+    public ZoneOffset getDefaultTimeZone() {
+        return ZoneOffset.of(this.timeZone);
     }
 }

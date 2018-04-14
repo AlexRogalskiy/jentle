@@ -21,39 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jenle.algorithms.pool;
 
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.RecursiveAction;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 /**
  *
- * Custom pool utilities implementation
+ * Custom pool recursive action implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ * @param <T>
+ * @param <U>
  */
-public class CPoolUtils {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public abstract class CRecursiveAction<T, U extends CRecursiveAction<T, U>> extends RecursiveAction {
 
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
-    /**
-     * Default fork join pool
-     */
-    public static final ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();//new ForkJoinPool(2);
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
-    private CPoolUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
+    private final T value;
+
+    public CRecursiveAction(final T value) {
+        this.value = value;
     }
 
-    public static <R> R execute(final ForkJoinTask<R> task) {
-        CPoolUtils.forkJoinPool.execute(task);
-        return task.join();
-        //CPoolUtils.forkJoinPool.invoke(task);
+    @Override
+    protected void compute() {
+        if (this.validateCondition()) {
+            CBaseDispatcher.forkJoinPool.invokeAll(this.createSubtasks());
+        } else {
+            this.processing(this.value);
+        }
+    }
+
+    protected abstract List<? extends Callable<U>> createSubtasks();
+
+    protected abstract boolean validateCondition();
+
+    protected void processing(final T value) {
+        LOGGER.info(String.format("The result=(%s) was processed by thread=(%s)", value, Thread.currentThread().getName()));
     }
 }

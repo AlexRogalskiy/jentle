@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentel.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date;
 
 import java.time.LocalDate;
 import java.util.Objects;

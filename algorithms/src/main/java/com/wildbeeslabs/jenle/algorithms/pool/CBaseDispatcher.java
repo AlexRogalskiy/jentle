@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2018 WildBees Labs.
+ * Copyright 2017 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,41 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentel.algorithms.date;
+package com.wildbeeslabs.jenle.algorithms.pool;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Default local time implementation
+ * Custom pool utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@ToString
-public class DefaultLocalTime implements ILocalTime {
+public class CBaseDispatcher {
 
-    private String timeZone;
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
+    /**
+     * Default fork join pool
+     */
+    public static final ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();//new ForkJoinPool(2);
 
-    public DefaultLocalTime(final String timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    @Override
-    public Instant nowInstant() {
-        return Instant.now();
-    }
-
-    @Override
-    public ZoneOffset getDefaultTimeZone() {
-        return ZoneOffset.of(this.timeZone);
+    public static <R> R execute(final ForkJoinTask<R> task) {
+        CBaseDispatcher.forkJoinPool.execute(task);
+        return task.join();
+        //CPoolUtils.forkJoinPool.invoke(task);
     }
 }

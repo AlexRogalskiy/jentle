@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,59 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jentle.algorithms.date;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.RecursiveAction;
+import java.time.Duration;
+import java.time.temporal.TemporalAmount;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  *
- * Custom pool recursive action implementation
+ * Custom class to track operational transactions by datetime units
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class CRecursiveAction<T, U extends CRecursiveAction<T, U>> extends RecursiveAction {
+public class BaseTransaction {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    private Long id;
+    private Long paramType;
+    private Long value;
+    private TimeUnit unit;
+    private Long version;
+    private String settingType;
 
-    private final T value;
-
-    public CRecursiveAction(final T value) {
-        this.value = value;
+    public Long getValue() {
+        return !TimeUnit.NONE.equals(this.unit) ? this.value : null;
     }
 
-    @Override
-    protected void compute() {
-        if (validateCondition()) {
-            CPoolUtils.forkJoinPool.invokeAll(this.createSubtasks());
-        } else {
-            this.processing(this.value);
+    public Duration getDurationValue() {
+        if (TimeUnit.MILLISECOND.equals(this.unit) || TimeUnit.SECOND.equals(this.unit) || TimeUnit.MINUTE.equals(this.unit) || TimeUnit.HOUR.equals(this.unit)) {
+            return Objects.nonNull(this.value) ? this.unit.getDuration(this.value).orElse(null) : null;
         }
+        return null;
     }
 
-    protected abstract List<? extends Callable<U>> createSubtasks();
-
-    protected abstract boolean validateCondition();
-
-    protected void processing(final T value) {
-        LOGGER.info(String.format("The result=(%s) was processed by thread=(%s)", value, Thread.currentThread().getName()));
+    public TemporalAmount getPeriodValue() {
+        if (TimeUnit.DAY.equals(this.unit) || TimeUnit.WORKING_DAY.equals(this.unit) || TimeUnit.WEEK.equals(this.unit) || TimeUnit.MONTH.equals(this.unit) || TimeUnit.YEAR.equals(this.unit)) {
+            return Objects.nonNull(this.value) ? this.unit.getPeriod(this.value).orElse(null) : null;
+        }
+        return null;
     }
 }

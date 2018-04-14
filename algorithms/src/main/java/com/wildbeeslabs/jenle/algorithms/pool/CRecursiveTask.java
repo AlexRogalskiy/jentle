@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jenle.algorithms.pool;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 
 import lombok.Data;
@@ -48,14 +47,14 @@ import org.apache.log4j.Logger;
  * @param <U>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString
 public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> extends RecursiveTask<R> {
 
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
+    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     private final T value;
 
@@ -65,8 +64,8 @@ public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> ex
 
     @Override
     protected R compute() {
-        if (validateCondition()) {
-            return CPoolUtils.forkJoinPool.invokeAll(this.createSubtasks()).stream().map(e -> {
+        if (this.validateCondition()) {
+            return CBaseDispatcher.forkJoinPool.invokeAll(this.createSubtasks()).stream().map(e -> {
                 try {
                     return e.get();
                 } catch (InterruptedException | ExecutionException ex) {
@@ -74,9 +73,8 @@ public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> ex
                 }
                 return null;
             }).map(RecursiveTask::join).reduce((x, y) -> reduceData(x, y)).get();
-        } else {
-            return this.processing(this.value);
         }
+        return this.processing(this.value);
     }
 
     protected abstract List<? extends Callable<U>> createSubtasks();
