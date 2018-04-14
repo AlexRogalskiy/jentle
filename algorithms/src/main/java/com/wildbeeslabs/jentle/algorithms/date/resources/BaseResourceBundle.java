@@ -28,7 +28,10 @@ import com.wildbeeslabs.jentle.algorithms.utils.CConverterUtils;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.ListResourceBundle;
 import java.util.Locale;
 import java.util.Map;
@@ -38,6 +41,7 @@ import java.util.ResourceBundle;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 
 import org.apache.log4j.LogManager;
@@ -133,7 +137,7 @@ public class BaseResourceBundle extends ListResourceBundle {
         this.resources = ResourceBundle.getBundle(this.source, this.locale);
     }
 
-    public Object getResourceByKey(final String key) {
+    public Object getResource(final String key) {
         if (Objects.isNull(this.resources)) {
             this.loadResources();
         }
@@ -143,5 +147,77 @@ public class BaseResourceBundle extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return this.getProperties().stream().map((item) -> item.toArray()).collect(CConverterUtils.toArray(Object[][]::new));
+    }
+
+    @Override
+    public Enumeration<String> getKeys() {
+        return Objects.nonNull(this.properties) ? ((Enumeration<String>) this.properties.propertyNames()) : null;
+    }
+
+    public static ResourceBundle.Control getMyControl() {
+        return new ResourceBundle.Control() {
+
+            @Override
+            public List<String> getFormats(@NonNull final String baseName) {
+                return Arrays.asList("db");
+            }
+
+//            @Override
+//            public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException,
+//                    InstantiationException, IOException {
+//                if ((baseName == null) || (locale == null) || (format == null) || (loader == null)) {
+//                    throw new NullPointerException();
+//                }
+//                ResourceBundle bundle = null;
+//                if (format.equals("db")) {
+//                    Properties p = new Properties();
+//                    DataSource ds = (DataSource) ContextFactory.getApplicationContext().getBean("clinicalDataSource");
+//                    Connection con = null;
+//                    Statement s = null;
+//                    ResultSet rs = null;
+//                    try {
+//                        con = ds.getConnection();
+//                        StringBuilder query = new StringBuilder();
+//                        query.append("select label, value from i18n where bundle='" + StringEscapeUtils.escapeSql(baseName) + "' ");
+//
+//                        if (locale != null) {
+//                            if (StringUtils.isNotBlank(locale.getCountry())) {
+//                                query.append("and country='" + escapeSql(locale.getCountry()) + "' ");
+//
+//                            }
+//                            if (StringUtils.isNotBlank(locale.getLanguage())) {
+//                                query.append("and language='" + escapeSql(locale.getLanguage()) + "' ");
+//
+//                            }
+//                            if (StringUtils.isNotBlank(locale.getVariant())) {
+//                                query.append("and variant='" + escapeSql(locale.getVariant()) + "' ");
+//
+//                            }
+//                        }
+//                        s = con.createStatement();
+//                        rs = s.executeQuery(query.toString());
+//                        while (rs.next()) {
+//                            p.setProperty(rs.getString(1), rs.getString(2));
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        throw new RuntimeException("Can not build properties: " + e);
+//                    } finally {
+//                        DbUtils.closeQuietly(con, s, rs);
+//                    }
+//                    bundle = new DbResourceBundle(p);
+//                }
+//                return bundle;
+//            }
+            @Override
+            public long getTimeToLive(final String baseName, final Locale locale) {
+                return (1000 * 60 * 30);
+            }
+
+            @Override
+            public boolean needsReload(final String baseName, final Locale locale, final String format, final ClassLoader loader, final ResourceBundle bundle, long loadTime) {
+                return true;
+            }
+        };
     }
 }
