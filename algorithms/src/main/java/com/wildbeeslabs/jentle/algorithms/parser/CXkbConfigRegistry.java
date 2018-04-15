@@ -51,12 +51,12 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  */
 @XmlRootElement
-public class XkbConfigRegistry {
+public class CXkbConfigRegistry {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(XkbConfigRegistry.class);
+    protected static final Logger LOGGER = LogManager.getLogger(CXkbConfigRegistry.class);
     /**
      * Default bundle source
      */
@@ -112,20 +112,20 @@ public class XkbConfigRegistry {
     @XmlElement(name = "layout")
     private final List<Layout> layoutList = new ArrayList<>();
 
-    private static XkbConfigRegistry instance = null;
+    private static CXkbConfigRegistry instance = null;
 
-    public static XkbConfigRegistry getXkbConfigRegistry() {
-        return XkbConfigRegistry.getXkbConfigRegistry(XkbConfigRegistry.DEFAULT_CONFIG_SOURCE);
+    public static CXkbConfigRegistry getXkbConfigRegistry() {
+        return CXkbConfigRegistry.getXkbConfigRegistry(CXkbConfigRegistry.DEFAULT_CONFIG_SOURCE);
     }
 
-    public static XkbConfigRegistry getXkbConfigRegistry(final String source) {
+    public static CXkbConfigRegistry getXkbConfigRegistry(final String source) {
         if (Objects.isNull(instance)) {
             try {
-                JAXBContext jc = JAXBContext.newInstance(XkbConfigRegistry.class);
+                JAXBContext jc = JAXBContext.newInstance(CXkbConfigRegistry.class);
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
                 final File xml = new File(source);
                 if (xml.exists()) {
-                    instance = (XkbConfigRegistry) unmarshaller.unmarshal(xml);
+                    instance = (CXkbConfigRegistry) unmarshaller.unmarshal(xml);
                 }
             } catch (JAXBException ex) {
                 LOGGER.error(String.format("ERROR: cannot load configuration from source=(%s), message=(%s)", source, ex.getMessage()));
