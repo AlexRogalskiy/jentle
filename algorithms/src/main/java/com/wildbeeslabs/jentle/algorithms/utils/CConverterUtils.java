@@ -23,10 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.util.AbstractMap;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.IntSummaryStatistics;
@@ -40,6 +42,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
@@ -77,81 +80,114 @@ public final class CConverterUtils {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <T, K, V> Map<K, V> convertToMap(final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends V> valueMapper) {
+    public static <T, K, V> Map<K, V> convertToMap(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends V> valueMapper) {
         return stream.collect(Collectors.toMap(keyMapper, valueMapper));
     }
 
-    public static <T, K, U> Map<K, U> convertToMap(final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends U> valueMapper, final BinaryOperator<U> mergeFunction) {
+    public static <T, K, V> Map<K, V> convertToMap(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends V> valueMapper, final BinaryOperator<V> mergeFunction) {
         return stream.collect(Collectors.toMap(keyMapper, valueMapper, mergeFunction));
     }
 
-    public static <T, K, U> LinkedHashMap<K, U> convertToLinkedMap(final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends U> valueMapper, final BinaryOperator<U> mergeFunction) {
+    public static <K, V> Map<K, V> convertToMap(@NonNull final Stream<Map.Entry<K, V>> stream) {
+        return stream.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public static <K, V> Map<K, V> convertToMap2(@NonNull final Stream<AbstractMap.SimpleEntry<K, V>> stream) {
+        return stream.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+    }
+
+    public static <K, V> Map<K, V> convertToUnmodifiableMap2(@NonNull final Stream<AbstractMap.SimpleImmutableEntry<K, V>> stream) {
+        return stream.collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getKey, AbstractMap.SimpleImmutableEntry::getValue));
+    }
+
+//    public static <K, V> Map<K, V> convertToUnmodifiableMap(@NonNull final Stream<Map.Entry<K, V>> stream) {
+//        return stream.collect(Collectors.collectingAndThen(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue), Collections::<K, V>unmodifiableMap));
+//    }
+    public static <T, K, V> Map<K, V> convertToTreeMap(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends V> valueMapper, final BinaryOperator<V> mergeFunction) {
+        return stream.collect(Collectors.toMap(keyMapper, valueMapper, mergeFunction, TreeMap::new));
+    }
+
+    public static <T, K, U> Map<K, U> convertToUnmodifiableMap(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends U> valueMapper) {
+        return stream.collect(Collectors.collectingAndThen(Collectors.toMap(keyMapper, valueMapper), Collections::<K, U>unmodifiableMap));
+    }
+
+    public static <T, K, U> LinkedHashMap<K, U> convertToLinkedMap(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends U> valueMapper, final BinaryOperator<U> mergeFunction) {
         return stream.collect(Collectors.toMap(keyMapper, valueMapper, mergeFunction, LinkedHashMap::new));
     }
 
-    public static <T, K> Map<K, List<T>> getSortedMapByKey(final Map<K, List<T>> map, final Comparator<? super K> comparator) {
+    public static <T> Map<T, T> convertSetToMap(final Set<T> set) {
+        final Map<T, T> map = new ConcurrentHashMap<>();
+        set.forEach(t -> map.put(t, t));
+        return map;
+    }
+
+    public static <K> Set<K> convertMapToSet(final Map<K, Boolean> map) {
+        return Collections.newSetFromMap(map);
+    }
+
+    public static <T, K> Map<K, List<T>> getSortedMapByKey(@NonNull final Map<K, List<T>> map, final Comparator<? super K> comparator) {
         return map.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey(comparator))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
-    public static <T> Map<Integer, IntSummaryStatistics> getMapStatisticsBy(final Stream<? extends T> stream, final Function<? super T, ? extends Integer> groupingBy, final ToIntFunction<? super T> mapper) {
+    public static <T> Map<Integer, IntSummaryStatistics> getMapStatisticsBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends Integer> groupingBy, final ToIntFunction<? super T> mapper) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.summarizingInt(mapper)));
     }
 
-    public static <T, K> Map<K, Optional<T>> getMapMaxBy(final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
+    public static <T, K> Map<K, Optional<T>> getMapMaxBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.maxBy(cmp)));
     }
 
-    public static <T, K> Map<K, Optional<T>> getMapMinBy(final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
+    public static <T, K> Map<K, Optional<T>> getMapMinBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.minBy(cmp)));
     }
 
     public static <T> Optional<T> getMaxBy(final Stream<? extends T> stream, final Comparator<? super T> cmp) {
-        return getMinMaxBy(stream, Collectors.maxBy(cmp));
+        return CConverterUtils.getMinMaxBy(stream, Collectors.maxBy(cmp));
     }
 
     public static <T> Optional<T> getMinBy(final Stream<? extends T> stream, final Comparator<? super T> cmp) {
-        return getMinMaxBy(stream, Collectors.minBy(cmp));
+        return CConverterUtils.getMinMaxBy(stream, Collectors.minBy(cmp));
     }
 
-    protected static <T> Optional<T> getMinMaxBy(final Stream<? extends T> stream, final Collector<T, ?, Optional<T>> collector) {
+    protected static <T> Optional<T> getMinMaxBy(@NonNull final Stream<? extends T> stream, final Collector<T, ?, Optional<T>> collector) {
         return stream.collect(collector);
     }
 
-    public static <E> Map<Integer, Long> getMapCountBy(final Stream<? extends E> stream, final Function<? super E, ? extends Integer> groupingBy) {
+    public static <E> Map<Integer, Long> getMapCountBy(@NonNull final Stream<? extends E> stream, final Function<? super E, ? extends Integer> groupingBy) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.counting()));
     }
 
-    public static <T, K, U> Map<K, List<U>> convertToMapList(final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Function<? super T, ? extends U> mapper) {
+    public static <T, K, U> Map<K, List<U>> convertToMapList(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Function<? super T, ? extends U> mapper) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.mapping(mapper, Collectors.toList())));
     }
 
-    public static <T, K, U> Map<K, Set<U>> convertToMapSet(final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Function<? super T, ? extends U> mapper) {
+    public static <T, K, U> Map<K, Set<U>> convertToMapSet(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Function<? super T, ? extends U> mapper) {
         return stream.collect(Collectors.groupingBy(groupingBy, Collectors.mapping(mapper, Collectors.toSet())));
     }
 
-    public static <T, U> List<U> convertToList(final Stream<? extends T> stream, final Function<? super T, ? extends U> mapper) {
+    public static <T, U> List<U> convertToList(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends U> mapper) {
         return stream.collect(Collectors.mapping(mapper, Collectors.toList()));
     }
 
-    public static <T, U> Stream<U> getStreamBy(final Stream<? extends T> stream, final Function<? super T, ? extends U> mapper, final Predicate<? super U> predicate) {
+    public static <T, U> Stream<U> getStreamBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends U> mapper, final Predicate<? super U> predicate) {
         return stream.map(mapper).filter(predicate);
     }
 
-    public static <T> Stream<? extends T> getStreamSortedBy(final Stream<? extends T> stream, final Comparator<? super T> cmp) {
+    public static <T> Stream<? extends T> getStreamSortedBy(@NonNull final Stream<? extends T> stream, final Comparator<? super T> cmp) {
         return stream.sorted(cmp);
     }
 
-    public static <T, K> Map<K, Integer> getMapSumBy(final Stream<? extends T> stream, final Function<T, K> keys, final Function<T, Integer> values) {
+    public static <T, K> Map<K, Integer> getMapSumBy(@NonNull final Stream<? extends T> stream, final Function<T, K> keys, final Function<T, Integer> values) {
         return stream.collect(Collectors.toMap(keys, values, Integer::sum));
     }
 
-    public static <T extends Number> T reduceStreamBy(final Stream<T> stream, final T identity, final BinaryOperator<T> accumulator) {
+    public static <T extends Number> T reduceStreamBy(@NonNull final Stream<T> stream, final T identity, final BinaryOperator<T> accumulator) {
         return stream.reduce(identity, accumulator);
     }
 
-    public static <A, B, C> Function<A, C> compose(final Function<A, B> function1, final Function<B, C> function2) {
+    public static <A, B, C> Function<A, C> compose(@NonNull final Function<A, B> function1, @NonNull final Function<B, C> function2) {
         return function1.andThen(function2);
     }
 
@@ -159,11 +195,11 @@ public final class CConverterUtils {
         return Stream.concat(first, second).filter(predicate).collect(Collectors.toList());
     }
 
-    public static <T> String join(final Stream<? extends T> collection, final String delimiter) {
+    public static <T> String join(@NonNull final Stream<? extends T> collection, final String delimiter) {
         return collection.map(Objects::toString).collect(Collectors.joining(delimiter));
     }
 
-    public static <K, V> String join(final Map<K, V> map, final String keyValueDelimiter, final String delimiter) {
+    public static <K, V> String join(@NonNull final Map<K, V> map, final String keyValueDelimiter, final String delimiter) {
         return map.entrySet().stream().map(entry -> entry.getKey() + keyValueDelimiter + entry.getValue()).collect(Collectors.joining(delimiter));
     }
 
@@ -176,10 +212,10 @@ public final class CConverterUtils {
     }
 
     public static <T> String joinWithPrefixPostfix(final T[] array, final String delimiter, final String prefix, final String postfix) {
-        return joinWithPrefixPostfix(Arrays.asList(array), delimiter, prefix, postfix);
+        return CConverterUtils.joinWithPrefixPostfix(Arrays.asList(array), delimiter, prefix, postfix);
     }
 
-    public static <T> String joinWithPrefixPostfix(final Collection<T> list, final String delimiter, final String prefix, final String postfix) {
+    public static <T> String joinWithPrefixPostfix(@NonNull final Collection<T> list, final String delimiter, final String prefix, final String postfix) {
         return list.stream().map(Objects::toString).collect(Collectors.joining(delimiter, prefix, postfix));
     }
 
@@ -188,15 +224,15 @@ public final class CConverterUtils {
     }
 
     public static <T extends CharSequence> CharSequence[] getArrayBy(final T[] array, final Predicate<? super T> predicate) {
-        return getListBy(Arrays.asList(array), predicate);
+        return CConverterUtils.getListBy(Arrays.asList(array), predicate);
     }
 
-    public static <T extends CharSequence> CharSequence[] getListBy(final List<T> list, final Predicate<? super T> predicate) {
+    public static <T extends CharSequence> CharSequence[] getListBy(@NonNull final List<T> list, final Predicate<? super T> predicate) {
         return list.stream().filter(predicate).toArray(size -> new CharSequence[size]);
     }
 
     public static List<String> split(final String value, final String delimiter) {
-        return split(value, delimiter, (str) -> Boolean.TRUE);
+        return CConverterUtils.split(value, delimiter, (str) -> Boolean.TRUE);
     }
 
     public static <T extends CharSequence> List<String> split(final T value, final String delimiter, final Predicate<? super String> predicate) {
@@ -213,17 +249,17 @@ public final class CConverterUtils {
     }
 
     public static <T> List<? extends T> convertToList(final T[] array, final IntPredicate indexPredicate) {
-        return convertTo(array, indexPredicate, Collectors.toList());
+        return CConverterUtils.convertTo(array, indexPredicate, Collectors.toList());
     }
 
-    public static <K, V> Map<K, V> filterByKey(final Map<K, V> map, final Predicate<? super K> predicate) {
+    public static <K, V> Map<K, V> filterByKey(@NonNull final Map<K, V> map, final Predicate<? super K> predicate) {
         return map.entrySet()
                 .stream()
                 .filter(entry -> predicate.test(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public static <K, V> Map<K, V> filterByValue(final Map<K, V> map, final Predicate<? super V> predicate) {
+    public static <K, V> Map<K, V> filterByValue(@NonNull final Map<K, V> map, final Predicate<? super V> predicate) {
         return map.entrySet()
                 .stream()
                 .filter(entry -> predicate.test(entry.getValue()))
@@ -238,12 +274,12 @@ public final class CConverterUtils {
                 .collect(collector);
     }
 
-    public static <T, K> Map<K, Long> countBy(final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy) {
+    public static <T, K> Map<K, Long> countBy(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy) {
         return list.collect(Collectors.groupingBy(groupingBy, Collectors.counting()));
     }
 
     public static <T> Map<T, Long> countBy(final Stream<? extends T> list) {
-        return countBy(list, Function.identity());
+        return CConverterUtils.countBy(list, Function.identity());
     }
 
     public static <T> Collector<T, ?, List<T>> lastN(int n) {
@@ -261,7 +297,7 @@ public final class CConverterUtils {
         }, ArrayList::new);
     }
 
-    public static <T> T getFindFirst(final List<? extends T> list) {
+    public static <T> T getFindFirst(@NonNull final List<? extends T> list) {
         return list.stream()
                 .filter(Objects::nonNull)
                 .findFirst()
@@ -309,7 +345,7 @@ public final class CConverterUtils {
     }
 
     public static List<UUID> generateUUID(int skip, int limit) {
-        Supplier<UUID> randomUUIDSupplier = UUID::randomUUID;
+        final Supplier<UUID> randomUUIDSupplier = UUID::randomUUID;
         return generate(randomUUIDSupplier, skip, limit);
     }
 

@@ -73,10 +73,6 @@ public class BaseResourceBundle extends ListResourceBundle {
      */
     protected static final Locale DEFAULT_BUNDLE_LOCALE = Locale.US;
     /**
-     * Default resource properties
-     */
-    protected final Properties properties = new Properties();
-    /**
      * Default bundle source
      */
     protected String source;
@@ -102,39 +98,12 @@ public class BaseResourceBundle extends ListResourceBundle {
         this.locale = locale;
     }
 
-    public <R extends BaseResource> Collection<R> getProperties() {
-        return CConverterUtils.convertToList(this.properties.values().stream(), item -> (R) item);
-    }
-
-    public <R extends BaseResource> void setProperties(final Map<Object, R> properties) {
-        this.properties.clear();
-        if (Objects.nonNull(properties)) {
-            this.properties.putAll(properties);
-        }
-    }
-
-    public <R extends BaseResource> void addProperty(final Object name, final R property) {
-        if (Objects.nonNull(name)) {
-            this.properties.put(name, property);
-        }
-    }
-
-    public void removeProperty(final Object name) {
-        if (Objects.nonNull(name)) {
-            this.properties.remove(name);
-        }
-    }
-
-    public void loadProperties(final String source) {
-        try (final InputStream in = this.getClass().getClassLoader().getResourceAsStream(source)) {
-            this.properties.load(in);
-        } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot load data from source=(%s), message=(%s)", source, ex.getMessage()));
-        }
-    }
-
     protected void loadResources() {
         this.resources = ResourceBundle.getBundle(this.source, this.locale);
+    }
+
+    public String getBundleName() {
+        return this.resources.getBaseBundleName();
     }
 
     public Object getResource(final String key) {
@@ -144,14 +113,23 @@ public class BaseResourceBundle extends ListResourceBundle {
         return this.resources.getObject(key);
     }
 
-    @Override
-    protected Object[][] getContents() {
-        return this.getProperties().stream().map((item) -> item.toArray()).collect(CConverterUtils.toArray(Object[][]::new));
+    public boolean contains(final String key) {
+        if (Objects.isNull(this.resources)) {
+            this.loadResources();
+        }
+        return this.resources.containsKey(key);
+    }
+
+//    public Object[][] getContents() {
+//        return this.getProperties().stream().map((item) -> item.toArray()).collect(CConverterUtils.toArray(Object[][]::new));
+//    }
+    public Enumeration<String> getKeys() {
+        return (Enumeration<String>) this.resources.getKeys();
     }
 
     @Override
-    public Enumeration<String> getKeys() {
-        return Objects.nonNull(this.properties) ? ((Enumeration<String>) this.properties.propertyNames()) : null;
+    protected Object[][] getContents() {
+        return this.resources.keySet().stream().map((item) -> new Object[]{item, this.resources.getObject(item)}).collect(CConverterUtils.toArray(Object[]::new));
     }
 
     public static ResourceBundle.Control getMyControl() {
