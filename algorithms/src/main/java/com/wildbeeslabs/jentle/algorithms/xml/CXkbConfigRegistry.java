@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.parser;
+package com.wildbeeslabs.jentle.algorithms.xml;
 
 import java.io.File;
 import java.util.ArrayList;
