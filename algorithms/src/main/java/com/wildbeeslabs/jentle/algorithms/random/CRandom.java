@@ -23,7 +23,10 @@
  */
 package com.wildbeeslabs.jentle.algorithms.random;
 
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -42,51 +45,75 @@ public class CRandom {
 
     public static long generateRandomLong() {
         return CRandom.DEFAULT_RANDOM_INSTANCE.nextLong();
+        //ThreadLocalRandom.current().nextLong();
         //new RandomDataGenerator().getRandomGenerator().nextLong();
     }
 
     public static int generateRandomInt() {
         return CRandom.DEFAULT_RANDOM_INSTANCE.nextInt();
+        //ThreadLocalRandom.current().nextInt();
         //new RandomDataGenerator().getRandomGenerator().nextInt();
     }
 
     public static float generateRandomFloat() {
         return CRandom.DEFAULT_RANDOM_INSTANCE.nextFloat();
+        //ThreadLocalRandom.current().nextFloat();
         //new RandomDataGenerator().getRandomGenerator().nextFloat();
     }
 
     public static double generateRandomDouble() {
         return CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble();
+        //ThreadLocalRandom.current().nextDouble();
         //new RandomDataGenerator().getRandomGenerator().nextDouble();
     }
 
-    public static long generateRandomLong(long bottomLimit, long upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + (long) (CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (upLimit - bottomLimit)));
-        //new RandomDataGenerator().nextLong(bottomLimit, upLimit);
+    public static long generateRandomLong(long bottomLimit, long topLimit) {
+        assert (bottomLimit <= topLimit);
+        return (bottomLimit + (long) (CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (topLimit - bottomLimit)));
+        //ThreadLocalRandom.current().nextLong(bottomLimit, topLimit);
+        //new RandomDataGenerator().nextLong(bottomLimit, topLimit);
     }
 
-    public static int generateRandomInt(int bottomLimit, int upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + (int) (CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (upLimit - bottomLimit)));
-        //new RandomDataGenerator().nextInt(bottomLimit, upLimit);
+    public static int generateRandomInt(int bottomLimit, int topLimit) {
+        assert (bottomLimit <= topLimit);
+        return (bottomLimit + (int) (CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (topLimit - bottomLimit)));
+        //ThreadLocalRandom.current().nextInt(bottomLimit, topLimit);
+        //new RandomDataGenerator().nextInt(bottomLimit, topLimit);
     }
 
-    public static float generateRandomFloat(float bottomLimit, float upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + CRandom.DEFAULT_RANDOM_INSTANCE.nextFloat() * (upLimit - bottomLimit));
+    public static float generateRandomFloat(float bottomLimit, float topLimit) {
+        assert (bottomLimit <= topLimit);
+        return (bottomLimit + CRandom.DEFAULT_RANDOM_INSTANCE.nextFloat() * (topLimit - bottomLimit));
         //float randomFloat = new RandomDataGenerator().getRandomGenerator().nextFloat();
         //bottomLimit + randomFloat * (upLimit - bottomLimit);
     }
 
-    public static double generateRandomDouble(double bottomLimit, double upLimit) {
-        assert (bottomLimit <= upLimit);
-        return (bottomLimit + CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (upLimit - bottomLimit));
+    public static double generateRandomDouble(double bottomLimit, double topLimit) {
+        assert (bottomLimit <= topLimit);
+        return (bottomLimit + CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (topLimit - bottomLimit));
+        //ThreadLocalRandom.current().nextDouble(upLimit, topLimit);
         //new RandomDataGenerator().nextUniform(bottomLimit, upLimit);
     }
 
     public static boolean generateRandomBoolean() {
         return CRandom.DEFAULT_RANDOM_INSTANCE.nextBoolean();
+        //ThreadLocalRandom.current().nextBoolean();
         //new RandomDataGenerator().getRandomGenerator().nextBoolean();
+    }
+
+    public static double generateRandomGaussian() {
+        return ThreadLocalRandom.current().nextGaussian();
+    }
+
+    public static List<Integer> generateRandomIntsInRange(int bottomLimit, int topLimit) {
+        return ThreadLocalRandom.current().ints(bottomLimit, topLimit).distinct().boxed().collect(Collectors.toList());
+    }
+
+    public static List<Double> generateRandomDoublesInRange(double bottomLimit, double topLimit) {
+        return ThreadLocalRandom.current().doubles(bottomLimit, topLimit).distinct().boxed().collect(Collectors.toList());
+    }
+
+    public static List<Long> generateRandomLongsInRange(long bottomLimit, long topLimit) {
+        return ThreadLocalRandom.current().longs(bottomLimit, topLimit).distinct().boxed().collect(Collectors.toList());
     }
 }
