@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import java.math.BigDecimal;
 import java.util.AbstractMap;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -132,15 +133,15 @@ public final class CConverterUtils {
     }
 
     public static <T> Map<Integer, IntSummaryStatistics> getMapStatisticsBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends Integer> groupingBy, final ToIntFunction<? super T> mapper) {
-        return stream.collect(Collectors.groupingBy(groupingBy, Collectors.summarizingInt(mapper)));
+        return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.summarizingInt(mapper)));
     }
 
     public static <T, K> Map<K, Optional<T>> getMapMaxBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
-        return stream.collect(Collectors.groupingBy(groupingBy, Collectors.maxBy(cmp)));
+        return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.maxBy(cmp)));
     }
 
     public static <T, K> Map<K, Optional<T>> getMapMinBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Comparator<? super T> cmp) {
-        return stream.collect(Collectors.groupingBy(groupingBy, Collectors.minBy(cmp)));
+        return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.minBy(cmp)));
     }
 
     public static <T> Optional<T> getMaxBy(final Stream<? extends T> stream, final Comparator<? super T> cmp) {
@@ -156,15 +157,15 @@ public final class CConverterUtils {
     }
 
     public static <E> Map<Integer, Long> getMapCountBy(@NonNull final Stream<? extends E> stream, final Function<? super E, ? extends Integer> groupingBy) {
-        return stream.collect(Collectors.groupingBy(groupingBy, Collectors.counting()));
+        return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.counting()));
     }
 
     public static <T, K, U> Map<K, List<U>> convertToMapList(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Function<? super T, ? extends U> mapper) {
-        return stream.collect(Collectors.groupingBy(groupingBy, Collectors.mapping(mapper, Collectors.toList())));
+        return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.mapping(mapper, Collectors.toList())));
     }
 
     public static <T, K, U> Map<K, Set<U>> convertToMapSet(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Function<? super T, ? extends U> mapper) {
-        return stream.collect(Collectors.groupingBy(groupingBy, Collectors.mapping(mapper, Collectors.toSet())));
+        return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.mapping(mapper, Collectors.toSet())));
     }
 
     public static <T, U> List<U> convertToList(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends U> mapper) {
@@ -220,7 +221,7 @@ public final class CConverterUtils {
     }
 
     public static <T extends CharSequence> Map<Integer, List<T>> getMapByLength(final T[] array) {
-        return Arrays.stream(array).filter(Objects::nonNull).collect(Collectors.groupingBy(s -> s.length()));
+        return Arrays.stream(array).filter(Objects::nonNull).collect(Collectors.groupingByConcurrent(s -> s.length()));
     }
 
     public static <T extends CharSequence> CharSequence[] getArrayBy(final T[] array, final Predicate<? super T> predicate) {
@@ -275,7 +276,7 @@ public final class CConverterUtils {
     }
 
     public static <T, K> Map<K, Long> countBy(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy) {
-        return list.collect(Collectors.groupingBy(groupingBy, Collectors.counting()));
+        return list.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.counting()));
     }
 
     public static <T> Map<T, Long> countBy(final Stream<? extends T> list) {
@@ -400,5 +401,25 @@ public final class CConverterUtils {
         final Map<K, V> reverse = new TreeMap<>(comparator);
         reverse.putAll(map);
         return reverse.entrySet().stream().map(e -> e.getKey()).collect(Collectors.toList());
+    }
+
+    public static Integer sumInt(@NonNull final Stream<Integer> stream) {
+        return stream.collect(Collectors.summingInt(Integer::intValue));
+    }
+
+    public static Long sumParseLong(@NonNull final Stream<String> stream) {
+        return stream.collect(Collectors.summingLong(n -> Long.parseLong(n)));
+    }
+
+    public static Long sumLong(@NonNull final Stream<Long> stream) {
+        return stream.collect(Collectors.summingLong(n -> n));
+    }
+
+    public static Double sumDouble(@NonNull final Stream<Double> stream) {
+        return stream.collect(Collectors.summingDouble(Double::doubleValue));
+    }
+
+    public static List<BigDecimal> generateBigDecimals(int limit) {
+        return Stream.iterate(BigDecimal.ONE, bigDecimal -> bigDecimal.add(BigDecimal.ONE)).limit(limit).collect(Collectors.toList());
     }
 }
