@@ -32,12 +32,21 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.DoubleSummaryStatistics;
+import java.util.IntSummaryStatistics;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Queue;
 import java.util.Random;
+import java.util.function.IntConsumer;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import lombok.NonNull;
 
 /**
  *
@@ -592,5 +601,73 @@ public final class CNumericUtils {
         return nums.stream()
                 .map(n -> n * 2)
                 .collect(Collectors.toList());
+    }
+
+    public static Double averageDouble(@NonNull final Stream<String> stream) {
+        return stream.collect(Collectors.averagingDouble(n -> Double.parseDouble(n)));
+    }
+
+    public static Double averageInt(@NonNull final Stream<String> stream) {
+        return stream.collect(Collectors.averagingInt(n -> Integer.parseInt(n)));
+    }
+
+    public static Double averageLong(@NonNull final Stream<String> stream) {
+        return stream.collect(Collectors.averagingLong(n -> Long.parseLong(n)));
+    }
+
+    public static Integer sumInt(@NonNull final Stream<Integer> stream) {
+        return stream.collect(Collectors.summingInt(Integer::intValue));
+    }
+
+    public static Long sumParseLong(@NonNull final Stream<String> stream) {
+        return stream.collect(Collectors.summingLong(n -> Long.parseLong(n)));
+    }
+
+    public static Long sumLong(@NonNull final Stream<Long> stream) {
+        return stream.collect(Collectors.summingLong(n -> n));
+    }
+
+    public static Double sumDouble(@NonNull final Stream<Double> stream) {
+        return stream.collect(Collectors.summingDouble(Double::doubleValue));
+    }
+
+    public static long counting(@NonNull final Stream<String> stream) {
+        return stream.collect(Collectors.counting());
+    }
+
+    public static List<BigDecimal> generateBigDecimals(int limit) {
+        return Stream.iterate(BigDecimal.ONE, bigDecimal -> bigDecimal.add(BigDecimal.ONE)).limit(limit).collect(Collectors.toList());
+    }
+
+    public static <T> LongSummaryStatistics countBy(final Stream<? extends T> list, final ToLongFunction<? super T> mapper) {
+        return list.collect(Collectors.summarizingLong(mapper));
+    }
+
+    public static <T> IntSummaryStatistics countBy(final Stream<? extends T> list, final ToIntFunction<? super T> mapper) {
+        return list.collect(Collectors.summarizingInt(mapper));
+    }
+
+    public static <T> DoubleSummaryStatistics countBy(final Stream<? extends T> list, final ToDoubleFunction<? super T> mapper) {
+        return list.collect(Collectors.summarizingDouble(mapper));
+    }
+
+    public static class Averager implements IntConsumer {
+
+        private int total = 0;
+        private int count = 0;
+
+        public double average() {
+            return this.count > 0 ? ((double) this.total) / this.count : 0;
+        }
+
+        public void accept(int i) {
+            this.total += i;
+            this.count++;
+        }
+
+        public void combine(@NonNull final Averager other) {
+            this.total += other.total;
+            this.count += other.count;
+        }
     }
 }

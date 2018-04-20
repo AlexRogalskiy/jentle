@@ -23,7 +23,6 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.math.BigDecimal;
 import java.util.AbstractMap;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -283,6 +282,14 @@ public final class CConverterUtils {
         return CConverterUtils.countBy(list, Function.identity());
     }
 
+//    public static <T, K, TT, KK, R> Map<KK, Object> convertToMap(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy, final Function<? super TT, ? extends KK> groupingBy2, final Collector<TT, ?, R> collector) {
+//        return list.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.groupingByConcurrent(groupingBy2, collector)));
+//    }
+
+    public static <T, K, M> Map<K, Optional<T>> reduce(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy, final BinaryOperator<T> operator) {
+        return list.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.reducing(operator)));
+    }
+
     public static <T> Collector<T, ?, List<T>> lastN(int n) {
         assert (n > 0);
         return Collector.<T, Deque<T>, List<T>>of(ArrayDeque::new, (acc, t) -> {
@@ -401,25 +408,5 @@ public final class CConverterUtils {
         final Map<K, V> reverse = new TreeMap<>(comparator);
         reverse.putAll(map);
         return reverse.entrySet().stream().map(e -> e.getKey()).collect(Collectors.toList());
-    }
-
-    public static Integer sumInt(@NonNull final Stream<Integer> stream) {
-        return stream.collect(Collectors.summingInt(Integer::intValue));
-    }
-
-    public static Long sumParseLong(@NonNull final Stream<String> stream) {
-        return stream.collect(Collectors.summingLong(n -> Long.parseLong(n)));
-    }
-
-    public static Long sumLong(@NonNull final Stream<Long> stream) {
-        return stream.collect(Collectors.summingLong(n -> n));
-    }
-
-    public static Double sumDouble(@NonNull final Stream<Double> stream) {
-        return stream.collect(Collectors.summingDouble(Double::doubleValue));
-    }
-
-    public static List<BigDecimal> generateBigDecimals(int limit) {
-        return Stream.iterate(BigDecimal.ONE, bigDecimal -> bigDecimal.add(BigDecimal.ONE)).limit(limit).collect(Collectors.toList());
     }
 }
