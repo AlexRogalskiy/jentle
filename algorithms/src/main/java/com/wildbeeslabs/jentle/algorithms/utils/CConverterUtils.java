@@ -41,6 +41,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BinaryOperator;
@@ -52,6 +53,7 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -100,9 +102,10 @@ public final class CConverterUtils {
         return stream.collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getKey, AbstractMap.SimpleImmutableEntry::getValue));
     }
 
-//    public static <K, V> Map<K, V> convertToUnmodifiableMap(@NonNull final Stream<Map.Entry<K, V>> stream) {
-//        return stream.collect(Collectors.collectingAndThen(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue), Collections::<K, V>unmodifiableMap));
-//    }
+    public static <K, V> Map<K, V> convertToUnmodifiableMap(@NonNull final Stream<Map.Entry<K, V>> stream) {
+        return CConverterUtils.convertToUnmodifiableMap(stream, Map.Entry::getKey, Map.Entry::getValue);
+    }
+
     public static <T, K, V> Map<K, V> convertToTreeMap(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> keyMapper, final Function<? super T, ? extends V> valueMapper, final BinaryOperator<V> mergeFunction) {
         return stream.collect(Collectors.toMap(keyMapper, valueMapper, mergeFunction, TreeMap::new));
     }
@@ -153,10 +156,6 @@ public final class CConverterUtils {
 
     protected static <T> Optional<T> getMinMaxBy(@NonNull final Stream<? extends T> stream, final Collector<T, ?, Optional<T>> collector) {
         return stream.collect(collector);
-    }
-
-    public static <E> Map<Integer, Long> getMapCountBy(@NonNull final Stream<? extends E> stream, final Function<? super E, ? extends Integer> groupingBy) {
-        return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.counting()));
     }
 
     public static <T, K, U> Map<K, List<U>> convertToMapList(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends K> groupingBy, final Function<? super T, ? extends U> mapper) {
@@ -282,10 +281,6 @@ public final class CConverterUtils {
         return CConverterUtils.countBy(list, Function.identity());
     }
 
-//    public static <T, K, TT, KK, R> Map<KK, Object> convertToMap(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy, final Function<? super TT, ? extends KK> groupingBy2, final Collector<TT, ?, R> collector) {
-//        return list.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.groupingByConcurrent(groupingBy2, collector)));
-//    }
-
     public static <T, K, M> Map<K, Optional<T>> reduce(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy, final BinaryOperator<T> operator) {
         return list.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.reducing(operator)));
     }
@@ -334,6 +329,10 @@ public final class CConverterUtils {
 
     public static <T> Stream<T> concat(final Stream<? extends T> stream, final T item) {
         return Stream.concat(stream, Stream.of(item));
+    }
+
+    public static Stream<Double> concat(final DoubleStream stream1, final DoubleStream stream2) {
+        return DoubleStream.concat(stream1, stream2).boxed();
     }
 
     public static <T> T max(@NonNull final Stream<? extends T> stream, final Comparator<? super T> comparator) {
@@ -408,5 +407,17 @@ public final class CConverterUtils {
         final Map<K, V> reverse = new TreeMap<>(comparator);
         reverse.putAll(map);
         return reverse.entrySet().stream().map(e -> e.getKey()).collect(Collectors.toList());
+    }
+
+    public static <T> Collection<T> toCollection(@NonNull final Stream<? extends T> stream) {
+        return CConverterUtils.toCollection(stream, TreeSet::new);
+    }
+
+    public static <T, C extends Collection<T>> C toCollection(@NonNull final Stream<? extends T> stream, final Supplier<C> supplier) {
+        return stream.collect(Collectors.toCollection(supplier));
+    }
+
+    public static List<Double> toCollection(@NonNull final DoubleStream stream) {
+        return stream.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 }
