@@ -39,18 +39,22 @@ import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.Queue;
 import java.util.Random;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntConsumer;
+import java.util.function.LongBinaryOperator;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
+
 import lombok.NonNull;
 
 /**
@@ -668,6 +672,14 @@ public final class CNumericUtils {
         final OptionalInt d = stream.reduce(operator);
         if (d.isPresent()) {
             return d.getAsInt();
+        }
+        return null;
+    }
+
+    public static Long reduce(@NonNull final LongStream stream, final LongBinaryOperator operator) {
+        final OptionalLong d = stream.reduce(operator);
+        if (d.isPresent()) {
+            return d.getAsLong();
         }
         return null;
     }

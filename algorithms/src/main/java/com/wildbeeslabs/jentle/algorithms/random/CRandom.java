@@ -31,11 +31,14 @@ import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.IntSupplier;
 import java.util.function.IntUnaryOperator;
+import java.util.function.LongUnaryOperator;
+import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import lombok.NonNull;
@@ -88,26 +91,35 @@ public class CRandom {
         return stream.boxed().limit(limit).collect(Collectors.toList());
     }
 
-    public static List<Double> generateDouble(double startValue, int limit, final DoubleUnaryOperator operator) {
-        final DoubleStream stream = DoubleStream.iterate(startValue, operator);
+    public static List<Double> generateDouble(double seed, int limit, final DoubleUnaryOperator operator) {
+        final DoubleStream stream = DoubleStream.iterate(seed, operator);
         return stream.boxed().limit(limit).collect(Collectors.toList());
     }
 
-    public static List<Integer> generateInt(int startValue, int limit, final IntUnaryOperator operator) {
-        final IntStream stream = IntStream.iterate(startValue, operator);
+    public static <T> List<Double> generateDouble(@NonNull final Stream<T> stream, int limit, final ToDoubleFunction<? super T> mapper) {
+        return stream.mapToDouble(mapper).boxed().limit(limit).collect(Collectors.toList());
+    }
+
+    public static List<Integer> generateInt(int seed, int limit, final IntUnaryOperator operator) {
+        final IntStream stream = IntStream.iterate(seed, operator);
         return stream.boxed().limit(limit).collect(Collectors.toList());
     }
 
-    public static List<Integer> generateInt(@NonNull final Stream<Double> stream, int limit, final ToIntFunction<? super Double> mapper) {
+    public static <T> List<Integer> generateInt(@NonNull final Stream<T> stream, int limit, final ToIntFunction<? super T> mapper) {
         return stream.mapToInt(mapper).boxed().limit(limit).collect(Collectors.toList());
     }
 
-    public static List<Long> generateLong(@NonNull final Stream<Double> stream, int limit, final ToLongFunction<? super Double> mapper) {
+    public static <T> List<Long> generateLong(@NonNull final Stream<T> stream, int limit, final ToLongFunction<? super T> mapper) {
         return stream.mapToLong(mapper).boxed().limit(limit).collect(Collectors.toList());
     }
 
     public static <U> List<U> generateLong(@NonNull final DoubleStream stream, int limit, final DoubleFunction<? extends U> mapper) {
         return stream.mapToObj(mapper).limit(limit).collect(Collectors.toList());
+    }
+
+    public static List<Long> generateLong(long seed, int limit, final LongUnaryOperator operator) {
+        final LongStream stream = LongStream.iterate(seed, operator);
+        return stream.boxed().limit(limit).collect(Collectors.toList());
     }
 
     public static long generateRandomLong(long bottomLimit, long topLimit) {

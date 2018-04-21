@@ -55,6 +55,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import lombok.NonNull;
@@ -368,8 +369,12 @@ public final class CConverterUtils {
         }
     }
 
-    public static <T> Map<Boolean, List<T>> partitionBy(@NonNull final List<T> list, final Predicate<? super T> predicate) {
-        return list.stream().collect(Collectors.partitioningBy(predicate));
+    public static <T, M extends Collection<T>> Map<Boolean, M> partitionBy(@NonNull final Stream<T> stream, final Predicate<? super T> predicate, final Collector<T, ?, M> collector) {
+        return stream.collect(Collectors.partitioningBy(predicate, collector));
+    }
+
+    public static <T> Map<Boolean, List<T>> partitionBy(@NonNull final Stream<T> stream, final Predicate<? super T> predicate) {
+        return CConverterUtils.partitionBy(stream, predicate, Collectors.toList());
     }
 
     /**
@@ -422,6 +427,22 @@ public final class CConverterUtils {
     }
 
     public static List<String> toBinaryString(@NonNull final IntStream stream) {
-        return stream.mapToObj(n -> Integer.toBinaryString(n));
+        return stream.mapToObj(n -> Integer.toBinaryString(n)).collect(Collectors.toList());
+    }
+
+    public static Collection<Double> toDouble(@NonNull final Stream<String> stream) {
+        return stream.flatMapToDouble(n -> DoubleStream.of(Double.parseDouble(n))).boxed().collect(Collectors.toList());
+    }
+
+    public static Collection<Integer> toInt(@NonNull final Stream<String> stream) {
+        return stream.flatMapToInt(n -> IntStream.of(Integer.parseInt(n))).boxed().collect(Collectors.toList());
+    }
+
+    public static Collection<Long> toLong(@NonNull final Stream<String> stream) {
+        return stream.flatMapToLong(n -> LongStream.of(Long.parseLong(n))).boxed().collect(Collectors.toList());
+    }
+
+    public static <T, S> Collection<T> toCollection(@NonNull final Stream<? extends CharSequence> stream, final Function<? super CharSequence, ? extends Stream<T>> mapper) {
+        return stream.flatMap(mapper).collect(Collectors.toList());
     }
 }
