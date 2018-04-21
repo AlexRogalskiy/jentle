@@ -55,8 +55,11 @@ public class CFilterUtils {
         return stream.allMatch(predicate);
     }
 
-    public static <T> boolean anlMatch(@NonNull final Stream<? extends T> stream, final Predicate<? super T> predicate) {
+    public static <T> boolean anyMatch(@NonNull final Stream<? extends T> stream, final Predicate<? super T> predicate) {
         return stream.anyMatch(predicate);
     }
 
+    public static <T> boolean noneMatch(@NonNull final Stream<? extends T> stream, final Predicate<? super T> predicate) {
+        return stream.noneMatch(predicate);
+    }
 }

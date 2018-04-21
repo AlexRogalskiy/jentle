@@ -26,7 +26,19 @@ package com.wildbeeslabs.jentle.algorithms.random;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.DoubleFunction;
+import java.util.function.DoubleSupplier;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.IntSupplier;
+import java.util.function.IntUnaryOperator;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import lombok.NonNull;
 
 /**
  *
@@ -67,6 +79,37 @@ public class CRandom {
         //new RandomDataGenerator().getRandomGenerator().nextDouble();
     }
 
+    public static List<Double> generateRandomDouble(int limit) {
+        return CRandom.generateRandomDouble(limit, new Random()::nextDouble);
+    }
+
+    public static List<Double> generateRandomDouble(int limit, final DoubleSupplier supplier) {
+        final DoubleStream stream = DoubleStream.generate(supplier);
+        return stream.boxed().limit(limit).collect(Collectors.toList());
+    }
+
+    public static List<Double> generateDouble(double startValue, int limit, final DoubleUnaryOperator operator) {
+        final DoubleStream stream = DoubleStream.iterate(startValue, operator);
+        return stream.boxed().limit(limit).collect(Collectors.toList());
+    }
+
+    public static List<Integer> generateInt(int startValue, int limit, final IntUnaryOperator operator) {
+        final IntStream stream = IntStream.iterate(startValue, operator);
+        return stream.boxed().limit(limit).collect(Collectors.toList());
+    }
+
+    public static List<Integer> generateInt(@NonNull final Stream<Double> stream, int limit, final ToIntFunction<? super Double> mapper) {
+        return stream.mapToInt(mapper).boxed().limit(limit).collect(Collectors.toList());
+    }
+
+    public static List<Long> generateLong(@NonNull final Stream<Double> stream, int limit, final ToLongFunction<? super Double> mapper) {
+        return stream.mapToLong(mapper).boxed().limit(limit).collect(Collectors.toList());
+    }
+
+    public static <U> List<U> generateLong(@NonNull final DoubleStream stream, int limit, final DoubleFunction<? extends U> mapper) {
+        return stream.mapToObj(mapper).limit(limit).collect(Collectors.toList());
+    }
+
     public static long generateRandomLong(long bottomLimit, long topLimit) {
         assert (bottomLimit <= topLimit);
         return (bottomLimit + (long) (CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (topLimit - bottomLimit)));
@@ -79,6 +122,11 @@ public class CRandom {
         return (bottomLimit + (int) (CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (topLimit - bottomLimit)));
         //ThreadLocalRandom.current().nextInt(bottomLimit, topLimit);
         //new RandomDataGenerator().nextInt(bottomLimit, topLimit);
+    }
+
+    public static List<Integer> generateRandomInt(int limit, final IntSupplier supplier) {
+        final IntStream stream = IntStream.generate(supplier);
+        return stream.boxed().limit(limit).collect(Collectors.toList());
     }
 
     public static float generateRandomFloat(float bottomLimit, float topLimit) {

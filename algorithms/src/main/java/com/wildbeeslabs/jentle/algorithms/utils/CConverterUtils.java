@@ -420,4 +420,8 @@ public final class CConverterUtils {
     public static List<Double> toCollection(@NonNull final DoubleStream stream) {
         return stream.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
+
+    public static List<String> toBinaryString(@NonNull final IntStream stream) {
+        return stream.mapToObj(n -> Integer.toBinaryString(n));
+    }
 }

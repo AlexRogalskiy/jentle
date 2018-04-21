@@ -37,13 +37,18 @@ import java.util.IntSummaryStatistics;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.LongSummaryStatistics;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.Queue;
 import java.util.Random;
+import java.util.function.DoubleBinaryOperator;
+import java.util.function.IntBinaryOperator;
 import java.util.function.IntConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import lombok.NonNull;
@@ -639,16 +644,32 @@ public final class CNumericUtils {
         return Stream.iterate(BigDecimal.ONE, bigDecimal -> bigDecimal.add(BigDecimal.ONE)).limit(limit).collect(Collectors.toList());
     }
 
-    public static <T> LongSummaryStatistics countBy(final Stream<? extends T> list, final ToLongFunction<? super T> mapper) {
-        return list.collect(Collectors.summarizingLong(mapper));
+    public static <T> LongSummaryStatistics countBy(@NonNull final Stream<? extends T> stream, final ToLongFunction<? super T> mapper) {
+        return stream.collect(Collectors.summarizingLong(mapper));
     }
 
-    public static <T> IntSummaryStatistics countBy(final Stream<? extends T> list, final ToIntFunction<? super T> mapper) {
-        return list.collect(Collectors.summarizingInt(mapper));
+    public static <T> IntSummaryStatistics countBy(@NonNull final Stream<? extends T> stream, final ToIntFunction<? super T> mapper) {
+        return stream.collect(Collectors.summarizingInt(mapper));
     }
 
-    public static <T> DoubleSummaryStatistics countBy(final Stream<? extends T> list, final ToDoubleFunction<? super T> mapper) {
-        return list.collect(Collectors.summarizingDouble(mapper));
+    public static <T> DoubleSummaryStatistics countBy(@NonNull final Stream<? extends T> stream, final ToDoubleFunction<? super T> mapper) {
+        return stream.collect(Collectors.summarizingDouble(mapper));
+    }
+
+    public static Double reduce(@NonNull final DoubleStream stream, final DoubleBinaryOperator operator) {
+        final OptionalDouble d = stream.reduce(operator);
+        if (d.isPresent()) {
+            return d.getAsDouble();
+        }
+        return null;
+    }
+
+    public static Integer reduce(@NonNull final IntStream stream, final IntBinaryOperator operator) {
+        final OptionalInt d = stream.reduce(operator);
+        if (d.isPresent()) {
+            return d.getAsInt();
+        }
+        return null;
     }
 
     public static class Averager implements IntConsumer {
