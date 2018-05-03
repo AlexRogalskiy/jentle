@@ -27,11 +27,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import java.util.Arrays;
 import java.util.Objects;
+
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -361,5 +364,26 @@ public final class CExceptionUtils {
                 }
             }
         };
+    }
+
+//    public long getStackCount() {
+//        return StackWalker.getInstance()
+//                .walk(Stream::count);
+//    }
+//
+//    public String getStack() {
+//        return StackWalker.getInstance()
+//                .walk(frames -> frames.map(Object::toString)
+//                        .collect(joining("\n")));
+//    }
+    public int getStackCount() {
+        return Thread.currentThread().getStackTrace().length;
+    }
+
+    public String getStack() {
+        return Arrays.stream(Thread.currentThread()
+                .getStackTrace())
+                .map(element -> element.toString())
+                .collect(Collectors.joining("\n"));
     }
 }
