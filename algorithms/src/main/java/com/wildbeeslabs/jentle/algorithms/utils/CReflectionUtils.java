@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -203,5 +204,15 @@ public final class CReflectionUtils {
     public static boolean isPublicStaticFinal(final Field field) {
         int modifiers = field.getModifiers();
         return (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers));
+    }
+
+    public static List<Field> getValidFields(final Field[] fields, boolean returnFinalFields) {
+        return Arrays.stream(fields)
+                .filter(field -> CReflectionUtils.isNotStaticOrFinal(field, returnFinalFields))
+                .collect(Collectors.toList());
+    }
+
+    private static boolean isNotStaticOrFinal(final Field field, boolean returnFinalFields) {
+        return !Modifier.isStatic(field.getModifiers()) && (returnFinalFields || !Modifier.isFinal(field.getModifiers()));
     }
 }

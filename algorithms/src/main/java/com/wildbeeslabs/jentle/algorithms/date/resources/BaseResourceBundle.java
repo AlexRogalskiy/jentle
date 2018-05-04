@@ -123,7 +123,7 @@ public class BaseResourceBundle extends ListResourceBundle {
 
     @Override
     protected Object[][] getContents() {
-        return this.resources.keySet().stream().map((item) -> new Object[]{item, this.resources.getObject(item)}).collect(CConverterUtils.toArray(Object[][]::new));
+        return this.resources.keySet().stream().filter(Objects::nonNull).map((item) -> new Object[]{item, this.resources.getObject(item)}).collect(CConverterUtils.toArray(Object[][]::new));
     }
 
     public static ResourceBundle.Control getMyControl() {
