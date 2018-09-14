@@ -44,7 +44,7 @@ import lombok.ToString;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class CBagWrapper<T extends CBagItem> implements Function<Genotype<BitGene>, Double> {
 

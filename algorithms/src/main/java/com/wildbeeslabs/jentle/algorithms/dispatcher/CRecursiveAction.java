@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jenle.algorithms.dispatcher;
+package com.wildbeeslabs.jentle.algorithms.dispatcher;
 
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.RecursiveAction;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,19 +36,18 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Custom pool recursive task implementation
+ * Custom pool recursive action implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <R>
  * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
-public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> extends RecursiveTask<R> {
+@ToString(callSuper = true)
+public abstract class CRecursiveAction<T, U extends CRecursiveAction<T, U>> extends RecursiveAction {
 
     /**
      * Default Logger instance
@@ -58,35 +56,24 @@ public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> ex
 
     private final T value;
 
-    public CRecursiveTask(final T value) {
+    public CRecursiveAction(final T value) {
         this.value = value;
     }
 
     @Override
-    protected R compute() {
+    protected void compute() {
         if (this.validateCondition()) {
-            return CBaseDispatcher.forkJoinPool.invokeAll(this.createSubtasks()).stream().map(e -> {
-                try {
-                    return e.get();
-                } catch (InterruptedException | ExecutionException ex) {
-                    LOGGER.error("ERROR: cannot get recursive task execution result");
-                }
-                return null;
-            }).map(RecursiveTask::join).reduce((x, y) -> reduceData(x, y)).get();
+            CBaseDispatcher.forkJoinPool.invokeAll(this.createSubtasks());
+        } else {
+            this.processing(this.value);
         }
-        return this.processing(this.value);
     }
 
     protected abstract List<? extends Callable<U>> createSubtasks();
 
     protected abstract boolean validateCondition();
 
-    protected abstract R process(final T value);
-
-    protected abstract R reduceData(final R first, final R second);
-
-    protected R processing(final T value) {
+    protected void processing(final T value) {
         LOGGER.info(String.format("The result=(%s) was processed by thread=(%s)", value, Thread.currentThread().getName()));
-        return this.process(value);
     }
 }

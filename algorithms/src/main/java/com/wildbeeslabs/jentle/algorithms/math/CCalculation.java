@@ -47,7 +47,7 @@ public final class CCalculation {
      * Simple Moving Average algorithm implementation
      */
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CSimpleMovingAverage {
 

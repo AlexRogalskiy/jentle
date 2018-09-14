@@ -87,7 +87,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CMemberGenetics<T extends CMember> {
 
@@ -194,7 +194,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CActorGenetics<T extends CActor> {
 
@@ -365,7 +365,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CTourGenetics<T extends CPlace> {
 
@@ -376,7 +376,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CSimpleGenetics {
 
@@ -397,7 +397,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CBagGenetics {
 
@@ -427,7 +427,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CSalesmanGenetics {
 
@@ -451,7 +451,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CSpringsteenGenetics {
 
@@ -483,7 +483,7 @@ public final class CGenetics {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CSumGenetics {
 

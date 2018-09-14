@@ -44,7 +44,7 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class CTimeMeasure {
 
@@ -174,7 +174,7 @@ public class CTimeMeasure {
      * A class to store measurement info
      */
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     private final static class CMeasure {
 

@@ -56,12 +56,23 @@ public final class CNumberFormatter {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static String format(final Double value) {
-        return numberFormat.format(value);
+    public static <T> String format(final Comparable<? super T> value) {
+        return CNumberFormatter.numberFormat.format(value);
     }
 
-    public static String formatByPattern(final Double value, final String pattern) {
+    public static <T> String formatByPattern(final Comparable<? super T> value, final String pattern) {
         final DecimalFormat formatter = new DecimalFormat(pattern);
+        return formatter.format(value);
+    }
+
+    public static <T> String format(final Comparable<? super T> value, int minFractionDigits, int maxFractionDigits, int minIntDigits, int maxIntDigits, final String negPrefix, final String negSuffix) {
+        final DecimalFormat formatter = new DecimalFormat();
+        formatter.setMinimumFractionDigits(minFractionDigits);
+        formatter.setMaximumFractionDigits(maxFractionDigits);
+        formatter.setMinimumIntegerDigits(minIntDigits);
+        formatter.setMaximumIntegerDigits(maxIntDigits);
+        formatter.setNegativePrefix(negPrefix);
+        formatter.setNegativeSuffix(negSuffix);
         return formatter.format(value);
     }
 

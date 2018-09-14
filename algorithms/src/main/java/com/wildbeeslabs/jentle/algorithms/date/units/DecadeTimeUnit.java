@@ -21,41 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.statemachine;
+package com.wildbeeslabs.jentle.algorithms.date.units;
 
-import java.util.Objects;
+import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Custom transition implementation
+ * Decade time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <C>
- * @param <S>
  */
 @Data
-@EqualsAndHashCode
-@ToString
-public class CTransition<C, S extends ICState<C, ICTransition<C, S>>> implements ICTransition<C, S> {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class DecadeTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    protected C value;
-    protected S state;
-
-    public CTransition(final C value, final S state) {
-        this.value = value;
-        this.state = state;
+    public Decade() {
+        setMillisPerUnit(315569259747L);
     }
 
-    public S state() {
-        return this.state;
-    }
-
-    public boolean isPossible(final C value) {
-        return Objects.equals(this.value, value);
+    @Override
+    protected String getResourceKeyPrefix() {
+        return "Decade";
     }
 }

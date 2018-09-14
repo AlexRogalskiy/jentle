@@ -51,7 +51,7 @@ import org.apache.log4j.Logger;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class BaseResourceBundle extends ListResourceBundle {
 
     /**

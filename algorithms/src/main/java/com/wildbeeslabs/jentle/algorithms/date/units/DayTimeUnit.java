@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,59 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jenle.algorithms.dispatcher;
+package com.wildbeeslabs.jentle.algorithms.date.units;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.RecursiveAction;
-
+import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  *
- * Custom pool recursive action implementation
+ * Day time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
-public abstract class CRecursiveAction<T, U extends CRecursiveAction<T, U>> extends RecursiveAction {
+@ToString(callSuper = true)
+public class DayTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
-
-    private final T value;
-
-    public CRecursiveAction(final T value) {
-        this.value = value;
+    public Day() {
+        setMillisPerUnit(1000L * 60L * 60L * 24L);
     }
 
     @Override
-    protected void compute() {
-        if (this.validateCondition()) {
-            CBaseDispatcher.forkJoinPool.invokeAll(this.createSubtasks());
-        } else {
-            this.processing(this.value);
-        }
-    }
-
-    protected abstract List<? extends Callable<U>> createSubtasks();
-
-    protected abstract boolean validateCondition();
-
-    protected void processing(final T value) {
-        LOGGER.info(String.format("The result=(%s) was processed by thread=(%s)", value, Thread.currentThread().getName()));
+    protected String getResourceKeyPrefix() {
+        return "Day";
     }
 }

@@ -388,7 +388,7 @@ public final class CArrayUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
@@ -641,7 +641,7 @@ public final class CArrayUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class PartitionResult {
 
@@ -785,7 +785,7 @@ public final class CArrayUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Range {
 
@@ -905,7 +905,7 @@ public final class CArrayUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class HeapNode {
 
@@ -1060,7 +1060,7 @@ public final class CArrayUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class HistogramData {
 

@@ -184,7 +184,7 @@ public final class CGraphUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class BFSData<T extends Entry, E extends ACGraphNode<T, E>, U extends ACListGraphNode<T, E, U>> {
 
@@ -203,7 +203,7 @@ public final class CGraphUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @AllArgsConstructor
     @ToString
     protected static class Entry {
@@ -217,7 +217,7 @@ public final class CGraphUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @AllArgsConstructor
     @ToString
     protected static class Machine<E extends Entry> {
@@ -236,7 +236,7 @@ public final class CGraphUtils {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @AllArgsConstructor
     @ToString
     protected static class Cluster<M extends Machine> {

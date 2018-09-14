@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jenle.algorithms.converter;
+package com.wildbeeslabs.jentle.algorithms.converter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

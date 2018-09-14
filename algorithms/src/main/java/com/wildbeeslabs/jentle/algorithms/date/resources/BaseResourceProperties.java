@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class BaseResourceProperties extends Properties {
 

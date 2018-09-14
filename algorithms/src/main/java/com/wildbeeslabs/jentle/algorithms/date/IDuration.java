@@ -35,33 +35,33 @@ package com.wildbeeslabs.jentle.algorithms.date;
 public interface IDuration {
 
     /**
-     * Returns the calculated quantity of time unit {@link TimeUnit} instances
+     * Returns the calculated quantity of time unit {@link ITimeUnit} instances
      *
-     * @return quantity of time units {@link TimeUnit}
+     * @return quantity of time units {@link ITimeUnit}
      */
     public long getQuantity();
 
     /**
-     * Returns the calculated quantity of time units {@link TimeUnit} instances,
+     * Returns the calculated quantity of time units {@link ITimeUnit} instances,
      * rounded up if {@link #getDelta()} is greater than or equal to the given
      * tolerance
      *
      * @param tolerance - tolerance precision rate
-     * @return calculated quantity of time units {@link TimeUnit}
+     * @return calculated quantity of time units {@link ITimeUnit}
      */
     public long getQuantityRounded(int tolerance);
 
     /**
-     * Returns the time unit {@link TimeUnit} instance represented by the
+     * Returns the time unit {@link ITimeUnit} instance represented by the
      * current duration instance {@link IDuration}
      *
-     * @return quantity of time units {@link TimeUnit}
+     * @return quantity of time units {@link ITimeUnit}
      */
-    public TimeUnit getUnit();
+    public ITimeUnit getUnit();
 
     /**
      * Returns the number of milliseconds left over when calculating the number
-     * of time unit {@link TimeUnit} instances that fit into the given time
+     * of time unit {@link ITimeUnit} instances that fit into the given time
      * range
      *
      * @return number of milliseconds
@@ -70,20 +70,20 @@ public interface IDuration {
 
     /**
      * Checks if the current duration {@link IDuration} instance represents a
-     * number of time unit {@link TimeUnit} instances in the past
+     * number of time unit {@link ITimeUnit} instances in the past
      *
      * @return true if the current duration {@link IDuration} instance
-     * represents a number of time unit {@link TimeUnit} instances in the past,
+     * represents a number of time unit {@link ITimeUnit} instances in the past,
      * false - otherwise
      */
     public boolean isInPast();
 
     /**
      * Checks if the current duration {@link IDuration} instance represents a
-     * number of time unit {@link TimeUnit} instances in the future
+     * number of time unit {@link ITimeUnit} instances in the future
      *
      * @return true if the current duration {@link IDuration} instance
-     * represents a number of time unit {@link TimeUnit} instances in the
+     * represents a number of time unit {@link ITimeUnit} instances in the
      * future, false - otherwise
      */
     public boolean isInFuture();

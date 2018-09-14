@@ -67,12 +67,12 @@ public final class CStringFormatter {
     /**
      * Default char masks
      */
-    private static final int CHAR_ONE_BYTE_MASK = 0xFFFFFF80;
-    private static final int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
-    private static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
-    private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
-    private static final int CHAR_FIVE_BYTES_MASK = 0xFC000000;
-    private static final int CHAR_SIX_BYTES_MASK = 0x80000000;
+    private static final int CHAR_ONE_BYTE_MASK         = 0xFFFFFF80;
+    private static final int CHAR_TWO_BYTES_MASK        = 0xFFFFF800;
+    private static final int CHAR_THREE_BYTES_MASK      = 0xFFFF0000;
+    private static final int CHAR_FOUR_BYTES_MASK       = 0xFFE00000;
+    private static final int CHAR_FIVE_BYTES_MASK       = 0xFC000000;
+    private static final int CHAR_SIX_BYTES_MASK        = 0x80000000;
 
     private CStringFormatter() {
         // PRIVATE EMPTY CONSTRUCTOR

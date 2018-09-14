@@ -42,7 +42,7 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class CStopWatch {
 
@@ -286,7 +286,7 @@ public class CStopWatch {
      * Inner class to store data on task execution.
      */
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CTaskInfo {
 

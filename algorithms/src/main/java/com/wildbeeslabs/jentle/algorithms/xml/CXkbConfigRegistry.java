@@ -65,7 +65,7 @@ public class CXkbConfigRegistry {
     public static class Model {
 
         @Data
-        @EqualsAndHashCode(callSuper = false)
+        @EqualsAndHashCode
         @ToString
         public static class ModelConfigItem {
 
@@ -84,12 +84,12 @@ public class CXkbConfigRegistry {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Layout {
 
         @Data
-        @EqualsAndHashCode(callSuper = false)
+        @EqualsAndHashCode
         @ToString
         public static class LayoutConfigItem {
 

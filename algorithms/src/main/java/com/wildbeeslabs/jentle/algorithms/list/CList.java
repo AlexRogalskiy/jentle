@@ -228,7 +228,7 @@ public final class CList {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     private static final class ResultCNode<E> {
 

@@ -212,7 +212,11 @@ public final class CNumericUtils {
     }
 
     public static boolean isApproxEqual(double d1, double d2) {
-        double epsilon = .001;
+        return CNumericUtils.isApproxEqual(d1, d1, .001);
+    }
+    
+    public static boolean isApproxEqual(double d1, double d2, double epsilon) {
+        assert(epsilon > 0);
         if (Math.abs(d1 - d2) < epsilon) {
             return true;
         }
@@ -350,15 +354,16 @@ public final class CNumericUtils {
         return result;
     }
 
-//    public static boolean isPrime(int num) {
-//        int sqrt = (int) Math.sqrt(num);
-//        for (int range = 2; range <= sqrt; range++) {
-//            if (num % range == 0) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+    public static boolean isPrime2(int num) {
+        int sqrt = (int) Math.sqrt(num);
+        for (int range = 2; range <= sqrt; range++) {
+            if (num % range == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public static int lcm(int a, int b) {
         return (a * b) / gcd(a, b);
     }

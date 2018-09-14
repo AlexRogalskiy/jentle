@@ -57,6 +57,7 @@ public class CBase64Formatter {
         'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
         '4', '5', '6', '7', '8', '9', '+', '/'};
 
+    @SuppressWarnings("UnusedAssignment")
     public static byte[] toBase64(byte[] in) {
         int inputLength = in.length;
         int outputLength = (int) Math.floor((4 * inputLength) / 3f) + 3;

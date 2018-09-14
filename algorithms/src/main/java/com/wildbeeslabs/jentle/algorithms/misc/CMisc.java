@@ -193,7 +193,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Line<T extends Point> {
 
@@ -237,7 +237,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Point {
 
@@ -349,7 +349,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
@@ -370,7 +370,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @NoArgsConstructor
     @ToString
     public static class Square<T extends Point> {
@@ -489,7 +489,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @NoArgsConstructor
     @ToString
     public static class Result {
@@ -544,7 +544,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Grid<E extends Position, T extends Actor<E>> {
 
@@ -628,7 +628,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Actor<T extends Position> {
 
@@ -694,7 +694,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Position implements Cloneable {
 
@@ -714,7 +714,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Board<E extends Position, T extends Actor<E>> {
 
@@ -837,7 +837,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @AllArgsConstructor
     @ToString
     public static class HtWt implements Comparable<HtWt> {
@@ -862,7 +862,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class DocPair {
 
@@ -876,7 +876,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Document {
 
@@ -974,7 +974,7 @@ public final class CMisc {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Element implements Comparable<Element> {
 
@@ -1032,7 +1032,7 @@ public final class CMisc {
     public static class CClimbingAlgorithms {
 
         @Data
-        @EqualsAndHashCode(callSuper = false)
+        @EqualsAndHashCode
         @ToString
         public static class State {
 
@@ -1062,7 +1062,7 @@ public final class CMisc {
         }
 
         @Data
-        @EqualsAndHashCode(callSuper = false)
+        @EqualsAndHashCode
         @ToString
         public static class CClimbing {
 

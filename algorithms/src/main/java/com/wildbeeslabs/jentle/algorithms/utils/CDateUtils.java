@@ -72,6 +72,7 @@ public final class CDateUtils {
      * Default logger instance
      */
     private static final Logger LOGGER = LogManager.getLogger(CDateUtils.class);
+    
     /**
      * Default date format locale
      */
@@ -86,6 +87,7 @@ public final class CDateUtils {
      * Default date format pattern
      */
     public static final String DEFAULT_DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    
     /**
      * Default time zone pattern
      */
@@ -119,7 +121,6 @@ public final class CDateUtils {
     }
 
     public static enum TimeZoneOffsetBase {
-
         GMT, UTC
     }
 

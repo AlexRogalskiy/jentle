@@ -243,7 +243,7 @@ public final class CMatrixUtils<T> {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
@@ -412,7 +412,7 @@ public final class CMatrixUtils<T> {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Subsquare {
 
@@ -428,7 +428,7 @@ public final class CMatrixUtils<T> {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class SquareCell {
 
@@ -501,7 +501,7 @@ public final class CMatrixUtils<T> {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class SubMatrix {
 
@@ -605,7 +605,7 @@ public final class CMatrixUtils<T> {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Range {
 
@@ -676,7 +676,7 @@ public final class CMatrixUtils<T> {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Rectangle {
 
@@ -747,7 +747,7 @@ public final class CMatrixUtils<T> {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class WordGroup {
 

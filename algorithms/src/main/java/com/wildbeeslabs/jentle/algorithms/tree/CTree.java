@@ -1130,7 +1130,7 @@ public final class CTree {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     private static class Result<T, U extends ACBaseTreeNode<T, U>> {
 
@@ -1299,7 +1299,7 @@ public final class CTree {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = true)
+    @EqualsAndHashCode
     @ToString
     public static class CRankTreeNode<T> extends ACBaseTreeNode<T, CRankTreeNode<T>> {
 
@@ -1401,7 +1401,7 @@ public final class CTree {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Operator {
 
@@ -1421,7 +1421,7 @@ public final class CTree {
     }
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class ExpressionTree {
 

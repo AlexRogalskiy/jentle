@@ -165,7 +165,7 @@ public final class CString {
     }
     
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class BFSData<T extends CharSequence, E extends APathNode<T, E>> {
         
@@ -183,7 +183,7 @@ public final class CString {
     }
     
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static abstract class APathNode<T extends CharSequence, E extends APathNode<T, E>> {
         
@@ -220,7 +220,7 @@ public final class CString {
     
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class PathNode extends APathNode<String, PathNode> {
         
         public PathNode() {
@@ -339,7 +339,7 @@ public final class CString {
     }
     
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class ParseResult {
         
@@ -480,7 +480,7 @@ public final class CString {
     }
     
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class LocationPair {
         
@@ -610,7 +610,7 @@ public final class CString {
     }
     
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class NameSet {
         
@@ -684,7 +684,7 @@ public final class CString {
     }
     
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class Term {
         

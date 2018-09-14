@@ -40,7 +40,7 @@ import lombok.ToString;
  * @param <S>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class CStateMachine<C, S extends ICState<C, ICTransition<C, S>>> implements ICStateMachine<C, S> {
 

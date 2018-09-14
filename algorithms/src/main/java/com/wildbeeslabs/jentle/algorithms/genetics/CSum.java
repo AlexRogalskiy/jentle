@@ -46,7 +46,7 @@ import lombok.ToString;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class CSum<T extends Number> implements Problem<ISeq<T>, EnumGene<T>, Integer> {
 

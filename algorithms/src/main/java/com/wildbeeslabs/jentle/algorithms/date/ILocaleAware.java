@@ -21,41 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.statemachine;
+package com.wildbeeslabs.jentle.algorithms.date;
 
-import java.util.Objects;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
+import java.util.Locale;
 
 /**
- *
- * Custom transition implementation
+ * An object that behaves differently for various {@link Locale} settings.
  *
  * @author Alex
- * @version 1.0.0
- * @since 2017-08-07
- * @param <C>
- * @param <S>
+ * @param <T>
  */
-@Data
-@EqualsAndHashCode
-@ToString
-public class CTransition<C, S extends ICState<C, ICTransition<C, S>>> implements ICTransition<C, S> {
+public interface ILocaleAware<T> {
 
-    protected C value;
-    protected S state;
-
-    public CTransition(final C value, final S state) {
-        this.value = value;
-        this.state = state;
-    }
-
-    public S state() {
-        return this.state;
-    }
-
-    public boolean isPossible(final C value) {
-        return Objects.equals(this.value, value);
-    }
+    /**
+     * Set the {@link Locale} for which this instance should behave in.
+     * @param locale
+     * @return 
+     */
+    public T setLocale(final Locale locale);
 }
