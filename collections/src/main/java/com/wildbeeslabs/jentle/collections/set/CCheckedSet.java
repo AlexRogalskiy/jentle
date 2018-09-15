@@ -46,7 +46,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CCheckedSet<T> extends ACSet<T> implements ISet<T> {
 
     private final Set rawSet = new HashSet();

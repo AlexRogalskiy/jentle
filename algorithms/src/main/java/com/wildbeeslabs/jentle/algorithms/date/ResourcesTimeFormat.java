@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -46,24 +47,24 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements ITimeFormat
     private ResourceBundle bundle;
     private final ResourcesTimeUnit unit;
     private ITimeFormat override;
-    private String overrideResourceBundle;
+    private String resourceBundle;
 
     public ResourcesTimeFormat(final ResourcesTimeUnit unit) {
         this.unit = unit;
     }
 
-    public ResourcesTimeFormat(final ResourcesTimeUnit unit, final String overrideResourceBundle) {
+    public ResourcesTimeFormat(final ResourcesTimeUnit unit, final String resourceBundle) {
         this.unit = unit;
-        this.overrideResourceBundle = overrideResourceBundle;
+        this.resourceBundle = resourceBundle;
     }
 
     @Override
     public ResourcesTimeFormat setLocale(final Locale locale) {
-        if (Objects.nonNull(this.overrideResourceBundle)) {
+        if (Objects.nonNull(this.resourceBundle)) {
             try {
-                this.bundle = ResourceBundle.getBundle(this.overrideResourceBundle, locale);
+                this.bundle = ResourceBundle.getBundle(this.resourceBundle, locale);
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot load bundle %s", this.overrideResourceBundle), ex);
+                LOGGER.error(String.format("ERROR: cannot load bundle %s", this.resourceBundle), ex);
             }
         }
 

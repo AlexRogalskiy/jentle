@@ -36,7 +36,7 @@ import lombok.ToString;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class CBitInteger {
 

@@ -44,7 +44,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACBaseTrieNode<T, U extends ACBaseTrieNode<T, U>> extends ACNode<T> {
 
     @Getter(AccessLevel.NONE)

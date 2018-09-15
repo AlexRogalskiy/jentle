@@ -48,7 +48,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T>> {
 
     /**
@@ -58,7 +58,7 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CCacheNode<T> extends ACListNodeExtended<T, CCacheNode<T>> {
 
         private String query;

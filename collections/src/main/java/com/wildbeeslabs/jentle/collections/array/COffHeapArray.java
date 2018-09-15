@@ -49,7 +49,7 @@
 // * @param <T>
 // */
 //@Data
-//@EqualsAndHashCode(callSuper = false)
+//@EqualsAndHashCode
 //@ToString
 //public class COffHeapArray<T> {
 //

@@ -46,7 +46,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACBaseTrieNode<T, U> {
 
     protected final Map<T, U> childs = new LinkedHashMap<>();

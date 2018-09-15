@@ -179,7 +179,7 @@ public class Resources_JA extends Resources implements ITimeFormatProvider {
 
         @Getter(AccessLevel.NONE)
         @Setter(AccessLevel.NONE)
-        private ResourceBundle bundle;
+        private final ResourceBundle bundle;
         private String singularName = null;
         private String pluralName = null;
         private String futureSingularName = null;
@@ -321,9 +321,6 @@ public class Resources_JA extends Resources implements ITimeFormatProvider {
             return decorate(duration, time);
         }
 
-        /*
-         * Builder Setters
-         */
         public JaTimeFormat setPattern(final String pattern) {
             this.pattern = pattern;
             return this;
@@ -350,7 +347,7 @@ public class Resources_JA extends Resources implements ITimeFormatProvider {
         }
 
         /**
-         * The percentage of the current {@link TimeUnit}.getMillisPerUnit() for
+         * The percentage of the current tolerance {@link ITimeUnit}.getMillisPerUnit() for
          * which the quantity may be rounded up by one.
          *
          * @param roundingTolerance

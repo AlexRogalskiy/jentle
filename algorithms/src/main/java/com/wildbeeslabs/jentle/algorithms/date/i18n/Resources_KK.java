@@ -43,7 +43,7 @@ import com.wildbeeslabs.jentle.algorithms.date.units.YearTimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -111,14 +111,14 @@ public class Resources_KK extends Resources implements ITimeFormatProvider {
                     time);
         }
 
-        private String performDecoration(boolean past, boolean future, long n, final String time) {
-            StringBuilder builder = new StringBuilder();
+        private String performDecoration(boolean past, boolean future, long quantity, final String time) {
+            final StringBuilder builder = new StringBuilder();
             int formIndex = past ? 0 : 1;
 
             builder.append(time);
-            builder.append(' ');
-            builder.append(forms[formIndex]);
-            builder.append(' ');
+            builder.append(StringUtils.SPACE);
+            builder.append(this.forms[formIndex]);
+            builder.append(StringUtils.SPACE);
 
             if (past) {
                 builder.append("бұрын");
@@ -136,12 +136,12 @@ public class Resources_KK extends Resources implements ITimeFormatProvider {
             return new ITimeFormat() {
                 @Override
                 public String format(final IDuration duration) {
-                    return performFormat(duration);
+                    return this.performFormat(duration);
                 }
 
                 @Override
                 public String formatUnrounded(final IDuration duration) {
-                    return performFormat(duration);
+                    return this.performFormat(duration);
                 }
 
                 private String performFormat(final IDuration duration) {

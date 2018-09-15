@@ -45,7 +45,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACListGraphNode<E, T extends ACGraphNode<E, T>, U extends ACListGraphNode<E, T, U>> extends ACListNodeExtended<T, U> {
 
     public ACListGraphNode() {

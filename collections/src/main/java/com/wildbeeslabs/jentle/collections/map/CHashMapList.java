@@ -49,7 +49,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
 
     /**

@@ -48,7 +48,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACBaseExtended<K, V, T extends Collection<V>> extends ACBaseMap<K, V> implements IBaseMapExtended<K, V, T> {
 
     protected Set<V> toSet(final T list) {

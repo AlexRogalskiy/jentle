@@ -48,7 +48,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CCache<K, V> extends ACBaseMap<K, V> {
 
     /**
@@ -58,11 +58,11 @@ public class CCache<K, V> extends ACBaseMap<K, V> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CCacheNode<K, V> extends ACListNodeExtended<CCacheNode.CNode<K, V>, CCacheNode<K, V>> {
 
         @Data
-        @EqualsAndHashCode(callSuper = false)
+        @EqualsAndHashCode
         @NoArgsConstructor
         @AllArgsConstructor
         @ToString

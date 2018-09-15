@@ -49,7 +49,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CCheckedMap<K, V> extends ACMap<K, V> {
 
     private final Map rawMap = new HashMap();

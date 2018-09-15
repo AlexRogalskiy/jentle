@@ -41,7 +41,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CBitSet2 extends ACSet<Integer> implements ISet<Integer> {
 
     /**

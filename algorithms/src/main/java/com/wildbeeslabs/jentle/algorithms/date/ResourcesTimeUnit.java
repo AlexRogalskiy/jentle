@@ -39,6 +39,8 @@ import lombok.ToString;
 @ToString
 public abstract class ResourcesTimeUnit implements ITimeUnit {
 
+    protected static final String DEFAULT_RESOURCE_BUNDLE_NAME = "com.wildbeeslabs.jentle.algorithms.date.i18n.Resources_EN";
+
     private long maxQuantity = 0;
     private long millisPerUnit = 1;
 
@@ -51,7 +53,7 @@ public abstract class ResourcesTimeUnit implements ITimeUnit {
     abstract protected String getResourceKeyPrefix();
 
     protected String getResourceBundleName() {
-        return "com.wildbeeslabs.jentle.algorithms.date.i18n.Resources_EN";
+        return ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME;
     }
 
     @Override

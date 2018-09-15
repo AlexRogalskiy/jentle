@@ -45,7 +45,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CStackMin<T> extends CStack<T> {
 
     protected CStack<T> minStack;

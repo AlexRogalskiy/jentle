@@ -45,7 +45,7 @@ import lombok.ToString;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 public class CString implements Serializable, Comparable<CString>, CharSequence {
 
     private final CStringList stringList;
@@ -64,7 +64,7 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
      */
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     private static class CStringList extends ACList<CStringList.StringItem, CStringList.StringItemNode> implements IList<CStringList.StringItem> {
 
         /**
@@ -73,7 +73,7 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
         public static final int DEFAULT_ITEM_SIZE = 16;
 
         @Data
-        @EqualsAndHashCode(callSuper = false)
+        @EqualsAndHashCode
         @ToString
         protected static class StringItem {
 
@@ -114,7 +114,7 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
         }
 
         @Data
-        @EqualsAndHashCode(callSuper = true)
+        @EqualsAndHashCode
         @ToString
         protected static class StringItemNode extends ACListNode<CStringList.StringItem, CStringList.StringItemNode> {
 
@@ -132,7 +132,7 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
         }
 
         @Data
-        @EqualsAndHashCode(callSuper = false)
+        @EqualsAndHashCode
         @ToString
         protected static class SymbolPosition {
 

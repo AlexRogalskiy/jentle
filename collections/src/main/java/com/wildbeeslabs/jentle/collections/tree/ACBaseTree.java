@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
  * @param <U>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements IBaseTree<T, U> {
 
@@ -213,7 +213,7 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
 
         @Override
         public T next() {
-            U current = this.queue.poll();
+            final U current = this.queue.poll();
             if (Objects.nonNull(current.getLeft())) {
                 this.queue.offer(current.getLeft());
             }

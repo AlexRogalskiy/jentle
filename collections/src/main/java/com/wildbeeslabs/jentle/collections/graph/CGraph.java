@@ -51,12 +51,12 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CGraph<T> extends ACGraph<T, CGraph.CGraphNode<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CGraphNode<T> extends ACGraphNode<T, CGraphNode<T>> {
 
         @Setter(AccessLevel.NONE)

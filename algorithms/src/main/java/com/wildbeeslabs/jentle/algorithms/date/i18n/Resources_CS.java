@@ -23,24 +23,15 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date.i18n;
 
-import com.wildbeeslabs.jentle.algorithms.date.IDuration;
 import com.wildbeeslabs.jentle.algorithms.date.ITimeFormat;
 import com.wildbeeslabs.jentle.algorithms.date.ITimeFormatProvider;
 import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.SimpleTimeFormat;
 import com.wildbeeslabs.jentle.algorithms.date.units.DayTimeUnit;
 import com.wildbeeslabs.jentle.algorithms.date.units.HourTimeUnit;
 import com.wildbeeslabs.jentle.algorithms.date.units.MinuteTimeUnit;
 import com.wildbeeslabs.jentle.algorithms.date.units.MonthTimeUnit;
 import com.wildbeeslabs.jentle.algorithms.date.units.WeekTimeUnit;
 import com.wildbeeslabs.jentle.algorithms.date.units.YearTimeUnit;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -172,7 +163,7 @@ public class Resources_CS extends Resources implements ITimeFormatProvider {
     @Override
     public ITimeFormat getFormat(final ITimeUnit timeUnit) {
         if (timeUnit instanceof MinuteTimeUnit) {
-            return new CsTimeFormatBuilder("Minute")
+            return new CsTimeFormatBuilder<>("Minute")
                     .addFutureName("minutu", 1)
                     .addFutureName("minuty", 4)
                     .addFutureName("minut", Long.MAX_VALUE)
@@ -180,7 +171,7 @@ public class Resources_CS extends Resources implements ITimeFormatProvider {
                     .addPastName("minutami", Long.MAX_VALUE)
                     .build(this);
         } else if (timeUnit instanceof HourTimeUnit) {
-            return new CsTimeFormatBuilder("Hour")
+            return new CsTimeFormatBuilder<>("Hour")
                     .addFutureName("hodinu", 1)
                     .addFutureName("hodiny", 4)
                     .addFutureName("hodin", Long.MAX_VALUE)
@@ -188,7 +179,7 @@ public class Resources_CS extends Resources implements ITimeFormatProvider {
                     .addPastName("hodinami", Long.MAX_VALUE)
                     .build(this);
         } else if (timeUnit instanceof DayTimeUnit) {
-            return new CsTimeFormatBuilder("Day")
+            return new CsTimeFormatBuilder<>("Day")
                     .addFutureName("den", 1)
                     .addFutureName("dny", 4)
                     .addFutureName("dní", Long.MAX_VALUE)
@@ -196,7 +187,7 @@ public class Resources_CS extends Resources implements ITimeFormatProvider {
                     .addPastName("dny", Long.MAX_VALUE)
                     .build(this);
         } else if (timeUnit instanceof WeekTimeUnit) {
-            return new CsTimeFormatBuilder("Week")
+            return new CsTimeFormatBuilder<>("Week")
                     .addFutureName("týden", 1)
                     .addFutureName("týdny", 4)
                     .addFutureName("týdnů", Long.MAX_VALUE)
@@ -204,7 +195,7 @@ public class Resources_CS extends Resources implements ITimeFormatProvider {
                     .addPastName("týdny", Long.MAX_VALUE)
                     .build(this);
         } else if (timeUnit instanceof MonthTimeUnit) {
-            return new CsTimeFormatBuilder("Month")
+            return new CsTimeFormatBuilder<>("Month")
                     .addFutureName("měsíc", 1)
                     .addFutureName("měsíce", 4)
                     .addFutureName("měsíců", Long.MAX_VALUE)
@@ -212,7 +203,7 @@ public class Resources_CS extends Resources implements ITimeFormatProvider {
                     .addPastName("měsíci", Long.MAX_VALUE)
                     .build(this);
         } else if (timeUnit instanceof YearTimeUnit) {
-            return new CsTimeFormatBuilder("Year")
+            return new CsTimeFormatBuilder<>("Year")
                     .addFutureName("rok", 1)
                     .addFutureName("roky", 4)
                     .addFutureName("let", Long.MAX_VALUE)
@@ -221,115 +212,5 @@ public class Resources_CS extends Resources implements ITimeFormatProvider {
                     .build(this);
         }
         return null;
-    }
-
-    private static class CsTimeFormatBuilder {
-
-        private final List<Resources_CS.CsName> names = new ArrayList<>();
-        private final String resourceKeyPrefix;
-
-        public CsTimeFormatBuilder(final String resourceKeyPrefix) {
-            this.resourceKeyPrefix = resourceKeyPrefix;
-        }
-
-        public CsTimeFormatBuilder addFutureName(final String name, long limit) {
-            return this.addName(true, name, limit);
-        }
-
-        public CsTimeFormatBuilder addPastName(final String name, long limit) {
-            return this.addName(false, name, limit);
-        }
-
-        private CsTimeFormatBuilder addName(boolean isFuture, final String name, long limit) {
-            if (Objects.isNull(name)) {
-                throw new IllegalArgumentException("ERROR: name is not provided");
-            }
-            this.names.add(new CsName(isFuture, name, limit));
-            return this;
-        }
-
-        public CsTimeFormat build(final ResourceBundle bundle) {
-            return new CsTimeFormat(this.resourceKeyPrefix, bundle, this.names);
-        }
-
-    }
-
-    private static class CsTimeFormat extends SimpleTimeFormat implements ITimeFormat {
-
-        private final List<Resources_CS.CsName> futureNames = new ArrayList<>();
-        private final List<Resources_CS.CsName> pastNames = new ArrayList<>();
-
-        public CsTimeFormat(final String resourceKeyPrefix, final ResourceBundle bundle, final Collection<Resources_CS.CsName> names) {
-            setPattern(bundle.getString(resourceKeyPrefix + "Pattern"));
-            setFuturePrefix(bundle.getString(resourceKeyPrefix + "FuturePrefix"));
-            setFutureSuffix(bundle.getString(resourceKeyPrefix + "FutureSuffix"));
-            setPastPrefix(bundle.getString(resourceKeyPrefix + "PastPrefix"));
-            setPastSuffix(bundle.getString(resourceKeyPrefix + "PastSuffix"));
-            setSingularName(bundle.getString(resourceKeyPrefix + "SingularName"));
-            setPluralName(bundle.getString(resourceKeyPrefix + "PluralName"));
-
-            try {
-                setFuturePluralName(bundle.getString(resourceKeyPrefix + "FuturePluralName"));
-            } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future plural name by key=%s", resourceKeyPrefix + "FuturePluralName"), ex);
-            }
-            try {
-                setFutureSingularName((bundle.getString(resourceKeyPrefix + "FutureSingularName")));
-            } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future singular name by key=%s", resourceKeyPrefix + "FutureSingularName"), ex);
-            }
-            try {
-                setPastPluralName((bundle.getString(resourceKeyPrefix + "PastPluralName")));
-            } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set past plural name by key=%s", resourceKeyPrefix + "PastPluralName"), ex);
-            }
-            try {
-                setPastSingularName((bundle.getString(resourceKeyPrefix + "PastSingularName")));
-            } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future plural name by key=%s", resourceKeyPrefix + "PastSingularName"), ex);
-            }
-            names.stream().forEach((name) -> {
-                if (name.isFuture()) {
-                    this.futureNames.add(name);
-                } else {
-                    this.pastNames.add(name);
-                }
-            });
-            Collections.sort(this.futureNames);
-            Collections.sort(this.pastNames);
-        }
-
-        @Override
-        protected String getGramaticallyCorrectName(final IDuration duration, boolean round) {
-            long quantity = Math.abs(getQuantity(duration, round));
-            if (duration.isInFuture()) {
-                return this.getGramaticallyCorrectName(quantity, this.futureNames);
-            }
-            return this.getGramaticallyCorrectName(quantity, this.pastNames);
-        }
-
-        private String getGramaticallyCorrectName(long quantity, final List<Resources_CS.CsName> names) {
-            for (final Resources_CS.CsName name : names) {
-                if (name.getThreshold() >= quantity) {
-                    return name.getValue();
-                }
-            }
-            throw new IllegalStateException("Invalid resource bundle configuration");
-        }
-    }
-
-    @Data
-    @EqualsAndHashCode
-    @ToString
-    private static class CsName implements Comparable<Resources_CS.CsName> {
-
-        private final boolean isFuture;
-        private final String value;
-        private final Long threshold;
-
-        @Override
-        public int compareTo(final Resources_CS.CsName obj) {
-            return this.threshold.compareTo(obj.getThreshold());
-        }
     }
 }

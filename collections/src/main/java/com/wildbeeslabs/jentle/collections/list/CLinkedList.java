@@ -48,12 +48,12 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> implements IList<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CLinkedListNode<T> extends ACListNodeExtended<T, CLinkedListNode<T>> {
 
         public CLinkedListNode() {

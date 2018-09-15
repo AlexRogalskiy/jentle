@@ -74,12 +74,13 @@ public class DateTimeFormatter {
     private volatile Locale locale = Locale.getDefault();
     private volatile Map<ITimeUnit, ITimeFormat> units = new LinkedHashMap<>();
     private volatile List<ITimeUnit> cachedUnits = new ArrayList<>();
+    private String resourceBundle = null;
 
     /**
      * Default constructor
      */
     public DateTimeFormatter() {
-        this(null, null);
+        this(null, null, ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME);
     }
 
     /**
@@ -91,7 +92,7 @@ public class DateTimeFormatter {
      * @param reference
      */
     public DateTimeFormatter(final Date reference) {
-        this(reference, null);
+        this(reference, null, ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME);
     }
 
     /**
@@ -101,7 +102,11 @@ public class DateTimeFormatter {
      * @param locale
      */
     public DateTimeFormatter(final Locale locale) {
-        this(null, locale);
+        this(null, locale, ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME);
+    }
+
+    public DateTimeFormatter(final String resourceBundle) {
+        this(null, null, resourceBundle);
     }
 
     /**
@@ -111,11 +116,13 @@ public class DateTimeFormatter {
      *
      * @param reference
      * @param locale
+     * @param resourceBundle
      */
-    public DateTimeFormatter(final Date reference, final Locale locale) {
+    public DateTimeFormatter(final Date reference, final Locale locale, final String resourceBundle) {
         this.initTimeUnits();
         this.setReference(reference);
         this.setLocale(locale);
+        this.setResourceBundle(resourceBundle);
     }
 
     /**
@@ -152,7 +159,7 @@ public class DateTimeFormatter {
     }
 
     private void addUnit(final ResourcesTimeUnit unit) {
-        this.registerUnit(unit, new ResourcesTimeFormat(unit));
+        this.registerUnit(unit, new ResourcesTimeFormat(unit, this.resourceBundle));
     }
 
     private IDuration calculateDuration(final long difference) {
@@ -741,6 +748,11 @@ public class DateTimeFormatter {
         this.units.values().stream().filter((format) -> (format instanceof ILocaleAware)).forEach((format) -> {
             ((ILocaleAware<?>) format).setLocale(locale);
         });
+        return this;
+    }
+
+    public DateTimeFormatter setResourceBundle(final String resourceBundle) {
+        this.resourceBundle = resourceBundle;
         return this;
     }
 

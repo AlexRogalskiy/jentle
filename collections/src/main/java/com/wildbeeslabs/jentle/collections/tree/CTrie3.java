@@ -47,12 +47,12 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CTrie3 extends ACTrie<Character, CTrie3.CTrieNode> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CTrieNode extends ACTrieNode<Character, CTrieNode> {
 
         public static final char DEFAULT_NODE_VALUE_TERMINATOR = '\0';

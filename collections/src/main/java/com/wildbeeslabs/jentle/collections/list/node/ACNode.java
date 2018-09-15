@@ -39,7 +39,7 @@ import lombok.ToString;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString

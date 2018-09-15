@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {//IBaseMap<K, V>
 
     /**

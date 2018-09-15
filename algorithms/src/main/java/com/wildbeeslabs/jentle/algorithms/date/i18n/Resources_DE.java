@@ -131,9 +131,7 @@ public class Resources_DE extends Resources {
         {"AbstractTimeUnitPastPrefix", ""},
         {"AbstractTimeUnitPastSuffix", ""},
         {"AbstractTimeUnitSingularName", ""},
-        {"AbstractTimeUnitPluralName", ""}
-
-    };
+        {"AbstractTimeUnitPluralName", ""}};
 
     @Override
     protected Object[][] getResources() {

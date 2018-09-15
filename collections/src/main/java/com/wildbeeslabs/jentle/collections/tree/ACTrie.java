@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
  * @param <U>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public abstract class ACTrie<T, U extends ACBaseTrieNode<T, U>> implements ITrie<T, U> {
 

@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * @param <E>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public abstract class ACGraph<T, E extends ACBaseGraphNode<T, E>> implements IGraph<T> {
 

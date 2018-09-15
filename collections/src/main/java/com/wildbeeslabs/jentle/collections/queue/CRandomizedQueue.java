@@ -39,7 +39,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CRandomizedQueue<T> extends ACQueue<T> {
 	
 	private Item[] queue;

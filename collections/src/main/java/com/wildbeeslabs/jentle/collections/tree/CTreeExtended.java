@@ -44,12 +44,12 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedTreeNode<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CExtendedTreeNode<T> extends ACTreeNodeExtended<T, CExtendedTreeNode<T>> {
 
         public CExtendedTreeNode() {

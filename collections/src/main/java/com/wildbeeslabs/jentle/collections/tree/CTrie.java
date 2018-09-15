@@ -46,12 +46,12 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CTrieNode<T> extends ACTrieNode<T, CTrieNode<T>> {
 
         public CTrieNode() {

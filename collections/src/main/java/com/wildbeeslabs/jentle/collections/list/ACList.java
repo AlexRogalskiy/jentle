@@ -58,7 +58,7 @@ import org.apache.log4j.Logger;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequentialList<T> implements IList<T> {
 
     /**

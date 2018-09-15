@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public abstract class ACStack<T> implements IStack<T> {
 

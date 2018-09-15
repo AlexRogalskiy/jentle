@@ -46,7 +46,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTree<T, U> implements ITree<T, U> {
 
     public ACTree(final U root, final Comparator<? super T> cmp) {

@@ -48,7 +48,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T> {
 
     protected U parent;

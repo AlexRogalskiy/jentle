@@ -41,7 +41,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACTrieNode2<T, U extends ACTrieNode2<T, U>> extends ACBaseTrieNode<T, U> {
 
     protected U child;

@@ -246,13 +246,10 @@ public class Resources_FI extends Resources implements ITimeFormatProvider {
 
         @Override
         public String decorate(final IDuration duration, final String time) {
-            String result = null;
-            if (duration.getUnit() instanceof DayTimeUnit && Math.abs(duration.getQuantityRounded(tolerance)) == 1) {
-                result = time;
-            } else {
-                result = super.decorate(duration, time);
+            if (duration.getUnit() instanceof DayTimeUnit && Math.abs(duration.getQuantityRounded(Resources_FI.tolerance)) == 1) {
+                return time;
             }
-            return result;
+            return super.decorate(duration, time);
         }
 
         private String getUnitName(final ITimeUnit unit) {

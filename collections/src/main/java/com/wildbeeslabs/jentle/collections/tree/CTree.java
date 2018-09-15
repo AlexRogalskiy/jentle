@@ -47,12 +47,12 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CTreeNode<T> extends ACBaseTreeNode<T, CTreeNode<T>> {
 
         public CTreeNode() {

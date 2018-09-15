@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * @param <V>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public abstract class ACBaseMap<K, V> implements IBaseMap<K, V> {
 

@@ -44,11 +44,11 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CDeque<T> extends ACQueue<T> {
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CDequeNode<T> extends ACListNodeExtended<T, CDequeNode<T>> {
 

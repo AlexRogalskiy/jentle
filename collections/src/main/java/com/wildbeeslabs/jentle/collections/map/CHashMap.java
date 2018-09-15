@@ -46,7 +46,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CHashMap<K, V> extends ACMap<K, V> {
 
     /**
@@ -56,7 +56,7 @@ public class CHashMap<K, V> extends ACMap<K, V> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CLinkedListNode<K, V> extends ACListNodeExtended<V, CLinkedListNode<K, V>> {
 
         protected K key;

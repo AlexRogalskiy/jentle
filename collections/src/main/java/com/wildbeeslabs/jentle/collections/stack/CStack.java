@@ -47,12 +47,12 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CStack<T> extends ACStack<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     public static class CStackNode<T> extends ACNode<T> {
 
         private CStackNode<T> next;

@@ -57,7 +57,7 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @ToString
+    @ToString(callSuper = true)
     protected static class CLGraphArc<T> extends ACBaseGraphNode<T, CLGraphArc<T>> {
 
         private int end;

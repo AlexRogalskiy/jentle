@@ -39,7 +39,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACTreeNodeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACBaseTreeNode<T, U> {
 
     protected U parent;

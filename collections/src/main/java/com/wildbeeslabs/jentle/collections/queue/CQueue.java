@@ -46,11 +46,11 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CQueue<T> extends ACQueue<T> {
 
     @Data
-    @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode
     @ToString
     public static class CQueueNode<T> extends ACNode<T> {
 

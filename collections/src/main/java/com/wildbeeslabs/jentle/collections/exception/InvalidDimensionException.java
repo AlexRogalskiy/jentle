@@ -37,7 +37,7 @@ import lombok.NoArgsConstructor;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @NoArgsConstructor
 public class InvalidDimensionException extends Exception {
 

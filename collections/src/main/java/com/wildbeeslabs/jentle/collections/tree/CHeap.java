@@ -31,6 +31,10 @@ import java.util.Comparator;
 import java.util.Objects;
 
 import lombok.Data;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -102,36 +106,36 @@ public class CHeap<T> {
 
     @Override
     public String toString() {
-        return String.format("%s {data: %s, size: %d, capacity: %d}", this.getClass().getName(), Arrays.deepToString(this.array), this.size, this.capacity);
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .appendSuper(super.toString())
+                .append("className", this.getClass().getName())
+                .append("size", this.size)
+                .append("capacity", this.capacity)
+                .append("data", Arrays.deepToString(this.array))
+                .toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (!(obj instanceof CHeap)) {
             return false;
         }
         final CHeap<T> other = (CHeap<T>) obj;
-        if (this.size != other.size) {
-            return false;
-        }
-        if (this.capacity != other.capacity) {
-            return false;
-        }
-        if (!Arrays.deepEquals(this.array, other.array)) {
-            return false;
-        }
-        return true;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(this.size, other.size)
+                .append(this.capacity, other.capacity)
+                .appendSuper(Arrays.deepEquals(this.array, other.array))
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + this.size;
-        hash = 79 * hash + this.capacity;
-        hash = 79 * hash + Arrays.deepHashCode(this.array);
-        return hash;
+        return new HashCodeBuilder(19, 51)
+                .appendSuper(super.hashCode())
+                .append(this.size)
+                .append(this.capacity)
+                .append(Arrays.deepHashCode(this.array))
+                .toHashCode();
     }
 }

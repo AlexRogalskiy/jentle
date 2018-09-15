@@ -39,7 +39,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACTreeNode2<T, U extends ACTreeNode2<T, U>> extends ACBaseTreeNode<T, U> {
 
     protected boolean isYoungest;

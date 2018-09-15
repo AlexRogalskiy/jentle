@@ -50,7 +50,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>> extends ACBaseGraphNode<T, E> {
 
     protected BigDecimal distance;

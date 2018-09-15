@@ -44,7 +44,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CBinaryTree<T> extends ACBinaryTree<T, CTree.CTreeNode<T>> {
 
     public CBinaryTree() {

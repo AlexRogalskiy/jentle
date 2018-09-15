@@ -47,12 +47,9 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class CCircularList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> {
 
-//    protected CList.CListNode<T> first;
-//    protected CList.CListNode<T> last;
-//    protected int size;
     public CCircularList() {
         this(null, CUtils.DEFAULT_SORT_COMPARATOR);
     }

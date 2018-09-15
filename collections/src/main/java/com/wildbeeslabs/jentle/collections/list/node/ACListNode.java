@@ -39,7 +39,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public abstract class ACListNode<T, E extends ACListNode<T, E>> extends ACNode<T> {
 
     protected E next;
