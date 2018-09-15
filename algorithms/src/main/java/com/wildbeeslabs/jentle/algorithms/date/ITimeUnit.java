@@ -31,7 +31,7 @@ package com.wildbeeslabs.jentle.algorithms.date;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITimeUnit {
+public interface ITimeUnit extends Comparable<ITimeUnit> {
 
     /**
      * Returns the number of milliseconds represented by the current time unit
@@ -40,7 +40,7 @@ public interface ITimeUnit {
      * @return number of milliseconds represented by the current time unit
      * {@link ITimeUnit} instance
      */
-    public long getMillisPerUnit();
+    long getMillisPerUnit();
 
     /**
      * Returns the maximum quantity of the current time unit {@link ITimeUnit}
@@ -59,5 +59,30 @@ public interface ITimeUnit {
      * @return maximum quantity of the current time unit {@link ITimeUnit}
      * instance to be used as a threshold for the next largest time unit
      */
-    public long getMaxQuantity();
+    long getMaxQuantity();
+
+    /**
+     * Whether or not this {@link ITimeUnit} represents a price measurement of
+     * time, or a general concept of time. E.g: "minute" as opposed to "moment".
+     *
+     * @return true - if current time unit represents a price / general concept
+     * of time, false - otherwise
+     */
+    boolean isPrecise();
+
+    /**
+     * Default ITimeUnit comparator
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    default int compareTo(final ITimeUnit obj) {
+        if (this.getMillisPerUnit() < obj.getMillisPerUnit()) {
+            return -1;
+        } else if (this.getMillisPerUnit() > obj.getMillisPerUnit()) {
+            return 1;
+        }
+        return 0;
+    }
 }

@@ -26,7 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.date;
 /**
  *
  * Custom duration time declaration (measure quantity of time unit
- * {@link TimeUnit} instances)
+ * {@link ITimeUnit} instances)
  *
  * @author Alex
  * @version 1.0.0
@@ -39,7 +39,7 @@ public interface IDuration {
      *
      * @return quantity of time units {@link ITimeUnit}
      */
-    public long getQuantity();
+    long getQuantity();
 
     /**
      * Returns the calculated quantity of time units {@link ITimeUnit} instances,
@@ -49,7 +49,7 @@ public interface IDuration {
      * @param tolerance - tolerance precision rate
      * @return calculated quantity of time units {@link ITimeUnit}
      */
-    public long getQuantityRounded(int tolerance);
+    long getQuantityRounded(int tolerance);
 
     /**
      * Returns the time unit {@link ITimeUnit} instance represented by the
@@ -57,7 +57,7 @@ public interface IDuration {
      *
      * @return quantity of time units {@link ITimeUnit}
      */
-    public ITimeUnit getUnit();
+    ITimeUnit getUnit();
 
     /**
      * Returns the number of milliseconds left over when calculating the number
@@ -66,7 +66,7 @@ public interface IDuration {
      *
      * @return number of milliseconds
      */
-    public long getDelta();
+    long getDelta();
 
     /**
      * Checks if the current duration {@link IDuration} instance represents a
@@ -76,7 +76,7 @@ public interface IDuration {
      * represents a number of time unit {@link ITimeUnit} instances in the past,
      * false - otherwise
      */
-    public boolean isInPast();
+    boolean isInPast();
 
     /**
      * Checks if the current duration {@link IDuration} instance represents a
@@ -86,5 +86,5 @@ public interface IDuration {
      * represents a number of time unit {@link ITimeUnit} instances in the
      * future, false - otherwise
      */
-    public boolean isInFuture();
+    boolean isInFuture();
 }

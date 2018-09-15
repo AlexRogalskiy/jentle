@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.date.units;
 
 import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

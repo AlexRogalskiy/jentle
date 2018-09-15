@@ -32,22 +32,20 @@ import java.util.Locale;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
-public interface ILocale<T> {
+public interface ILocale {
 
     /**
      * Sets the current locale {@link Locale} instance
      *
      * @param locale - current locale instance
      */
-    public void setLocale(final Locale locale);
+    void setLocale(final Locale locale);
 
     /**
      * Gets the current locale {@link Locale} instance
      *
      * @return current locale instance
      */
-    public Locale getLocale();
-
+    Locale getLocale();
 }

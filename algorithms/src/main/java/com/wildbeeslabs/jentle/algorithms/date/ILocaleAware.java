@@ -39,5 +39,5 @@ public interface ILocaleAware<T> {
      * @param locale
      * @return 
      */
-    public T setLocale(final Locale locale);
+    T setLocale(final Locale locale);
 }

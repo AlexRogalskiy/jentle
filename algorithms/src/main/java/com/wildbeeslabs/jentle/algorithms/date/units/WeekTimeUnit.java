@@ -21,51 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.units;
 
-import java.time.temporal.TemporalAmount;
-import java.util.Objects;
-import java.time.Duration;
-
+import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Custom class to track operational transactions by datetime units
+ * Week time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode
-@ToString
-public class BaseTransaction {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class WeekTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    private Long id;
-    private Long paramType;
-    private Long value;
-    private TimeUnit unit;
-    private Long version;
-    private String settingType;
-
-    public Long getValue() {
-        return !TimeUnit.NONE.equals(this.unit) ? this.value : null;
+    public WeekTimeUnit() {
+        setMillisPerUnit(1000L * 60L * 60L * 24L * 7L);
     }
 
-    public Duration getDurationValue() {
-        if (TimeUnit.MILLISECOND.equals(this.unit) || TimeUnit.SECOND.equals(this.unit) || TimeUnit.MINUTE.equals(this.unit) || TimeUnit.HOUR.equals(this.unit)) {
-            return Objects.nonNull(this.value) ? this.unit.getDuration(this.value).orElse(null) : null;
-        }
-        return null;
-    }
-
-    public TemporalAmount getPeriodValue() {
-        if (TimeUnit.DAY.equals(this.unit) || TimeUnit.WORKING_DAY.equals(this.unit) || TimeUnit.WEEK.equals(this.unit) || TimeUnit.MONTH.equals(this.unit) || TimeUnit.YEAR.equals(this.unit)) {
-            return Objects.nonNull(this.value) ? this.unit.getPeriod(this.value).orElse(null) : null;
-        }
-        return null;
+    @Override
+    protected String getResourceKeyPrefix() {
+        return "Week";
     }
 }

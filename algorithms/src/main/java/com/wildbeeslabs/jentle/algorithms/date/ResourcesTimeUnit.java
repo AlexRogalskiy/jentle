@@ -23,17 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date;
 
-import java.time.temporal.TemporalAmount;
-import java.util.Objects;
-import java.time.Duration;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
- * Custom class to track operational transactions by datetime units
+ * Custom resources time unit implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -42,30 +37,25 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode
 @ToString
-public class BaseTransaction {
+public abstract class ResourcesTimeUnit implements ITimeUnit {
 
-    private Long id;
-    private Long paramType;
-    private Long value;
-    private TimeUnit unit;
-    private Long version;
-    private String settingType;
+    private long maxQuantity = 0;
+    private long millisPerUnit = 1;
 
-    public Long getValue() {
-        return !TimeUnit.NONE.equals(this.unit) ? this.value : null;
+    /**
+     * Return the name of the resource bundle from which this unit's format
+     * should be loaded.
+     *
+     * @return resource key prefix
+     */
+    abstract protected String getResourceKeyPrefix();
+
+    protected String getResourceBundleName() {
+        return "com.wildbeeslabs.jentle.algorithms.date.i18n.Resources_EN";
     }
 
-    public Duration getDurationValue() {
-        if (TimeUnit.MILLISECOND.equals(this.unit) || TimeUnit.SECOND.equals(this.unit) || TimeUnit.MINUTE.equals(this.unit) || TimeUnit.HOUR.equals(this.unit)) {
-            return Objects.nonNull(this.value) ? this.unit.getDuration(this.value).orElse(null) : null;
-        }
-        return null;
-    }
-
-    public TemporalAmount getPeriodValue() {
-        if (TimeUnit.DAY.equals(this.unit) || TimeUnit.WORKING_DAY.equals(this.unit) || TimeUnit.WEEK.equals(this.unit) || TimeUnit.MONTH.equals(this.unit) || TimeUnit.YEAR.equals(this.unit)) {
-            return Objects.nonNull(this.value) ? this.unit.getPeriod(this.value).orElse(null) : null;
-        }
-        return null;
+    @Override
+    public boolean isPrecise() {
+        return true;
     }
 }

@@ -49,8 +49,8 @@ import org.apache.log4j.Logger;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class BaseResourceProperties extends Properties {
 
     /**

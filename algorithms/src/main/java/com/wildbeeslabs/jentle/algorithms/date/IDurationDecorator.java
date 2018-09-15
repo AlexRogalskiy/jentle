@@ -43,7 +43,7 @@ public interface IDurationDecorator {
      * @return string-formatted (with rounding) duration {@link IDuration}
      * output
      */
-    public String format(final IDuration duration);
+    String format(final IDuration duration);
 
     /**
      * Returns string-formatted (without rounding) duration {@link IDuration}
@@ -54,7 +54,7 @@ public interface IDurationDecorator {
      * @return string-formatted (without rounding) duration {@link IDuration}
      * output
      */
-    public String formatUnrounded(final IDuration duration);
+    String formatUnrounded(final IDuration duration);
 
     /**
      *
@@ -67,7 +67,7 @@ public interface IDurationDecorator {
      * @return string-formatted (with rounding) duration {@link IDuration}
      * output
      */
-    public String decorate(final IDuration duration, final String time);
+    String decorate(final IDuration duration, final String time);
 
     /**
      *
@@ -80,6 +80,5 @@ public interface IDurationDecorator {
      * @return string-formatted (without rounding) duration {@link IDuration}
      * output
      */
-    public String decorateUnrounded(final IDuration duration, final String time);
-
+    String decorateUnrounded(final IDuration duration, final String time);
 }

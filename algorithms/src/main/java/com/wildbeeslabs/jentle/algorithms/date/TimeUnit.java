@@ -44,18 +44,18 @@ public enum TimeUnit {
 
     MILLISECOND {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.of(Duration.ofMillis(value));
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.empty();
                 }
             },
     SECOND {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.of(Duration.ofSeconds(value));
                 }
 
@@ -66,18 +66,18 @@ public enum TimeUnit {
             },
     MINUTE {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.of(Duration.ofMinutes(value));
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.empty();
                 }
             },
     HOUR {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.of(Duration.ofHours(value));
                 }
 
@@ -88,67 +88,67 @@ public enum TimeUnit {
             },
     DAY {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.of(Duration.ofDays(value));
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.of(Period.ofDays(Long.valueOf(value).intValue()));
                 }
             },
     WORKING_DAY {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.of(Duration.ofDays(value));
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.of(Period.ofDays(Long.valueOf(value).intValue()));
                 }
             },
     WEEK {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.of(Duration.ofDays(value * 7));
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.of(Period.ofWeeks(Long.valueOf(value).intValue()));
                 }
             },
     MONTH {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.empty();
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.of(Period.ofMonths(Long.valueOf(value).intValue()));
                 }
             },
     YEAR {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.empty();
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.of(Period.ofYears(Long.valueOf(value).intValue()));
                 }
             },
     NONE {
                 @Override
-                public Optional<Duration> getDuration(long value) {
+                public Optional<? extends Duration> getDuration(long value) {
                     return Optional.empty();
                 }
 
                 @Override
-                public Optional<TemporalAmount> getPeriod(long value) {
+                public Optional<? extends TemporalAmount> getPeriod(long value) {
                     return Optional.empty();
                 }
             };
@@ -178,7 +178,7 @@ public enum TimeUnit {
      * @return duration {@link IDuration} instance of the current quantity of
      * milliseconds
      */
-    public abstract Optional<Duration> getDuration(long value);
+    public abstract Optional<? extends Duration> getDuration(long value);
 
     /**
      * Returns temporal amount {@link TemporalAmount} instance that represents
@@ -188,6 +188,6 @@ public enum TimeUnit {
      * @return temporal amount {@link TemporalAmount} instance of the current
      * quantity of milliseconds
      */
-    public abstract Optional<TemporalAmount> getPeriod(long value);
+    public abstract Optional<? extends TemporalAmount> getPeriod(long value);
 
 }

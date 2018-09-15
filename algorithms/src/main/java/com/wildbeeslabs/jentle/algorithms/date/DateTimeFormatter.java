@@ -23,8 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date;
 
-import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
+import com.wildbeeslabs.jentle.algorithms.date.units.CenturyTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.DayTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.DecadeTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.HourTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.MillenniumTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.MillisecondTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.MinuteTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.MonthTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.NowTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.SecondTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.WeekTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.units.YearTimeUnit;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -35,12 +47,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import lombok.NonNull;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
- * Default date/time formatter implementation
+ * Default date/time formatter implementation by creating social-networking
+ * style timestamps (e.g. "just now", "moments ago", "3 days ago", "within 2
+ * months")
  *
  * @author Alex
  * @version 1.0.0
@@ -48,9 +65,15 @@ import org.apache.commons.collections.CollectionUtils;
  */
 public class DateTimeFormatter {
 
+    /**
+     * Default Logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(DateTimeFormatter.class);
+
     private volatile Date reference;
     private volatile Locale locale = Locale.getDefault();
     private volatile Map<ITimeUnit, ITimeFormat> units = new LinkedHashMap<>();
+    private volatile List<ITimeUnit> cachedUnits = new ArrayList<>();
 
     /**
      * Default constructor
@@ -101,26 +124,31 @@ public class DateTimeFormatter {
      * @param date
      * @return
      */
-    public IDuration approximateDuration(@NonNull final Date date) {
+    public IDuration approximateDuration(final Date date) {
+        if (Objects.isNull(date)) {
+            throw new IllegalArgumentException("ERROR: date provided must not be null.");
+        }
         Date ref = this.reference;
         if (Objects.isNull(ref)) {
-            ref = GregorianCalendar.getInstance().getTime();
+            ref = this.now();
         }
         long difference = date.getTime() - ref.getTime();
         return this.calculateDuration(difference);
     }
 
     private void initTimeUnits() {
-        this.addUnit(TimeUnit.WORKING_DAY);
-        this.addUnit(TimeUnit.MILLISECOND);
-        this.addUnit(TimeUnit.SECOND);
-        this.addUnit(TimeUnit.MINUTE);
-        this.addUnit(TimeUnit.HOUR);
-        this.addUnit(TimeUnit.DAY);
-        this.addUnit(TimeUnit.WEEK);
-        this.addUnit(TimeUnit.MONTH);
-        this.addUnit(TimeUnit.YEAR);
-        this.addUnit(TimeUnit.NONE);
+        this.addUnit(new NowTimeUnit());
+        this.addUnit(new MillisecondTimeUnit());
+        this.addUnit(new SecondTimeUnit());
+        this.addUnit(new MinuteTimeUnit());
+        this.addUnit(new HourTimeUnit());
+        this.addUnit(new DayTimeUnit());
+        this.addUnit(new WeekTimeUnit());
+        this.addUnit(new MonthTimeUnit());
+        this.addUnit(new YearTimeUnit());
+        this.addUnit(new DecadeTimeUnit());
+        this.addUnit(new CenturyTimeUnit());
+        this.addUnit(new MillenniumTimeUnit());
     }
 
     private void addUnit(final ResourcesTimeUnit unit) {
@@ -129,8 +157,7 @@ public class DateTimeFormatter {
 
     private IDuration calculateDuration(final long difference) {
         long absoluteDifference = Math.abs(difference);
-        final List<ITimeUnit> timeUnits = new ArrayList<>(this.getUnits().size());
-        timeUnits.addAll(this.getUnits());
+        final List<ITimeUnit> timeUnits = this.getUnits();
         final Duration result = new Duration();
         for (int i = 0; i < timeUnits.size(); i++) {
             ITimeUnit unit = timeUnits.get(i);
@@ -144,10 +171,11 @@ public class DateTimeFormatter {
                 result.setUnit(unit);
                 if (millisPerUnit > absoluteDifference) {
                     result.setQuantity(getSign(difference));
+                    result.setDelta(0);
                 } else {
                     result.setQuantity(difference / millisPerUnit);
+                    result.setDelta(difference - result.getQuantity() * millisPerUnit);
                 }
-                result.setDelta(difference - result.getQuantity() * millisPerUnit);
                 break;
             }
         }
@@ -169,7 +197,7 @@ public class DateTimeFormatter {
      * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is
      * granular enough to represent one millisecond
      *
-     * @param then The date to be compared against the reference timestamp, or
+     * @param date The date to be compared against the reference timestamp, or
      * <i>now</i> if no reference timestamp was provided
      * @return A sorted {@link List} of {@link Duration} objects, from largest
      * to smallest. Each element in the list represents the approximate duration
@@ -177,20 +205,28 @@ public class DateTimeFormatter {
      * element's delta. The first element is the largest {@link TimeUnit} to fit
      * within the total difference between compared dates.
      */
-    public List<IDuration> calculatePreciseDuration(final Date then) {
-        if (Objects.isNull(then)) {
-            throw new IllegalArgumentException("Date to calculate must not be null.");
+    public List<IDuration> calculatePreciseDuration(final Date date) {
+        if (Objects.isNull(date)) {
+            throw new IllegalArgumentException("ERROR: date provided must not be null.");
         }
         if (Objects.isNull(this.reference)) {
-            this.reference = new Date();
+            this.reference = this.now();
         }
         final List<IDuration> result = new ArrayList<>();
-        long difference = then.getTime() - this.reference.getTime();
+        long difference = date.getTime() - this.reference.getTime();
         IDuration duration = calculateDuration(difference);
         result.add(duration);
         while (0 != duration.getDelta()) {
             duration = calculateDuration(duration.getDelta());
-            result.add(duration);
+            if (result.size() > 0) {
+                final IDuration last = result.get(result.size() - 1);
+                if (last.getUnit().equals(duration.getUnit())) {
+                    break;
+                }
+            }
+            if (duration.getUnit().isPrecise()) {
+                result.add(duration);
+            }
         }
         return result;
     }
@@ -201,14 +237,14 @@ public class DateTimeFormatter {
      * calculation. If {@code then} is null, it will default to
      * {@code new Date()}; also decorate for past/future tense.
      *
-     * @param then the {@link Date} to be formatted
+     * @param date the {@link Date} to be formatted
      * @return A formatted string representing {@code then}
      */
-    public String format(final Date then) {
-        if (Objects.isNull(then)) {
-            throw new IllegalArgumentException("Date to format must not be null.");
+    public String format(final Date date) {
+        if (Objects.isNull(date)) {
+            throw new IllegalArgumentException("ERROR: date provided must not be null.");
         }
-        final IDuration duration = approximateDuration(then);
+        final IDuration duration = approximateDuration(date);
         return format(duration);
     }
 
@@ -218,14 +254,14 @@ public class DateTimeFormatter {
      * calculation. If {@code then} is null, it will default to
      * {@code new Date()}; also decorate for past/future tense.
      *
-     * @param then the {@link Calendar} whose date is to be formatted
+     * @param calendar the {@link Calendar} whose date is to be formatted
      * @return A formatted string representing {@code then}
      */
-    public String format(final Calendar then) {
-        if (Objects.isNull(then)) {
-            throw new IllegalArgumentException("Provided Calendar must not be null.");
+    public String format(final Calendar calendar) {
+        if (Objects.isNull(calendar)) {
+            throw new IllegalArgumentException("ERROR: calendar provided must not be null.");
         }
-        return format(then.getTime());
+        return format(calendar.getTime());
     }
 
     /**
@@ -235,15 +271,32 @@ public class DateTimeFormatter {
      * {@code new Date()}; also decorate for past/future tense. Rounding rules
      * are ignored.
      *
-     * @param then the {@link Date} to be formatted
+     * @param date the {@link Date} to be formatted
      * @return A formatted string representing {@code then}
      */
-    public String formatUnrounded(final Date then) {
-        if (Objects.isNull(then)) {
-            throw new IllegalArgumentException("Date to format must not be null.");
+    public String formatUnrounded(final Date date) {
+        if (Objects.isNull(date)) {
+            throw new IllegalArgumentException("ERROR: date provided must not be null.");
         }
-        final IDuration d = approximateDuration(then);
+        final IDuration d = approximateDuration(date);
         return formatUnrounded(d);
+    }
+
+    /**
+     * Format the given {@link Calendar} object. This method applies the
+     * {@link PrettyTime#approximateDuration(Date)} method to perform its
+     * calculation. Rounding rules are ignored. If the given {@link Calendar} is
+     * <code>null</code>, the current value of
+     * {@link System#currentTimeMillis()} will be used instead.
+     *
+     * @param calendar the {@link Calendar} whose date is to be formatted
+     * @return A formatted string representing {@code then}
+     */
+    public String formatUnrounded(final Calendar calendar) {
+        if (Objects.isNull(calendar)) {
+            throw new IllegalArgumentException("ERROR: calendar provided must not be null.");
+        }
+        return formatUnrounded(calendar.getTime());
     }
 
     /**
@@ -256,10 +309,10 @@ public class DateTimeFormatter {
      */
     public String format(final IDuration duration) {
         if (Objects.isNull(duration)) {
-            throw new IllegalArgumentException("Duration to format must not be null.");
+            throw new IllegalArgumentException("ERROR: duration provided must not be null.");
         }
-        ITimeFormat format = getFormat(duration.getUnit());
-        String time = format.format(duration);
+        final ITimeFormat format = getFormat(duration.getUnit());
+        final String time = format.format(duration);
         return format.decorate(duration, time);
     }
 
@@ -273,40 +326,241 @@ public class DateTimeFormatter {
      */
     public String formatUnrounded(final IDuration duration) {
         if (Objects.isNull(duration)) {
-            throw new IllegalArgumentException("Duration to format must not be null.");
+            throw new IllegalArgumentException("ERROR: duration provided must not be null.");
         }
-        ITimeFormat format = getFormat(duration.getUnit());
-        String time = format.formatUnrounded(duration);
+        final ITimeFormat format = getFormat(duration.getUnit());
+        final String time = format.formatUnrounded(duration);
         return format.decorateUnrounded(duration, time);
     }
 
     /**
      * Format the given {@link IDuration} objects, using the {@link ITimeFormat}
-     * specified by the {@link ITimeFormat} contained within. Rounds only the last
-     * {@link Duration} object.
+     * specified by the {@link ITimeFormat} contained within. Rounds only the
+     * last {@link Duration} object.
      *
      * @param durations the {@link IDuration}s to be formatted
      * @return A list of formatted strings representing {@code durations}
      */
+    @SuppressWarnings("null")
     public String format(final List<IDuration> durations) {
         if (CollectionUtils.isEmpty(durations)) {
-            throw new IllegalArgumentException("Duration list must not be null.");
+            throw new IllegalArgumentException("ERROR: list of durations provided must not be null.");
         }
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         IDuration duration = null;
         ITimeFormat format = null;
         for (int i = 0; i < durations.size(); i++) {
             duration = durations.get(i);
             format = getFormat(duration.getUnit());
-            boolean isLast = (i == durations.size() - 1);
-            if (!isLast) {
+            // Round only the last element 
+            if (i < durations.size() - 1) {
                 builder.append(format.formatUnrounded(duration));
-                builder.append(" ");
+                builder.append(StringUtils.SPACE);
             } else {
                 builder.append(format.format(duration));
             }
         }
         return format.decorateUnrounded(duration, builder.toString());
+    }
+
+    /**
+     * Format the given {@link Date} and return a non-relative (not decorated
+     * with past or future tense) {@link String} for the approximate duration of
+     * its difference between the reference {@link Date}. If the given
+     * {@link Date} is <code>null</code>, the current value of
+     * {@link System#currentTimeMillis()} will be used instead.
+     * <p>
+     *
+     * @param date the date to be formatted
+     * @return A formatted string of the given {@link Date}
+     */
+    public String formatDuration(final Date date) {
+        final IDuration duration = approximateDuration(date);
+        return formatDuration(duration);
+    }
+
+    /**
+     * Format the given {@link Calendar} and return a non-relative (not
+     * decorated with past or future tense) {@link String} for the approximate
+     * duration of its difference between the reference {@link Date}. If the
+     * given {@link Calendar} is <code>null</code>, the current value of
+     * {@link System#currentTimeMillis()} will be used instead.
+     * <p>
+     *
+     * @param calendar the date to be formatted
+     * @return A formatted string of the given {@link Date}
+     */
+    public String formatDuration(final Calendar calendar) {
+        if (Objects.isNull(calendar)) {
+            throw new IllegalArgumentException("ERROR: calendar provided must not be null.");
+        }
+        return formatDuration(calendar.getTime());
+    }
+
+    /**
+     * Format the given {@link IDuration} and return a non-relative (not
+     * decorated with past or future tense) {@link String} for the approximate
+     * duration of the difference between the reference {@link Date} and the
+     * given {@link Duration}. If the given {@link IDuration} is
+     * <code>null</code>, the current value of
+     * {@link System#currentTimeMillis()} will be used instead.
+     *
+     * @param duration the duration to be formatted
+     * @return A formatted string of the given {@link IDuration}
+     */
+    public String formatDuration(final IDuration duration) {
+        if (Objects.isNull(duration)) {
+            throw new IllegalArgumentException("ERROR: duration provided must not be null.");
+        }
+        final ITimeFormat timeFormat = getFormat(duration.getUnit());
+        return timeFormat.format(duration);
+    }
+
+    /**
+     * Format the given {@link Duration} objects, using the {@link TimeFormat}
+     * specified by the {@link TimeUnit} contained within. Rounding rules are
+     * ignored. If the given {@link Duration} {@link List} is <code>null</code>
+     * or empty, the current value of {@link System#currentTimeMillis()} will be
+     * used instead.
+     *
+     * @param durations the {@link IDuration}s to be formatted
+     * @return A list of formatted strings representing {@code durations}
+     */
+    @SuppressWarnings("null")
+    public String formatUnrounded(final List<IDuration> durations) {
+        if (CollectionUtils.isEmpty(durations)) {
+            throw new IllegalArgumentException("ERROR: list of durations provided must not be null.");
+        }
+        final StringBuilder result = new StringBuilder();
+        IDuration duration = null;
+        ITimeFormat format = null;
+        for (int i = 0; i < durations.size(); i++) {
+            duration = durations.get(i);
+            format = getFormat(duration.getUnit());
+            result.append(format.formatUnrounded(duration));
+            // Round only the last element 
+            if (i < durations.size() - 1) {
+                result.append(StringUtils.SPACE);
+            }
+        }
+        return format.decorateUnrounded(duration, result.toString());
+    }
+
+    /**
+     * Format the given {@link IDuration} {@link List} and return a non-relative
+     * (not decorated with past or future tense) {@link String} for the
+     * approximate duration of its difference between the reference
+     * {@link Date}. If the given {@link IDuration} is <code>null</code>, the
+     * current value of {@link System#currentTimeMillis()} will be used instead.
+     *
+     * @param durations the duration to be formatted
+     * @return A formatted string of the given {@link IDuration}
+     */
+    @SuppressWarnings("UnusedAssignment")
+    public String formatDuration(final List<IDuration> durations) {
+        if (CollectionUtils.isEmpty(durations)) {
+            throw new IllegalArgumentException("ERROR: list of durations provided must not be null.");
+        }
+        final StringBuilder result = new StringBuilder();
+        IDuration duration = null;
+        ITimeFormat format = null;
+        for (int i = 0; i < durations.size(); i++) {
+            duration = durations.get(i);
+            format = getFormat(duration.getUnit());
+            // Round only the last element 
+            if (i < durations.size() - 1) {
+                result.append(format.formatUnrounded(duration));
+                result.append(StringUtils.SPACE);
+            } else {
+                result.append(format.format(duration));
+            }
+        }
+        return result.toString();
+    }
+
+    /**
+     * Format the given {@link Date} and return a non-relative (not decorated
+     * with past or future tense) {@link String} for the approximate duration of
+     * its difference between the reference {@link Date}. Rounding rules are
+     * ignored. If the given {@link Date} is <code>null</code>, the current
+     * value of {@link System#currentTimeMillis()} will be used instead.
+     * <p>
+     *
+     * @param date the date to be formatted
+     * @return A formatted string of the given {@link Date}
+     */
+    public String formatDurationUnrounded(final Date date) {
+        final IDuration duration = approximateDuration(date);
+        return formatDurationUnrounded(duration);
+    }
+
+    /**
+     * Format the given {@link Calendar} and return a non-relative (not
+     * decorated with past or future tense) {@link String} for the approximate
+     * duration of its difference between the reference {@link Date}. Rounding
+     * rules are ignored. If the given {@link Calendar} is <code>null</code>,
+     * the current value of {@link System#currentTimeMillis()} will be used
+     * instead.
+     * <p>
+     *
+     * @param calendar the date to be formatted
+     * @return A formatted string of the given {@link Date}
+     */
+    public String formatDurationUnrounded(final Calendar calendar) {
+        if (Objects.isNull(calendar)) {
+            throw new IllegalArgumentException("ERROR: calendar provided must not be null.");
+        }
+        return formatDurationUnrounded(calendar.getTime());
+    }
+
+    /**
+     * Format the given {@link IDuration} and return a non-relative (not
+     * decorated with past or future tense) {@link String} for the approximate
+     * duration of its difference between the reference {@link Date}. Rounding
+     * rules are ignored. If the given {@link IDuration} is <code>null</code>,
+     * the current value of {@link System#currentTimeMillis()} will be used
+     * instead.
+     *
+     * @param duration the duration to be formatted
+     * @return A formatted string of the given {@link IDuration}
+     */
+    public String formatDurationUnrounded(final IDuration duration) {
+        if (Objects.isNull(duration)) {
+            throw new IllegalArgumentException("ERROR: duration provided must not be null.");
+        }
+        final ITimeFormat timeFormat = getFormat(duration.getUnit());
+        return timeFormat.formatUnrounded(duration);
+    }
+
+    /**
+     * Format the given {@link IDuration} {@link List} and return a non-relative
+     * (not decorated with past or future tense) {@link String} for the
+     * approximate duration of its difference between the reference
+     * {@link Date}. Rounding rules are ignored. If the given {@link IDuration}
+     * is <code>null</code>, the current value of
+     * {@link System#currentTimeMillis()} will be used instead.
+     *
+     * @param durations the duration to be formatted
+     * @return A formatted string of the given {@link IDuration}
+     */
+    @SuppressWarnings("UnusedAssignment")
+    public String formatDurationUnrounded(final List<IDuration> durations) {
+        if (CollectionUtils.isEmpty(durations)) {
+            throw new IllegalArgumentException("ERROR: list of durations provided must not be null.");
+        }
+        final StringBuilder result = new StringBuilder();
+        IDuration duration = null;
+        ITimeFormat format = null;
+        for (int i = 0; i < durations.size(); i++) {
+            duration = durations.get(i);
+            format = getFormat(duration.getUnit());
+            result.append(format.formatUnrounded(duration));
+            // Round only the last element 
+            if (i < durations.size() - 1) {
+                result.append(StringUtils.SPACE);
+            }
+        }
+        return result.toString();
     }
 
     /**
@@ -318,7 +572,7 @@ public class DateTimeFormatter {
      */
     public ITimeFormat getFormat(final ITimeUnit unit) {
         if (Objects.isNull(unit)) {
-            throw new IllegalArgumentException("TimeUnit must not be null.");
+            throw new IllegalArgumentException("ERROR: time unit provided must not be null.");
         }
         if (Objects.nonNull(this.units.get(unit))) {
             return this.units.get(unit);
@@ -360,9 +614,33 @@ public class DateTimeFormatter {
      * @return
      */
     public List<ITimeUnit> getUnits() {
-        final List<ITimeUnit> result = new ArrayList<>(this.units.keySet());
-        Collections.sort(result, new TimeUnitComparator());
-        return Collections.unmodifiableList(result);
+        if (CollectionUtils.isEmpty(this.cachedUnits)) {
+            final List<ITimeUnit> result = new ArrayList<>(this.units.keySet());
+            Collections.sort(result, new CUtils.CSortComparator<ITimeUnit>());
+            this.cachedUnits.addAll(Collections.unmodifiableList(result));
+        }
+        return this.cachedUnits;
+    }
+
+    /**
+     * Get the registered {@link TimeUnit} for the given {@link TimeUnit} type
+     * or <code>null</code> if none exists.
+     *
+     * @param <U>
+     * @param unitType
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <U extends ITimeUnit> U getUnit(final Class<? extends U> unitType) {
+        if (Objects.isNull(unitType)) {
+            return null;
+        }
+        for (final ITimeUnit unit : this.units.keySet()) {
+            if (unitType.isAssignableFrom(unit.getClass())) {
+                return (U) unit;
+            }
+        }
+        return null;
     }
 
     /**
@@ -377,11 +655,12 @@ public class DateTimeFormatter {
      */
     public DateTimeFormatter registerUnit(final ITimeUnit unit, final ITimeFormat format) {
         if (Objects.isNull(unit)) {
-            throw new IllegalArgumentException("Unit to register must not be null.");
+            throw new IllegalArgumentException("ERROR: time unit provided must not be null.");
         }
         if (Objects.isNull(format)) {
-            throw new IllegalArgumentException("Format to register must not be null.");
+            throw new IllegalArgumentException("ERROR: time format provided must not be null.");
         }
+        this.cachedUnits.clear();
         this.units.put(unit, format);
         if (unit instanceof ILocaleAware) {
             ((ILocaleAware<?>) unit).setLocale(this.locale);
@@ -402,12 +681,13 @@ public class DateTimeFormatter {
      * @param unitType
      * @return
      */
-    public <U extends TimeUnit> ITimeFormat removeUnit(final Class<U> unitType) {
+    public <U extends ITimeUnit> ITimeFormat removeUnit(final Class<? extends U> unitType) {
         if (Objects.isNull(unitType)) {
             throw new IllegalArgumentException("Unit type to remove must not be null.");
         }
         for (final ITimeUnit unit : this.units.keySet()) {
             if (unitType.isAssignableFrom(unit.getClass())) {
+                this.cachedUnits.clear();
                 return this.units.remove(unit);
             }
         }
@@ -427,6 +707,7 @@ public class DateTimeFormatter {
         if (Objects.isNull(unit)) {
             throw new IllegalArgumentException("Unit to remove must not be null.");
         }
+        this.cachedUnits.clear();
         return this.units.remove(unit);
     }
 
@@ -450,6 +731,9 @@ public class DateTimeFormatter {
      * @return
      */
     public DateTimeFormatter setLocale(final Locale locale) {
+        if (Objects.isNull(locale)) {
+            this.locale = Locale.getDefault();
+        }
         this.locale = locale;
         this.units.keySet().stream().filter((unit) -> (unit instanceof ILocaleAware)).forEach((unit) -> {
             ((ILocaleAware<?>) unit).setLocale(locale);
@@ -472,18 +756,12 @@ public class DateTimeFormatter {
      */
     public List<ITimeUnit> clearUnits() {
         final List<ITimeUnit> result = getUnits();
+        this.cachedUnits.clear();
         this.units.clear();
         return result;
     }
 
-    /**
-     * Default TimeUnit comparator.
-     */
-    public static class TimeUnitComparator extends CUtils.CSortComparator<TimeUnit> {
-
-        @Override
-        public int compare(final TimeUnit first, final TimeUnit last) {
-            return CComparatorUtils.compareTo(first, last);
-        }
+    private Date now() {
+        return GregorianCalendar.getInstance().getTime();
     }
 }

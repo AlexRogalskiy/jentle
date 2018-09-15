@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
+import java.io.Serializable;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -64,7 +65,9 @@ public final class CUtils {
      */
     public static final CUtils.CSortComparator DEFAULT_SORT_COMPARATOR = CUtils.getDefaultSortComparator();
 
-    public static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T> {
+    public static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
+        
+        private static final long serialVersionUID = 1L;
 
         @Override
         public int compare(final T first, final T last) {

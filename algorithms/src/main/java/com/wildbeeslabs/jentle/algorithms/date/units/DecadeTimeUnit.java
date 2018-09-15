@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.date.units;
 
 import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -41,7 +42,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class DecadeTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    public Decade() {
+    public DecadeTimeUnit() {
         setMillisPerUnit(315569259747L);
     }
 

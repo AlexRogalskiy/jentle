@@ -36,9 +36,9 @@ public interface ITimeFormat {
      *
      * @param duration original {@link Duration} instance from which the time string
      * should be decorated.
-     * @return 
+     * @return formatted string
      */
-    public abstract String format(final IDuration duration);
+    abstract String format(final IDuration duration);
 
     /**
      * Given a populated {@link Duration} object. Apply formatting (without
@@ -46,9 +46,9 @@ public interface ITimeFormat {
      *
      * @param duration original {@link Duration} instance from which the time string
      * should be decorated.
-     * @return 
+     * @return formatted string
      */
-    public String formatUnrounded(final IDuration duration);
+    String formatUnrounded(final IDuration duration);
 
     /**
      * Decorate with past or future prefix/suffix (with rounding)
@@ -56,9 +56,9 @@ public interface ITimeFormat {
      * @param duration The original {@link Duration} instance from which the
      * time string should be decorated.
      * @param time The formatted time string.
-     * @return 
+     * @return formatted string
      */
-    public String decorate(final IDuration duration, final String time);
+    String decorate(final IDuration duration, final String time);
 
     /**
      * Decorate with past or future prefix/suffix (without rounding)
@@ -66,7 +66,7 @@ public interface ITimeFormat {
      * @param duration The original {@link Duration} instance from which the
      * time string should be decorated.
      * @param time The formatted time string.
-     * @return 
+     * @return formatted string
      */
-    public String decorateUnrounded(final IDuration duration, final String time);
+    String decorateUnrounded(final IDuration duration, final String time);
 }

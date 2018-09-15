@@ -40,33 +40,29 @@ import lombok.ToString;
 @ToString
 public class Duration implements IDuration {
 
-    @Override
-    public long getQuantity() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    private long quantity;
+    private long delta;
+    private ITimeUnit unit;
 
     @Override
     public long getQuantityRounded(int tolerance) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ITimeUnit getUnit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public long getDelta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long value = Math.abs(this.getQuantity());
+        if (0 != this.getDelta()) {
+            double threshold = Math.abs(((double) this.getDelta() / (double) this.getUnit().getMillisPerUnit()) * 100);
+            if (threshold > tolerance) {
+                value++;
+            }
+        }
+        return value;
     }
 
     @Override
     public boolean isInPast() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.getQuantity() < 0;
     }
 
     @Override
     public boolean isInFuture() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return !this.isInPast();
     }
 }

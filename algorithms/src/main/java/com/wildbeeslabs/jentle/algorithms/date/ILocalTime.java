@@ -71,7 +71,7 @@ public interface ILocalTime {
      * @return current local date
      */
     default LocalDate nowLocalDate() {
-        return nowLocalDateTime().toLocalDate();
+        return this.nowLocalDateTime().toLocalDate();
     }
 
     /**
@@ -80,7 +80,7 @@ public interface ILocalTime {
      * @return current local time
      */
     default LocalTime nowLocalTime() {
-        return nowLocalDateTime().toLocalTime();
+        return this.nowLocalDateTime().toLocalTime();
     }
 
     /**
