@@ -25,10 +25,12 @@ package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -48,8 +50,8 @@ import lombok.ToString;
 public class CDeque<T> extends ACQueue<T> {
 
     @Data
-    @EqualsAndHashCode
-    @ToString
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
     public static class CDequeNode<T> extends ACListNodeExtended<T, CDequeNode<T>> {
 
         public CDequeNode() {
@@ -85,32 +87,47 @@ public class CDeque<T> extends ACQueue<T> {
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.size;
     }
 
     @Override
-    public boolean offer(T e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean offer(final T data) {
+        this.addLast(data);
+        return true;
     }
 
     @Override
     public T poll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            return this.removeFirst();
+        } catch (EmptyQueueException ex) {
+            LOGGER.error(ex.getMessage());
+            return null;
+        }
     }
 
     @Override
     public T peek() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.head.getData();
     }
 
     @Override
     public T head() throws EmptyQueueException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+        }
+        return this.head.getData();
     }
 
     @Override
     public T tail() throws EmptyQueueException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+        }
+        return this.tail.getData();
     }
 
     @Override
@@ -155,104 +172,70 @@ public class CDeque<T> extends ACQueue<T> {
     }
 
     public boolean isEmpty() {
-        return (this.size() == 0);
+        return (0 == this.size());
     }
 
-    public void addFirst(Item item) {
-        validateItem(item);
-
-        if (first == null) {
-            first = new Node();
-            first.item = item;
-
-            if (last == null) {
-                last = first;
+    public void addFirst(final T data) {
+        if (Objects.isNull(this.head)) {
+            this.head = new CDequeNode<>(data);
+            if (Objects.isNull(this.tail)) {
+                this.tail = this.head;
             }
-
         } else {
-            Node oldFirst = first;
-
-            first = new Node();
-            first.next = oldFirst;
-            first.item = item;
-
-            oldFirst.previous = first;
+            final CDequeNode<T> oldFirst = this.head;
+            this.head = new CDequeNode<>(data, oldFirst);
+            oldFirst.setPrevious(this.head);
         }
-
-        size++;
+        this.size++;
     }
 
-    public void addLast(Item item) {
-        validateItem(item);
-
-        if (last == null) {
-            last = new Node();
-            last.item = item;
-
-            if (first == null) {
-                first = last;
+    public void addLast(final T data) {
+        if (Objects.isNull(this.tail)) {
+            this.tail = new CDequeNode<>(data);
+            if (Objects.isNull(this.head)) {
+                this.head = this.tail;
             }
-
         } else {
-            Node oldLast = last;
-
-            last = new Node();
-            last.previous = oldLast;
-            last.item = item;
-
-            oldLast.next = last;
+            final CDequeNode<T> oldLast = this.tail;
+            this.tail = new CDequeNode<>(data, null, oldLast);
+            oldLast.setNext(this.tail);
         }
-
-        size++;
+        this.size++;
     }
 
-    private void validateItem(Item item) {
-        if (item == null) {
-            throw new IllegalArgumentException("Item cannot be null");
+    public T removeFirst() throws EmptyQueueException {
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
-    }
+        final CDequeNode<T> oldFirst = this.head;
+        this.head = oldFirst.getNext();
 
-    public Item removeFirst() {
-        checkNotEmpty();
-
-        Node oldFirst = first;
-        first = oldFirst.next;
-
-        if (first != null) {
-            first.previous = null;
-        } else if (size == 1) {
-            last = null;
+        if (Objects.nonNull(this.head)) {
+            this.head.setPrevious(null);
+        } else if (this.size == 1) {
+            this.tail = null;
         } else {
-            first = last.previous;
+            this.head = this.tail.getPrevious();
         }
-
-        size--;
-
-        return oldFirst.item;
+        this.size--;
+        return oldFirst.getData();
     }
 
-    public Item removeLast() {
-        checkNotEmpty();
+    public T removeLast() throws EmptyQueueException {
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+        }
+        final CDequeNode<T> oldLast = this.tail;
+        this.tail = this.tail.getPrevious();
 
-        Node oldLast = last;
-        last = last.previous;
-
-        if (last != null) {
-            last.next = null;
-        } else if (size == 1) {
-            first = null;
+        if (Objects.nonNull(this.tail)) {
+            this.tail.setNext(null);
+        } else if (this.size == 1) {
+            this.head = null;
         } else {
-            last = first.next;
+            this.tail = this.head.getNext();
         }
-
-        size--;
-
-        return oldLast.item;
-    }
-
-    private void checkNotEmpty() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("The queue is empty");
-        }
+        this.size--;
+        return oldLast.getData();
     }
 }

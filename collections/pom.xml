@@ -21,6 +21,7 @@
     <properties>
         <!--<jentle.algorithms.version>1.0.0</jentle.algorithms.version>-->
         <apache.commons.collections.version>4.1</apache.commons.collections.version>
+        <edu.princeton.cs.version>0.1.0-SNAPSHOT</edu.princeton.cs.version>
     </properties>
   
     <build>
@@ -110,11 +111,17 @@
   
     <dependencies>
         <!-- Jentle algorithms -->
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>com.wildbeeslabs.jentle</groupId>
             <artifactId>jentle-algorithms</artifactId>
             <version>${jentle.algorithms.version}</version>
         </dependency>-->
+        <!-- Princeton Library -->
+        <dependency>
+            <groupId>edu.princeton.cs</groupId>
+            <artifactId>edu.princeton.cs.introcs</artifactId>
+            <version>${edu.princeton.cs.version}</version>
+        </dependency>
         <!-- Apache Commons Collections -->
         <dependency>
             <groupId>org.apache.commons</groupId>

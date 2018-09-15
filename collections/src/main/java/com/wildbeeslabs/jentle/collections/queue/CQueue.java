@@ -50,8 +50,8 @@ import lombok.ToString;
 public class CQueue<T> extends ACQueue<T> {
 
     @Data
-    @EqualsAndHashCode
-    @ToString
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
     public static class CQueueNode<T> extends ACNode<T> {
 
         private CQueueNode<T> next;

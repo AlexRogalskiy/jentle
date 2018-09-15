@@ -21,8 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.wildbeeslabs.jentle.collections.queue;
+
+import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
+import edu.princeton.cs.introcs.StdRandom;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Queue;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,148 +46,153 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class CRandomizedQueue<T> extends ACQueue<T> {
-	
-	private Item[] queue;
-	private int pointer = 0;
-	private int size = 0;
-	private int arraySize = 2;
-    
-	private class QueueIterator implements Iterator<Item>
-	{	
-		private Item[] iteratorQueue;
-		private int iteratorPointer;
-		
-		
-		public QueueIterator()
-		{
-			iteratorPointer = size - 1;
-			iteratorQueue = queue;
-		}
-		
-		public Item next()
-		{
-			if (!hasNext()) {
-				throw new NoSuchElementException("The queue is empty");
-			}
-			
-			int randomPointer = iteratorPointer;
-			
-			if (randomPointer > 0) {
-				randomPointer = StdRandom.uniform(iteratorPointer);
-			}
-			
-			Item item = iteratorQueue[randomPointer];
-			iteratorPointer--;
-			
-			if(randomPointer != iteratorPointer) {
-				iteratorQueue[randomPointer] = iteratorQueue[iteratorPointer];
-			}
-			
-			return item;
-		}
-		
-		public boolean hasNext()
-		{
-			return pointer > -1;
-		}
-		
-		public void remove()
-		{
-			throw new UnsupportedOperationException("Remove operation is not supported");
-		}
-	}
-	
-    public RandomizedQueue()
-    {
-    	queue = (Item[]) new Object[arraySize];
-    }
-    
-    public boolean isEmpty()
-    {
-    	return size == 0;
-    }
-    
-    public int size()
-    {
-    	return size;
-    }
-    
-    public void enqueue(Item item)
-    {
- 	    if (item == null) {
-		    throw new IllegalArgumentException("Item cannot be null");
-	    }
 
- 	    if (pointer >= arraySize) {
- 	    	resizeArray((size + 1) * 2);
- 	    }
- 	    
- 	    queue[pointer] = item;
- 	    pointer++;
-    	size++;
-    }
-    
-    public Item dequeue()
-    {
- 	    if (isEmpty()) {
-		    throw new NoSuchElementException("The queue is empty");
-	    }
- 	    
- 	    int randomNumber = 0;
- 	   
- 	    if (size > 1) {
- 		   randomNumber = StdRandom.uniform(size - 1);
- 	    }
+    private T[] queue;
+    private int pointer = 0;
+    private int size = 0;
+    private int arraySize = 2;
 
- 	    Item returnItem = queue[randomNumber];
- 	   
- 	    pointer--;
- 	    
- 	    if (size != pointer) {
- 	    	queue[randomNumber] = queue[pointer];
- 	    }
-    	
-    	if (size <= arraySize / 4) {
-    		resizeArray(arraySize / 2);
-    	}
-    	
-    	size--;
+    @Override
+    public boolean offer(final T data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-    	return returnItem;
+    @Override
+    public T poll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    private void resizeArray(int newArraySize)
-    {    	
-    	arraySize = newArraySize;
-    	Item[] tempArray = (Item[]) new Object[arraySize];
-    	int tempPointer = 0;
-    	
-    	for (int i = 0; i < size; i++) {
-			tempArray[i] = queue[i];
-			tempPointer++;
-    	}
-    	
-    	queue = tempArray;
-    	pointer = tempPointer;
+
+    @Override
+    public T peek() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public Item sample()
-    {
- 	    if (isEmpty()) {
-		    throw new NoSuchElementException("The queue is empty");
-	    }
- 	    
- 	    int randomNumber = 0;
-  	   
- 	    if (size > 1) {
- 		   randomNumber = StdRandom.uniform(size - 1);
- 	    }
- 	    
-	    return queue[randomNumber];
+
+    @Override
+    public T head() throws EmptyQueueException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public Iterator<Item> iterator()
-    {
-    	return new QueueIterator();
+
+    @Override
+    public T tail() throws EmptyQueueException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean validate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Queue<? extends T> toQueue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<? extends T> toCollection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    protected static class QueueIterator<T> implements Iterator<T> {
+
+        private final T[] iteratorQueue;
+        private int iteratorPointer;
+
+        public QueueIterator(final CRandomizedQueue<? extends T> source) {
+            this.iteratorPointer = source.size() - 1;
+            this.iteratorQueue = (T[]) source.toArray();
+        }
+
+        public T next() {
+            if (!this.hasNext()) {
+                return null;
+            }
+            int randomPointer = this.iteratorPointer;
+            if (randomPointer > 0) {
+                randomPointer = StdRandom.uniform(this.iteratorPointer);
+            }
+            final T data = this.iteratorQueue[randomPointer];
+            this.iteratorPointer--;
+            if (randomPointer != this.iteratorPointer) {
+                this.iteratorQueue[randomPointer] = this.iteratorQueue[this.iteratorPointer];
+            }
+            return data;
+        }
+
+        public boolean hasNext() {
+            return -1 <= this.iteratorPointer;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException("Remove operation is not supported");
+        }
+    }
+
+    public CRandomizedQueue() {
+        this.queue = (T[]) new Object[arraySize];
+    }
+
+    public boolean isEmpty() {
+        return (0 == this.size());
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    public void enqueue(final T data) {
+        if (this.pointer >= this.arraySize) {
+            resizeArray((size + 1) * 2);
+        }
+        this.queue[this.pointer] = data;
+        this.pointer++;
+        this.size++;
+    }
+
+    public T dequeue() throws EmptyQueueException {
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+        }
+        int randomNumber = 0;
+        if (this.size > 1) {
+            randomNumber = StdRandom.uniform(size - 1);
+        }
+        final T returnItem = this.queue[randomNumber];
+        this.pointer--;
+        if (this.size != this.pointer) {
+            this.queue[randomNumber] = this.queue[this.pointer];
+        }
+        if (this.size <= this.arraySize / 4) {
+            this.resizeArray(this.arraySize / 2);
+        }
+        this.size--;
+        return returnItem;
+    }
+
+    private void resizeArray(int newArraySize) {
+        this.arraySize = newArraySize;
+        final T[] tempArray = (T[]) new Object[this.arraySize];
+        int tempPointer = 0;
+        for (int i = 0; i < this.size; i++) {
+            tempArray[i] = this.queue[i];
+            tempPointer++;
+        }
+        this.queue = tempArray;
+        this.pointer = tempPointer;
+    }
+
+    public T sample() throws EmptyQueueException {
+        if (this.isEmpty()) {
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+        }
+        int randomNumber = 0;
+        if (this.size > 1) {
+            randomNumber = StdRandom.uniform(size - 1);
+        }
+        return this.queue[randomNumber];
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new CRandomizedQueue.QueueIterator<>(this);
     }
 }

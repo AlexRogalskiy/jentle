@@ -1299,8 +1299,8 @@ public final class CTree {
     }
 
     @Data
-    @EqualsAndHashCode
-    @ToString
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
     public static class CRankTreeNode<T> extends ACBaseTreeNode<T, CRankTreeNode<T>> {
 
         private int leftSize;

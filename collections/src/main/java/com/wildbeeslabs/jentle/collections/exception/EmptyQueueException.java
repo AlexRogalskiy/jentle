@@ -27,6 +27,7 @@ package com.wildbeeslabs.jentle.collections.exception;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
@@ -37,7 +38,8 @@ import lombok.NoArgsConstructor;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class EmptyQueueException extends Exception {
 
@@ -51,11 +53,6 @@ public class EmptyQueueException extends Exception {
 
     public EmptyQueueException(final String message, final Throwable cause) {
         super(message, cause);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     @Override

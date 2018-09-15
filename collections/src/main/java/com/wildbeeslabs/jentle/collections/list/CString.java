@@ -114,8 +114,8 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
         }
 
         @Data
-        @EqualsAndHashCode
-        @ToString
+        @EqualsAndHashCode(callSuper = true)
+        @ToString(callSuper = true)
         protected static class StringItemNode extends ACListNode<CStringList.StringItem, CStringList.StringItemNode> {
 
             public StringItemNode() {
