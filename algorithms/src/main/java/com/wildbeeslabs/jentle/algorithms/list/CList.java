@@ -30,11 +30,14 @@ import com.wildbeeslabs.jentle.collections.stack.CStack;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 
 import org.apache.log4j.LogManager;
@@ -59,6 +62,7 @@ public final class CList {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
+    @SuppressWarnings("UnusedAssignment")
     public static <T, U extends ACListNode<T, U>> U merge(final U first, final U last, final Comparator<? super T> cmp) {
         U mergedList = null;
         if (Objects.isNull(first)) {
@@ -77,6 +81,7 @@ public final class CList {
         return mergedList;
     }
 
+    @SuppressWarnings("UnusedAssignment")
     public static <T, U extends ACListNode<T, U>> U intersect(final U first, final U last) {
         int length1 = length(first);
         int length2 = length(last);
@@ -290,6 +295,7 @@ public final class CList {
         return (Objects.nonNull(headFirst) && Objects.nonNull(headLast));
     }
 
+    @SuppressWarnings({"null"})
     public static <T, U extends ACListNode<T, U>> U partition(final U node, final T value, final Comparator<? super T> cmp) {
         if (Objects.isNull(node)) {
             return null;
@@ -435,5 +441,16 @@ public final class CList {
             current = current.getNext();
         }
         return count;
+    }
+
+    public static <T extends CharSequence> CharSequence[] getListBy(@NonNull final List<T> list, final Predicate<? super T> predicate) {
+        return list.stream().filter(predicate).toArray(size -> new CharSequence[size]);
+    }
+
+    public static <T> T getFindFirst(@NonNull final List<? extends T> list) {
+        return list.stream()
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
     }
 }

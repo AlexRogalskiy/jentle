@@ -59,7 +59,7 @@ public class BaseResourceProperties extends Properties {
     protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     public <R extends BaseResource> Collection<R> getProperties() {
-        return CConverterUtils.convertToList(this.defaults.values().stream(), item -> (R) item);
+        return CConverterUtils.toList(this.defaults.values().stream(), item -> (R) item);
     }
 
     public <R extends BaseResource> void setProperties(final Map<Object, R> properties) {

@@ -115,7 +115,7 @@ public class BaseResourceBundle extends ListResourceBundle {
     }
 
 //    public Object[][] getContents() {
-//        return this.getProperties().stream().map((item) -> item.toArray()).collect(CConverterUtils.toArray(Object[][]::new));
+//        return this.getProperties().stream().map((item) -> item.toArray()).collect(CCollectionUtils.toArray(Object[][]::new));
 //    }
     public Enumeration<String> getKeys() {
         return (Enumeration<String>) this.resources.getKeys();
