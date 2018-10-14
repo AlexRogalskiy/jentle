@@ -462,4 +462,14 @@ public final class CList {
         }
         return Optional.of(list.get((list.size() - 1) / 2));
     }
+
+    public static <T, U extends ACListNode<T, U>> void removeCycle(final U node, final U head) {
+        U loopNode = node;
+        U it = head;
+        while (loopNode.getNext() != it.getNext()) {
+            it = it.getNext();
+            loopNode = loopNode.getNext();
+        }
+        loopNode.setNext(null);
+    }
 }

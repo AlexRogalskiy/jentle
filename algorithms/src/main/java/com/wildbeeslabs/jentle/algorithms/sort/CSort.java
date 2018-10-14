@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sort;
 
+import com.wildbeeslabs.jentle.algorithms.utils.CArrayUtils;
 import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.list.ACList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
@@ -143,6 +144,11 @@ public final class CSort {
             }
         }
         return -1;
+    }
+
+    public static <T extends Comparable<? super T>> int binarySearch2(final T[] array, final T value, final Comparator<? super T> cmp) {
+        return Arrays.binarySearch(array, value);
+        //return Collections.binarySearch(array, value);
     }
 
     public static <T extends Comparable<? super T>> int binarySearchRecursive(final T[] array, final T value, int low, int high) {
@@ -825,23 +831,48 @@ public final class CSort {
      * arguments.
      * @param <T>
      *
-     * @see best time: O(n) average time: O(n * n) worst time: O(n * n) memory:
-     * in-place stable: true
+     * @see best time: O(n * n) average time: O(n * n) worst time: O(n * n)
+     * memory: in-place stable: true
      */
     public static <T> void bubbleSort(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
-        boolean isSwapHappened = false;
-        for (int outterIndex = 0; outterIndex < array.length; outterIndex++) {
-            isSwapHappened = false;
-            for (int innerIndex = 0; innerIndex < array.length - outterIndex - 1; innerIndex++) {
-                if (Objects.compare(array[innerIndex], array[innerIndex + 1], cmp) > 0) {
-                    swap(array, innerIndex, innerIndex + 1);
-                    isSwapHappened = true;
+        int n = array.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n - i; j++) {
+                if (Objects.compare(array[j - 1], array[j], cmp) > 0) {
+                    CArrayUtils.swap(array, j - 1, j);
                 }
             }
-            if (!isSwapHappened) {
+        }
+    }
+
+    /**
+     * @public @module sort
+     * @param array Input array.
+     * @param cmp Function that defines an alternative sort order. The function
+     * should return a negative, zero, or positive value, depending on the
+     * arguments.
+     * @param <T>
+     *
+     * @see best time: O(n) average time: O(n * n) worst time: O(n * n) memory:
+     * in-place stable: true
+     */
+    public static <T> void optimizedBubbleSort(final T[] array, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(array);
+        int i = 0, n = array.length;
+        boolean swapNeeded = true;
+        while (i < n - 1 && swapNeeded) {
+            swapNeeded = false;
+            for (int j = 1; j < n - i; j++) {
+                if (Objects.compare(array[j - 1], array[j], cmp) > 0) {
+                    CArrayUtils.swap(array, j - 1, j);
+                    swapNeeded = true;
+                }
+            }
+            if (!swapNeeded) {
                 break;
             }
+            i++;
         }
     }
 

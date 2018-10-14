@@ -28,15 +28,30 @@ import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNodeExtended;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jgrapht.DirectedGraph;
+
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.CycleDetector;
+import org.jgrapht.alg.HamiltonianCycle;
+import org.jgrapht.alg.KosarajuStrongConnectivityInspector;
+import org.jgrapht.alg.cycle.HierholzerEulerianCycle;
+import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
+import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.graph.DirectedSubgraph;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 /**
  *
@@ -125,5 +140,39 @@ public final class CGraph {
             }
         }
         return lowestDistanceNode;
+    }
+
+    public static <V, E> GraphPath<V, E> getDijkstraShortestPath(final Graph<V, E> graph, final V source, final V target) {
+        return DijkstraShortestPath.findPathBetween(graph, source, target);
+    }
+
+    public static <V, E> GraphPath<V, E> getBelmanFordShortestPath(final Graph<V, E> graph, final V source, final V target) {
+        return BellmanFordShortestPath.findPathBetween(graph, source, target);
+    }
+
+    public static <V, E> List<DirectedSubgraph<V, E>> getStronglyConnectedSubgraph(final DirectedGraph<V, E> directedGraph) {
+        final StrongConnectivityAlgorithm<V, E> scAlg = new KosarajuStrongConnectivityInspector<>(directedGraph);
+        final List<DirectedSubgraph<V, E>> stronglyConnectedSubgraphs = scAlg.stronglyConnectedSubgraphs();
+        return stronglyConnectedSubgraphs;
+    }
+
+    public static <V, E> GraphPath<V, E> getEluerianCycle(final Graph<V, E> graph) {
+        final HierholzerEulerianCycle eulerianCycle = new HierholzerEulerianCycle<>();
+        if (eulerianCycle.isEulerian(graph)) {
+            return eulerianCycle.getEulerianCycle(graph);
+        }
+        return null;
+    }
+
+    public static <V, E> List<V> getHamiltonianCycle(final SimpleWeightedGraph<V, E> graph) {
+        return HamiltonianCycle.getApproximateOptimalForCompleteGraph(graph);
+    }
+
+    public static <V, E> Set<V> getCycles(final DirectedGraph<V, E> directedGraph) {
+        final CycleDetector<V, E> cycleDetector = new CycleDetector<>(directedGraph);
+        if (cycleDetector.detectCycles()) {
+            return cycleDetector.findCycles();
+        }
+        return Collections.EMPTY_SET;
     }
 }
