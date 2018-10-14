@@ -122,11 +122,19 @@ public class CRandom {
         return stream.boxed().limit(limit).collect(Collectors.toList());
     }
 
+    public static long generateRandomLong(long topLimit) {
+        return generateRandomLong(0, topLimit);
+    }
+
     public static long generateRandomLong(long bottomLimit, long topLimit) {
         assert (bottomLimit <= topLimit);
         return (bottomLimit + (long) (CRandom.DEFAULT_RANDOM_INSTANCE.nextDouble() * (topLimit - bottomLimit)));
         //ThreadLocalRandom.current().nextLong(bottomLimit, topLimit);
         //new RandomDataGenerator().nextLong(bottomLimit, topLimit);
+    }
+
+    public static int generateRandomInt(int topLimit) {
+        return generateRandomInt(0, topLimit);
     }
 
     public static int generateRandomInt(int bottomLimit, int topLimit) {
@@ -141,11 +149,19 @@ public class CRandom {
         return stream.boxed().limit(limit).collect(Collectors.toList());
     }
 
+    public static float generateRandomFloat(float topLimit) {
+        return generateRandomFloat(0f, topLimit);
+    }
+
     public static float generateRandomFloat(float bottomLimit, float topLimit) {
         assert (bottomLimit <= topLimit);
         return (bottomLimit + CRandom.DEFAULT_RANDOM_INSTANCE.nextFloat() * (topLimit - bottomLimit));
         //float randomFloat = new RandomDataGenerator().getRandomGenerator().nextFloat();
         //bottomLimit + randomFloat * (upLimit - bottomLimit);
+    }
+
+    public static double generateRandomDouble(double topLimit) {
+        return generateRandomDouble(0d, topLimit);
     }
 
     public static double generateRandomDouble(double bottomLimit, double topLimit) {

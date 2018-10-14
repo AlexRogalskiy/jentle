@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
+package com.wildbeeslas.jentle.algorithms.sudoku;
 
-import java.io.Serializable;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom column node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class CColumnNode extends CDancingNode {
 
-    protected T data;
+    protected int size;
+    protected String name;
+
+    @SuppressWarnings("LeakingThisInConstructor")
+    CColumnNode(final String name) {
+        super();
+        this.size = 0;
+        this.name = name;
+        this.C = this;
+    }
+
+    void cover() {
+        unlinkLR();
+        for (CDancingNode i = this.D; i != this; i = i.D) {
+            for (CDancingNode j = i.R; j != i; j = j.R) {
+                j.unlinkUD();
+                j.C.size--;
+            }
+        }
+    }
+
+    void uncover() {
+        for (CDancingNode i = this.U; i != this; i = i.U) {
+            for (CDancingNode j = i.L; j != i; j = j.L) {
+                j.C.size++;
+                j.relinkUD();
+            }
+        }
+        relinkLR();
+    }
 }

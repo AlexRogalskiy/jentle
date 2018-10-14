@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
-
-import java.io.Serializable;
+package com.wildbeeslabs.jentle.algorithms.tictactoe;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom tic-tac-toe position model
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
+@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+public class CPosition {
 
-    protected T data;
+    private int x;
+    private int y;
 }

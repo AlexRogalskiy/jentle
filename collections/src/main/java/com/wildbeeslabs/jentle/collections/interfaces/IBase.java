@@ -33,7 +33,6 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <U>
  */
 public interface IBase<T> extends Serializable, Cloneable, Iterable<T> {//U extends ACNode<T>
 

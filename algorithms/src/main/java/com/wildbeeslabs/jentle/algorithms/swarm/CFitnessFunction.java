@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
-
-import java.io.Serializable;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+package com.wildbeeslabs.jentle.algorithms.swarm;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom fitness function declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
-@Data
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+public interface CFitnessFunction {
 
-    protected T data;
+    /**
+     * Returns the fitness of a particle given its position.
+     *
+     * @param particlePosition the position of the particle
+     * @return the fitness of the particle
+     */
+    public double getFitness(long[] particlePosition);
+
 }

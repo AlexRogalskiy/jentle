@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,70 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
+package com.wildbeeslas.jentle.algorithms.sudoku;
 
-import java.io.Serializable;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom column node implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+public class CDancingNode {
 
-    protected T data;
+    protected CDancingNode L, R, U, D;
+    protected CColumnNode C;
+
+    CDancingNode hookDown(final CDancingNode node) {
+        assert (this.C == node.C);
+        node.D = this.D;
+        node.D.U = node;
+        node.U = this;
+        this.D = node;
+        return node;
+    }
+
+    CDancingNode hookRight(final CDancingNode node) {
+        node.R = this.R;
+        node.R.L = node;
+        node.L = this;
+        this.R = node;
+        return node;
+    }
+
+    void unlinkLR() {
+        this.L.R = this.R;
+        this.R.L = this.L;
+    }
+
+    void relinkLR() {
+        this.L.R = this.R.L = this;
+    }
+
+    void unlinkUD() {
+        this.U.D = this.D;
+        this.D.U = this.U;
+    }
+
+    void relinkUD() {
+        this.U.D = this.D.U = this;
+    }
+
+    @SuppressWarnings("LeakingThisInConstructor")
+    CDancingNode() {
+        this.L = this.R = this.U = this.D = this;
+    }
+
+    CDancingNode(final CColumnNode c) {
+        this();
+        this.C = c;
+    }
 }

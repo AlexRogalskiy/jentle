@@ -991,10 +991,10 @@ public final class CMisc {
         String romanNumeral = input.toUpperCase();
         int result = 0;
 
-        final List<RomanNumeral> romanNumerals = RomanNumeral.getSortedValues(Comparator.comparing((RomanNumeral e) -> e.getValue(), Comparator.reverseOrder()));
+        final List<CRomanNumeral> romanNumerals = CRomanNumeral.getSortedValues(Comparator.comparing((CRomanNumeral e) -> e.getValue(), Comparator.reverseOrder()));
         int i = 0;
         while ((romanNumeral.length() > 0) && (i < romanNumerals.size())) {
-            final RomanNumeral symbol = romanNumerals.get(i);
+            final CRomanNumeral symbol = romanNumerals.get(i);
             if (romanNumeral.startsWith(symbol.name())) {
                 result += symbol.getValue();
                 romanNumeral = romanNumeral.substring(symbol.name().length());
@@ -1014,12 +1014,12 @@ public final class CMisc {
             throw new IllegalArgumentException(number + " is not in range (0,4000]");
         }
 
-        final List<RomanNumeral> romanNumerals = RomanNumeral.getSortedValues(Comparator.comparing(e -> e.getValue(), Comparator.reverseOrder()));
+        final List<CRomanNumeral> romanNumerals = CRomanNumeral.getSortedValues(Comparator.comparing(e -> e.getValue(), Comparator.reverseOrder()));
 
         int i = 0;
         final StringBuilder sb = new StringBuilder();
         while ((number > 0) && (i < romanNumerals.size())) {
-            final RomanNumeral currentSymbol = romanNumerals.get(i);
+            final CRomanNumeral currentSymbol = romanNumerals.get(i);
             if (currentSymbol.getValue() <= number) {
                 sb.append(currentSymbol.name());
                 number -= currentSymbol.getValue();

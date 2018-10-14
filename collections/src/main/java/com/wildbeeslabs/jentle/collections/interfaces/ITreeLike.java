@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,63 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
+package com.wildbeeslabs.jentle.collections.interfaces;
 
-import java.io.Serializable;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom tree-like interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <U>
  */
-@Data
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+public interface ITreeLike<T, U extends ACNode<T>> extends IBase<T> {
 
-    protected T data;
+    /**
+     * Get the size of the tree.
+     *
+     * @return size of the tree.
+     */
+    int size();
+
+    /**
+     * Check if the list contains values.
+     *
+     * @return boolean (true - if the list is empty, false - otherwise)
+     */
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
+
+    /**
+     * Add new root node
+     *
+     * @param value - new root node
+     */
+    void setRoot(final Optional<? extends T> value);
+
+    /**
+     * Returns current root node
+     *
+     * @return - current root node
+     */
+    U getRoot();
+
+    /**
+     * Checks if current node is root
+     *
+     * @param node - current node
+     * @return true - if current node is root, false - otherwise
+     */
+    default boolean isRoot(final U node) {
+        Objects.requireNonNull(node);
+        return (this.getRoot() == node);
+    }
 }

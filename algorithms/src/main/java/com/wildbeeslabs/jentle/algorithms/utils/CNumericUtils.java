@@ -504,8 +504,8 @@ public final class CNumericUtils {
         return prime.longValue();
     }
 
-    public static long getLowerPrime(long number) {
-        final BigInteger prime = BigInteger.probablePrime(CBitwise.getNumberOfBits(number) - 1, new Random());
+    public static long getLowerPrime(long m) {
+        final BigInteger prime = BigInteger.probablePrime(CBitwise.getNumberOfBits(m) - 1, new Random());
         return prime.longValue();
     }
 

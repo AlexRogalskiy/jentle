@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
+package com.wildbeeslabs.jentle.algorithms.tictactoe;
 
-import java.io.Serializable;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom UCT helper class
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
-@Data
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+public class CUct {
 
-    protected T data;
+    public static double uctValue(int totalVisit, double nodeWinScore, int nodeVisit) {
+        if (nodeVisit == 0) {
+            return Integer.MAX_VALUE;
+        }
+        return (nodeWinScore / (double) nodeVisit) + 1.41 * Math.sqrt(Math.log(totalVisit) / (double) nodeVisit);
+    }
+
+    public static <T extends CState, U extends ACTreeNode<T, U>> U findBestNodeWithUCT(final U node) {
+        int parentVisit = node.getData().getVisitCount();
+        return Collections.max(node.getChilds(), Comparator.comparing(c -> uctValue(parentVisit, c.getData().getWinScore(), c.getData().getVisitCount())));
+    }
 }

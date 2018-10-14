@@ -32,16 +32,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.Stack;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -54,47 +50,18 @@ import org.apache.log4j.Logger;
  * @param <U>
  */
 @Data
-@EqualsAndHashCode
-@ToString
-public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements IBaseTree<T, U> {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> extends ACTreeLike<T, U> implements IBaseTree<T, U> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
-
-    protected U root;
-    //protected int size;
-    protected final Comparator<? super T> cmp;
-
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ACBaseTree(final U root, final Comparator<? super T> cmp) {
-        this.root = root;
-        this.cmp = cmp;
-        //this.size = this.nodeSize(this.root);
+        super(root, cmp);
     }
 
     @Override
     public int size() {
         //return (Objects.isNull(this.root)) ? 0 : this.size;
         return this.nodeSize(this.getRoot());
-    }
-
-    @Override
-    public void setRoot(final Optional<? extends T> value) {
-        this.setRoot(this.createTreeNode(value));
-    }
-
-    protected void setRoot(final U node) {
-        this.root = node;
-    }
-
-    @Override
-    public U getRoot() {
-//        if (this.isEmpty()) {
-//            return null;
-//        }
-        return this.root;
     }
 
     public boolean isBalanced(final ACBaseTreeNode<T, U> root) {
@@ -261,10 +228,4 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> implements I
     public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    protected Logger getLogger() {
-        return this.LOGGER;
-    }
-
-    protected abstract U createTreeNode(final Optional<? extends T> value);
 }

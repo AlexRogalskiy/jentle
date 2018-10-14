@@ -26,7 +26,6 @@ package com.wildbeeslabs.jentle.collections.interfaces;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  *
@@ -38,48 +37,7 @@ import java.util.Optional;
  * @param <T>
  * @param <U>
  */
-public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends IBase<T> {
-
-    /**
-     * Get the size of the tree.
-     *
-     * @return size of the tree.
-     */
-    int size();
-
-    /**
-     * Check if the list contains values.
-     *
-     * @return boolean (true - if the list is empty, false - otherwise)
-     */
-    default boolean isEmpty() {
-        return (0 == this.size());
-    }
-
-    /**
-     * Add new root node
-     *
-     * @param value - new root node
-     */
-    void setRoot(final Optional<? extends T> value);
-
-    /**
-     * Returns current root node
-     *
-     * @return - current root node
-     */
-    U getRoot();
-
-    /**
-     * Checks if current node is root
-     *
-     * @param node - current node
-     * @return true - if current node is root, false - otherwise
-     */
-    default boolean isRoot(final U node) {
-        Objects.requireNonNull(node);
-        return (this.getRoot() == node);
-    }
+public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends ITreeLike<T, U> {
 
     /**
      * Checks if current node has left child

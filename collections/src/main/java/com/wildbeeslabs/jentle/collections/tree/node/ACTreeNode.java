@@ -28,6 +28,7 @@ import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +63,7 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
     }
 
     public ACTreeNode() {
-        this(null);
+        this(null, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
     public ACTreeNode(final T data) {
@@ -80,7 +81,11 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
         this.comparator = comparator;
     }
 
-    public void copy(final U node) {
+    public ACTreeNode(final U node) {
+        this.copy(node);
+    }
+
+    protected void copy(final U node) {
         Objects.requireNonNull(node);
         this.comparator = node.getComparator();
         this.parent = node.getParent();
@@ -105,6 +110,12 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
         }
     }
 
+    public void addChild(final U parent, final U child) {
+        if (Objects.nonNull(parent)) {
+            parent.getChilds().add(child);
+        }
+    }
+
     public void removeChild(final U child) {
         if (Objects.nonNull(child)) {
             this.childs.remove(child);
@@ -114,5 +125,13 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
     public U getRandomChild() {
         int selectRandom = (int) (Math.random() * ((this.childs.size() - 1) + 1));
         return this.childs.get(selectRandom);
+    }
+
+    public U getMaxChild() {
+        return Collections.max(this.childs, Comparator.comparing(node -> node.data, this.comparator));
+    }
+
+    public U getMinChild() {
+        return Collections.min(this.childs, Comparator.comparing(node -> node.data, this.comparator));
     }
 }

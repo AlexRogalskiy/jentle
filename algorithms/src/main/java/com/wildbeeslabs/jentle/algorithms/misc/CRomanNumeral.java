@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
+package com.wildbeeslabs.jentle.algorithms.misc;
 
-import java.io.Serializable;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
- * Custom abstract node implementation
+ * Custom roman numeral implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
-@Data
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+public enum CRomanNumeral {
 
-    protected T data;
+    I(1), IV(4), V(5), IX(9), X(10),
+    XL(40), L(50), XC(90), C(100),
+    CD(400), D(500), CM(900), M(1000);
+
+    private final int value;
+
+    CRomanNumeral(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return this.value;
+    }
+
+    public static List<CRomanNumeral> getSortedValues(final Comparator<? super CRomanNumeral> comparator) {
+        return Arrays.stream(values())
+                .sorted(comparator)
+                .collect(Collectors.toList());
+    }
 }

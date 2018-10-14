@@ -21,40 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.misc;
+package com.wildbeeslabs.jentle.algorithms.swarm;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom roman-numeral implementation
+ * Custom swarm model
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public enum RomanNumeral {
+@Data
+@EqualsAndHashCode
+@ToString
+public class CParticle {
 
-    I(1), IV(4), V(5), IX(9), X(10),
-    XL(40), L(50), XC(90), C(100),
-    CD(400), D(500), CM(900), M(1000);
+    /**
+     * The current position of this particle.
+     */
+    private long[] position;
 
-    private final int value;
+    /**
+     * The speed of this particle.
+     */
+    private long[] speed;
 
-    RomanNumeral(int value) {
-        this.value = value;
-    }
+    /**
+     * The fitness of this particle for the current position.
+     */
+    private double fitness;
 
-    public int getValue() {
-        return this.value;
-    }
+    /**
+     * The best position found by this particle.
+     */
+    private long[] bestPosition;
 
-    public static List<RomanNumeral> getSortedValues(final Comparator<? super RomanNumeral> comparator) {
-        return Arrays.stream(values())
-                .sorted(comparator)
-                .collect(Collectors.toList());
+    /**
+     * The best fitness found by this particle.
+     */
+    private double bestFitness = Double.NEGATIVE_INFINITY;
+
+    /**
+     * Instantiates a new Particle.
+     *
+     * @param initialPosition the initial {@link #position}
+     * @param initialSpeed the initial {@link #speed}
+     */
+    public CParticle(long[] initialPosition, long[] initialSpeed) {
+        this.position = initialPosition;
+        this.speed = initialSpeed;
     }
 }
