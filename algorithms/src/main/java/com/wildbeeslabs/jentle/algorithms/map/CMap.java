@@ -63,18 +63,32 @@ public final class CMap {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
-    public <K, V extends Comparable<V>> V getMaxValue(final Map<K, V> map, final Comparator<? super V> comparator) {
-        Optional<Entry<K, V>> maxEntry = map.entrySet()
+    public <K, V extends Comparable<V>> Entry<K, V> getMaxValue(final Map<K, V> map, final Comparator<? super V> comparator) {
+        Optional<Entry<K, V>> maxValue = map.entrySet()
                 .stream()
                 .max(Map.Entry.comparingByValue(comparator));
-        return maxEntry.get().getValue();
+        return maxValue.orElse(null);
     }
 
-    public <K extends Comparable<K>, V> V getMaxKey(final Map<K, V> map, final Comparator<? super K> comparator) {
-        Optional<Entry<K, V>> maxEntry = map.entrySet()
+    public <K, V extends Comparable<V>> Entry<K, V> getMinValue(final Map<K, V> map, final Comparator<? super V> comparator) {
+        Optional<Entry<K, V>> minValue = map.entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue(comparator));
+        return minValue.orElse(null);
+    }
+
+    public <K extends Comparable<K>, V> Entry<K, V> getMaxKey(final Map<K, V> map, final Comparator<? super K> comparator) {
+        Optional<Entry<K, V>> maxKey = map.entrySet()
                 .stream()
                 .max(Map.Entry.comparingByKey(comparator));
-        return maxEntry.get().getValue();
+        return maxKey.orElse(null);
+    }
+
+    public <K extends Comparable<K>, V> Entry<K, V> getMinKey(final Map<K, V> map, final Comparator<? super K> comparator) {
+        Optional<Entry<K, V>> minKey = map.entrySet()
+                .stream()
+                .min(Map.Entry.comparingByKey(comparator));
+        return minKey.orElse(null);
     }
 
     public static <K, V> String join(@NonNull final Map<K, V> map, final String keyValueDelimiter, final String delimiter) {

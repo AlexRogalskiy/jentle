@@ -55,7 +55,10 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  *
@@ -214,9 +217,9 @@ public final class CNumericUtils {
     public static boolean isApproxEqual(double d1, double d2) {
         return CNumericUtils.isApproxEqual(d1, d1, .001);
     }
-    
+
     public static boolean isApproxEqual(double d1, double d2, double epsilon) {
-        assert(epsilon > 0);
+        assert (epsilon > 0);
         if (Math.abs(d1 - d2) < epsilon) {
             return true;
         }
@@ -363,7 +366,7 @@ public final class CNumericUtils {
         }
         return true;
     }
-    
+
     public static int lcm(int a, int b) {
         return (a * b) / gcd(a, b);
     }
@@ -689,6 +692,9 @@ public final class CNumericUtils {
         return null;
     }
 
+    @Data
+    @EqualsAndHashCode
+    @ToString
     public static class Averager implements IntConsumer {
 
         private int total = 0;

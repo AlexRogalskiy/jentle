@@ -172,6 +172,7 @@ public final class CSort {
      * @param <T>
      *
      * @see average - O(n * log(n)) /worst - O(n * n) / memory - O(log(n))
+     * memory: in-place stable: false
      */
     public static <T extends Comparable<? super T>> void quickSort(final T[] array) {
         Objects.requireNonNull(array);
@@ -187,6 +188,7 @@ public final class CSort {
      * @param <T>
      *
      * @see average - O(n * log(n)) /worst - O(n * n) / memory - O(log(n))
+     * memory: in-place stable: false
      */
     public static <T extends Comparable<? super T>> void quickSort(final T[] array, int left, int right) {
         CSort.quickSort(array, left, right, CUtils.<T>getDefaultSortComparator());
@@ -203,6 +205,7 @@ public final class CSort {
      * @param <T>
      *
      * @see average - O(n * log(n)) /worst - O(n * n) / memory - O(log(n))
+     * memory: in-place stable: false
      */
     public static <T> void quickSort(final T[] array, int left, int right, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
@@ -461,7 +464,9 @@ public final class CSort {
      * @param <T>
      *
      * @see best time: O(n * log(n)) average time: O(n * log(n)) worst time: O(n
-     * * log(n)) memory: O(n) stable: false
+     * * log(n)) memory: O(n) stable: false complexity: T(n) = 2T(n/2) + O(n),
+     * where 2T(n/2) - the time required to sort the sub-arrays, O(n) - the time
+     * to merge the entire array.
      */
     public static <T extends Comparable<? super T>> void mergeSort(final T[] array) {
         CSort.mergeSort(array, CUtils.<T>getDefaultSortComparator());

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,39 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.list.node;
+package com.wildbeeslabs.jentle.algorithms.misc;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
- * Custom abstract list extended node implementation
+ * Custom roman-numeral implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class ACListNodeExtended<T, E extends ACListNode<T, E>> extends ACListNode<T, E> {
+public enum RomanNumeral {
 
-    protected E previous;
+    I(1), IV(4), V(5), IX(9), X(10),
+    XL(40), L(50), XC(90), C(100),
+    CD(400), D(500), CM(900), M(1000);
 
-    public ACListNodeExtended() {
-        this(null);
+    private final int value;
+
+    RomanNumeral(int value) {
+        this.value = value;
     }
 
-    public ACListNodeExtended(final T data) {
-        this(data, null, null);
+    public int getValue() {
+        return this.value;
     }
 
-    public ACListNodeExtended(final T data, final E next, final E previous) {
-        super(data, next);
-        this.previous = previous;
+    public static List<RomanNumeral> getSortedValues(final Comparator<? super RomanNumeral> comparator) {
+        return Arrays.stream(values())
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 }

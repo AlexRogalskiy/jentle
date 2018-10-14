@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.random;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CDigest;
+import com.wildbeeslabs.jentle.algorithms.utils.CDigestUtils;
 
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -77,7 +77,7 @@ public class CRandomId {
             seed ^= update;
         }
         this.random.setSeed(seed);
-        this.digest = CDigest.getDigest(algorithm);
+        this.digest = CDigestUtils.getDigest(algorithm);
     }
 
     /**

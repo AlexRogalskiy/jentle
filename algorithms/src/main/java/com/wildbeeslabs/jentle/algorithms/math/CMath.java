@@ -23,8 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.math;
 
+import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -232,5 +244,283 @@ public final class CMath {
             y++;
         }
         return y;
+    }
+
+    public double percentage(double obtained, double total) {
+        return obtained * 100 / total;
+    }
+
+    public static long roundByToNearestHundred(double input) {
+        long i = (long) Math.ceil(input);
+        return ((i + 99) / 100) * 100;
+    }
+
+    public static Optional<Point> calculateIntersectionPoint(double m1, double b1, double m2, double b2) {
+        if (Double.compare(m1, m2) == 0) {
+            return Optional.empty();
+        }
+        double x = (b2 - b1) / (m1 - m2);
+        double y = m1 * x + b1;
+
+        return Optional.of(Point.of(x, y));
+    }
+
+    public double calculateDistanceBetweenPoints(double x1, double y1, double x2, double y2) {
+        return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+        //return Point2D.distance(x1, y1, x2, y2);
+        //double ac = Math.abs(y2 - y1);
+        //double cb = Math.abs(x2 - x1);
+        //return Math.hypot(ac, cb);
+    }
+
+    public static <T extends Point> T intersection(final T start1, final T end1, final T start2, final T end2) {
+        if (start1.getX() > end1.getX()) {
+            swap(start1, end1);
+        }
+        if (start2.getX() > end2.getX()) {
+            swap(start2, end2);
+        }
+        if (start1.getX() > start2.getX()) {
+            swap(start1, start2);
+            swap(end1, end2);
+        }
+        final Line<T> line1 = new Line<>(start1, end1);
+        final Line<T> line2 = new Line<>(start2, end2);
+        if (line1.getSlope() == line2.getSlope()) {
+            if (line1.getYIntercept() == line2.getYIntercept() && isBetween(start1, start2, end2)) {
+                return start2;
+            }
+            return null;
+        }
+        double x = (line2.getYIntercept() - line1.getYIntercept()) / (line1.getSlope() - line2.getSlope());
+        double y = x * line1.getSlope() + line1.getYIntercept();
+        final Point intersection = Point.of(x, y);
+        if (isBetween(start1, intersection, end1) && isBetween(start2, intersection, end2)) {
+            return (T) intersection;
+        }
+        return null;
+    }
+
+    private static boolean isBetween(double start, double middle, double end) {
+        if (start > end) {
+            return (end <= middle && middle <= start);
+        }
+        return (start <= middle && middle <= end);
+    }
+
+    private static <T extends Point> boolean isBetween(final T start, final T middle, final T end) {
+        return (isBetween(start.getX(), middle.getX(), end.getX()) && isBetween(start.getY(), middle.getY(), end.getY()));
+    }
+
+    private static <T extends Point> void swap(final T first, final T last) {
+        double tempX = first.getX();
+        double tempY = first.getY();
+        first.setLocation(last.getX(), last.getY());
+        last.setLocation(tempX, tempY);
+    }
+
+    public static <T extends Point> Line<T> findBestLine(final T[] points) {
+        final CHashMapList<Double, Line<T>> linesBySlope = getListOfLines(points);
+        return getBestLine(linesBySlope);
+    }
+
+    private static <T extends Point> CHashMapList<Double, Line<T>> getListOfLines(final T[] points) {
+        final CHashMapList<Double, Line<T>> linesBySlope = new CHashMapList<>();
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                final Line<T> line = new Line<>(points[i], points[j]);
+                double key = Line.floorToNearestEpsilon(line.slope);
+                linesBySlope.put(key, line);
+            }
+        }
+        return linesBySlope;
+    }
+
+    private static <T extends Point> Line<T> getBestLine(final CHashMapList<Double, Line<T>> linesBySlope) {
+        Line<T> bestLine = null;
+        int bestCount = 0;
+        final Set<Double> slopes = linesBySlope.keySet();
+        for (final Double slope : slopes) {
+            final List<Line<T>> lines = linesBySlope.get(slope);
+            for (final Line<T> line : lines) {
+                int count = countEquivalentLines(linesBySlope, line);
+                if (count > bestCount) {
+                    bestLine = line;
+                    bestCount = count;
+                }
+            }
+        }
+        return bestLine;
+    }
+
+    private static <T extends Point> int countEquivalentLines(final CHashMapList<Double, Line<T>> linesBySlope, final Line<T> line) {
+        double key = Line.floorToNearestEpsilon(line.slope);
+        int count = countEquivalentLines(linesBySlope.get(key), line);
+        count += countEquivalentLines(linesBySlope.get(key - Line.epsilon), line);
+        count += countEquivalentLines(linesBySlope.get(key + Line.epsilon), line);
+        return count;
+    }
+
+    private static <T extends Point> int countEquivalentLines(final List<Line<T>> lines, final Line<T> line) {
+        if (Objects.isNull(lines)) {
+            return 0;
+        }
+        int count = 0;
+        count = lines.stream().filter((parallelLine) -> (parallelLine.isEquivalent(line))).map((item) -> 1).reduce(count, Integer::sum);
+        return count;
+    }
+
+    @Data
+    @AllArgsConstructor(staticName = "of")
+    @EqualsAndHashCode
+    @ToString
+    public static class Point {
+
+        private double x;
+        private double y;
+
+        public void setLocation(final Point point2) {
+            this.setLocation(point2.x, point2.y);
+        }
+
+        public void setLocation(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    @Data
+    @NoArgsConstructor
+    @EqualsAndHashCode
+    @ToString
+    public static class Line<T extends Point> {
+
+        private static final double epsilon = 0.0001;
+        private double slope;
+        private double yIntercept;
+        private boolean infiniteSlope = false;
+
+        public Line(final T start, final T end) {
+            if (Math.abs(start.getX() - end.getY()) > Line.epsilon) {
+                double deltaY = start.getY() - end.getY();
+                double deltaX = start.getX() - end.getX();
+                this.slope = deltaY / deltaX;
+                this.yIntercept = (start.getY() - this.slope * start.getX());
+            } else {
+                this.infiniteSlope = true;
+                this.yIntercept = start.getX();
+            }
+        }
+
+        public void setLocation(final Line<T> line2) {
+            this.slope = line2.slope;
+            this.yIntercept = line2.yIntercept;
+        }
+
+        public static double floorToNearestEpsilon(double value) {
+            int res = (int) (value / Line.epsilon);
+            return ((double) res) * Line.epsilon;
+        }
+
+        public boolean isEquivalent(final Line<T> line) {
+            return isEquivalent(line.slope, this.slope)
+                    && isEquivalent(line.yIntercept, this.yIntercept)
+                    && (line.infiniteSlope = this.infiniteSlope);
+        }
+
+        private boolean isEquivalent(double a, double b) {
+            return (Math.abs(a - b) < Line.epsilon);
+        }
+    }
+
+    @Data
+    @NoArgsConstructor
+    @EqualsAndHashCode
+    @ToString
+    public static class Square<T extends Point> {
+
+        private double left;
+        private double right;
+        private double top;
+        private double bottom;
+        private double size;
+
+        public Square(double left, double top, double right, double bottom) {
+            this.left = left;
+            this.top = top;
+            this.right = right;
+            this.bottom = bottom;
+        }
+
+        public T middle() {
+            return (T) Point.of((this.left + this.right) / 2.0, (this.top + this.bottom) / 2.0);
+        }
+
+        @SuppressWarnings("UnusedAssignment")
+        public T extend(final T mid1, T mid2, double size) {
+            double xdir = mid1.getX() < mid2.getX() ? -1 : 1;
+            double ydir = mid1.getY() < mid2.getY() ? -1 : 1;
+            if (mid1.getX() == mid2.getX()) {
+                return (T) new Point(mid1.getX(), mid1.getY() + ydir * size / 2.0);
+            }
+
+            double slope = (mid1.getY() - mid2.getY()) / (mid1.getX() - mid2.getX());
+            double x1 = 0;
+            double y1 = 0;
+            if (Math.abs(slope) == 1) {
+                x1 = mid1.getX() + xdir * size / 2.0;
+                y1 = mid1.getY() + ydir * size / 2.0;
+            } else if (Math.abs(slope) < 1) {
+                x1 = mid1.getX() + xdir * size / 2.0;
+                y1 = slope * (x1 - mid1.getX()) + mid1.getY();
+            } else {
+                y1 = mid1.getY() + ydir * size / 2.0;
+                x1 = (y1 - mid1.getY()) / slope + mid1.getX();
+            }
+            return (T) new Point(x1, y1);
+        }
+
+        public Line<T> cut(final Square<T> other) {
+            final T p1 = extend(this.middle(), other.middle(), this.size);
+            final T p2 = extend(this.middle(), other.middle(), -1 * this.size);
+            final T p3 = extend(other.middle(), this.middle(), other.size);
+            final T p4 = extend(other.middle(), this.middle(), -1 * other.size);
+
+            T start = p1;
+            T end = p1;
+            final List<T> points = Arrays.asList(p2, p3, p4);
+            for (final T point : points) {
+                if (point.getX() < start.getX() || (point.getX() == start.getX() && point.getY() < start.getY())) {
+                    start = point;
+                } else if (point.getX() > end.getX() || (point.getX() == end.getX() && point.getY() > end.getY())) {
+                    end = point;
+                }
+            }
+            return new Line<>(start, end);
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode
+    @ToString
+    public static class Rectangle<T extends Point> {
+
+        private final T topRight;
+        private final T bottomLeft;
+
+        public Rectangle(final T topRight, final T bottomLeft) {
+            this.topRight = topRight;
+            this.bottomLeft = bottomLeft;
+        }
+
+        public boolean isOverlapping(final Rectangle<T> other) {
+            if (this.topRight.getY() < other.bottomLeft.getY() || this.bottomLeft.getY() > other.topRight.getY()) {
+                return false;
+            }
+            if (this.topRight.getX() < other.bottomLeft.getX() || this.bottomLeft.getX() > other.topRight.getX()) {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -23,7 +23,11 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.codepoetics.protonpack.Indexed;
+import com.codepoetics.protonpack.StreamUtils;
+
 import com.wildbeeslabs.jentle.algorithms.list.CList;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +40,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -94,6 +100,48 @@ public final class CCollectionUtils {
 
     protected static <T> Optional<T> getMinMaxBy(@NonNull final Stream<? extends T> stream, final Collector<T, ?, Optional<T>> collector) {
         return stream.collect(collector);
+    }
+
+    //(currentList, nextInt) -> currentList.stream().mapToInt(Integer::intValue).sum() + nextInt <= 5
+    public static <T> Stream<List<T>> aggregateBy(@NonNull final Stream<T> stream, final BiPredicate<List<T>, T> predicate) {
+        return StreamUtils.aggregateOnListCondition(stream, predicate);
+    }
+
+    // i -> (i < 100) ? Optional.of(i * i) : Optional.empty()
+    public static <T> Stream<T> unfold(@NonNull final T start, final Function<T, Optional<T>> generator) {
+        return StreamUtils.unfold(start, generator);
+    }
+
+    public static <T> Collection<T> skipUntil(@NonNull final Stream<T> stream, final Predicate<T> predicate) {
+        return StreamUtils.skipUntil(stream, predicate).collect(Collectors.toList());
+    }
+
+    public static <T> Collection<T> skipWhile(@NonNull final Stream<T> stream, final Predicate<T> predicate) {
+        return StreamUtils.skipWhile(stream, predicate).collect(Collectors.toList());
+    }
+
+    public static <T> Collection<T> takeWhile(@NonNull final Stream<T> stream, final Predicate<T> predicate) {
+        return StreamUtils.takeWhile(stream, predicate).collect(Collectors.toList());
+    }
+
+    public static <T> Collection<T> takeUntil(@NonNull final Stream<T> stream, final Predicate<T> predicate) {
+        return StreamUtils.takeUntil(stream, predicate).collect(Collectors.toList());
+    }
+
+    public static <T> Collection<Collection<T>> merge(@NonNull final Stream<T>... streams) {
+        return StreamUtils.mergeToList(streams).collect(Collectors.toList());
+    }
+
+    public static <T> Set<Indexed<T>> zip(@NonNull final Stream<T> stream) {
+        return StreamUtils.zipWithIndex(stream).collect(Collectors.toSet());
+    }
+
+    public static <T> boolean removeBy(@NonNull final Collection<T> collection, final Predicate<T> predicate) {
+        final Collection<T> operatedList = new ArrayList<>();
+        collection.stream().filter(predicate).forEach(item -> {
+            operatedList.add(item);
+        });
+        return collection.removeAll(operatedList);
     }
 
     public static <T, U> Stream<U> getStreamBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends U> mapper, final Predicate<? super U> predicate) {

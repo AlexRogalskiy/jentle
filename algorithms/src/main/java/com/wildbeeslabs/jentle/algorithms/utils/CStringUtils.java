@@ -49,6 +49,7 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.NonNull;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -582,5 +583,20 @@ public final class CStringUtils {
             cBuffer.put(buffer[i]);
         }
         return b;
+    }
+
+    public static boolean checkForAllLetters(@NonNull final String input) {
+        return input.toLowerCase()
+                .replaceAll("[^a-z]", "")
+                .replaceAll("(.)(?=.*\\1)", "")
+                .length() == 26;
+    }
+
+    public static boolean checkForAllLetters2(@NonNull final String input) {
+        long c = input.toLowerCase().chars()
+                .filter(ch -> ch >= 'a' && ch <= 'z')
+                .distinct()
+                .count();
+        return c == 26;
     }
 }

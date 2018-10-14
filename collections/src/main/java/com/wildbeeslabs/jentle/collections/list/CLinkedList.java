@@ -142,6 +142,22 @@ public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> im
         }
     }
 
+    protected CLinkedList.CLinkedListNode<T> middle(int index) {
+        if (index < (this.getSize() >> 1)) {
+            CLinkedList.CLinkedListNode<T> x = this.first;
+            for (int i = 0; i < index; i++) {
+                x = x.getNext();
+            }
+            return x;
+        } else {
+            CLinkedList.CLinkedListNode<T> x = this.last;
+            for (int i = getSize() - 1; i > index; i--) {
+                x = x.getPrevious();
+            }
+            return x;
+        }
+    }
+
     @Override
     public ListIterator<T> listIterator(int index) {
         throw new UnsupportedOperationException("Not supported yet.");

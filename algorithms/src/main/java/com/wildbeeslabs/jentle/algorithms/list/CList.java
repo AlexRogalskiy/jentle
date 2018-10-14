@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -113,10 +114,11 @@ public final class CList {
         return null;
     }
 
-    public static <T, U extends ACListNode<T, U>> int length(U root) {
+    public static <T, U extends ACListNode<T, U>> int length(final U root) {
         int length = 0;
-        while (Objects.nonNull(root)) {
-            root = root.getNext();
+        U current = root;
+        while (Objects.nonNull(current)) {
+            current = current.getNext();
             length++;
         }
         return length;
@@ -452,5 +454,12 @@ public final class CList {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public static <T> Optional<T> middle(final List<T> list) {
+        if (Objects.isNull(list) || list.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(list.get((list.size() - 1) / 2));
     }
 }

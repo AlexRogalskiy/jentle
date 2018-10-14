@@ -313,6 +313,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         return this.insertBefore(list, this.createNode(data));
     }
 
+    @SuppressWarnings("null")
     protected E insertBefore(final E first, final E second) {
         Objects.requireNonNull(first);
         Objects.requireNonNull(second);
@@ -362,6 +363,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         }
     }
 
+    @SuppressWarnings("LocalVariableHidesMemberVariable")
     protected int length(final E node) {
         int size = 0;
         E current = node;

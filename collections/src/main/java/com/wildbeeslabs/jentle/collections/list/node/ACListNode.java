@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.list.node;
 
+import java.util.Objects;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -55,5 +57,9 @@ public abstract class ACListNode<T, E extends ACListNode<T, E>> extends ACNode<T
     public ACListNode(final T data, final E next) {
         super(data);
         this.next = next;
+    }
+
+    public boolean hasNext() {
+        return Objects.nonNull(this.next);
     }
 }

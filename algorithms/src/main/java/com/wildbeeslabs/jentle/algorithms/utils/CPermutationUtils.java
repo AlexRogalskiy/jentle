@@ -65,9 +65,9 @@ import org.apache.commons.lang3.StringUtils;
  * .findFirst() .get() .collect(toList())
  *
  */
-public final class CPermutation {
+public final class CPermutationUtils {
 
-    private CPermutation() {
+    private CPermutationUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 

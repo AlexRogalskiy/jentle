@@ -44,16 +44,16 @@ import org.apache.log4j.Logger;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CDigest {
+public final class CDigestUtils {
 
     /**
      * Default logger instance
      */
-    private static final Logger LOGGER = LogManager.getLogger(CDigest.class);
+    private static final Logger LOGGER = LogManager.getLogger(CDigestUtils.class);
 
     private static final String DEFAULT_MD5_HASH = "MD5";
 
-    private CDigest() {
+    private CDigestUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -69,7 +69,7 @@ public final class CDigest {
 
     public static byte[] md5(byte[] bArray) throws NoSuchAlgorithmException {
         Objects.requireNonNull(bArray);
-        final MessageDigest md = MessageDigest.getInstance(CDigest.DEFAULT_MD5_HASH);
+        final MessageDigest md = MessageDigest.getInstance(CDigestUtils.DEFAULT_MD5_HASH);
         md.update(bArray);
         return md.digest();
         //DigestUtils.md5Hex(password)
