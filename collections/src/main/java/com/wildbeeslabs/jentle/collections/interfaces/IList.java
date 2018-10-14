@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.interfaces;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 /**
  *
@@ -33,8 +34,9 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
-public interface IList<T> extends IBaseList<T> {
+public interface IList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
 
     /**
      * Adds new value to the beginning of the list

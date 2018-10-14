@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,7 +50,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> {
+public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T, CList.CListNode<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -77,11 +78,11 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> 
         this(null, cmp);
     }
 
-    public CList(final IList<T> source) {
+    public CList(final IList<T, CList.CListNode<T>> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CList(final IList<T> source, final Comparator<? super T> cmp) {
+    public CList(final IList<T, CList.CListNode<T>> source, final Comparator<? super T> cmp) {
         super(source, cmp);
     }
 
@@ -125,7 +126,10 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T> 
     }
 
     @Override
-    protected CList.CListNode<T> createNode(final T value) {
-        return new CList.CListNode<>(value);
+    protected CList.CListNode<T> createNode(final Optional<? extends T> value) {
+        if (value.isPresent()) {
+            return new CList.CListNode<>(value.get());
+        }
+        return new CList.CListNode<>();
     }
 }

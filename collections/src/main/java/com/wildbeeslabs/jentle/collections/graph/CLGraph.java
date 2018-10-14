@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.graph.node.ACBaseGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.lang.reflect.Array;
@@ -72,7 +73,25 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
         }
     }
 
-    protected IList<CLGraph.CLGraphArc<T>>[] graph;
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
+    protected static class CLGraphArcNode<T, E extends CLGraphArc<T>> extends ACListNode<E, CLGraph.CLGraphArcNode<T, E>> {
+
+        public CLGraphArcNode() {
+            this(null);
+        }
+
+        public CLGraphArcNode(final E data) {
+            this(data, null);
+        }
+
+        public CLGraphArcNode(final E data, CLGraph.CLGraphArcNode<T, E> next) {
+            super(data, next);
+        }
+    }
+
+    protected IList<CLGraph.CLGraphArc<T>, CLGraph.CLGraphArcNode<T, CLGraph.CLGraphArc<T>>>[] graph;
     protected final Comparator<? super T> cmp;
 
     public CLGraph(int size) {
@@ -80,7 +99,7 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
     }
 
     public CLGraph(int size, final Comparator<? super T> cmp) {
-        this.graph = this.newArray((Class<? extends IList<CLGraph.CLGraphArc<T>>[]>) this.graph.getClass(), size);
+        this.graph = this.newArray((Class<? extends IList<CLGraph.CLGraphArc<T>, CLGraph.CLGraphArcNode<T, CLGraph.CLGraphArc<T>>>[]>) this.graph.getClass(), size);
         this.cmp = cmp;
     }
 
@@ -130,7 +149,7 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
         return this.graph[from - 1].size();
     }
 
-    private IList<CLGraph.CLGraphArc<T>>[] newArray(Class<? extends IList<CLGraph.CLGraphArc<T>>[]> type, int size) {
+    private IList<CLGraph.CLGraphArc<T>, CLGraph.CLGraphArcNode<T, CLGraph.CLGraphArc<T>>>[] newArray(Class<? extends IList<CLGraph.CLGraphArc<T>, CLGraph.CLGraphArcNode<T, CLGraph.CLGraphArc<T>>>[]> type, int size) {
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
@@ -139,7 +158,7 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
     }
 
     public void clear() {
-        this.graph = this.newArray((Class<? extends IList<CLGraph.CLGraphArc<T>>[]>) this.graph.getClass(), this.size());
+        this.graph = this.newArray((Class<? extends IList<CLGraph.CLGraphArc<T>, CLGraph.CLGraphArcNode<T, CLGraph.CLGraphArc<T>>>[]>) this.graph.getClass(), this.size());
     }
 
     protected void checkRange(int index) throws IndexOutOfBoundsException {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,41 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.algorithms.maze;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
- * Custom sorted list interface declaration
+ * Custom coordinate model
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
-public interface ISortedList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class CCoordinate {
 
-    /**
-     * Add new node with value to list
-     *
-     * @param value
-     */
-    void insert(final T value);
+    private int x;
+    private int y;
+    private CCoordinate parent;
 
-    /**
-     * Returns node in list by node value
-     *
-     * @param value
-     * @return
-     */
-    E find(final T value);
+    public CCoordinate(int x, int y) {
+        this(x, y, null);
+    }
 
-    /**
-     * Validates the list according to the invariants
-     *
-     * @return true (true - if the list is valid, false - otherwise)
-     */
-//    public boolean validate();
+    public CCoordinate(int x, int y, final CCoordinate parent) {
+        this.x = x;
+        this.y = y;
+        this.parent = parent;
+    }
 }

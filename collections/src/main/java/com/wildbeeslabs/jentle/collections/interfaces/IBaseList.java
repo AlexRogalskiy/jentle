@@ -23,7 +23,10 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import java.util.List;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
+
+import java.util.Collection;
+import java.util.Queue;
 
 /**
  *
@@ -33,8 +36,9 @@ import java.util.List;
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
-public interface IBaseList<T> extends IBase<T>, List<T> {
+public interface IBaseList<T, E extends ACListNode<T, E>> extends IListLike<T, E> {
 
     /**
      * Removes a value from the list
@@ -92,7 +96,7 @@ public interface IBaseList<T> extends IBase<T>, List<T> {
      *
      * @return Java compatible Queue {@link java.util.Queue}
      */
-    java.util.Queue<? extends T> toQueue();
+    Queue<? extends T> toQueue();
 
     /**
      * Returns the list as a Java compatible Collection
@@ -100,5 +104,5 @@ public interface IBaseList<T> extends IBase<T>, List<T> {
      *
      * @return Java compatible Collection {@link java.util.Collection}
      */
-    java.util.Collection<? extends T> toCollection();
+    Collection<? extends T> toCollection();
 }

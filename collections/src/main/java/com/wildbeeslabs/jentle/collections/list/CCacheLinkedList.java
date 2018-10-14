@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -174,10 +175,10 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
 
     @Override
     public void insertAt(final T item, int index) {
-        this.insertToAt(item, index);
+        this.insertToAt(Optional.of(item), index);
         final CCacheLinkedList.CCacheNode<T> temp1 = this.getToAt(index - 1);
         final CCacheLinkedList.CCacheNode<T> temp2 = this.getToAt(index);
-        final CCacheLinkedList.CCacheNode<T> node = this.insertToAt(item, index);
+        final CCacheLinkedList.CCacheNode<T> node = this.insertToAt(Optional.of(item), index);
         temp2.setPrevious(node);
         node.setPrevious(temp1);
     }
@@ -193,7 +194,10 @@ public class CCacheLinkedList<T> extends ACList<T, CCacheLinkedList.CCacheNode<T
     }
 
     @Override
-    protected CCacheLinkedList.CCacheNode<T> createNode(final T value) {
-        return new CCacheLinkedList.CCacheNode<>(value);
+    protected CCacheLinkedList.CCacheNode<T> createNode(final Optional<? extends T> value) {
+        if (value.isPresent()) {
+            return new CCacheLinkedList.CCacheNode<>(value.get());
+        }
+        return new CCacheLinkedList.CCacheNode<>();
     }
 }

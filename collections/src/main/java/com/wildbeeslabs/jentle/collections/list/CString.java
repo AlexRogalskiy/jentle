@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -65,7 +66,7 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(callSuper = true)
-    private static class CStringList extends ACList<CStringList.StringItem, CStringList.StringItemNode> implements IList<CStringList.StringItem> {
+    private static class CStringList extends ACList<CStringList.StringItem, CStringList.StringItemNode> implements IList<CStringList.StringItem, CStringList.StringItemNode> {
 
         /**
          * Default string item size
@@ -237,8 +238,11 @@ public class CString implements Serializable, Comparable<CString>, CharSequence 
         }
 
         @Override
-        protected CStringList.StringItemNode createNode(final CStringList.StringItem value) {
-            return new CStringList.StringItemNode(value);
+        protected CStringList.StringItemNode createNode(final Optional<? extends CStringList.StringItem> value) {
+            if (value.isPresent()) {
+                return new CStringList.StringItemNode(value.get());
+            }
+            return new CStringList.StringItemNode();
         }
     }
 

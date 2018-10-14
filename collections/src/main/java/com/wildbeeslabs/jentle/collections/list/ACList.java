@@ -25,26 +25,23 @@ package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.interfaces.IList;
+import com.wildbeeslabs.jentle.collections.interfaces.IListLike;
 import com.wildbeeslabs.jentle.collections.interfaces.IResultVisitor;
 import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
-import java.util.AbstractSequentialList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Queue;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -59,17 +56,9 @@ import org.apache.log4j.Logger;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequentialList<T> implements IList<T> {
+public abstract class ACList<T, E extends ACListNode<T, E>> extends ACListLike<T, E> implements IList<T, E> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
-
-    protected E first;
     protected E last;
-    protected int size;
-    protected final Comparator<? super T> cmp;
 
     public ACList() {
         this(null, CUtils.DEFAULT_SORT_COMPARATOR);
@@ -79,16 +68,22 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         this(null, cmp);
     }
 
-    public ACList(final IList<T> source) {
+    public ACList(final IList<T, E> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
-    public ACList(final IList<T> source, final Comparator<? super T> cmp) {
-        this.first = this.last = null;
-        this.size = 0;
-        this.cmp = cmp;
+    public ACList(final IList<T, E> source, final Comparator<? super T> cmp) {
+        super(source, cmp);
+        this.last = null;
         this.addList(source);
+    }
+
+    protected void addList(final IListLike<T, E> source) {
+        if (Objects.nonNull(source)) {
+            for (Iterator<? extends T> iterator = source.iterator(); iterator.hasNext();) {
+                this.addLast(iterator.next());
+            }
+        }
     }
 
     public T head() throws EmptyListException {
@@ -105,31 +100,22 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         return this.last.getData();
     }
 
-    protected void addList(final IList<T> source) {
-        if (Objects.nonNull(source)) {
-            for (Iterator<? extends T> iterator = source.iterator(); iterator.hasNext();) {
-                this.addLast(iterator.next());
-            }
-        }
-    }
-
     @Override
     public void addFirst(final T item) {
-        this.addToFirst(item);
+        this.addToFirst(Optional.of(item));
     }
 
     @Override
     public void addLast(final T item) {
-        this.addToLast(item);
+        this.addToLast(Optional.of(item));
     }
 
     @Override
     public void insertAt(final T item, int index) {
-        this.insertToAt(item, index);
+        this.insertToAt(Optional.of(item), index);
     }
 
-    protected E addToFirst(final T item) {
-        Deque a;
+    protected E addToFirst(final Optional<? extends T> item) {
         final E temp = this.createNode(item);
         temp.setNext(this.first);
         if (Objects.isNull(this.first)) {
@@ -140,7 +126,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         return this.first;
     }
 
-    protected E addToLast(final T item) {
+    protected E addToLast(final Optional<? extends T> item) {
         final E temp = this.createNode(item);
         temp.setNext(null);
         if (Objects.isNull(this.last)) {
@@ -207,7 +193,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         return removed;
     }
 
-    protected E insertToAt(final T item, int index) {
+    protected E insertToAt(final Optional<? extends T> item, int index) {
         this.checkRange(index);
         E previous = this.first, next = this.first;
         while (Objects.nonNull(next) && --index > 0) {
@@ -309,7 +295,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         return true;
     }
 
-    protected E insertBefore(final E list, final T data) {
+    protected E insertBefore(final E list, final Optional<? extends T> data) {
         return this.insertBefore(list, this.createNode(data));
     }
 
@@ -329,7 +315,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         return second;
     }
 
-    protected E insertAfter(final E list, final T data) {
+    protected E insertAfter(final E list, final Optional<? extends T> data) {
         return this.insertAfter(list, this.createNode(data));
     }
 
@@ -401,6 +387,4 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends AbstractSequ
         }
         return (Objects.nonNull(headFirst) && Objects.nonNull(headLast));
     }
-
-    protected abstract E createNode(final T value);
 }

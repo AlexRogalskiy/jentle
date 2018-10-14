@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,7 +50,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> implements IList<T> {
+public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> implements IList<T, CLinkedList.CLinkedListNode<T>> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -77,25 +78,25 @@ public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> im
         this(null, cmp);
     }
 
-    public CLinkedList(final IList<T> source) {
+    public CLinkedList(final IList<T, CLinkedList.CLinkedListNode<T>> source) {
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CLinkedList(final IList<T> source, final Comparator<? super T> cmp) {
+    public CLinkedList(final IList<T, CLinkedList.CLinkedListNode<T>> source, final Comparator<? super T> cmp) {
         super(source, cmp);
     }
 
     @Override
     public void addLast(final T item) {
         final CLinkedList.CLinkedListNode<T> temp = this.last;
-        this.addToLast(item);
+        this.addToLast(Optional.of(item));
         this.last.setPrevious(temp);
     }
 
     @Override
     public void addFirst(final T item) {
         final CLinkedList.CLinkedListNode<T> temp = this.first;
-        this.addToFirst(item);
+        this.addToFirst(Optional.of(item));
         temp.setPrevious(this.first);
     }
 
@@ -103,7 +104,7 @@ public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> im
     public void insertAt(final T item, int index) {
         final CLinkedList.CLinkedListNode<T> temp1 = this.getToAt(index - 1);
         final CLinkedList.CLinkedListNode<T> temp2 = this.getToAt(index);
-        final CLinkedList.CLinkedListNode<T> node = this.insertToAt(item, index);
+        final CLinkedList.CLinkedListNode<T> node = this.insertToAt(Optional.of(item), index);
         temp2.setPrevious(node);
         node.setPrevious(temp1);
     }
@@ -164,7 +165,10 @@ public class CLinkedList<T> extends ACList<T, CLinkedList.CLinkedListNode<T>> im
     }
 
     @Override
-    protected CLinkedList.CLinkedListNode<T> createNode(final T value) {
-        return new CLinkedList.CLinkedListNode<>(value);
+    protected CLinkedList.CLinkedListNode<T> createNode(final Optional<? extends T> value) {
+        if (value.isPresent()) {
+            return new CLinkedList.CLinkedListNode<>(value.get());
+        }
+        return new CLinkedList.CLinkedListNode<>();
     }
 }

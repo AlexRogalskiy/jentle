@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,15 @@
  */
 package com.wildbeeslabs.jentle.collections.interfaces;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  *
- * Custom sorted list interface declaration
+ * Custom list-like interface declaration
  *
  * @author Alex
  * @version 1.0.0
@@ -35,27 +39,46 @@ import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
  * @param <T>
  * @param <E>
  */
-public interface ISortedList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
+public interface IListLike<T, E extends ACNode<T>> extends IBase<T>, List<T> {
 
     /**
-     * Add new node with value to list
+     * Get the size of the tree.
      *
-     * @param value
+     * @return size of the tree.
      */
-    void insert(final T value);
+    int size();
 
     /**
-     * Returns node in list by node value
+     * Check if the list contains values.
      *
-     * @param value
-     * @return
+     * @return boolean (true - if the list is empty, false - otherwise)
      */
-    E find(final T value);
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 
     /**
-     * Validates the list according to the invariants
+     * Add new root node
      *
-     * @return true (true - if the list is valid, false - otherwise)
+     * @param value - new root node
      */
-//    public boolean validate();
+    void setRoot(final Optional<? extends T> value);
+
+    /**
+     * Returns current root node
+     *
+     * @return - current root node
+     */
+    E getRoot();
+
+    /**
+     * Checks if current node is root
+     *
+     * @param node - current node
+     * @return true - if current node is root, false - otherwise
+     */
+    default boolean isRoot(final E node) {
+        Objects.requireNonNull(node);
+        return (this.getRoot() == node);
+    }
 }
