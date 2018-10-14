@@ -51,6 +51,7 @@ import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import lombok.NonNull;
@@ -275,6 +276,77 @@ public final class CCollectionUtils {
     public static List<UUID> generateUUID(int skip, int limit) {
         final Supplier<UUID> randomUUIDSupplier = UUID::randomUUID;
         return generate(randomUUIDSupplier, skip, limit);
+    }
+
+    public static Integer findKthElement(final Integer[] arr, int left, int right, int k) {
+        if (k >= 0 && k <= right - left + 1) {
+            int pos = randomPartition(arr, left, right);
+            if (pos - left == k) {
+                return arr[pos];
+            }
+            if (pos - left > k) {
+                return findKthElement(arr, left, pos - 1, k);
+            }
+            return findKthElement(arr, pos + 1, right, k - pos + left - 1);
+        }
+        return null;
+    }
+
+    /**
+     * average time complexity: O(n) worst time complexity: O(n^2)
+     *
+     * @param arr
+     * @param left
+     * @param right
+     * @return
+     */
+    private static <T> int iterativePartition(final T[] arr, int left, int right, final Comparator<? super T> cmp) {
+        final T pivot = arr[right];
+        int i = left;
+        for (int j = left; j <= right - 1; j++) {
+            if (Objects.compare(arr[j], pivot, cmp) <= 0) {
+                CArrayUtils.swap(arr, i, j);
+                i++;
+            }
+        }
+        CArrayUtils.swap(arr, i, right);
+        return i;
+    }
+
+    /**
+     * average time complexity: O(n) worst time complexity: O(n^2)
+     *
+     * @param arr
+     * @param left
+     * @param right
+     * @return
+     */
+    private static int randomPartition(final Integer arr[], int left, int right) {
+        int n = right - left + 1;
+        int pivot = (int) (Math.random()) * n;
+        CArrayUtils.swap(arr, left + pivot, right);
+        return partition(arr, left, right);
+    }
+
+    private static int partition(final Integer[] arr, int left, int right) {
+        int pivot = arr[right];
+        final Integer[] leftArr = IntStream.range(left, right)
+                .filter(i -> arr[i] < pivot)
+                .map(i -> arr[i])
+                .boxed()
+                .toArray(Integer[]::new);
+
+        final Integer[] rightArr = IntStream.range(left, right)
+                .filter(i -> arr[i] > pivot)
+                .map(i -> arr[i])
+                .boxed()
+                .toArray(Integer[]::new);
+
+        int leftArraySize = leftArr.length;
+        System.arraycopy(leftArr, 0, arr, left, leftArraySize);
+        arr[leftArraySize + left] = pivot;
+        System.arraycopy(rightArr, 0, arr, left + leftArraySize + 1, rightArr.length);
+        return left + leftArraySize;
     }
 
     //TriFunction <Integer, String, Integer, Computer> c6Function = Computer::new;
