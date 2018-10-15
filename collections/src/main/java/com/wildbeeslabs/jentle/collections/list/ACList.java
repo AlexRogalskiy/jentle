@@ -56,7 +56,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class ACList<T, E extends ACListNode<T, E>> extends ACListLike<T, E> implements IList<T, E> {
+public abstract class ACList<T, E extends ACListNode<T, E>> extends ACBaseList<T, E> implements IList<T, E> {
 
     protected E last;
 
@@ -237,7 +237,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends ACListLike<T
 
     @Override
     public boolean contains(final Object item) {
-        for (Iterator<? extends T> i = this.iterator(); i.hasNext();) {
+        for (final Iterator<? extends T> i = this.iterator(); i.hasNext();) {
             if (Objects.compare(i.next(), (T) item, this.cmp) == 0) {
                 return true;
             }
@@ -358,21 +358,6 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends ACListLike<T
             current = current.getNext();
         }
         return size;
-    }
-
-    @Override
-    public Queue<T> toQueue() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Collection<T> toCollection() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void iterator(final IVisitor<? extends T> visitor) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     protected boolean isEqual(final E last) {

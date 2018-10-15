@@ -74,7 +74,6 @@ public abstract class ACListLike<T, E extends ACNode<T>> extends AbstractSequent
         this(source, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ACListLike(final IListLike<T, E> source, final Comparator<? super T> cmp) {
         this.first = null;
         this.size = 0;
