@@ -21,70 +21,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.statemachine;
+package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.jenetics.BitChromosome;
+import io.jenetics.BitGene;
+import io.jenetics.Genotype;
 
-import lombok.AccessLevel;
+import java.util.function.Function;
+import java.util.stream.Collector;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
  *
- * Custom state implementation
+ * Custom bag wrapper implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <C>
  * @param <T>
  */
 @Data
 @EqualsAndHashCode
 @ToString
-public class CState<C, T extends ICTransition<C, ICState<C, T>>> implements ICState<C, T> {
+public class CBagWrapper<T extends CBagItem> implements Function<Genotype<BitGene>, Double> {
 
-    @Setter(AccessLevel.NONE)
-    @Getter(AccessLevel.NONE)
-    protected final List<T> transitions = new ArrayList<>();
-    protected boolean isFinal;
+    protected T[] items;
+    protected double size;
 
-    public CState() {
-        this(Boolean.FALSE);
-    }
-
-    public CState(boolean isFinal) {
-        this.isFinal = isFinal;
+    public CBagWrapper(final T[] items, double size) {
+        this.items = items;
+        this.size = size;
     }
 
     @Override
-    public ICState<C, T> transit(final C value) {
-        return this.transitions
-                .stream()
-                .filter(t -> t.isPossible(value))
-                .map(ICTransition::state)
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Input not accepted: " + value));
+    public Double apply(final Genotype<BitGene> gt) {
+        final CBagItem sum = ((BitChromosome) gt.getChromosome()).ones()
+                .mapToObj(i -> items[i])
+                .collect(toSum());
+        return sum.size <= this.size ? sum.value : 0.0;
     }
 
-    @Override
-    public boolean isFinal() {
-        return this.isFinal;
-    }
-
-    @Override
-    public ICState<C, T> add(final T transition) {
-        this.transitions.add(transition);
-        return this;
-    }
-
-    @Override
-    public ICState<C, T> remove(final T transition) {
-        this.transitions.remove(transition);
-        return this;
+    protected Collector<CBagItem, ?, CBagItem> toSum() {
+        return Collector.of(() -> new double[2], (a, b) -> {
+            a[0] += b.size;
+            a[1] += b.value;
+        }, (a, b) -> {
+            a[0] += b[0];
+            a[1] += b[1];
+            return a;
+        }, r -> new CBagItem(r[0], r[1]));
     }
 }

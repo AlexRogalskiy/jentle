@@ -21,10 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
+package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
-import io.jenetics.util.ISeq;
-import java.util.Objects;
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,7 +31,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom Springsteen item implementations
+ * Custom bag item implementations
  *
  * @author Alex
  * @version 1.0.0
@@ -41,17 +40,17 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode
 @ToString
-public class CSpringsteenItem {
+public class CBagItem {
 
-    protected String name;
-    protected double price;
-    protected ISeq<String> songs;
+    protected double size;
+    protected double value;
 
-    public CSpringsteenItem(final String name, double price, final ISeq<String> songs) {
-        Objects.requireNonNull(name);
-        Objects.requireNonNull(songs);
-        this.name = name;
-        this.price = price;
-        this.songs = songs;
+    public CBagItem(double size, double value) {
+        this.size = size;
+        this.value = value;
+    }
+
+    protected static CBagItem random(int lowerBound, int upperBound) {
+        return new CBagItem(CRandom.generateRandomDouble(lowerBound, upperBound), CRandom.generateRandomDouble(lowerBound, upperBound));
     }
 }

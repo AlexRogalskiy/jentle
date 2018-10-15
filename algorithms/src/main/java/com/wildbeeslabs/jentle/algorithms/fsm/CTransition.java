@@ -21,46 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
+package com.wildbeeslabs.jentle.algorithms.fsm;
 
-import com.wildbeeslabs.jentle.algorithms.random.CRandom;
-
+import java.util.Objects;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Custom place implementation
+ * Custom transition implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ * @param <C>
+ * @param <S>
  */
 @Data
 @EqualsAndHashCode
 @ToString
-public class CPlace {
+public class CTransition<C, S extends ICState<C, ICTransition<C, S>>> implements ICTransition<C, S> {
 
-    protected double x;
-    protected double y;
+    protected C value;
+    protected S state;
 
-    public CPlace() {
-        this(0, Integer.MAX_VALUE);
+    public CTransition(final C value, final S state) {
+        this.value = value;
+        this.state = state;
     }
 
-    public CPlace(int lowerBound, int upperBound) {
-        this(CRandom.generateRandomDouble(lowerBound, upperBound), CRandom.generateRandomDouble(lowerBound, upperBound));
+    public S state() {
+        return this.state;
     }
 
-    public CPlace(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public double distance(final CPlace place) {
-        double diffX = Math.abs(this.getX() - place.getX());
-        double diffY = Math.abs(this.getY() - place.getY());
-        return Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
+    public boolean isPossible(final C value) {
+        return Objects.equals(this.value, value);
     }
 }

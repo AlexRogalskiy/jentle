@@ -21,36 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
-
-import com.wildbeeslabs.jentle.algorithms.random.CRandom;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+package com.wildbeeslabs.jentle.algorithms.fsm;
 
 /**
  *
- * Custom bag item implementations
+ * Custom state machine interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
+ * @param <C>
+ * @param <S>
  */
-@Data
-@EqualsAndHashCode
-@ToString
-public class CBagItem {
+public interface ICStateMachine<C, S> {
 
-    protected double size;
-    protected double value;
+    ICStateMachine<C, S> switchState(final C value);
 
-    public CBagItem(double size, double value) {
-        this.size = size;
-        this.value = value;
-    }
+    S getState();
 
-    protected static CBagItem random(int lowerBound, int upperBound) {
-        return new CBagItem(CRandom.generateRandomDouble(lowerBound, upperBound), CRandom.generateRandomDouble(lowerBound, upperBound));
-    }
+    boolean isTerminated();
 }

@@ -21,53 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
+package com.wildbeeslabs.jentle.algorithms.fsm;
 
-import io.jenetics.EnumGene;
-import io.jenetics.engine.Codec;
-import io.jenetics.engine.Codecs;
-import io.jenetics.engine.Problem;
-import io.jenetics.util.ISeq;
-
-import java.util.Objects;
-import java.util.function.Function;
-
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  *
- * Custom sum implementation
+ * Custom state machine implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
+ * @param <C>
+ * @param <S>
  */
 @Data
 @EqualsAndHashCode
 @ToString
-public class CSum<T extends Number> implements Problem<ISeq<T>, EnumGene<T>, Integer> {
+public class CStateMachine<C, S extends ICState<C, ICTransition<C, S>>> implements ICStateMachine<C, S> {
 
-    private ISeq<T> set;
-    private int size;
+    @Setter(AccessLevel.NONE)
+    protected final S state;
 
-    public CSum(final ISeq<T> set, int size) {
-        Objects.requireNonNull(set);
-        this.set = set;
-        this.size = size;
+    public CStateMachine(final S state) {
+        this.state = state;
     }
 
     @Override
-    public Function<ISeq<T>, Integer> fitness() {
-        return subset -> Math.abs(subset.stream()
-                .mapToInt(Number::intValue)
-                .sum());
+    public ICStateMachine<C, S> switchState(final C value) {
+        return new CStateMachine<>((S) this.state.transit(value));
     }
 
     @Override
-    public Codec<ISeq<T>, EnumGene<T>> codec() {
-        return Codecs.ofSubSet(this.set, this.size);
+    public S getState() {
+        return this.state;
+    }
+
+    @Override
+    public boolean isTerminated() {
+        return this.state.isFinal();
     }
 }

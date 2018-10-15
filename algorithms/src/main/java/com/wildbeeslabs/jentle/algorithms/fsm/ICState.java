@@ -21,21 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.statemachine;
+package com.wildbeeslabs.jentle.algorithms.fsm;
 
 /**
  *
- * Custom transition interface declaration
+ * Custom state interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <C>
- * @param <S>
+ * @param <T>
  */
-public interface ICTransition<C, S> {
+public interface ICState<C, T> {
 
-    boolean isPossible(final C value);
+    ICState<C, T> add(final T transition);
 
-    S state();
+    ICState<C, T> remove(final T transition);
+
+    ICState<C, T> transit(final C value);
+
+    boolean isFinal();
 }

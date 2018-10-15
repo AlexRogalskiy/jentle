@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
+package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 

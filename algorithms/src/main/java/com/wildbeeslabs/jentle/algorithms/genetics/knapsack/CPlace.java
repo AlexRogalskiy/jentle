@@ -21,14 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
+package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
-import io.jenetics.BitChromosome;
-import io.jenetics.BitGene;
-import io.jenetics.Genotype;
-
-import java.util.function.Function;
-import java.util.stream.Collector;
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,42 +31,36 @@ import lombok.ToString;
 
 /**
  *
- * Custom bag wrapper implementations
+ * Custom place implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode
 @ToString
-public class CBagWrapper<T extends CBagItem> implements Function<Genotype<BitGene>, Double> {
+public class CPlace {
 
-    protected T[] items;
-    protected double size;
+    protected double x;
+    protected double y;
 
-    public CBagWrapper(final T[] items, double size) {
-        this.items = items;
-        this.size = size;
+    public CPlace() {
+        this(0, Integer.MAX_VALUE);
     }
 
-    @Override
-    public Double apply(final Genotype<BitGene> gt) {
-        final CBagItem sum = ((BitChromosome) gt.getChromosome()).ones()
-                .mapToObj(i -> items[i])
-                .collect(toSum());
-        return sum.size <= this.size ? sum.value : 0.0;
+    public CPlace(int lowerBound, int upperBound) {
+        this(CRandom.generateRandomDouble(lowerBound, upperBound), CRandom.generateRandomDouble(lowerBound, upperBound));
     }
 
-    protected Collector<CBagItem, ?, CBagItem> toSum() {
-        return Collector.of(() -> new double[2], (a, b) -> {
-            a[0] += b.size;
-            a[1] += b.value;
-        }, (a, b) -> {
-            a[0] += b[0];
-            a[1] += b[1];
-            return a;
-        }, r -> new CBagItem(r[0], r[1]));
+    public CPlace(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double distance(final CPlace place) {
+        double diffX = Math.abs(this.getX() - place.getX());
+        double diffY = Math.abs(this.getY() - place.getY());
+        return Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
     }
 }

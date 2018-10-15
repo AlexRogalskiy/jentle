@@ -21,25 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.statemachine;
+package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
+
+import io.jenetics.EnumGene;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.ISeq;
+
+import java.util.Objects;
+import java.util.function.Function;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom state interface declaration
+ * Custom sum implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <C>
  * @param <T>
  */
-public interface ICState<C, T> {
+@Data
+@EqualsAndHashCode
+@ToString
+public class CSum<T extends Number> implements Problem<ISeq<T>, EnumGene<T>, Integer> {
 
-    ICState<C, T> add(final T transition);
+    private ISeq<T> set;
+    private int size;
 
-    ICState<C, T> remove(final T transition);
+    public CSum(final ISeq<T> set, int size) {
+        Objects.requireNonNull(set);
+        this.set = set;
+        this.size = size;
+    }
 
-    ICState<C, T> transit(final C value);
+    @Override
+    public Function<ISeq<T>, Integer> fitness() {
+        return subset -> Math.abs(subset.stream()
+                .mapToInt(Number::intValue)
+                .sum());
+    }
 
-    boolean isFinal();
+    @Override
+    public Codec<ISeq<T>, EnumGene<T>> codec() {
+        return Codecs.ofSubSet(this.set, this.size);
+    }
 }

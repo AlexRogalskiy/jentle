@@ -21,41 +21,70 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.statemachine;
+package com.wildbeeslabs.jentle.algorithms.fsm;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  *
- * Custom transition implementation
+ * Custom state implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <C>
- * @param <S>
+ * @param <T>
  */
 @Data
 @EqualsAndHashCode
 @ToString
-public class CTransition<C, S extends ICState<C, ICTransition<C, S>>> implements ICTransition<C, S> {
+public class CState<C, T extends ICTransition<C, ICState<C, T>>> implements ICState<C, T> {
 
-    protected C value;
-    protected S state;
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    protected final List<T> transitions = new ArrayList<>();
+    protected boolean isFinal;
 
-    public CTransition(final C value, final S state) {
-        this.value = value;
-        this.state = state;
+    public CState() {
+        this(Boolean.FALSE);
     }
 
-    public S state() {
-        return this.state;
+    public CState(boolean isFinal) {
+        this.isFinal = isFinal;
     }
 
-    public boolean isPossible(final C value) {
-        return Objects.equals(this.value, value);
+    @Override
+    public ICState<C, T> transit(final C value) {
+        return this.transitions
+                .stream()
+                .filter(t -> t.isPossible(value))
+                .map(ICTransition::state)
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("Input not accepted: " + value));
+    }
+
+    @Override
+    public boolean isFinal() {
+        return this.isFinal;
+    }
+
+    @Override
+    public ICState<C, T> add(final T transition) {
+        this.transitions.add(transition);
+        return this;
+    }
+
+    @Override
+    public ICState<C, T> remove(final T transition) {
+        this.transitions.remove(transition);
+        return this;
     }
 }

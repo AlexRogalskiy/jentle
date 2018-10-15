@@ -21,48 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.statemachine;
+package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
  *
- * Custom state machine implementation
+ * Custom item implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <C>
- * @param <S>
  */
 @Data
 @EqualsAndHashCode
 @ToString
-public class CStateMachine<C, S extends ICState<C, ICTransition<C, S>>> implements ICStateMachine<C, S> {
+public class CActor {
 
-    @Setter(AccessLevel.NONE)
-    protected final S state;
+    protected int trailSize;
+    protected int trail[];
+    protected boolean visited[];
 
-    public CStateMachine(final S state) {
-        this.state = state;
+    public CActor(int trailSize) {
+        assert (trailSize > 0);
+        this.trailSize = trailSize;
+        this.trail = new int[trailSize];
+        this.visited = new boolean[trailSize];
     }
 
-    @Override
-    public ICStateMachine<C, S> switchState(final C value) {
-        return new CStateMachine<>((S) this.state.transit(value));
+    protected void visit(int currentIndex, int value) {
+        this.trail[currentIndex + 1] = value;
+        this.visited[value] = true;
     }
 
-    @Override
-    public S getState() {
-        return this.state;
+    protected boolean visited(int i) {
+        return this.visited[i];
     }
 
-    @Override
-    public boolean isTerminated() {
-        return this.state.isFinal();
+    protected double trailLength(double graph[][]) {
+        double length = graph[trail[trailSize - 1]][trail[0]];
+        for (int i = 0; i < this.trailSize - 1; i++) {
+            length += graph[trail[i]][trail[i + 1]];
+        }
+        return length;
+    }
+
+    protected void clear() {
+        for (int i = 0; i < this.trailSize; i++) {
+            this.visited[i] = false;
+        }
     }
 }

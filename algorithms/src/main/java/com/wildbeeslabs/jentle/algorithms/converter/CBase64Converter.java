@@ -34,12 +34,12 @@ import org.apache.log4j.Logger;
  * @since 2017-12-12
  *
  */
-public final class CBase64Coder {
+public final class CBase64Converter {
 
     /**
      * Default logger instance
      */
-    private static final Logger LOGGER = LogManager.getLogger(CBase64Coder.class);
+    private static final Logger LOGGER = LogManager.getLogger(CBase64Converter.class);
 
     // The line separator string of the operating system.
     private static final String DEFAULT_LINE_SEPARATOR = System.getProperty("line.separator");
@@ -74,7 +74,7 @@ public final class CBase64Coder {
         }
     }
 
-    private CBase64Coder() {
+    private CBase64Converter() {
     }
 
     /**

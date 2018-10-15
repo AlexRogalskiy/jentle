@@ -21,7 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.genetics;
+package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
+
+import io.jenetics.util.ISeq;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +32,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom item implementation
+ * Custom Springsteen item implementations
  *
  * @author Alex
  * @version 1.0.0
@@ -38,39 +41,17 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode
 @ToString
-public class CActor {
+public class CSpringsteenItem {
 
-    protected int trailSize;
-    protected int trail[];
-    protected boolean visited[];
+    protected String name;
+    protected double price;
+    protected ISeq<String> songs;
 
-    public CActor(int trailSize) {
-        assert (trailSize > 0);
-        this.trailSize = trailSize;
-        this.trail = new int[trailSize];
-        this.visited = new boolean[trailSize];
-    }
-
-    protected void visit(int currentIndex, int value) {
-        this.trail[currentIndex + 1] = value;
-        this.visited[value] = true;
-    }
-
-    protected boolean visited(int i) {
-        return this.visited[i];
-    }
-
-    protected double trailLength(double graph[][]) {
-        double length = graph[trail[trailSize - 1]][trail[0]];
-        for (int i = 0; i < this.trailSize - 1; i++) {
-            length += graph[trail[i]][trail[i + 1]];
-        }
-        return length;
-    }
-
-    protected void clear() {
-        for (int i = 0; i < this.trailSize; i++) {
-            this.visited[i] = false;
-        }
+    public CSpringsteenItem(final String name, double price, final ISeq<String> songs) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(songs);
+        this.name = name;
+        this.price = price;
+        this.songs = songs;
     }
 }
