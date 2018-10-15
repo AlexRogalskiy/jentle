@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -119,5 +120,14 @@ public final class CMap {
         final Map<K, V> reverse = new TreeMap<>(comparator);
         reverse.putAll(map);
         return reverse.entrySet().stream().map(e -> e.getKey()).collect(Collectors.toList());
+    }
+
+    public <K, V> List<K> keys(final Map<K, V> map, final V value, final Comparator<? super V> comparator) {
+        return map
+                .entrySet()
+                .stream()
+                .filter(entry -> Objects.compare(value, entry.getValue(), comparator) == 0)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }

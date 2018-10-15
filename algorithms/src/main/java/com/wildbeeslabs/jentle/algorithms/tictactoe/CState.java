@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.tictactoe;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class CState {
     }
 
     public List<CState> getAllPossibleStates() {
-        final List<CState> possibleStates = Collections.EMPTY_LIST;
+        final List<CState> possibleStates = new ArrayList<>();
         final List<CPosition> availablePositions = this.board.getEmptyPositions();
         availablePositions.forEach(p -> {
             final CState newState = new CState(this.board);

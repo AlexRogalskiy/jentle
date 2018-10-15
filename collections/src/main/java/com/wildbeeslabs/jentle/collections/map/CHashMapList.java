@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.map;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ public class CHashMapList<K, V> extends ACBaseExtended<K, V, List<V>> {
     @Override
     public void put(final K key, final V item) {
         if (!this.containsKey(key)) {
-            this.map.put(key, Collections.EMPTY_LIST);
+            this.map.put(key, new ArrayList<>());
         }
         this.map.get(key).add(item);
     }

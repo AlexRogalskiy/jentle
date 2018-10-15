@@ -57,6 +57,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import lombok.NonNull;
 
@@ -81,6 +82,19 @@ public final class CConverterUtils {
     private CConverterUtils() {
         LOGGER.debug("Initializing converter utilities...");
         // PRIVATE EMPTY CONSTRUCTOR
+    }
+
+    public <T> Stream<T> streamOf(final List<T> list) {
+        return Objects.isNull(list) || list.isEmpty() ? Stream.empty() : list.stream();
+    }
+
+    public <T> Stream<T> streamOf(final Iterable<T> iterable, boolean parallel) {
+        Objects.requireNonNull(iterable);
+        return StreamSupport.stream(iterable.spliterator(), parallel);
+    }
+
+    public <T> Stream<T> streamOf(final Iterable<T> iterable) {
+        return streamOf(iterable);
     }
 
     /**

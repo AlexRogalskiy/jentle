@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.IntSummaryStatistics;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -151,6 +152,26 @@ public final class CCollectionUtils {
 
     public static <T> Stream<? extends T> getStreamSortedBy(@NonNull final Stream<? extends T> stream, final Comparator<? super T> cmp) {
         return stream.sorted(cmp);
+    }
+
+    public static <K, V> Map<K, V> sortByValue(final Map<K, V> map, Comparator<? super V> comparator) {
+        return map.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(entry -> entry.getValue(), comparator))
+                .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+    }
+
+    public static <K, V> Map<K, V> sortByKey(final Map<K, V> map, Comparator<? super K> comparator) {
+        return map.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(entry -> entry.getKey(), comparator))
+                .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     public static <T, K> Map<K, Integer> getMapSumBy(@NonNull final Stream<? extends T> stream, final Function<T, K> keys, final Function<T, Integer> values) {

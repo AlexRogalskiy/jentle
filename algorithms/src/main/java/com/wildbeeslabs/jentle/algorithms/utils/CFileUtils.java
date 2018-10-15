@@ -34,6 +34,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -182,5 +184,9 @@ public final class CFileUtils {
     public static void convertFromBase64(final String fileName, final String encodedString) throws IOException {
         byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
         FileUtils.writeByteArrayToFile(new File(fileName), decodedBytes);
+    }
+
+    public static Stream<String> streamOf(final String fileName) throws IOException {
+        return Files.lines(Paths.get(fileName), StandardCharsets.UTF_8);
     }
 }
