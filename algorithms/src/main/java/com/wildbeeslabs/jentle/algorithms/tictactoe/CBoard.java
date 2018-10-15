@@ -23,8 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.tictactoe;
 
+import com.wildbeeslabs.jentle.algorithms.maze.CBFSMazeAlgorithm;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -35,6 +39,11 @@ import java.util.List;
  * @since 2017-08-07
  */
 public class CBoard {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CBoard.class);
 
     private int[][] boardValues;
     private int totalMoves;
@@ -171,7 +180,7 @@ public class CBoard {
             for (int j = 0; j < size; j++) {
                 System.out.print(this.boardValues[i][j] + " ");
             }
-            System.out.println();
+            LOGGER.debug(StringUtils.LF);
         }
     }
 
@@ -191,16 +200,16 @@ public class CBoard {
     public void printStatus() {
         switch (this.checkStatus()) {
             case P1:
-                System.out.println("Player 1 wins");
+                LOGGER.debug("Player 1 wins");
                 break;
             case P2:
-                System.out.println("Player 2 wins");
+                LOGGER.debug("Player 2 wins");
                 break;
             case DRAW:
-                System.out.println("Game Draw");
+                LOGGER.debug("Game Draw");
                 break;
             case IN_PROGRESS:
-                System.out.println("Game In Progress");
+                LOGGER.debug("Game In Progress");
                 break;
         }
     }

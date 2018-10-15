@@ -57,9 +57,9 @@ public final class CBackTrackAlgorithm {
     public void printBoard() {
         for (int row = BOARD_START_INDEX; row < BOARD_SIZE; row++) {
             for (int column = BOARD_START_INDEX; column < BOARD_SIZE; column++) {
-                System.out.print(board[row][column] + StringUtils.SPACE);
+                LOGGER.debug(board[row][column] + StringUtils.SPACE);
             }
-            System.out.println();
+            LOGGER.debug(StringUtils.LF);
         }
     }
 

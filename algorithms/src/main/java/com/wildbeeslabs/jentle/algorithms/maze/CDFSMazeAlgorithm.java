@@ -27,15 +27,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 /**
  *
- * Custom DFS maze algorithm
+ * Custom DFS maze algorithm implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
 public class CDFSMazeAlgorithm {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CDFSMazeAlgorithm.class);
 
     private static final int[][] DIRECTIONS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 

@@ -33,6 +33,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 /**
  *
  * Custom maze implementation
@@ -42,6 +45,11 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2017-08-07
  */
 public class CMaze {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CMaze.class);
 
     private static final int ROAD = 0;
     private static final int WALL = 1;
@@ -137,7 +145,7 @@ public class CMaze {
         path.stream().filter((coordinate) -> !(this.isStart(coordinate.getX(), coordinate.getY()) || this.isExit(coordinate.getX(), coordinate.getY()))).forEach((coordinate) -> {
             tempMaze[coordinate.getX()][coordinate.getY()] = PATH;
         });
-        System.out.println(toString(tempMaze));
+        LOGGER.debug(toString(tempMaze));
     }
 
     public String toString(int[][] maze) {

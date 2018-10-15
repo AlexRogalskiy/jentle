@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -64,9 +65,9 @@ public final class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem>
     }
 
     public void slopeOne() {
-        System.out.println("Slope One - Before the Prediction\n");
+        LOGGER.debug("Slope One - Before the Prediction\n");
         buildDifferencesMatrix(this.inputData);
-        System.out.println("\nSlope One - With Predictions\n");
+        LOGGER.debug("\nSlope One - With Predictions\n");
         predict(this.inputData);
     }
 
@@ -153,14 +154,14 @@ public final class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem>
 
     private void printData(final Map<E, Map<T, Double>> data) {
         for (final E user : data.keySet()) {
-            System.out.println(user.getName() + ":");
+            LOGGER.debug(user.getName() + ":");
             print(data.get(user));
         }
     }
 
     private void print(final Map<T, Double> hashMap) {
         hashMap.keySet().stream().forEach((j) -> {
-            System.out.println(" " + j.getName() + " --> " + CNumberFormatter.formatByPattern(hashMap.get(j).doubleValue(), "#0.000"));
+            LOGGER.debug(StringUtils.SPACE + j.getName() + " --> " + CNumberFormatter.formatByPattern(hashMap.get(j).doubleValue(), "#0.000"));
         });
     }
 

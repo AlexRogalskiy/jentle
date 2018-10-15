@@ -26,6 +26,10 @@ package com.wildbeeslas.jentle.algorithms.sudoku;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -36,6 +40,11 @@ import java.util.List;
  * @since 2017-08-07
  */
 public class CDancingLinks {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CBackTrackAlgorithm.class);
 
     private static final int DEFAULT_SIZE = 9;
 
@@ -151,8 +160,8 @@ public class CDancingLinks {
             for (int j = 0; j < size; j++) {
                 ret.append(aResult[j]).append(" ");
             }
-            System.out.println(ret);
+            LOGGER.debug(ret);
         }
-        System.out.println();
+        LOGGER.debug(StringUtils.LF);
     }
 }
