@@ -35,6 +35,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -471,5 +472,17 @@ public final class CList {
             loopNode = loopNode.getNext();
         }
         loopNode.setNext(null);
+    }
+
+    public static <T> List<T> removeAll(final List<T> list, final T element, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(list);
+        return list.stream()
+                .filter(e -> Objects.compare(e, element, cmp) != 0)
+                .collect(Collectors.toList());
+    }
+
+    public static <T> boolean removeAll(final List<T> list, final T element, final Predicate<? super T> filter) {
+        Objects.requireNonNull(list);
+        return list.removeIf(filter);
     }
 }

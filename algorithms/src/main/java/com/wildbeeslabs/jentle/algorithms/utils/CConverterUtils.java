@@ -39,7 +39,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.RandomAccess;
 import java.util.Set;
@@ -84,19 +83,22 @@ public final class CConverterUtils {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public <T> Stream<T> streamOf(final List<T> list) {
-        return Objects.isNull(list) || list.isEmpty() ? Stream.empty() : list.stream();
-    }
-
-    public <T> Stream<T> streamOf(final Iterable<T> iterable, boolean parallel) {
-        Objects.requireNonNull(iterable);
+    public static <T> Stream<T> streamOf(@NonNull final Iterable<T> iterable, boolean parallel) {
         return StreamSupport.stream(iterable.spliterator(), parallel);
     }
 
-    public <T> Stream<T> streamOf(final Iterable<T> iterable) {
+    public static <T> Stream<T> streamOf(final Iterable<T> iterable) {
         return streamOf(iterable);
     }
 
+    public static <T> Stream<T> streamOf(final Collection<T> collection) {
+        //return Objects.isNull(collection) || collection.isEmpty() ? Stream.empty() : collection.stream();
+        return Optional.ofNullable(collection).map(Collection::stream).orElseGet(Stream::empty);
+    }
+
+//    public static <T> Stream<T> streamOf(@NonNull final Collection<String> collection) {
+//        return collection.stream().flatMap(s -> Stream.ofNullable(s));
+//    }
     /**
      * Creates an Object {@link Set} from the supplied objects.
      *
@@ -104,8 +106,7 @@ public final class CConverterUtils {
      * @param <T>
      * @return The {@link Set}.
      */
-    public static <T> Set<T> toSet(final T... objects) {
-        Objects.requireNonNull(objects);
+    public static <T> Set<T> toSet(@NonNull final T... objects) {
         final Set<T> resultSet = new HashSet<>();
         addToCollection(resultSet, objects);
         return resultSet;
@@ -118,8 +119,7 @@ public final class CConverterUtils {
      * @param <T>
      * @return The {@link List}.
      */
-    public static <T> List<T> toList(final T... objects) {
-        Objects.requireNonNull(objects);
+    public static <T> List<T> toList(@NonNull final T... objects) {
         final List<T> resultList = new ArrayList<>();
         addToCollection(resultList, objects);
         return resultList;
@@ -144,42 +144,35 @@ public final class CConverterUtils {
         return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::<T>unmodifiableList));
     }
 
-    public static <T, U> U[] toArray(final Map<? extends T, ? extends U> map, final Class<? extends U[]> type) {
-        Objects.requireNonNull(map);
+    public static <T, U> U[] toArray(@NonNull final Map<? extends T, ? extends U> map, final Class<? extends U[]> type) {
         final Collection<? extends U> values = map.values();
         //MapsUtils.getObjectInstanceOf(entry.getValue())
         return values.toArray(CUtils.newArray(type, values.size()));
     }
 
-    public static <T> T[] toArray(final Set<? extends T> set, final Class<? extends T[]> type) {
-        Objects.requireNonNull(set);
+    public static <T> T[] toArray(@NonNull final Set<? extends T> set, final Class<? extends T[]> type) {
         return set.toArray(CUtils.newArray(type, set.size()));
     }
 
-    public static <T> T[] toArray(final List<? extends T> list, final Class<? extends T[]> type) {
-        Objects.requireNonNull(list);
+    public static <T> T[] toArray(@NonNull final List<? extends T> list, final Class<? extends T[]> type) {
         return list.toArray(CUtils.newArray(type, list.size()));
     }
 
-    public static <T, U> List<? extends U> toList(final Map<? extends T, ? extends U> map) {
-        Objects.requireNonNull(map);
+    public static <T, U> List<? extends U> toList(@NonNull final Map<? extends T, ? extends U> map) {
         return new ArrayList<>(map.values());
     }
 
-    public static <T, U> Set<? extends U> toSet(final Map<? extends T, ? extends U> map) {
-        Objects.requireNonNull(map);
+    public static <T, U> Set<? extends U> toSet(@NonNull final Map<? extends T, ? extends U> map) {
         return new HashSet<>(map.values());
     }
 
-    public static <T> Set<? extends T> toSet(final List<? extends T> list) {
-        Objects.requireNonNull(list);
+    public static <T> Set<? extends T> toSet(@NonNull final List<? extends T> list) {
         return new HashSet<>(list);
         //Set<? extends T> targetSet = new HashSet<>(list.size());
         //CollectionUtils.addAll(targetSet, list);
     }
 
-    public static <T> List<? extends T> toList(final Set<? extends T> set) {
-        Objects.requireNonNull(set);
+    public static <T> List<? extends T> toList(@NonNull final Set<? extends T> set) {
         return new ArrayList<>(set);
         //List<? extends T> targetList = new ArrayList<>(set.size());
         //CollectionUtils.addAll(targetList, set);
@@ -193,31 +186,29 @@ public final class CConverterUtils {
         return new CCheckedMap<>(rawMap, keyType, valueType, strict);
     }
 
-    public static <T> void fill(final Collection<T> list, final T value, int count) {
-        Objects.requireNonNull(list);
+    public static <T> void fill(@NonNull final Collection<T> list, final T value, int count) {
+        assert (count > 0);
         for (int i = 0; i < count; i++) {
             list.add(value);
         }
     }
 
-    public static <T, E extends T> void append(final Collection<T> list1, final Collection<E> list2, int count) {
-        Objects.requireNonNull(list1);
-        Objects.requireNonNull(list2);
+    public static <T, E extends T> void append(@NonNull final Collection<T> list1, @NonNull final Collection<E> list2, int count) {
+        assert (count > 0);
         final Iterator<E> it2 = list2.iterator();
         for (int i = 0; i < count && it2.hasNext(); i++) {
             list1.add(it2.next());
         }
     }
 
-    public static <T> void fillWithDefault(final Collection<T> list, final Class<? extends T> clazz, int count) {
-        Objects.requireNonNull(list);
+    public static <T> void fillWithDefault(@NonNull final Collection<T> list, final Class<? extends T> clazz, int count) {
+        assert (count > 0);
         for (int i = 0; i < count; i++) {
             list.add(CUtils.getInstance(clazz));
         }
     }
 
-    public static <K, V> Map<K, V> toCheckedMapCopy(final Map rawMap, final Class<? extends K> keyType, final Class<? extends V> valueType, boolean strict) throws ClassCastException {
-        Objects.requireNonNull(rawMap);
+    public static <K, V> Map<K, V> toCheckedMapCopy(@NonNull final Map rawMap, final Class<? extends K> keyType, final Class<? extends V> valueType, boolean strict) throws ClassCastException {
         final Map<K, V> m2 = new HashMap<>(rawMap.size() * 4 / 3 + 1);
         final Iterator it = rawMap.entrySet().iterator();
         while (it.hasNext()) {
@@ -234,8 +225,16 @@ public final class CConverterUtils {
         return m2;
     }
 
-    public static <E> List<E> toCheckedList(final List rawList, final Class<? extends E> type, boolean strict) throws ClassCastException {
-        Objects.requireNonNull(rawList);
+    /**
+     *
+     * @param <E>
+     * @param rawList
+     * @param type
+     * @param strict
+     * @return
+     * @throws ClassCastException
+     */
+    public static <E> List<E> toCheckedList(@NonNull final List rawList, final Class<? extends E> type, boolean strict) throws ClassCastException {
         final List<E> l = (rawList instanceof RandomAccess) ? new ArrayList<>(rawList.size()) : new LinkedList<>();
         final Iterator it = rawList.iterator();
         while (it.hasNext()) {
@@ -391,7 +390,7 @@ public final class CConverterUtils {
                 });
     }
 
-    public static Collection<Character> toCodePoints(final String value) {
+    public static Collection<Character> toCodePoints(@NonNull final String value) {
         return value.codePoints().mapToObj(c -> (char) c).collect(Collectors.toList());
     }
 }

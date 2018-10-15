@@ -23,20 +23,24 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import lombok.NonNull;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -200,9 +204,15 @@ public final class CListUtils {
     }
 
     public static <T> List<T> getRandomSubset(@NonNull final List<? extends T> list) {
-        final Random random = new Random();
         return list.stream().filter(f -> {
-            return random.nextBoolean();
+            return CRandom.generateRandomBoolean();
         }).collect(Collectors.<T>toList());
+    }
+
+    public static <T> List<T> copy(final List<? extends T> list) {
+        return Optional.ofNullable(list)
+                .map(List::stream)
+                .orElseGet(Stream::empty)
+                .collect(Collectors.toList());
     }
 }
