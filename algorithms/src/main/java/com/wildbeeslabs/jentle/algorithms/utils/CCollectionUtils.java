@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.IntSummaryStatistics;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -390,5 +391,50 @@ public final class CCollectionUtils {
 
     public static <T> Map<Boolean, List<T>> partitionBy(@NonNull final Stream<T> stream, final Predicate<? super T> predicate) {
         return CCollectionUtils.partitionBy(stream, predicate, Collectors.toList());
+    }
+
+    public static <E> Iterable<E> concat(final Iterable<? extends E> i1, final Iterable<? extends E> i2) {
+        return new Iterable<E>() {
+            public Iterator<E> iterator() {
+                return new Iterator<E>() {
+                    Iterator<? extends E> listIterator = i1.iterator();
+                    Boolean checkedHasNext;
+                    E nextValue;
+                    private boolean startTheSecond;
+
+                    void theNext() {
+                        if (this.listIterator.hasNext()) {
+                            this.checkedHasNext = true;
+                            this.nextValue = this.listIterator.next();
+                        } else if (this.startTheSecond) {
+                            this.checkedHasNext = false;
+                        } else {
+                            this.startTheSecond = true;
+                            this.listIterator = i2.iterator();
+                            theNext();
+                        }
+                    }
+
+                    public boolean hasNext() {
+                        if (this.checkedHasNext == null) {
+                            theNext();
+                        }
+                        return this.checkedHasNext;
+                    }
+
+                    public E next() {
+                        if (!hasNext()) {
+                            throw new NoSuchElementException();
+                        }
+                        this.checkedHasNext = null;
+                        return this.nextValue;
+                    }
+
+                    public void remove() {
+                        this.listIterator.remove();
+                    }
+                };
+            }
+        };
     }
 }

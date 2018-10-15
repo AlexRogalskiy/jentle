@@ -209,10 +209,16 @@ public final class CListUtils {
         }).collect(Collectors.<T>toList());
     }
 
-    public static <T> List<T> copy(final List<? extends T> list) {
+    public static <T> List<T> copyOf(final List<? extends T> list) {
         return Optional.ofNullable(list)
                 .map(List::stream)
                 .orElseGet(Stream::empty)
+                .collect(Collectors.toList());
+    }
+
+    public static <T> List<T> flatten(final Collection<Collection<T>> collection) {
+        return collection.stream()
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 }

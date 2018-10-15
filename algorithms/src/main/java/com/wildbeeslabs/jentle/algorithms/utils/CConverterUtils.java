@@ -108,7 +108,7 @@ public final class CConverterUtils {
      */
     public static <T> Set<T> toSet(@NonNull final T... objects) {
         final Set<T> resultSet = new HashSet<>();
-        addToCollection(resultSet, objects);
+        Collections.addAll(resultSet, objects);
         return resultSet;
     }
 
@@ -121,19 +121,8 @@ public final class CConverterUtils {
      */
     public static <T> List<T> toList(@NonNull final T... objects) {
         final List<T> resultList = new ArrayList<>();
-        addToCollection(resultList, objects);
+        Collections.addAll(resultList, objects);
         return resultList;
-    }
-
-    /**
-     * Adds supplied objects to collection {@link Collection}
-     *
-     * @param objects The objects to be added to the list.
-     */
-    private static <T> void addToCollection(final Collection<T> theCollection, final T... objects) {
-        for (final T object : objects) {
-            theCollection.add(object);
-        }
     }
 
     public static <T> Set<T> toImmutableSet(final T... args) {
@@ -142,6 +131,15 @@ public final class CConverterUtils {
 
     public static <T> List<T> toImmutableList(final T... args) {
         return Stream.of(args).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::<T>unmodifiableList));
+    }
+
+    public static <T, A extends List<T>> Collector<T, A, List<T>> toImmutableList(final Supplier<A> supplier) {
+        return Collector.of(
+                supplier,
+                List::add, (left, right) -> {
+                    left.addAll(right);
+                    return left;
+                }, Collections::unmodifiableList);
     }
 
     public static <T, U> U[] toArray(@NonNull final Map<? extends T, ? extends U> map, final Class<? extends U[]> type) {
