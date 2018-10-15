@@ -23,7 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.string;
 
+import com.vdurmont.emoji.EmojiParser;
+
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -37,6 +42,10 @@ import org.apache.log4j.Logger;
  *
  */
 public final class CStringRegex {
+
+    private static final String DEFAULT_EMOJI_PATTERN = "[^\\p{L}\\p{N}\\p{P}\\p{Z}]";
+    private static final String DEFAULT_MULTI_STRING_PATTERN = "^(?=.*?\\p{Lu})(?=.*?\\p{Ll})(?=.*?\\d)(?=.*?[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?]).*$";
+    private static final String DEFAULT_SPECIAL_CHARS_PATTERN = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
 
     /**
      * Default logger instance
@@ -70,6 +79,24 @@ public final class CStringRegex {
         sb.append(")");
     }
 
+    public static String removeEmojis(final String text) {
+        return removeEmojis(DEFAULT_EMOJI_PATTERN, text);
+    }
+
+    public static String removeEmojis(final String regex, final String text) {
+        final Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
+        final Matcher matcher = pattern.matcher(text);
+        return matcher.replaceAll(StringUtils.EMPTY);
+    }
+
+    public static String convertEmojis(final String text) {
+        return EmojiParser.parseToAliases(text);
+    }
+
+    public static String stripEmojis(final String text) {
+        return EmojiParser.removeAllEmojis(text);
+    }
+
     /**
      * Compile a pattern that can will match a string if the string contains any
      * of the given terms.
@@ -84,7 +111,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * contains any of the terms.
      */
-    public static Pattern getContainsAnyPattern(String[] terms) {
+    public static Pattern getContainsAnyPattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?s).*");
         buildFindAnyPattern(terms, sb);
@@ -106,7 +133,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * equals any of the terms.
      */
-    public static Pattern getEqualsAnyPattern(String[] terms) {
+    public static Pattern getEqualsAnyPattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?s)\\A");
         buildFindAnyPattern(terms, sb);
@@ -128,7 +155,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * starts with any of the terms.
      */
-    public static Pattern getStartsWithAnyPattern(String[] terms) {
+    public static Pattern getStartsWithAnyPattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?s)\\A");
         buildFindAnyPattern(terms, sb);
@@ -150,7 +177,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * ends with any of the terms.
      */
-    public static Pattern getEndsWithAnyPattern(String[] terms) {
+    public static Pattern getEndsWithAnyPattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?s).*");
         buildFindAnyPattern(terms, sb);
@@ -174,7 +201,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * contains any of the terms.
      */
-    public static Pattern getContainsAnyIgnoreCasePattern(String[] terms) {
+    public static Pattern getContainsAnyIgnoreCasePattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?i)(?u)(?s).*");
         buildFindAnyPattern(terms, sb);
@@ -198,7 +225,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * equals any of the terms.
      */
-    public static Pattern getEqualsAnyIgnoreCasePattern(String[] terms) {
+    public static Pattern getEqualsAnyIgnoreCasePattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?i)(?u)(?s)\\A");
         buildFindAnyPattern(terms, sb);
@@ -222,7 +249,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * starts with any of the terms.
      */
-    public static Pattern getStartsWithAnyIgnoreCasePattern(String[] terms) {
+    public static Pattern getStartsWithAnyIgnoreCasePattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?i)(?u)(?s)\\A");
         buildFindAnyPattern(terms, sb);
@@ -246,7 +273,7 @@ public final class CStringRegex {
      * @return Compiled pattern that can be used to match a string to see if it
      * ends with any of the terms.
      */
-    public static Pattern getEndsWithAnyIgnoreCasePattern(String[] terms) {
+    public static Pattern getEndsWithAnyIgnoreCasePattern(final String[] terms) {
         StringBuffer sb = new StringBuffer();
         sb.append("(?i)(?u)(?s).*");
         buildFindAnyPattern(terms, sb);
@@ -273,7 +300,7 @@ public final class CStringRegex {
      * string.
      * @return true iff one of the terms is a substring of the given string.
      */
-    public static boolean containsAny(String s, String[] terms) {
+    public static boolean containsAny(final String s, final String[] terms) {
         return getContainsAnyPattern(terms).matcher(s).matches();
     }
 
@@ -295,7 +322,7 @@ public final class CStringRegex {
      * @param terms list of strings that may equal the given string.
      * @return true iff one of the terms is equal to the given string.
      */
-    public static boolean equalsAny(String s, String[] terms) {
+    public static boolean equalsAny(final String s, final String[] terms) {
         return getEqualsAnyPattern(terms).matcher(s).matches();
     }
 
@@ -317,7 +344,7 @@ public final class CStringRegex {
      * @param terms list of strings that may start with the given string.
      * @return true iff the given string starts with one of the given terms.
      */
-    public static boolean startsWithAny(String s, String[] terms) {
+    public static boolean startsWithAny(final String s, final String[] terms) {
         return getStartsWithAnyPattern(terms).matcher(s).matches();
     }
 
@@ -339,7 +366,7 @@ public final class CStringRegex {
      * @param terms list of strings that may end with the given string.
      * @return true iff the given string ends with one of the given terms.
      */
-    public static boolean endsWithAny(String s, String[] terms) {
+    public static boolean endsWithAny(final String s, final String[] terms) {
         return getEndsWithAnyPattern(terms).matcher(s).matches();
     }
 
@@ -388,7 +415,7 @@ public final class CStringRegex {
      * @param terms list of strings that may equal the given string.
      * @return true iff one of the terms is equal to the given string.
      */
-    public static boolean equalsAnyIgnoreCase(String s, String[] terms) {
+    public static boolean equalsAnyIgnoreCase(final String s, final String[] terms) {
         return getEqualsAnyIgnoreCasePattern(terms).matcher(s).matches();
     }
 
@@ -412,7 +439,7 @@ public final class CStringRegex {
      * @param terms list of strings that may start with the given string.
      * @return true iff the given string starts with one of the given terms.
      */
-    public static boolean startsWithAnyIgnoreCase(String s, String[] terms) {
+    public static boolean startsWithAnyIgnoreCase(final String s, final String[] terms) {
         return getStartsWithAnyIgnoreCasePattern(terms).matcher(s).matches();
     }
 
@@ -436,8 +463,30 @@ public final class CStringRegex {
      * @param terms list of strings that may end with the given string.
      * @return true iff the given string ends with one of the given terms.
      */
-    public static boolean endsWithAnyIgnoreCase(String s, String[] terms) {
+    public static boolean endsWithAnyIgnoreCase(final String s, final String[] terms) {
         return getEndsWithAnyIgnoreCasePattern(terms).matcher(s).matches();
+    }
+
+    private static boolean isValid(final String input) {
+        boolean numberPresent = false;
+        boolean upperCasePresent = false;
+        boolean lowerCasePresent = false;
+        boolean specialCharacterPresent = false;
+
+        char currentCharacter;
+        for (int i = 0; i < input.length(); i++) {
+            currentCharacter = input.charAt(i);
+            if (Character.isDigit(currentCharacter)) {
+                numberPresent = true;
+            } else if (Character.isUpperCase(currentCharacter)) {
+                upperCasePresent = true;
+            } else if (Character.isLowerCase(currentCharacter)) {
+                lowerCasePresent = true;
+            } else if (DEFAULT_SPECIAL_CHARS_PATTERN.contains(String.valueOf(currentCharacter))) {
+                specialCharacterPresent = true;
+            }
+        }
+        return (numberPresent && upperCasePresent && lowerCasePresent && specialCharacterPresent);
     }
 
 //    /**

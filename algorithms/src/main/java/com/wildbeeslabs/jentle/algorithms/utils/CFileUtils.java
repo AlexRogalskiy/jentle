@@ -36,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -170,5 +172,15 @@ public final class CFileUtils {
             listDirectories.add(directory);
             listDirectories2(directory);
         }
+    }
+
+    public static String convertToBase64(final String fileName) throws IOException {
+        byte[] fileContent = FileUtils.readFileToByteArray(new File(fileName));
+        return Base64.getEncoder().encodeToString(fileContent);
+    }
+
+    public static void convertFromBase64(final String fileName, final String encodedString) throws IOException {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        FileUtils.writeByteArrayToFile(new File(fileName), decodedBytes);
     }
 }

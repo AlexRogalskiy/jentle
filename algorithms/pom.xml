@@ -28,6 +28,8 @@
         <pl.allergro.finance.tradukisto.version>1.0.1</pl.allergro.finance.tradukisto.version>
         <org.jgrapht.core.version>1.0.1</org.jgrapht.core.version>
         <org.squirrelframework.version>0.3.8</org.squirrelframework.version>
+        <com.google.guava.version>26.0-jre</com.google.guava.version>
+        <com.vdurmont.emoji.version>4.0.0</com.vdurmont.emoji.version>
     </properties>
     
     <build>
@@ -175,6 +177,18 @@
             <groupId>org.squirrelframework</groupId>
             <artifactId>squirrel-foundation</artifactId>
             <version>${org.squirrelframework.version}</version>
+        </dependency>
+        <!-- Google Guava library  -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${com.google.guava.version}</version>
+        </dependency>
+        <!-- Emojis library -->
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>${com.vdurmont.emoji.version}</version>
         </dependency>
     </dependencies>
 </project>

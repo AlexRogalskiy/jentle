@@ -1,0 +1,58 @@
+/*
+ * The MIT License
+ *
+ * Copyright 2018 WildBees Labs.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package com.wildbeeslabs.jentle.algorithms.string;
+
+/**
+ *
+ * Custom anagram validator implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
+ */
+public final class CAnagramValidator {
+
+    private CAnagramValidator() {
+        // PRIVATE EMPTY CONSTRUCTOR
+    }
+
+    public static boolean isValid(final String text, final String anagram) {
+        String sortedText = sort(text);
+        String sortedAnagram = sort(anagram);
+        return sortedText.equals(sortedAnagram);
+    }
+
+    private static String sort(final String text) {
+        return sanitize(text).chars()
+                .sorted()
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
+    private static String sanitize(final String text) {
+        return text.toLowerCase()
+                .trim()
+                .replaceAll("\\s+", "");
+    }
+}

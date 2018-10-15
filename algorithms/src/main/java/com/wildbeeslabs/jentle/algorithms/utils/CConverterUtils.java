@@ -376,4 +376,8 @@ public final class CConverterUtils {
                     return first;
                 });
     }
+
+    public static Collection<Character> toCodePoints(final String value) {
+        return value.codePoints().mapToObj(c -> (char) c).collect(Collectors.toList());
+    }
 }

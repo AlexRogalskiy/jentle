@@ -28,7 +28,6 @@ import com.wildbeeslabs.jentle.algorithms.utils.CStringUtils;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.tree.CTrie;
 import com.wildbeeslabs.jentle.collections.tree.CTrie3;
-import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,11 +43,9 @@ import java.util.Stack;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 import lombok.ToString;
 
 import org.apache.commons.lang3.StringUtils;
-import pl.allegro.finance.tradukisto.MoneyConverters;
 
 /**
  *
@@ -951,10 +948,5 @@ public final class CString {
             }
         }
         return l;
-    }
-
-    // MoneyConverters.ENGLISH_BANKING_MONEY_VALUE
-    public String toLexicalCurrency(final String input, @NonNull final MoneyConverters converter) {
-        return converter.asWords(new BigDecimal(input));
     }
 }

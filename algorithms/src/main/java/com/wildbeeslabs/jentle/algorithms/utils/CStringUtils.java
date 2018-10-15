@@ -31,6 +31,7 @@ import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
@@ -48,12 +49,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import lombok.NonNull;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
+import pl.allegro.finance.tradukisto.MoneyConverters;
 
 /**
  *
@@ -585,18 +589,59 @@ public final class CStringUtils {
         return b;
     }
 
-    public static boolean checkForAllLetters(@NonNull final String input) {
+    public static boolean checkForAllLetters(final String input) {
+        Objects.requireNonNull(input);
         return input.toLowerCase()
                 .replaceAll("[^a-z]", "")
                 .replaceAll("(.)(?=.*\\1)", "")
                 .length() == 26;
     }
 
-    public static boolean checkForAllLetters2(@NonNull final String input) {
+    public static boolean checkForAllLetters2(final String input) {
+        Objects.requireNonNull(input);
         long c = input.toLowerCase().chars()
                 .filter(ch -> ch >= 'a' && ch <= 'z')
                 .distinct()
                 .count();
         return c == 26;
+    }
+
+    // MoneyConverters.ENGLISH_BANKING_MONEY_VALUE
+    public String toLexicalCurrency(final String input, final MoneyConverters converter) {
+        Objects.requireNonNull(converter);
+        return converter.asWords(new BigDecimal(input));
+    }
+
+    public static String convertToTitleCaseWordFull(final String text) {
+        return WordUtils.capitalizeFully(text);
+    }
+
+    public static String convertToTitleCaseWord(final String text) {
+        return WordUtils.capitalize(text);
+    }
+
+    public boolean isPalindrome(final String text) {
+        String temp = text.replaceAll("\\s+", StringUtils.EMPTY).toLowerCase();
+        return IntStream.range(0, temp.length() / 2)
+                .noneMatch(i -> temp.charAt(i) != temp.charAt(temp.length() - i - 1));
+    }
+
+    public static String removeLastCharRegex(final String text) {
+        return (Objects.isNull(text)) ? null : text.replaceAll(".$", "");
+    }
+
+    public static String generateRandomString(int length, boolean useLetters, boolean useNumbers) {
+        assert (length > 0);
+        return RandomStringUtils.random(length, useLetters, useNumbers);
+    }
+
+    public static String generateRandomAplhabeticString(int length) {
+        assert (length > 0);
+        return RandomStringUtils.randomAlphabetic(length);
+    }
+
+    public static String generateRandomAplhanumericString(int length) {
+        assert (length > 0);
+        return RandomStringUtils.randomAlphanumeric(length);
     }
 }
