@@ -60,6 +60,18 @@ public final class CMath {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
+    public static interface MathOperation {
+        int operation(int a, int b);
+    }
+
+    final MathOperation addition = (int a, int b) -> a + b;
+
+    final MathOperation subtraction = (a, b) -> a - b;
+
+    final MathOperation multiplication = (int a, int b) -> a * b;
+
+    final MathOperation division = (int a, int b) -> a / b;
+
     // downward dynamic
     public static int fibonacci1(int n) {
         return fibonacci2(n, new int[n + 1]);
