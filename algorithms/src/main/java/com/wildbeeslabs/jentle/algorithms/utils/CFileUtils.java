@@ -54,15 +54,8 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.jsoup.Jsoup;
 
 /**
  * Custom file utilities implementation
@@ -328,36 +321,5 @@ public final class CFileUtils {
             LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
-    }
-
-    public static String readUrl(final String url) {
-        Objects.requireNonNull(url);
-        try {
-            return Jsoup.connect(url).get().html();
-        } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
-        }
-        return null;
-    }
-
-    public static String readUrl2(final String url) {
-        Objects.requireNonNull(url);
-        HttpGet request = null;
-        try {
-            final CloseableHttpClient client = HttpClientBuilder.create().build();
-            request = new HttpGet(url);
-            request.addHeader("User-Agent", "Apache HTTPClient");
-
-            final HttpResponse response = client.execute(request);
-            final HttpEntity entity = response.getEntity();
-            return EntityUtils.toString(entity);
-        } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
-        } finally {
-            if (Objects.nonNull(request)) {
-                request.releaseConnection();
-            }
-        }
-        return null;
     }
 }
