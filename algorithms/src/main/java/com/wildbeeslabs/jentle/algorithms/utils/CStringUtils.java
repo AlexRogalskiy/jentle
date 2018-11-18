@@ -56,6 +56,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import pl.allegro.finance.tradukisto.MoneyConverters;
 
@@ -70,6 +72,11 @@ import pl.allegro.finance.tradukisto.MoneyConverters;
  * @see http://www-igm.univ-mlv.fr/%7Elecroq/string/
  */
 public final class CStringUtils {
+
+    /**
+     * Default Logger instance
+     */
+    protected static final Logger LOGGER = LogManager.getLogger(CStringUtils.class);
 
     private CStringUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -604,6 +611,10 @@ public final class CStringUtils {
                 .distinct()
                 .count();
         return c == 26;
+    }
+
+    public static String capitalize(final String word) {
+        return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
     }
 
     // MoneyConverters.ENGLISH_BANKING_MONEY_VALUE

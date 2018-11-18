@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.format;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import org.apache.log4j.LogManager;
@@ -66,6 +67,11 @@ public final class CNumberFormatter {
     }
 
     public static <T> String format(final Comparable<? super T> value, int minFractionDigits, int maxFractionDigits, int minIntDigits, int maxIntDigits, final String negPrefix, final String negSuffix) {
+        final DecimalFormat formatter = CNumberFormatter.getFormatter(minFractionDigits, maxFractionDigits, minIntDigits, maxIntDigits, negPrefix, negSuffix, RoundingMode.UP);
+        return formatter.format(value);
+    }
+
+    public static DecimalFormat getFormatter(int minFractionDigits, int maxFractionDigits, int minIntDigits, int maxIntDigits, final String negPrefix, final String negSuffix, final RoundingMode roundingMode) {
         final DecimalFormat formatter = new DecimalFormat();
         formatter.setMinimumFractionDigits(minFractionDigits);
         formatter.setMaximumFractionDigits(maxFractionDigits);
@@ -73,7 +79,9 @@ public final class CNumberFormatter {
         formatter.setMaximumIntegerDigits(maxIntDigits);
         formatter.setNegativePrefix(negPrefix);
         formatter.setNegativeSuffix(negSuffix);
-        return formatter.format(value);
+        formatter.setGroupingUsed(true);
+        formatter.setRoundingMode(roundingMode);
+        return formatter;
     }
 
     /**

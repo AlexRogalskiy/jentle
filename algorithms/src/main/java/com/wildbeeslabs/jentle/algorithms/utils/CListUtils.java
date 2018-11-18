@@ -43,6 +43,9 @@ import java.util.stream.Stream;
 
 import lombok.NonNull;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import org.apache.commons.lang3.SerializationUtils;
 
 /**
@@ -54,6 +57,11 @@ import org.apache.commons.lang3.SerializationUtils;
  * @since 2017-08-07
  */
 public final class CListUtils {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CListUtils.class);
 
     private CListUtils() {
         // PRIVATE EMPTY CONSTRUCTOR

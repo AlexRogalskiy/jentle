@@ -36,13 +36,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import org.apache.commons.lang3.SerializationUtils;
 
 /**
  *
@@ -55,6 +57,11 @@ import org.apache.commons.lang3.SerializationUtils;
  *
  */
 public final class CMatrixUtils<T> {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CMatrixUtils.class);
 
     private CMatrixUtils() {
         // PRIVATE EMPTY CONSTRUCTOR

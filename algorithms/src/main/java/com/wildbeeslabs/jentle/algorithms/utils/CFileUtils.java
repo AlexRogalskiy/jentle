@@ -23,12 +23,15 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -41,6 +44,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,8 +53,16 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
 
 /**
  * Custom file utilities implementation
@@ -188,5 +200,164 @@ public final class CFileUtils {
 
     public static Stream<String> streamOf(final String fileName) throws IOException {
         return Files.lines(Paths.get(fileName), StandardCharsets.UTF_8);
+    }
+
+    public static String readFile(final String filename) {
+        Objects.requireNonNull(filename);
+        final StringBuilder sb = new StringBuilder();
+        try (final BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while (Objects.nonNull(line = br.readLine())) {
+                sb.append(line);
+                if (Objects.nonNull(line)) {
+                    sb.append(System.lineSeparator());
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
+        return sb.toString();
+    }
+
+    public static String readFile2(final String filename) {
+        Objects.requireNonNull(filename);
+        final StringBuilder sb = new StringBuilder();
+        try {
+            final List<String> lines = Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
+            for (final String line : lines) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+            }
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
+        return sb.toString();
+    }
+
+    public static String readFile3(final String filename) {
+        Objects.requireNonNull(filename);
+        final StringBuilder sb = new StringBuilder();
+        try {
+            Files.lines(Paths.get(filename)).forEachOrdered(s -> {
+                sb.append(s);
+                sb.append(System.lineSeparator());
+            });
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
+        return sb.toString();
+    }
+
+    public static String readFile4(final String filename) {
+        Objects.requireNonNull(filename);
+        final StringBuilder sb = new StringBuilder();
+        Scanner scan = null;
+        try {
+            scan = new Scanner(new File(filename));
+            while (scan.hasNext()) {
+                String line = scan.nextLine();
+                sb.append(line);
+                sb.append(System.lineSeparator());
+            }
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+        } finally {
+            if (Objects.nonNull(scan)) {
+                scan.close();
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String readFile5(final String filename) {
+        Objects.requireNonNull(filename);
+        final StringBuilder sb = new StringBuilder();
+        BufferedReader br = null;
+        try {
+            String line = null;
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename)), StandardCharsets.UTF_8));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+            }
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        } finally {
+            if (Objects.nonNull(br)) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    LOGGER.error(String.format("ERROR: cannot process close operations on file=%s, message=%s", filename, ex.getMessage()));
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String readFile6(final String filename) {
+        Objects.requireNonNull(filename);
+        try (final FileInputStream inputStream = new FileInputStream(filename)) {
+            return IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+            //return FileUtils.readFileToString(new File(filename), StandardCharsets.UTF_8.name());
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
+        return null;
+    }
+
+    public static String readCsvFile(final String filename) {
+        Objects.requireNonNull(filename);
+        final StringBuilder sb = new StringBuilder();
+        try (final CSVReader reader = new CSVReader(new FileReader(filename))) {
+            String[] nextLine;
+            while (Objects.nonNull(nextLine = reader.readNext())) {
+                for (final String e : nextLine) {
+                    sb.append(e);
+                }
+                sb.append(System.lineSeparator());
+            }
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
+        return sb.toString();
+    }
+
+    public static String readUrl(final String url) {
+        Objects.requireNonNull(url);
+        try {
+            return Jsoup.connect(url).get().html();
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
+        }
+        return null;
+    }
+
+    public static String readUrl2(final String url) {
+        Objects.requireNonNull(url);
+        HttpGet request = null;
+        try {
+            final CloseableHttpClient client = HttpClientBuilder.create().build();
+            request = new HttpGet(url);
+            request.addHeader("User-Agent", "Apache HTTPClient");
+
+            final HttpResponse response = client.execute(request);
+            final HttpEntity entity = response.getEntity();
+            return EntityUtils.toString(entity);
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
+        } finally {
+            if (Objects.nonNull(request)) {
+                request.releaseConnection();
+            }
+        }
+        return null;
     }
 }

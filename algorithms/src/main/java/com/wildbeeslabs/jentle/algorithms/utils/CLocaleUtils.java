@@ -23,42 +23,37 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-import lombok.NonNull;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 /**
- * Custom filter utilities implementation
  *
- * @author alexander.rogalskiy
- * @version 1.0
- * @since 2017-12-12
+ * Custom locale utilities implementation
  *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
-public class CFilterUtils {
+public final class CLocaleUtils {
 
     /**
      * Default logger instance
      */
-    private static final Logger LOGGER = LogManager.getLogger(CFilterUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(CLocaleUtils.class);
+    /**
+     * Default locale source
+     */
+    public static final String DEFAULT_LOCALE_SOURCE = "resources/words";
 
-    private CFilterUtils() {
-        LOGGER.debug("Initializing filter utilities...");
+    private CLocaleUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static <T> boolean allMatch(@NonNull final Stream<? extends T> stream, final Predicate<? super T> predicate) {
-        return stream.allMatch(predicate);
-    }
-
-    public static <T> boolean anyMatch(@NonNull final Stream<? extends T> stream, final Predicate<? super T> predicate) {
-        return stream.anyMatch(predicate);
-    }
-
-    public static <T> boolean noneMatch(@NonNull final Stream<? extends T> stream, final Predicate<? super T> predicate) {
-        return stream.noneMatch(predicate);
+    public static String getWord(final Locale currentLocale, final String key) {
+        final ResourceBundle words = ResourceBundle.getBundle(DEFAULT_LOCALE_SOURCE, currentLocale);
+        return words.getString(key);
     }
 }

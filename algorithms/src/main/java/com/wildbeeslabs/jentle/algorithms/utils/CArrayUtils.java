@@ -41,13 +41,15 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.stream.IntStream;
 
+import org.apache.commons.math3.util.Pair;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import org.apache.commons.math3.util.Pair;
 
 /**
  *
@@ -58,6 +60,11 @@ import org.apache.commons.math3.util.Pair;
  * @since 2017-08-07
  */
 public final class CArrayUtils {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CArrayUtils.class);
 
     private CArrayUtils() {
         // PRIVATE EMPTY CONSTRUCTOR

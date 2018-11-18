@@ -55,6 +55,9 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -69,6 +72,11 @@ import lombok.ToString;
  * @since 2017-08-07
  */
 public final class CNumericUtils {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CNumericUtils.class);
 
     /**
      * Default two pi constance

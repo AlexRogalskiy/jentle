@@ -34,7 +34,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -66,6 +69,11 @@ import org.apache.commons.lang3.StringUtils;
  *
  */
 public final class CPermutationUtils {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CPermutationUtils.class);
 
     private CPermutationUtils() {
         // PRIVATE EMPTY CONSTRUCTOR

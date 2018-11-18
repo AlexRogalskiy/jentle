@@ -28,6 +28,8 @@ import java.util.regex.Pattern;
 import lombok.NonNull;
 
 import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -38,6 +40,11 @@ import org.apache.commons.validator.routines.EmailValidator;
  * @since 2017-08-07
  */
 public final class CRegexUtils {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CRegexUtils.class);
 
     private static final Pattern DEFAULT_PASSWORD_STRENGH_PATTERN = Pattern.compile("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&amp;*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$");
 

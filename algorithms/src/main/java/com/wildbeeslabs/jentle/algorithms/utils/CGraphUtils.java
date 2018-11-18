@@ -37,6 +37,9 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.Stack;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,6 +54,11 @@ import lombok.ToString;
  * @since 2017-08-07
  */
 public final class CGraphUtils {
+
+    /**
+     * Default logger instance
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CGraphUtils.class);
 
     private CGraphUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
