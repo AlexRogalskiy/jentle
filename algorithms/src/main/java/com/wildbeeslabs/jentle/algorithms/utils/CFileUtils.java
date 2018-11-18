@@ -23,7 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,11 +37,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
@@ -54,6 +61,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -192,7 +200,7 @@ public final class CFileUtils {
     }
 
     public static Stream<String> streamOf(final String fileName) throws IOException {
-        return Files.lines(Paths.get(fileName), StandardCharsets.UTF_8);
+        return Files.lines(Paths.get(fileName), DEFAULT_FILE_CHARACTER_ENCODING);
     }
 
     public static String readFile(final String filename) {
@@ -207,7 +215,7 @@ public final class CFileUtils {
                 }
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
@@ -218,7 +226,7 @@ public final class CFileUtils {
         Objects.requireNonNull(filename);
         final StringBuilder sb = new StringBuilder();
         try {
-            final List<String> lines = Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
+            final List<String> lines = Files.readAllLines(Paths.get(filename), DEFAULT_FILE_CHARACTER_ENCODING);
             for (final String line : lines) {
                 sb.append(line);
                 sb.append(System.lineSeparator());
@@ -243,23 +251,18 @@ public final class CFileUtils {
         return sb.toString();
     }
 
+    @SuppressWarnings("null")
     public static String readFile4(final String filename) {
         Objects.requireNonNull(filename);
         final StringBuilder sb = new StringBuilder();
-        Scanner scan = null;
-        try {
-            scan = new Scanner(new File(filename));
+        try (final Scanner scan = new Scanner(new File(filename))) {
             while (scan.hasNext()) {
                 String line = scan.nextLine();
                 sb.append(line);
                 sb.append(System.lineSeparator());
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
-        } finally {
-            if (Objects.nonNull(scan)) {
-                scan.close();
-            }
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -267,26 +270,16 @@ public final class CFileUtils {
     public static String readFile5(final String filename) {
         Objects.requireNonNull(filename);
         final StringBuilder sb = new StringBuilder();
-        BufferedReader br = null;
-        try {
-            String line = null;
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename)), StandardCharsets.UTF_8));
-            while ((line = br.readLine()) != null) {
+        String line = null;
+        try (final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename)), DEFAULT_FILE_CHARACTER_ENCODING))) {
+            while (Objects.nonNull(line = br.readLine())) {
                 sb.append(line);
                 sb.append(System.lineSeparator());
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
-        } finally {
-            if (Objects.nonNull(br)) {
-                try {
-                    br.close();
-                } catch (IOException ex) {
-                    LOGGER.error(String.format("ERROR: cannot process close operations on file=%s, message=%s", filename, ex.getMessage()));
-                }
-            }
         }
         return sb.toString();
     }
@@ -294,10 +287,10 @@ public final class CFileUtils {
     public static String readFile6(final String filename) {
         Objects.requireNonNull(filename);
         try (final FileInputStream inputStream = new FileInputStream(filename)) {
-            return IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
-            //return FileUtils.readFileToString(new File(filename), StandardCharsets.UTF_8.name());
+            return IOUtils.toString(inputStream, DEFAULT_FILE_CHARACTER_ENCODING.name());
+            //return FileUtils.readFileToString(new File(filename), DEFAULT_FILE_CHARACTER_ENCODING.name());
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
@@ -316,10 +309,60 @@ public final class CFileUtils {
                 sb.append(System.lineSeparator());
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: not found file=%s, message=%s", filename, ex.getMessage()));
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
+    }
+
+    public static String readCsvFile(final String filename, char separator) {
+        Objects.requireNonNull(filename);
+        final Path path = Paths.get(filename);
+        final CSVParser parser = new CSVParserBuilder().withSeparator(separator).build();
+        final StringBuilder sb = new StringBuilder();
+        try (final BufferedReader br = Files.newBufferedReader(path, DEFAULT_FILE_CHARACTER_ENCODING);
+                final CSVReader reader = new CSVReaderBuilder(br).withCSVParser(parser).build()) {
+            final List<String[]> rows = reader.readAll();
+            rows.stream().map((row) -> {
+                for (String e : row) {
+                    sb.append(e);
+                }
+                return row;
+            }).forEach((_item) -> {
+                sb.append(System.lineSeparator());
+            });
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
+        return sb.toString();
+    }
+
+    public static void writeCsvFile(final String filename, final String[] data) {
+        Objects.requireNonNull(filename);
+        try (final FileOutputStream fos = new FileOutputStream(filename);
+                final OutputStreamWriter osw = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING);
+                final CSVWriter writer = new CSVWriter(osw, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+            writer.writeNext(data);
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
+    }
+
+    public static void writeCsvFile(final String filename, final List<String[]> data) {
+        Objects.requireNonNull(filename);
+        try (final FileOutputStream fos = new FileOutputStream(filename);
+                final OutputStreamWriter osw = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING);
+                final CSVWriter writer = new CSVWriter(osw, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+            writer.writeAll(data);
+        } catch (FileNotFoundException ex) {
+            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+        }
     }
 }
