@@ -37,7 +37,7 @@ import lombok.ToString;
  * @param <T>
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class GenericMatcher<T> implements IGenericMatcher<T> {
 

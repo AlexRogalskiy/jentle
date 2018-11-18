@@ -26,6 +26,8 @@ package com.wildbeeslabs.jentle.algorithms.format;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -51,14 +53,14 @@ public final class CNumberFormatter {
     /**
      * Default number format instance
      */
-    private static final DecimalFormat numberFormat = new DecimalFormat(CNumberFormatter.DEFAULT_NUMBER_FORMAT_PATTERN);
+    private static final DecimalFormat demimalFormat = new DecimalFormat(CNumberFormatter.DEFAULT_NUMBER_FORMAT_PATTERN);
 
     private CNumberFormatter() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
     public static <T> String format(final Comparable<? super T> value) {
-        return CNumberFormatter.numberFormat.format(value);
+        return CNumberFormatter.demimalFormat.format(value);
     }
 
     public static <T> String formatByPattern(final Comparable<? super T> value, final String pattern) {
@@ -117,9 +119,20 @@ public final class CNumberFormatter {
         } catch (NumberFormatException ex) {
             if (Double.isInfinite(x)) {
                 return x;
-            } else {
-                return Double.NaN;
             }
+            return Double.NaN;
         }
+    }
+
+    //new Locale("sk", "SK")
+    public static String formatPercent(final Locale locale, final Object object) {
+        final NumberFormat numberFormat = NumberFormat.getPercentInstance(locale);
+        return numberFormat.format(locale);
+    }
+
+    //new Locale("sk", "SK")
+    public static String formatCurrency(final Locale locale, final Object object) {
+        final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        return numberFormat.format(locale);
     }
 }
