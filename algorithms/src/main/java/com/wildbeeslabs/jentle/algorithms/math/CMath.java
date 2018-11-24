@@ -61,6 +61,7 @@ public final class CMath {
     }
 
     public static interface MathOperation {
+
         int operation(int a, int b);
     }
 
@@ -118,6 +119,112 @@ public final class CMath {
             b = c;
         }
         return (a + b);
+    }
+
+    public static boolean isArmstrong(int x) {
+        int n = x;
+        int d = digits(x);
+        int y = 0, z = x;
+        while (z > 0) {
+            x = z % 10;
+            y += pow(x, d);
+            z /= 10;
+        }
+        if (y == n) {
+            return true;
+        }
+        return false;
+    }
+
+    private static int pow(int n, int power) {
+        assert power > 0;
+        if (power == 1) {
+            return n;
+        }
+        return n * pow(n, power - 1);
+    }
+
+    private static int digits(long n) {
+        if (n < 10) {
+            return 1;
+        }
+        return 1 + digits(n / 10);
+    }
+
+    public static boolean isPalindrome(int n) {
+        int original = n;
+        int reverse = 0;
+        for (int i = 0; i <= n; i++) {
+            int r = n % 10;
+            n = n / 10;
+            reverse = reverse * 10 + r;
+        }
+        return reverse == original;
+    }
+
+    public static int secondLargest(int[] array) {
+        Objects.nonNull(array);
+        int largest = 0, secondLargest = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] > largest) {
+                secondLargest = largest;
+                largest = array[i];
+            }
+        }
+        return secondLargest;
+    }
+
+    public static int smallestUnsignedNumberDividedBy1To20(int n) {
+        assert n > 0;
+        boolean flag = false;
+        long calculations = 0;
+        while (true) {
+            flag = true;
+            if (n % 19 != 0 || n % 17 != 0) {
+                n++;
+                continue;
+            }
+            for (int i = 11; i <= 20; i++) {
+                calculations++;
+                if (n % i != 0) {
+                    flag = false;
+                }
+            }
+            if (flag) {
+                break;
+            } else {
+                n++;
+            }
+        }
+        return n;
+    }
+
+    public static boolean isPrime(int n) {
+        int i = (int) Math.sqrt(n);
+        while (i > 0) {
+            if (i == 1) {
+                return true;
+            }
+            if (n % i == 0) {
+                return false;
+            }
+            i--;
+        }
+        return true;
+    }
+
+    public static int gcd(int m, int n) {
+        return gcd(m, n, -1);
+    }
+
+    private static int gcd(int m, int n, int d) {
+        if (d == -1) {
+            d = m > n ? n : m;
+        }
+        if (m % d == 0 && n % d == 0) {
+            return d;
+        }
+        return gcd(m, n, d - 1);
     }
 
     public static int finonacci5(int n) {

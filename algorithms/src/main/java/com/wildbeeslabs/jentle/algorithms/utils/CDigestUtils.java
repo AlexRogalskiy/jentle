@@ -51,7 +51,10 @@ public final class CDigestUtils {
      */
     private static final Logger LOGGER = LogManager.getLogger(CDigestUtils.class);
 
+    // Default md5 hash algorithm
     private static final String DEFAULT_MD5_HASH = "MD5";
+    // Default sha-256 hash algorithm
+    private static final String DEFAULT_SHA256_HASH = "SHA-256";
 
     private CDigestUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -90,6 +93,17 @@ public final class CDigestUtils {
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException ex) {
             LOGGER.error(String.format("ERROR: cannot create digest instance for algorithm=%s, message=%s", algorithm, ex.getMessage()));
+        }
+        return null;
+    }
+
+    public static String generateSHA256Hash(final String p_value) {
+        Objects.requireNonNull(p_value);
+        final MessageDigest md = getDigest(DEFAULT_SHA256_HASH);
+        if (Objects.nonNull(md)) {
+            byte[] bytes = p_value.getBytes(StandardCharsets.UTF_8);
+            md.update(bytes, 0, bytes.length);
+            return CStringUtils.convertBytesToHexString(md.digest());
         }
         return null;
     }

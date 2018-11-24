@@ -65,9 +65,9 @@ public final class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem>
     }
 
     public void slopeOne() {
-        LOGGER.debug("Slope One - Before the Prediction\n");
+        LOGGER.debug("Slope One - Before the Prediction");
         buildDifferencesMatrix(this.inputData);
-        LOGGER.debug("\nSlope One - With Predictions\n");
+        LOGGER.debug("\nSlope One - With Predictions");
         predict(this.inputData);
     }
 

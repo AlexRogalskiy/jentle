@@ -164,7 +164,7 @@ public class CMaze {
                     result.append('.');
                 }
             }
-            result.append('\n');
+            result.append(System.lineSeparator());
         }
         return result.toString();
     }

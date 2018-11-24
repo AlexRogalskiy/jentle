@@ -386,13 +386,13 @@ public final class CGenetics {
 
         public void runTask() {
             final Factory<Genotype<BitGene>> genotypeStart = Genotype.of(BitChromosome.of(10, 0.5));
-            LOGGER.debug("Before:\n" + genotypeStart);
+            LOGGER.debug("Before:" + genotypeStart);
             final Engine<BitGene, Integer> engine = Engine.builder(CSimpleGenetics::eval, genotypeStart)
                     .build();
             final Genotype<BitGene> result = engine.stream()
                     .limit(500)
                     .collect(EvolutionResult.toBestGenotype());
-            LOGGER.debug("After:\n" + result);
+            LOGGER.debug("After:" + result);
         }
     }
 

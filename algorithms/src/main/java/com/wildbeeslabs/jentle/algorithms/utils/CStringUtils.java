@@ -78,6 +78,11 @@ public final class CStringUtils {
      */
     protected static final Logger LOGGER = LogManager.getLogger(CStringUtils.class);
 
+    // Default replace prefix
+    private static final String DEFAULT_REPLACE_PREFIX = "$";
+    // Default not replace prefix
+    private static final String DEFAULT_NOT_REPLACE_PREFIX = "\\$";
+
     private CStringUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
@@ -565,7 +570,7 @@ public final class CStringUtils {
         for (int i = 0; i < str.length(); i++) {
             char strChar = str.charAt(i);
             int bpos = i << 1;
-            b[bpos] = (byte) ((strChar & 0xFF00) >> 8);
+            b[bpos] = (byte) ((strChar & 0xFF00) >> Byte.SIZE);
             b[bpos + 1] = (byte) (strChar & 0x00FF);
         }
         return b;
@@ -575,7 +580,7 @@ public final class CStringUtils {
         final char[] buffer = new char[bytes.length >> 1];
         for (int i = 0; i < buffer.length; i++) {
             int bpos = i << 1;
-            char c = (char) (((bytes[bpos] & 0x00FF) << 8) + (bytes[bpos + 1] & 0x00FF));
+            char c = (char) (((bytes[bpos] & 0x00FF) << Byte.SIZE) + (bytes[bpos + 1] & 0x00FF));
             buffer[i] = c;
         }
         return new String(buffer);
@@ -654,5 +659,124 @@ public final class CStringUtils {
     public static String generateRandomAplhanumericString(int length) {
         assert (length > 0);
         return RandomStringUtils.randomAlphanumeric(length);
+    }
+
+    public static final String convertBytesToHexString(byte[] p_data) {
+        final StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < p_data.length; ++i) {
+            int halfbyte = p_data[i] >>> 4 & 15;
+            int var4 = 0;
+            do {
+                if (halfbyte >= 0 && halfbyte <= 9) {
+                    buf.append((char) (48 + halfbyte));
+                } else {
+                    buf.append((char) (97 + (halfbyte - 10)));
+                }
+                halfbyte = p_data[i] & 15;
+            } while (var4++ < 1);
+        }
+        return buf.toString();
+    }
+
+    public static String formatLongToStringMin2Digest(long p_long) {
+        String help = String.valueOf(p_long);
+        if (help.length() == 0) {
+            help = "00";
+        } else if (help.length() == 1) {
+            help = "0" + help;
+        }
+        return help;
+    }
+
+    public static final String convertSecondsToString(long p_seconds) {
+        long help = p_seconds / 3600L;
+        String totalTime = help + ":";
+        p_seconds %= 3600L;
+        help = p_seconds / 60L;
+        if (help < 10L) {
+            totalTime = totalTime + "0" + help + ":";
+        } else {
+            totalTime = totalTime + help + ":";
+        }
+        help = p_seconds % 60L;
+        if (help < 10L) {
+            totalTime = totalTime + "0" + help;
+        } else {
+            totalTime = totalTime + help;
+        }
+        return totalTime;
+    }
+
+    public static final String cleanupWithspacesBevorAndAfterNewlines(final String p_text) {
+        if (Objects.isNull(p_text)) {
+            return null;
+        } else {
+            final String[] elements = p_text.split(System.lineSeparator());
+            final StringBuilder result = new StringBuilder();
+            int size = elements.length;
+            for (int i = 0; i < size; ++i) {
+                result.append(System.lineSeparator()).append(elements[i].trim());
+            }
+            result.delete(0, 1);
+            return result.toString();
+        }
+    }
+
+    public static final String replaceInString(final String p_rawString, final String p_replaceString, final String p_ignoreReplaceString, final List<String> p_insertStrings) {
+        int i = 1;
+        String displayString = p_rawString;
+        String toReplace = p_replaceString + i;
+        for (int index = p_rawString.indexOf(toReplace); index >= 0 && i <= p_insertStrings.size(); index = displayString.indexOf(toReplace)) {
+            int ignoreIndex = displayString.indexOf(p_ignoreReplaceString);
+            if (ignoreIndex < 0 || ignoreIndex + 1 != index) {
+                displayString = displayString.replace(toReplace, (CharSequence) p_insertStrings.get(i - 1));
+            }
+            StringBuilder var10000 = new StringBuilder(String.valueOf(p_replaceString));
+            ++i;
+            toReplace = var10000.append(i).toString();
+        }
+        return displayString;
+    }
+
+    public static final String replaceInString(final String p_rawString, final String p_replaceString, final String p_ignoreReplaceString, final String[] p_insertStrings) {
+        int i = 1;
+        String displayString = p_rawString;
+        String toReplace = p_replaceString + i;
+        for (int index = p_rawString.indexOf(toReplace); index >= 0 && i <= p_insertStrings.length; index = displayString.indexOf(toReplace)) {
+            int ignoreIndex = displayString.indexOf(p_ignoreReplaceString);
+            if (ignoreIndex < 0 || ignoreIndex + 1 != index) {
+                displayString = displayString.replace(toReplace, nullStringConvert(p_insertStrings[i - 1]));
+            }
+            StringBuilder var10000 = new StringBuilder(String.valueOf(p_replaceString));
+            ++i;
+            toReplace = var10000.append(i).toString();
+        }
+        return displayString;
+    }
+
+    private static String nullStringConvert(final String p_string) {
+        return Objects.isNull(p_string) ? "null" : p_string;
+    }
+
+    public static final String replaceInString(final String p_rawString, final String... p_insertStrings) {
+        return replaceInString(p_rawString, DEFAULT_REPLACE_PREFIX, DEFAULT_NOT_REPLACE_PREFIX, p_insertStrings);
+    }
+
+    public static final String replaceInString(final String p_rawString, final List<String> p_insertStrings) {
+        return replaceInString(p_rawString, DEFAULT_REPLACE_PREFIX, DEFAULT_NOT_REPLACE_PREFIX, p_insertStrings);
+    }
+
+    public static final String arrayToString(Object[] p_array) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < p_array.length; ++i) {
+            if (i > 0) {
+                sb.append(",").append(p_array[i].toString());
+            } else {
+                sb.append(p_array[i].toString());
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }

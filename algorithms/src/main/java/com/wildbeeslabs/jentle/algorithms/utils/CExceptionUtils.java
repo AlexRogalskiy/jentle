@@ -374,7 +374,7 @@ public final class CExceptionUtils {
 //    public String getStack() {
 //        return StackWalker.getInstance()
 //                .walk(frames -> frames.map(Object::toString)
-//                        .collect(joining("\n")));
+//                        .collect(joining(System.lineSeparator())));
 //    }
     public int getStackCount() {
         return Thread.currentThread().getStackTrace().length;
@@ -384,6 +384,6 @@ public final class CExceptionUtils {
         return Arrays.stream(Thread.currentThread()
                 .getStackTrace())
                 .map(element -> element.toString())
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

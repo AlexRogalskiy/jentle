@@ -234,14 +234,14 @@ public class CStopWatch {
      */
     public String print() {
         final StringBuffer sb = new StringBuffer(this.summary());
-        sb.append('\n');
+        sb.append(System.lineSeparator());
         if (!this.keepTaskList) {
             sb.append("No task info kept");
         } else {
             final CTaskInfo[] tasks = getTaskInfo();
-            sb.append("-----------------------------------------\n");
-            sb.append("ms     %     Task name\n");
-            sb.append("-----------------------------------------\n");
+            sb.append("-----------------------------------------").append(System.lineSeparator());
+            sb.append("ms     %     Task name").append(System.lineSeparator());
+            sb.append("-----------------------------------------").append(System.lineSeparator());
 
             final NumberFormat nf = NumberFormat.getNumberInstance();
             nf.setMinimumIntegerDigits(5);
@@ -254,7 +254,7 @@ public class CStopWatch {
             for (CTaskInfo task : tasks) {
                 sb.append(nf.format(task.getTimeMillis())).append("  ");
                 sb.append(pf.format(task.getTimeSeconds() / getTotalTimeSeconds())).append("  ");
-                sb.append(task.getTaskName()).append("\n");
+                sb.append(task.getTaskName()).append(System.lineSeparator());
             }
         }
         return sb.toString();
