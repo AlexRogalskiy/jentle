@@ -83,7 +83,7 @@ public class CTimeMeasure {
      * measurement</li>
      * </ul>
      *
-     * @param formatter message formatter instane
+     * @param formatter message formatter instance
      */
     public CTimeMeasure(final MessageFormat formatter) {
         this.measures = new ArrayList();
