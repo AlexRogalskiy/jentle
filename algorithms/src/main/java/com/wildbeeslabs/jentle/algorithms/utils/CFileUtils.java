@@ -48,6 +48,7 @@ import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -88,21 +89,21 @@ public final class CFileUtils {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
-    public static List<String> readAllLines(final File inputFile) {
+    public static <U extends CharSequence> List<U> readAllLines(final File inputFile) {
         Objects.requireNonNull(inputFile);
-        List<String> resultList = Collections.EMPTY_LIST;
+        List<U> resultList = Collections.EMPTY_LIST;
         try {
-            resultList = Files.readAllLines(inputFile.toPath(), CFileUtils.DEFAULT_FILE_CHARACTER_ENCODING);
+            resultList = (List<U>) Files.readAllLines(inputFile.toPath(), DEFAULT_FILE_CHARACTER_ENCODING);
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
         }
         return resultList;
     }
 
-    public static List<String> readFileByFilter(final File inputFile, final Predicate<String> predicate) {
+    public static List<String> readFileByFilter(final File inputFile, final Predicate<? super String> predicate) {
         Objects.requireNonNull(inputFile);
         List<String> resultList = Collections.EMPTY_LIST;
-        try (final BufferedReader br = Files.newBufferedReader(inputFile.toPath(), CFileUtils.DEFAULT_FILE_CHARACTER_ENCODING)) {
+        try (final BufferedReader br = Files.newBufferedReader(inputFile.toPath(), DEFAULT_FILE_CHARACTER_ENCODING)) {
             resultList = br.lines().filter(predicate).collect(Collectors.toList());
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
@@ -110,11 +111,11 @@ public final class CFileUtils {
         return resultList;
     }
 
-    public static <E> void writeFile(final File outputFile, final List<? extends E> output) {
+    public static <U> void writeFile(final File outputFile, final Collection<? extends U> output) {
         Objects.requireNonNull(outputFile);
         Objects.requireNonNull(output);
-        try (final PrintWriter writer = new PrintWriter(Files.newBufferedWriter(outputFile.toPath(), CFileUtils.DEFAULT_FILE_CHARACTER_ENCODING))) {
-            output.stream().forEach(writer::println);//String newLine = System.getProperty("line.separator");
+        try (final PrintWriter writer = new PrintWriter(Files.newBufferedWriter(outputFile.toPath(), DEFAULT_FILE_CHARACTER_ENCODING))) {
+            output.stream().forEach(writer::println);
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             LOGGER.error(String.format("ERROR: cannot create output file=%s, message=%s", String.valueOf(outputFile), ex.getMessage()));
         } catch (IOException ex) {
@@ -227,10 +228,12 @@ public final class CFileUtils {
         final StringBuilder sb = new StringBuilder();
         try {
             final List<String> lines = Files.readAllLines(Paths.get(filename), DEFAULT_FILE_CHARACTER_ENCODING);
-            for (final String line : lines) {
+            lines.stream().map((line) -> {
                 sb.append(line);
+                return line;
+            }).forEach((_item) -> {
                 sb.append(System.lineSeparator());
-            }
+            });
         } catch (IOException ex) {
             LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }

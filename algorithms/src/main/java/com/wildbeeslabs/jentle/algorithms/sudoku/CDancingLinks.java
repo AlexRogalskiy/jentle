@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslas.jentle.algorithms.sudoku;
+package com.wildbeeslabs.jentle.algorithms.sudoku;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

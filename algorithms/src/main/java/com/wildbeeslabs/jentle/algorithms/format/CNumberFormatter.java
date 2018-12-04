@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.format;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -51,20 +52,28 @@ public final class CNumberFormatter {
      */
     public static final String DEFAULT_NUMBER_FORMAT_PATTERN = "#.##";
     /**
+     * Default locale format instance
+     */
+    private static final Locale DEFAULT_LOCALE = Locale.getDefault();
+    /**
      * Default number format instance
      */
-    private static final DecimalFormat demimalFormat = new DecimalFormat(CNumberFormatter.DEFAULT_NUMBER_FORMAT_PATTERN);
+    private static final ThreadLocal<DecimalFormat> numberFormat = ThreadLocal.withInitial(() -> new DecimalFormat(DEFAULT_NUMBER_FORMAT_PATTERN, DecimalFormatSymbols.getInstance(DEFAULT_LOCALE)));
 
     private CNumberFormatter() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
     public static <T> String format(final Comparable<? super T> value) {
-        return CNumberFormatter.demimalFormat.format(value);
+        return CNumberFormatter.numberFormat.get().format(value);
     }
 
     public static <T> String formatByPattern(final Comparable<? super T> value, final String pattern) {
-        final DecimalFormat formatter = new DecimalFormat(pattern);
+        return CNumberFormatter.formatByPattern(value, pattern, DEFAULT_LOCALE);
+    }
+
+    public static <T> String formatByPattern(final Comparable<? super T> value, final String pattern, Locale locale) {
+        final DecimalFormat formatter = new DecimalFormat(pattern, DecimalFormatSymbols.getInstance(locale));
         return formatter.format(value);
     }
 
@@ -126,13 +135,13 @@ public final class CNumberFormatter {
 
     //new Locale("sk", "SK")
     public static String formatPercent(final Locale locale, final Object object) {
-        final NumberFormat numberFormat = NumberFormat.getPercentInstance(locale);
-        return numberFormat.format(locale);
+        final NumberFormat nf = NumberFormat.getPercentInstance(locale);
+        return nf.format(locale);
     }
 
     //new Locale("sk", "SK")
     public static String formatCurrency(final Locale locale, final Object object) {
-        final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-        return numberFormat.format(locale);
+        final NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+        return nf.format(locale);
     }
 }

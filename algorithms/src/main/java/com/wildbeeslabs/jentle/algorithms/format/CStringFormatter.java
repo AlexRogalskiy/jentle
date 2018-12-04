@@ -26,7 +26,10 @@ package com.wildbeeslabs.jentle.algorithms.format;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
@@ -67,12 +70,12 @@ public final class CStringFormatter {
     /**
      * Default char masks
      */
-    private static final int CHAR_ONE_BYTE_MASK         = 0xFFFFFF80;
-    private static final int CHAR_TWO_BYTES_MASK        = 0xFFFFF800;
-    private static final int CHAR_THREE_BYTES_MASK      = 0xFFFF0000;
-    private static final int CHAR_FOUR_BYTES_MASK       = 0xFFE00000;
-    private static final int CHAR_FIVE_BYTES_MASK       = 0xFC000000;
-    private static final int CHAR_SIX_BYTES_MASK        = 0x80000000;
+    private static final int CHAR_ONE_BYTE_MASK = 0xFFFFFF80;
+    private static final int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
+    private static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
+    private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
+    private static final int CHAR_FIVE_BYTES_MASK = 0xFC000000;
+    private static final int CHAR_SIX_BYTES_MASK = 0x80000000;
 
     private CStringFormatter() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -136,7 +139,7 @@ public final class CStringFormatter {
      * @return String result string.
      */
     public static String convertFromLatin1ToUtf8(final String value) {
-        return convert(value, "ISO-8859-1", "UTF-8");
+        return convert(value, ISO_8859_1, UTF_8);
     }
 
     /**
@@ -146,7 +149,7 @@ public final class CStringFormatter {
      * @return String result string.
      */
     public static String convertFromUtf8ToLatin1(final String value) {
-        return convert(value, "UTF-8", "ISO-8859-1");
+        return convert(value, UTF_8, ISO_8859_1);
     }
 
     /**
@@ -156,7 +159,7 @@ public final class CStringFormatter {
      * @return String result string.
      */
     public static String convertFromCp1251ToUtf8(final String value) {
-        return convert(value, "Cp1251", "UTF-8");
+        return convert(value, Charset.forName("Cp1251"), UTF_8);
     }
 
     /**
@@ -166,17 +169,7 @@ public final class CStringFormatter {
      * @return String result string.
      */
     public static String convertUtf8ToCp1251(final String value) {
-        return convert(value, "UTF-8", "Cp1251");
-    }
-
-    /**
-     * Converts input string to UTF-8 format
-     *
-     * @param value input string.
-     * @return String result string.
-     */
-    public static String convertToUtf8(final String value) {
-        return convert(value, "UTF-8", "UTF-8");
+        return convert(value, UTF_8, Charset.forName("Cp1251"));
     }
 
     /**
@@ -187,16 +180,11 @@ public final class CStringFormatter {
      * @param outputCharset output character encoding.
      * @return
      */
-    private static String convert(final String value, final String inputCharset, final String outputCharset) {
+    private static String convert(final String value, final Charset inputCharset, final Charset outputCharset) {
         if (Objects.isNull(value)) {
             return null;
         }
-        try {
-            return new String(value.getBytes(inputCharset), outputCharset);
-        } catch (java.io.UnsupportedEncodingException ex) {
-            LOGGER.error(String.format("ERROR: cannot convert string=(%s) from input charset=(%s) to output charset=(%s), message=%s", value, inputCharset, outputCharset, ex.getMessage()));
-        }
-        return null;
+        return new String(value.getBytes(inputCharset), outputCharset);
     }
 
     /**

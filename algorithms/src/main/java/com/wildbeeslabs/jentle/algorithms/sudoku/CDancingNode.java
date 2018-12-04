@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslas.jentle.algorithms.sudoku;
+package com.wildbeeslabs.jentle.algorithms.sudoku;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,38 +36,55 @@ import lombok.ToString;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CColumnNode extends CDancingNode {
+@EqualsAndHashCode
+@ToString
+public class CDancingNode {
 
-    protected int size;
-    protected String name;
+    protected CDancingNode L, R, U, D;
+    protected CColumnNode C;
+
+    CDancingNode hookDown(final CDancingNode node) {
+        assert (this.C == node.C);
+        node.D = this.D;
+        node.D.U = node;
+        node.U = this;
+        this.D = node;
+        return node;
+    }
+
+    CDancingNode hookRight(final CDancingNode node) {
+        node.R = this.R;
+        node.R.L = node;
+        node.L = this;
+        this.R = node;
+        return node;
+    }
+
+    void unlinkLR() {
+        this.L.R = this.R;
+        this.R.L = this.L;
+    }
+
+    void relinkLR() {
+        this.L.R = this.R.L = this;
+    }
+
+    void unlinkUD() {
+        this.U.D = this.D;
+        this.D.U = this.U;
+    }
+
+    void relinkUD() {
+        this.U.D = this.D.U = this;
+    }
 
     @SuppressWarnings("LeakingThisInConstructor")
-    CColumnNode(final String name) {
-        super();
-        this.size = 0;
-        this.name = name;
-        this.C = this;
+    CDancingNode() {
+        this.L = this.R = this.U = this.D = this;
     }
 
-    void cover() {
-        unlinkLR();
-        for (CDancingNode i = this.D; i != this; i = i.D) {
-            for (CDancingNode j = i.R; j != i; j = j.R) {
-                j.unlinkUD();
-                j.C.size--;
-            }
-        }
-    }
-
-    void uncover() {
-        for (CDancingNode i = this.U; i != this; i = i.U) {
-            for (CDancingNode j = i.L; j != i; j = j.L) {
-                j.C.size++;
-                j.relinkUD();
-            }
-        }
-        relinkLR();
+    CDancingNode(final CColumnNode c) {
+        this();
+        this.C = c;
     }
 }

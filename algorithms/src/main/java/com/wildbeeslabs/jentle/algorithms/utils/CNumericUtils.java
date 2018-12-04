@@ -37,6 +37,7 @@ import java.util.IntSummaryStatistics;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.LongSummaryStatistics;
+import java.util.Objects;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
@@ -62,6 +63,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import org.apache.commons.lang3.Range;
 
 /**
  *
@@ -94,6 +96,14 @@ public final class CNumericUtils {
      * Default near delta error (precision)
      */
     public static final double NEAR_DELTA = .00001;
+    /**
+     * Default zero percentage constant
+     */
+    public static final double ZERO_PERCENTAGE = 0.0;
+    /**
+     * Default hundred percentage constant
+     */
+    public static final double HUNDRED_PERCENTAGE = 100.0;
 
     private CNumericUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -101,9 +111,8 @@ public final class CNumericUtils {
 
     public static double round(double value, int places) {
         assert (places > 0);
-        BigDecimal bd = new BigDecimal(Double.toString(value));
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
+        final BigDecimal bd = new BigDecimal(Double.toString(value));
+        return bd.setScale(places, RoundingMode.HALF_UP).doubleValue();
         //Precision.round(PI, 3);
     }
 
@@ -698,6 +707,34 @@ public final class CNumericUtils {
             return d.getAsLong();
         }
         return null;
+    }
+
+    public static double calculatePercentage(Double firstValue, Double lastValue) {
+        if (Objects.nonNull(firstValue) && Objects.nonNull(lastValue)) {
+            return ((lastValue - firstValue) / firstValue) * HUNDRED_PERCENTAGE;
+        }
+        return ZERO_PERCENTAGE;
+    }
+
+    public static boolean inRange(Double value, Double lowerBound, Double upperBound) {
+        Objects.requireNonNull(lowerBound);
+        Objects.requireNonNull(upperBound);
+        final Range<Double> range = Range.between(lowerBound, upperBound);
+        return range.contains(value);
+    }
+
+    public static Integer compare(Integer x, Integer y) {
+        if (Objects.isNull(x) || Objects.isNull(y)) {
+            return null;
+        }
+        return Integer.compare(x, y);
+    }
+
+    public static Integer compare(Double x, Double y) {
+        if (Objects.isNull(x) || Objects.isNull(y)) {
+            return null;
+        }
+        return Double.compare(x, y);
     }
 
     @Data

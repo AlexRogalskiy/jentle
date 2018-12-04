@@ -26,10 +26,13 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
+import org.joda.time.DateTime;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -38,7 +41,9 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.TemporalQueries;
+import java.time.temporal.WeekFields;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -325,5 +330,93 @@ public final class CDateUtils {
             return LocalDateTime.of(date, LocalTime.MIN);
         }
         return LocalDateTime.of(date, time);
+    }
+    
+    public static Integer getDaysDiff(Date startDate, Date endDate) {
+        if (Objects.isNull(startDate) || Objects.isNull(endDate)) {
+            return null;
+        }
+        return Period.between(convertToLocalDate(startDate), convertToLocalDate(endDate)).getDays();
+    }
+
+    public static java.sql.Date convertToSqlDate(Date dateToConvert) {
+        return new java.sql.Date(dateToConvert.getTime());
+    }
+
+    public static LocalDate convertToLocalDate(Date dateToConvert) {
+        return convertToSqlDate(dateToConvert).toLocalDate();
+    }
+
+    public static Date asDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date asDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static LocalDate asLocalDate(Date date) {
+        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public static LocalDateTime asLocalDateTime(Date date) {
+        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    public static Date now() {
+        return asDate(LocalDate.now());
+    }
+
+    public static Date yesterday() {
+        return asDate(LocalDate.now().minus(Period.ofDays(1)));
+    }
+
+    public static Date firstDayOfMonth() {
+        return asDate(LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()));
+    }
+
+    public static Date lastDayOfMonth() {
+        return asDate(LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()));
+    }
+
+    public static int getCurrentWeek() {
+        final WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        return LocalDate.now().get(weekFields.weekOfWeekBasedYear());
+    }
+
+    public static Date firstDayOfWeek() {
+        final DateTime dateTime = new DateTime();
+        return dateTime.withDayOfWeek(1).toDate();
+    }
+
+    public static Date lastDayOfWeek() {
+        final DateTime dateTime = new DateTime();
+        return dateTime.withDayOfWeek(7).toDate();
+    }
+
+    public static Date firstMinuteOfHour() {
+        final DateTime dateTime = new DateTime();
+        return dateTime.withMinuteOfHour(0).withSecondOfMinute(0).toDate();
+    }
+
+    public static Date lastMinuteOfHour() {
+        final DateTime dateTime = new DateTime();
+        return dateTime.withMinuteOfHour(59).withSecondOfMinute(59).toDate();
+    }
+
+    public static boolean isDateBeforeNowByPeriodInDays(Date date, Integer periodInDays) {
+        return (Objects.nonNull(date) && periodInDays.equals(CDateUtils.getDaysDiff(CDateUtils.now(), date)));
+    }
+
+    public static boolean isInRange(Date start, Date end) {
+        return (isInPast(start) || isInFuture(end));
+    }
+
+    public static boolean isInFuture(Date date) {
+        return (Objects.nonNull(date) && date.after(CDateUtils.now()));
+    }
+
+    public static boolean isInPast(Date date) {
+        return (Objects.nonNull(date) && date.before(CDateUtils.now()));
     }
 }

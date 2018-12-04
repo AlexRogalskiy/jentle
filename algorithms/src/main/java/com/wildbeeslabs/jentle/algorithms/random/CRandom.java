@@ -192,4 +192,8 @@ public class CRandom {
     public static List<Long> generateRandomLongsInRange(long bottomLimit, long topLimit) {
         return ThreadLocalRandom.current().longs(bottomLimit, topLimit).distinct().boxed().collect(Collectors.toList());
     }
+
+    public static int generate(int min, int max) {
+        return new Random().ints(min, (max + 1)).findFirst().getAsInt();
+    }
 }
