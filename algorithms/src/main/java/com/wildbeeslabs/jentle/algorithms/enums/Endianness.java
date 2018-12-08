@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.enums;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -54,7 +55,8 @@ public enum Endianness {
             };
 
     private static int readByte(final InputStream stream) throws IOException {
-        return stream.read();
+        final DataInputStream dataStream = new DataInputStream(stream);
+        return dataStream.readByte();
     }
 
     public abstract short readShort(final InputStream stream) throws IOException;
