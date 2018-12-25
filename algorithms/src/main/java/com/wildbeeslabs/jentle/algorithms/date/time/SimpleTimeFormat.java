@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
 import java.util.Objects;
+
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.TimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

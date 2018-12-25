@@ -179,15 +179,15 @@ public class CTimeMeasure {
     private final static class CMeasure {
 
         /**
-         * Start time of period.
+         * Start time of time.
          */
         private final long start;
         /**
-         * End time of period.
+         * End time of time.
          */
         private long stop;
         /**
-         * Duration of period.
+         * Duration of time.
          */
         private long duration;
         /**

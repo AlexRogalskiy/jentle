@@ -21,31 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
-import java.util.Locale;
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom locale declaration (represents various locale {@link Locale} settings)
+ * Century time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ILocale {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class CenturyTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    /**
-     * Sets the current locale {@link Locale} instance
-     *
-     * @param locale - current locale instance
-     */
-    void setLocale(final Locale locale);
+    public CenturyTimeUnit() {
+        setMillisPerUnit(3155692597470L);
+    }
 
-    /**
-     * Gets the current locale {@link Locale} instance
-     *
-     * @return current locale instance
-     */
-    Locale getLocale();
+    @Override
+    protected String getResourceKeyPrefix() {
+        return "Century";
+    }
 }

@@ -27,13 +27,14 @@ import java.time.temporal.TemporalAmount;
 import java.util.Objects;
 import java.time.Duration;
 
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.TimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Custom class to track operational transactions by datetime units
+ * Custom class to track operational transactions by datetime unit
  *
  * @author Alex
  * @version 1.0.0

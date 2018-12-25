@@ -23,12 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date.i18n;
 
-import com.wildbeeslabs.jentle.algorithms.date.IDuration;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeFormat;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeFormatProvider;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.SimpleTimeFormat;
-import com.wildbeeslabs.jentle.algorithms.date.units.DayTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.IDuration;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormat;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormatProvider;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.SimpleTimeFormat;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.DayTimeUnit;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;

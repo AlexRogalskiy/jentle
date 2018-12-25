@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
 /**
  *
@@ -37,17 +37,17 @@ public interface IDuration {
     /**
      * Returns the calculated quantity of time unit {@link ITimeUnit} instances
      *
-     * @return quantity of time units {@link ITimeUnit}
+     * @return quantity of time unit {@link ITimeUnit}
      */
     long getQuantity();
 
     /**
-     * Returns the calculated quantity of time units {@link ITimeUnit} instances,
+     * Returns the calculated quantity of time unit {@link ITimeUnit} instances,
      * rounded up if {@link #getDelta()} is greater than or equal to the given
      * tolerance
      *
      * @param tolerance - tolerance precision rate
-     * @return calculated quantity of time units {@link ITimeUnit}
+     * @return calculated quantity of time unit {@link ITimeUnit}
      */
     long getQuantityRounded(int tolerance);
 
@@ -55,7 +55,7 @@ public interface IDuration {
      * Returns the time unit {@link ITimeUnit} instance represented by the
      * current duration instance {@link IDuration}
      *
-     * @return quantity of time units {@link ITimeUnit}
+     * @return quantity of time unit {@link ITimeUnit}
      */
     ITimeUnit getUnit();
 

@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date.units;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Day time unit implementation
+ * Year time unit implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -40,14 +40,14 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class DayTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
+public class YearTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    public DayTimeUnit() {
-        setMillisPerUnit(1000L * 60L * 60L * 24L);
+    public YearTimeUnit() {
+        setMillisPerUnit(2629743830L * 12L);
     }
 
     @Override
     protected String getResourceKeyPrefix() {
-        return "Day";
+        return "Year";
     }
 }

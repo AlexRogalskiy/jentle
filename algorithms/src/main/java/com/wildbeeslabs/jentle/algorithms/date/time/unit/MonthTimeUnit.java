@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date.units;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Decade time unit implementation
+ * Month time unit implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -40,14 +40,14 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class DecadeTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
+public class MonthTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    public DecadeTimeUnit() {
-        setMillisPerUnit(315569259747L);
+    public MonthTimeUnit() {
+        setMillisPerUnit(2629743830L);
     }
 
     @Override
     protected String getResourceKeyPrefix() {
-        return "Decade";
+        return "Month";
     }
 }

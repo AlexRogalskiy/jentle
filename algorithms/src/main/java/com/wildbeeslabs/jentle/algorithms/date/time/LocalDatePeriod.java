@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -32,7 +32,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom local date period implementation
+ * Custom local date time implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -54,7 +54,7 @@ public class LocalDatePeriod {
     /**
      * Check whether date periods intersect
      *
-     * @param period input date period
+     * @param period input date time
      * @return true - if the date periods intersect, false - otherwise
      */
     public boolean isIntersect(final LocalDatePeriod period) {
@@ -65,10 +65,10 @@ public class LocalDatePeriod {
     }
 
     /**
-     * Check whether current date period is including input date period frames
+     * Check whether current date time is including input date time frames
      *
-     * @param period input date period
-     * @return true - if the current date period includes input date period
+     * @param period input date time
+     * @return true - if the current date time includes input date time
      * borders, false - otherwise
      */
     public boolean isInclude(final LocalDatePeriod period) {
@@ -79,10 +79,10 @@ public class LocalDatePeriod {
     }
 
     /**
-     * Check whether current date period is within input date period frames
+     * Check whether current date time is within input date time frames
      *
-     * @param period input date period
-     * @return true - if the current date period is within input date period
+     * @param period input date time
+     * @return true - if the current date time is within input date time
      * borders, false - otherwise
      */
     public boolean isWithin(final LocalDatePeriod period) {

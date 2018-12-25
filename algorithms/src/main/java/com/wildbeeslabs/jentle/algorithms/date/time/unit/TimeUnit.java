@@ -21,13 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
 import java.time.Duration;
 import java.time.Period;
 import java.time.temporal.TemporalAmount;
 import java.util.Optional;
 
+import com.wildbeeslabs.jentle.algorithms.date.time.IDuration;
 import org.apache.commons.lang3.StringUtils;
 import lombok.ToString;
 

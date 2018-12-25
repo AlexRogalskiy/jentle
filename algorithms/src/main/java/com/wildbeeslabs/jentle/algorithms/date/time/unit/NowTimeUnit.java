@@ -21,48 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Duration implementation
+ * Now time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode
-@ToString
-public class Duration implements IDuration {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class NowTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    private long quantity;
-    private long delta;
-    private ITimeUnit unit;
-
-    @Override
-    public long getQuantityRounded(int tolerance) {
-        long value = Math.abs(this.getQuantity());
-        if (0 != this.getDelta()) {
-            double threshold = Math.abs(((double) this.getDelta() / (double) this.getUnit().getMillisPerUnit()) * 100);
-            if (threshold > tolerance) {
-                value++;
-            }
-        }
-        return value;
+    public NowTimeUnit() {
+        setMaxQuantity(1000L * 60L);
     }
 
     @Override
-    public boolean isInPast() {
-        return this.getQuantity() < 0;
+    protected String getResourceKeyPrefix() {
+        return "Now";
     }
 
     @Override
-    public boolean isInFuture() {
-        return !this.isInPast();
+    public boolean isPrecise() {
+        return false;
     }
 }

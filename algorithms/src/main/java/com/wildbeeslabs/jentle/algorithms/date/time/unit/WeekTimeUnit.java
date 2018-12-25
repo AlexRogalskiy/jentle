@@ -21,23 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
-
-import java.util.Locale;
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
- * An object that behaves differently for various {@link Locale} settings.
+ *
+ * Week time unit implementation
  *
  * @author Alex
- * @param <T>
+ * @version 1.0.0
+ * @since 2017-08-07
  */
-public interface ILocaleAware<T> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class WeekTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    /**
-     * Set the {@link Locale} for which this instance should behave in.
-     * @param locale
-     * @return 
-     */
-    T setLocale(final Locale locale);
+    public WeekTimeUnit() {
+        setMillisPerUnit(1000L * 60L * 60L * 24L * 7L);
+    }
+
+    @Override
+    protected String getResourceKeyPrefix() {
+        return "Week";
+    }
 }

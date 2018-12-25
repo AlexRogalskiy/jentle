@@ -21,43 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
+import java.util.Locale;
 
 /**
- * Custom resources time unit implementation
+ * An object that behaves differently for various {@link Locale} settings.
  *
  * @author Alex
- * @version 1.0.0
- * @since 2017-08-07
+ * @param <T>
  */
-@Data
-@EqualsAndHashCode
-@ToString
-public abstract class ResourcesTimeUnit implements ITimeUnit {
-
-    protected static final String DEFAULT_RESOURCE_BUNDLE_NAME = "com.wildbeeslabs.jentle.algorithms.date.i18n.Resources_EN";
-
-    private long maxQuantity = 0;
-    private long millisPerUnit = 1;
+public interface ILocaleAware<T> {
 
     /**
-     * Return the name of the resource bundle from which this unit's format
-     * should be loaded.
-     *
-     * @return resource key prefix
+     * Set the {@link Locale} for which this instance should behave in.
+     * @param locale
+     * @return 
      */
-    abstract protected String getResourceKeyPrefix();
-
-    protected String getResourceBundleName() {
-        return ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME;
-    }
-
-    @Override
-    public boolean isPrecise() {
-        return true;
-    }
+    T setLocale(final Locale locale);
 }

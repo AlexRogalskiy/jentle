@@ -28,27 +28,26 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * Default generic matcher implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode
 @ToString
 public class GenericMatcher<T> implements IGenericMatcher<T> {
 
-    protected final IMatches marcher;
+    protected final IMatches matcher;
 
-    public GenericMatcher(final IMatches<T> marcher) {
-        this.marcher = marcher;
+    public GenericMatcher(final IMatches<T> matcher) {
+        this.matcher = matcher;
     }
 
     @Override
     public boolean matches(final Object o) {
-        return this.marcher.matches(o);
+        return this.matcher.matches(o);
     }
 }

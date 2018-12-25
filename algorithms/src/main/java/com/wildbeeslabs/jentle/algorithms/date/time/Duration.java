@@ -21,33 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date.units;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.IDuration;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Year time unit implementation
+ * Duration implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class YearTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
+@EqualsAndHashCode
+@ToString
+public class Duration implements IDuration {
 
-    public YearTimeUnit() {
-        setMillisPerUnit(2629743830L * 12L);
+    private long quantity;
+    private long delta;
+    private ITimeUnit unit;
+
+    @Override
+    public long getQuantityRounded(int tolerance) {
+        long value = Math.abs(this.getQuantity());
+        if (0 != this.getDelta()) {
+            double threshold = Math.abs(((double) this.getDelta() / (double) this.getUnit().getMillisPerUnit()) * 100);
+            if (threshold > tolerance) {
+                value++;
+            }
+        }
+        return value;
     }
 
     @Override
-    protected String getResourceKeyPrefix() {
-        return "Year";
+    public boolean isInPast() {
+        return this.getQuantity() < 0;
+    }
+
+    @Override
+    public boolean isInFuture() {
+        return !this.isInPast();
     }
 }

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -41,7 +41,7 @@ import lombok.ToString;
 
 /**
  *
- * Custom local datetime period implementation
+ * Custom local datetime time implementation
  *
  * @author Alex
  * @version 1.0.0

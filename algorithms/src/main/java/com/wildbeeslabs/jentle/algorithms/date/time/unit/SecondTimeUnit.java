@@ -21,23 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
+
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
- * Custom time format provider declaration
+ * Second time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITimeFormatProvider {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class SecondTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    /**
-     * Return the appropriate {@link ITimeFormat} for the given
-     * {@link ITimeUnit}
-     * @param timeUnit
-     * @return 
-     */
-    ITimeFormat getFormat(final ITimeUnit timeUnit);
+    public SecondTimeUnit() {
+        setMillisPerUnit(1000L);
+    }
+
+    @Override
+    protected String getResourceKeyPrefix() {
+        return "Second";
+    }
 }

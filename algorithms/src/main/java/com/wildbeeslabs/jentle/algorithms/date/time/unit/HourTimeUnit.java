@@ -21,41 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Default local time implementation
+ * Hour time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode
-@ToString
-public class DefaultLocalTime implements ILocalTime {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class HourTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    private String timeZone;
-
-    public DefaultLocalTime(final String timeZone) {
-        this.timeZone = timeZone;
+    public HourTimeUnit() {
+        setMillisPerUnit(1000L * 60L * 60L);
     }
 
     @Override
-    public Instant nowInstant() {
-        return Instant.now();
-    }
-
-    @Override
-    public ZoneOffset getDefaultTimeZone() {
-        return ZoneOffset.of(this.timeZone);
+    protected String getResourceKeyPrefix() {
+        return "Hour";
     }
 }

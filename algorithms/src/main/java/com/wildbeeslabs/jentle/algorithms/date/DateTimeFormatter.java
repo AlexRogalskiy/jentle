@@ -23,38 +23,19 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date;
 
-import com.wildbeeslabs.jentle.algorithms.date.units.CenturyTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.DayTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.DecadeTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.HourTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MillenniumTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MillisecondTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MinuteTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MonthTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.NowTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.SecondTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.WeekTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.YearTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.*;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.*;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.util.*;
+
+import static com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME;
+
 /**
- *
  * Default date/time formatter implementation by creating social-networking
  * style timestamps (e.g. "just now", "moments ago", "3 days ago", "within 2
  * months")
@@ -63,7 +44,7 @@ import org.apache.log4j.Logger;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class DateTimeFormatter {
+public final class DateTimeFormatter {
 
     /**
      * Default Logger instance
@@ -80,7 +61,7 @@ public class DateTimeFormatter {
      * Default constructor
      */
     public DateTimeFormatter() {
-        this(null, null, ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME);
+        this(null, null, DEFAULT_RESOURCE_BUNDLE_NAME);
     }
 
     /**
@@ -92,7 +73,7 @@ public class DateTimeFormatter {
      * @param reference
      */
     public DateTimeFormatter(final Date reference) {
-        this(reference, null, ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME);
+        this(reference, null, DEFAULT_RESOURCE_BUNDLE_NAME);
     }
 
     /**
@@ -102,7 +83,7 @@ public class DateTimeFormatter {
      * @param locale
      */
     public DateTimeFormatter(final Locale locale) {
-        this(null, locale, ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME);
+        this(null, locale, DEFAULT_RESOURCE_BUNDLE_NAME);
     }
 
     public DateTimeFormatter(final String resourceBundle) {
@@ -205,7 +186,7 @@ public class DateTimeFormatter {
      * granular enough to represent one millisecond
      *
      * @param date The date to be compared against the reference timestamp, or
-     * <i>now</i> if no reference timestamp was provided
+     *             <i>now</i> if no reference timestamp was provided
      * @return A sorted {@link List} of {@link Duration} objects, from largest
      * to smallest. Each element in the list represents the approximate duration
      * (number of times) that {@link TimeUnit} to fit into the previous
@@ -290,9 +271,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Format the given {@link Calendar} object. This method applies the
-     * {@link PrettyTime#approximateDuration(Date)} method to perform its
-     * calculation. Rounding rules are ignored. If the given {@link Calendar} is
+     * Format the given {@link Calendar} object. Rounding rules are ignored. If the given {@link Calendar} is
      * <code>null</code>, the current value of
      * {@link System#currentTimeMillis()} will be used instead.
      *
@@ -424,7 +403,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Format the given {@link Duration} objects, using the {@link TimeFormat}
+     * Format the given {@link Duration} objects, using the {@link ITimeFormat}
      * specified by the {@link TimeUnit} contained within. Rounding rules are
      * ignored. If the given {@link Duration} {@link List} is <code>null</code>
      * or empty, the current value of {@link System#currentTimeMillis()} will be
@@ -571,7 +550,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Get the registered {@link TimeFormat} for the given {@link TimeUnit} or
+     * Get the registered {@link ITimeFormat} for the given {@link TimeUnit} or
      * null if none exists.
      *
      * @param unit
@@ -651,10 +630,10 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Register the given {@link TimeUnit} and corresponding {@link TimeFormat}
+     * Register the given {@link TimeUnit} and corresponding {@link ITimeFormat}
      * instance to be used in calculations. If an entry already exists for the
      * given {@link TimeUnit}, its format will be overwritten with the given
-     * {@link TimeFormat}.
+     * {@link ITimeFormat}.
      *
      * @param unit
      * @param format
@@ -681,7 +660,7 @@ public class DateTimeFormatter {
     /**
      * Removes the mapping for the given {@link TimeUnit} type. This effectively
      * de-registers the unit so it will not be used in formatting. Returns the
-     * {@link TimeFormat} that was registered for the given {@link TimeUnit}
+     * {@link ITimeFormat} that was registered for the given {@link TimeUnit}
      * type, or null if no unit of the given type was registered.
      *
      * @param <U>
@@ -704,7 +683,7 @@ public class DateTimeFormatter {
     /**
      * Removes the mapping for the given {@link TimeUnit}. This effectively
      * de-registers the unit so it will not be used in formatting. Returns the
-     * {@link TimeFormat} that was registered for the given {@link TimeUnit}, or
+     * {@link ITimeFormat} that was registered for the given {@link TimeUnit}, or
      * null if no such unit was registered.
      *
      * @param unit
@@ -719,8 +698,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Get the currently configured {@link Locale} for this {@link PrettyTime}
-     * object.
+     * Get the currently configured {@link Locale} for this object.
      *
      * @return
      */
@@ -729,9 +707,8 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Set the the {@link Locale} for this {@link PrettyTime} object. This may
-     * be an expensive operation, since this operation calls
-     * {@link TimeUnit#setLocale(Locale)} for each {@link TimeUnit} in
+     * Set the the {@link Locale} for this object. This may
+     * be an expensive operation, since this operation calls for each {@link TimeUnit} in
      * {@link #getUnits()}.
      *
      * @param locale

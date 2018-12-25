@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date.units;
+package com.wildbeeslabs.jentle.algorithms.date.time.unit;
 
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  *
- * Millennium time unit implementation
+ * Minute time unit implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -40,14 +40,14 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class MillenniumTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
+public class MinuteTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
 
-    public MillenniumTimeUnit() {
-        setMillisPerUnit(31556926000000L);
+    public MinuteTimeUnit() {
+        setMillisPerUnit(1000L * 60L);
     }
 
     @Override
     protected String getResourceKeyPrefix() {
-        return "Millennium";
+        return "Minute";
     }
 }

@@ -23,22 +23,22 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date.i18n;
 
-import com.wildbeeslabs.jentle.algorithms.date.IDuration;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeFormat;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeFormatProvider;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.CenturyTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.DayTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.DecadeTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.HourTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MillenniumTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MillisecondTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MinuteTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MonthTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.NowTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.SecondTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.WeekTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.YearTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.IDuration;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormat;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormatProvider;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.CenturyTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.DayTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.DecadeTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.HourTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.MillenniumTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.MillisecondTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.MinuteTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.MonthTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.NowTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.SecondTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.WeekTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.YearTimeUnit;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -23,14 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date.i18n;
 
-import com.wildbeeslabs.jentle.algorithms.date.IDuration;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeFormat;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeFormatProvider;
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.TimeUnit;
-import static com.wildbeeslabs.jentle.algorithms.date.i18n.Resources.LOGGER;
-import com.wildbeeslabs.jentle.algorithms.date.units.DecadeTimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.units.MillenniumTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.IDuration;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormat;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormatProvider;
+import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.DecadeTimeUnit;
+import com.wildbeeslabs.jentle.algorithms.date.time.unit.MillenniumTimeUnit;
 
 import java.util.Objects;
 import java.util.ResourceBundle;

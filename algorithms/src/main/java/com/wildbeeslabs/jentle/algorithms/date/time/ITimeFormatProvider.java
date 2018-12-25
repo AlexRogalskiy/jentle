@@ -21,33 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date.units;
-
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
 /**
  *
- * Minute time unit implementation
+ * Custom time format provider declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class MinuteTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
+public interface ITimeFormatProvider {
 
-    public MinuteTimeUnit() {
-        setMillisPerUnit(1000L * 60L);
-    }
-
-    @Override
-    protected String getResourceKeyPrefix() {
-        return "Minute";
-    }
+    /**
+     * Return the appropriate {@link ITimeFormat} for the given
+     * {@link ITimeUnit}
+     * @param timeUnit
+     * @return 
+     */
+    ITimeFormat getFormat(final ITimeUnit timeUnit);
 }

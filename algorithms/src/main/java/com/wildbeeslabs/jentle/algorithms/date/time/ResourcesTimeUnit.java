@@ -21,33 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.date.units;
+package com.wildbeeslabs.jentle.algorithms.date.time;
 
-import com.wildbeeslabs.jentle.algorithms.date.ITimeUnit;
-import com.wildbeeslabs.jentle.algorithms.date.ResourcesTimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
- * Second time unit implementation
+ * Custom resources time unit implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class SecondTimeUnit extends ResourcesTimeUnit implements ITimeUnit {
+@EqualsAndHashCode
+@ToString
+public abstract class ResourcesTimeUnit implements ITimeUnit {
 
-    public SecondTimeUnit() {
-        setMillisPerUnit(1000L);
+    public static final String DEFAULT_RESOURCE_BUNDLE_NAME = "com.wildbeeslabs.jentle.algorithms.date.i18n.Resources_EN";
+
+    private long maxQuantity = 0;
+    private long millisPerUnit = 1;
+
+    /**
+     * Return the name of the resource bundle from which this unit's format
+     * should be loaded.
+     *
+     * @return resource key prefix
+     */
+    abstract protected String getResourceKeyPrefix();
+
+    protected String getResourceBundleName() {
+        return ResourcesTimeUnit.DEFAULT_RESOURCE_BUNDLE_NAME;
     }
 
     @Override
-    protected String getResourceKeyPrefix() {
-        return "Second";
+    public boolean isPrecise() {
+        return true;
     }
 }
