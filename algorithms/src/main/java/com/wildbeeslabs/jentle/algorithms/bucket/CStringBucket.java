@@ -23,15 +23,23 @@
  */
 package com.wildbeeslabs.jentle.algorithms.bucket;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.List;
 
-public abstract class ACBucket<T> {
+public class CStringBucket extends ACBucket<String> {
 
-    public void addNotNull(final Collection<T> args) {
-        Optional.ofNullable(args).ifPresent(item -> this.add((Collection<T>) Collections.singletonList(item)));
+    private List<String> list = new ArrayList<>();
+
+    @Override
+    public void add(final Collection<String> args) {
+        list.addAll(args);
     }
 
-    public abstract void add(final Collection<T> args);
+    @Override
+    public String toString() {
+        return StringUtils.join(list, "|");
+    }
 }
