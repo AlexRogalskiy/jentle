@@ -1,12 +1,20 @@
 package com.wildbeeslabs.jentle.algorithms.comparator.impl;
 
 import com.wildbeeslabs.jentle.algorithms.comparator.entry.DefaultDiffEntry;
+import com.wildbeeslabs.jentle.algorithms.comparator.entry.DiffEntry;
+import com.wildbeeslabs.jentle.algorithms.comparator.utils.ComparatorUtils;
+import com.wildbeeslabs.jentle.algorithms.comparator.utils.ReflectionUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.collections.comparators.ComparableComparator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.wildbeeslabs.jentle.algorithms.comparator.utils.StringUtils.sanitize;
 
 /**
  * Default difference comparator implementation
@@ -14,33 +22,41 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class DefaultDiffComparator<T> extends AbstractDiffComparator<T, DefaultDiffEntry> {
+public class DefaultDiffComparator<T> extends AbstractDiffComparator<T, DefaultDiffEntry> {
 
     /**
-     * Creates device information difference comparator
+     * Default explicit serialVersionUID for interoperability
      */
-    public DefaultDiffComparator() {
-        super();
+    private static final long serialVersionUID = 2088063953605270171L;
+
+    /**
+     * Creates default difference comparator with initial class {@link Class}
+     *
+     * @param clazz - initial class instance {@link Class}
+     */
+    public DefaultDiffComparator(final Class<? extends T> clazz) {
+        super(clazz);
     }
 
     /**
-     * Creates device information difference comparator
+     * Creates default difference comparator with initial class {@link Class} and comparator instance {@link Comparator}
      *
+     * @param clazz      - initial class instance {@link Class}
      * @param comparator - initial comparator instance {@link Comparator}
      */
-    public DefaultDiffComparator(final Comparator<? super T> comparator) {
-        super(comparator);
+    public DefaultDiffComparator(final Class<? extends T> clazz, final Comparator<? super T> comparator) {
+        super(clazz, comparator, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
     }
 
     /**
-     * Creates default difference comparator with comparator instance and collection of included / excluded properties
+     * Creates default difference comparator with with initial class {@link Class}, comparator instance {@link Comparator} and collection of included / excluded properties {@link List}
      *
      * @param comparator          - initial comparator instance {@link Comparator}
      * @param propertiesToExclude - initial list of properties to be excluded from comparison {@link List}
      * @param propertiesToInclude - initial list of properties to be included in comparison {@link List}
      */
-    public DefaultDiffComparator(final Comparator<? super T> comparator, final List<String> propertiesToExclude, final List<String> propertiesToInclude) {
-        super(comparator, propertiesToExclude, propertiesToInclude);
+    public DefaultDiffComparator(final Class<? extends T> clazz, final Comparator<? super T> comparator, final List<String> propertiesToExclude, final List<String> propertiesToInclude) {
+        super(clazz, comparator, propertiesToExclude, propertiesToInclude);
     }
 
     /**
@@ -53,5 +69,26 @@ public abstract class DefaultDiffComparator<T> extends AbstractDiffComparator<T,
      */
     protected DefaultDiffEntry createDiffEntry(final Object first, final Object last, final String propertyName) {
         return DefaultDiffEntry.builder().first(first).last(last).propertyName(propertyName).build();
+    }
+
+    /**
+     * Returns iterable collection of difference entries {@link DefaultDiffEntry}
+     *
+     * @param <S>
+     * @param first - initial first argument to be compared {@link DefaultDiffEntry}
+     * @param last  - initial last argument to be compared with {@link DefaultDiffEntry}
+     * @return collection of difference entries {@link DefaultDiffEntry}
+     */
+    @Override
+    public <S extends Iterable<? extends DiffEntry<?>>> S diffCompare(final T first, final T last) {
+        final List<DefaultDiffEntry> diffComparatorEntryList = new ArrayList<>();
+        getPropertyCollection(getClazz()).stream().forEach(propertyName -> {
+            final Object firstValue = ReflectionUtils.getProperty(first, sanitize(propertyName));
+            final Object lastValue = ReflectionUtils.getProperty(last, sanitize(propertyName));
+            if (0 != ComparatorUtils.compare(firstValue, lastValue, ComparableComparator.getInstance())) {
+                diffComparatorEntryList.add(createDiffEntry(firstValue, lastValue, propertyName));
+            }
+        });
+        return (S) diffComparatorEntryList;
     }
 }

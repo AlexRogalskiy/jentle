@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Data
 @EqualsAndHashCode
 @ToString
-public abstract class AbstractDiffComparator<T, E extends DiffEntry> implements DiffComparator<T, E> {
+public abstract class AbstractDiffComparator<T, E extends DiffEntry<?>> implements DiffComparator<T> {
 
     /**
      * Default Logger instance
@@ -41,31 +41,40 @@ public abstract class AbstractDiffComparator<T, E extends DiffEntry> implements 
      * Default list of properties {@link List} to be included in comparison
      */
     private final List<String> propertiesToInclude = new ArrayList<>();
+    /**
+     * Default class instance {@link Class}
+     */
+    private Class<? extends T> clazz;
 
     /**
-     * Creates default difference comparator
+     * Creates difference comparator with initial class {@link Class}
+     *
+     * @param clazz - initial class instance {@link Class}
      */
-    public AbstractDiffComparator() {
-        this(null);
+    public AbstractDiffComparator(final Class<? extends T> clazz) {
+        this(clazz, null);
     }
 
     /**
-     * Creates default difference comparator with comparator instance
+     * Creates difference comparator with initial class {@link Class} and comparator instance {@link Comparator}
      *
+     * @param clazz      - initial class instance {@link Class}
      * @param comparator - initial comparator instance {@link Comparator}
      */
-    public AbstractDiffComparator(final Comparator<? super T> comparator) {
-        this(comparator, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+    public AbstractDiffComparator(final Class<? extends T> clazz, final Comparator<? super T> comparator) {
+        this(clazz, comparator, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
     }
 
     /**
-     * Creates default difference comparator with comparator instance and collection of included / excluded properties
+     * Creates difference comparator with initial class {@link Class}, comparator instance {@link Comparator} and collection of included / excluded properties {@link List}
      *
+     * @param clazz               - initial class instance {@link Class}
      * @param comparator          - initial comparator instance {@link Comparator}
      * @param propertiesToExclude - initial list of properties to be excluded from comparison {@link List}
      * @param propertiesToInclude - initial list of properties to be included in comparison {@link List}
      */
-    public AbstractDiffComparator(final Comparator<? super T> comparator, final List<String> propertiesToExclude, final List<String> propertiesToInclude) {
+    public AbstractDiffComparator(final Class<? extends T> clazz, final Comparator<? super T> comparator, final List<String> propertiesToExclude, final List<String> propertiesToInclude) {
+        this.clazz = Objects.requireNonNull(clazz);
         this.comparator = Objects.nonNull(comparator) ? comparator : ComparableComparator.getInstance();
         setPropertiesToExclude(propertiesToExclude);
         setPropertiesToInclude(propertiesToInclude);

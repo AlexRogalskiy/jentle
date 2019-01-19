@@ -9,12 +9,13 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode
 @ToString(exclude = {"serialVersionUID"})
-public class DeliveryInfo implements Serializable {
+public class AddressInfo implements Serializable {
 
     /**
      * Default explicit serialVersionUID for interoperability
      */
-    private static final long serialVersionUID = -376282547690062738L;
+    private static final long serialVersionUID = -4457576544688978297L;
 
-    private AddressInfo addressInfo;
+    private String city;
+    private String zipCode;
 }

@@ -1,6 +1,5 @@
 package com.wildbeeslabs.jentle.algorithms.comparator.utils;
 
-import jdk.internal.joptsimple.internal.Strings;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -48,6 +47,6 @@ public final class StringUtils {
      * @return string stripped by default regex pattern
      */
     public static String sanitize(final String initialValue) {
-        return replaceAll(initialValue, DEFAULT_ALPHANUMERIC_PATTERN, Strings.EMPTY).trim();
+        return replaceAll(initialValue, DEFAULT_ALPHANUMERIC_PATTERN, org.apache.commons.lang3.StringUtils.EMPTY).trim();
     }
 }
