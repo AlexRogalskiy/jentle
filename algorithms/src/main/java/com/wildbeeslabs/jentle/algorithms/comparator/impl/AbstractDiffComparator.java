@@ -3,8 +3,8 @@ package com.wildbeeslabs.jentle.algorithms.comparator.impl;
 import com.google.common.collect.Sets;
 import com.wildbeeslabs.jentle.algorithms.comparator.DiffComparator;
 import com.wildbeeslabs.jentle.algorithms.comparator.entry.DiffEntry;
-import com.wildbeeslabs.jentle.algorithms.comparator.utils.ComparatorUtils;
-import com.wildbeeslabs.jentle.algorithms.comparator.utils.ReflectionUtils;
+import com.wildbeeslabs.jentle.algorithms.utils.CComparatorUtils;
+import com.wildbeeslabs.jentle.algorithms.utils.CReflectionUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -44,7 +44,7 @@ public abstract class AbstractDiffComparator<T, E extends DiffEntry<?>> implemen
     /**
      * Default class instance {@link Class}
      */
-    private Class<? extends T> clazz;
+    private final Class<? extends T> clazz;
 
     /**
      * Creates difference comparator with initial class {@link Class}
@@ -187,9 +187,9 @@ public abstract class AbstractDiffComparator<T, E extends DiffEntry<?>> implemen
         if (Objects.isNull(propertyName)) {
             return getComparator().compare(first, last);
         }
-        final Object firstValue = ReflectionUtils.getProperty(first, propertyName);
-        final Object lastValue = ReflectionUtils.getProperty(first, propertyName);
-        return ComparatorUtils.compare(firstValue, lastValue, comparator);
+        final Object firstValue = CReflectionUtils.getProperty(first, propertyName);
+        final Object lastValue = CReflectionUtils.getProperty(first, propertyName);
+        return CComparatorUtils.compare(firstValue, lastValue, comparator);
     }
 
     /**
@@ -199,7 +199,7 @@ public abstract class AbstractDiffComparator<T, E extends DiffEntry<?>> implemen
      * @return list of field names {@link List}
      */
     protected List<String> getFieldsList(final Class<? extends T> clazz) {
-        return ReflectionUtils.getValidFields(ReflectionUtils.getAllFields(clazz), false, false).stream().map(field -> field.getName()).collect(Collectors.toList());
+        return CReflectionUtils.getValidFields(CReflectionUtils.getAllFields(clazz), false, false).stream().map(field -> field.getName()).collect(Collectors.toList());
     }
 
     /**

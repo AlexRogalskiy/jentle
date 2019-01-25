@@ -46,6 +46,9 @@ public final class CRegexUtils {
      */
     private static final Logger LOGGER = LogManager.getLogger(CRegexUtils.class);
 
+    /**
+     * Default regex patterns
+     */
     private static final Pattern DEFAULT_PASSWORD_STRENGH_PATTERN = Pattern.compile("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&amp;*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$");
 
     private static final Pattern DEFAULT_HEX_COLOR_PATTERN = Pattern.compile("^\\#([a-fA-F]|[0-9]){3,6}$");

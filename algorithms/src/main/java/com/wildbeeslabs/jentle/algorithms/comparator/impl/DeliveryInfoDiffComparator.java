@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true, exclude = {"serialVersionUID"})
+@ToString(callSuper = true)
 public class DeliveryInfoDiffComparator extends DefaultDiffComparator<DeliveryInfo> {
 
     /**

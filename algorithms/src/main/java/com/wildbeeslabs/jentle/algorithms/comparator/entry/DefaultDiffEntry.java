@@ -6,12 +6,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Default difference comparator entry implementation
+ * Default difference entry implementation
  */
 @Builder
 @Data
 @EqualsAndHashCode
-@ToString(exclude = {"serialVersionUID"})
+@ToString
 public class DefaultDiffEntry implements DiffEntry<Object> {
 
     /**

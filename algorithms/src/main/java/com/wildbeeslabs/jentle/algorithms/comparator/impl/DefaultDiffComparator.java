@@ -2,8 +2,8 @@ package com.wildbeeslabs.jentle.algorithms.comparator.impl;
 
 import com.wildbeeslabs.jentle.algorithms.comparator.entry.DefaultDiffEntry;
 import com.wildbeeslabs.jentle.algorithms.comparator.entry.DiffEntry;
-import com.wildbeeslabs.jentle.algorithms.comparator.utils.ComparatorUtils;
-import com.wildbeeslabs.jentle.algorithms.comparator.utils.ReflectionUtils;
+import com.wildbeeslabs.jentle.algorithms.utils.CComparatorUtils;
+import com.wildbeeslabs.jentle.algorithms.utils.CReflectionUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.wildbeeslabs.jentle.algorithms.comparator.utils.StringUtils.sanitize;
+import static com.wildbeeslabs.jentle.algorithms.utils.CStringUtils.sanitize;
 
 /**
  * Default difference comparator implementation
@@ -83,9 +83,9 @@ public class DefaultDiffComparator<T> extends AbstractDiffComparator<T, DefaultD
     public <S extends Iterable<? extends DiffEntry<?>>> S diffCompare(final T first, final T last) {
         final List<DefaultDiffEntry> diffComparatorEntryList = new ArrayList<>();
         getPropertyCollection(getClazz()).stream().forEach(propertyName -> {
-            final Object firstValue = ReflectionUtils.getProperty(first, sanitize(propertyName));
-            final Object lastValue = ReflectionUtils.getProperty(last, sanitize(propertyName));
-            if (0 != ComparatorUtils.compare(firstValue, lastValue, ComparableComparator.getInstance())) {
+            final Object firstValue = CReflectionUtils.getProperty(first, sanitize(propertyName));
+            final Object lastValue = CReflectionUtils.getProperty(last, sanitize(propertyName));
+            if (0 != CComparatorUtils.compare(firstValue, lastValue, ComparableComparator.getInstance())) {
                 diffComparatorEntryList.add(createDiffEntry(firstValue, lastValue, propertyName));
             }
         });

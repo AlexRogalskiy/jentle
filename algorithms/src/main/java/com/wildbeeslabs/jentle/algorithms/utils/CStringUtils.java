@@ -27,6 +27,13 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import pl.allegro.finance.tradukisto.MoneyConverters;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,16 +42,7 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -52,36 +50,32 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import pl.allegro.finance.tradukisto.MoneyConverters;
-
 /**
- *
  * Custom string utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- *
- * @see http://www-igm.univ-mlv.fr/%7Elecroq/string/
  */
 public final class CStringUtils {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CStringUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(CStringUtils.class);
 
-    // Default replace prefix
+    /**
+     * Default replace prefix
+     */
     private static final String DEFAULT_REPLACE_PREFIX = "$";
-    // Default not replace prefix
+    /**
+     * Default not replace prefix
+     */
     private static final String DEFAULT_NOT_REPLACE_PREFIX = "\\$";
+    /**
+     * Default regular expression (only alpha-numeric characters)
+     */
+    public static final String DEFAULT_ALPHANUMERIC_PATTERN = "[^a-zA-Z0-9]";
 
     private CStringUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -778,5 +772,28 @@ public final class CStringUtils {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    /**
+     * Returns string with replaced values by pattern
+     *
+     * @param initialValue - initial argument value
+     * @param pattern      - initial pattern to be replaced by
+     * @param replaceValue - initial value replacement by pattern occurrences
+     * @return string with replaced values by pattern
+     */
+    public static String replaceAll(final String initialValue, final String pattern, final String replaceValue) {
+        Objects.requireNonNull(initialValue);
+        return initialValue.replaceAll(pattern, replaceValue);
+    }
+
+    /**
+     * Returns string sanitized by default regex pattern {@see DEFAULT_ALPHANUMERIC_PATTERN}
+     *
+     * @param initialValue - initial argument value
+     * @return string stripped by default regex pattern
+     */
+    public static String sanitize(final String initialValue) {
+        return replaceAll(initialValue, DEFAULT_ALPHANUMERIC_PATTERN, org.apache.commons.lang3.StringUtils.EMPTY).trim();
     }
 }

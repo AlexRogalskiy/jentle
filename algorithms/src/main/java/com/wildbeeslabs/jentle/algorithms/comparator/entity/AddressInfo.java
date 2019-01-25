@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode
-@ToString(exclude = {"serialVersionUID"})
+@ToString
 public class AddressInfo implements Serializable {
 
     /**

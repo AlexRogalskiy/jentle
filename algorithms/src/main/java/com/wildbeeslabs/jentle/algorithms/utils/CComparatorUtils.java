@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.algorithms.comparator.utils;
+package com.wildbeeslabs.jentle.algorithms.utils;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -11,17 +11,17 @@ import java.util.Objects;
 /**
  * Custom comparators utilities with null-safe implementation
  */
-public final class ComparatorUtils {
+public final class CComparatorUtils {
 
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(ComparatorUtils.class);
+    protected static final Logger LOGGER = LogManager.getLogger(CComparatorUtils.class);
 
     /**
      * Default private constructor
      */
-    private ComparatorUtils() {
+    private CComparatorUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
@@ -49,7 +49,7 @@ public final class ComparatorUtils {
          */
         @Override
         public int compare(final T first, final T last) {
-            return ComparatorUtils.compareTo(first, last);
+            return CComparatorUtils.compareTo(first, last);
         }
     }
 

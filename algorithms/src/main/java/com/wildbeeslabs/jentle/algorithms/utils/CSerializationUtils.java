@@ -45,7 +45,7 @@ public final class CSerializationUtils {
     /**
      * Default Logger instance
      */
-    protected static final Logger LOGGER = LogManager.getLogger(CSerializationUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(CSerializationUtils.class);
 
     private CSerializationUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
