@@ -23,12 +23,12 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import lombok.NonNull;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  * Custom filter utilities implementation
@@ -36,19 +36,10 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
+@Slf4j
+@UtilityClass
 public class CFilterUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CFilterUtils.class);
-
-    private CFilterUtils() {
-        LOGGER.debug("Initializing filter utilities...");
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     public static <T> boolean allMatch(@NonNull final Stream<? extends T> stream, final Predicate<? super T> predicate) {
         return stream.allMatch(predicate);

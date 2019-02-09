@@ -23,61 +23,41 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom permutation utilities implementation
  *
  * @author Alex
  * @version 1.0.0
- * @since 2017-09-01
- *
- * @see
- *
- * List<String> items = Arrays.asList("A", "B", "C"); long permutations =
+ * @see List<String> items = Arrays.asList("A", "B", "C"); long permutations =
  * Permutations.factorial(items.size());
- *
+ * <p>
  * LongStream.range(0, permutations).forEachOrdered(i -> { System.out.println(i
  * + ": " + Permutations.permutation(i, items)); });
- *
+ * <p>
  * Permutations.of("A", "B", "C") .map(s -> s.collect(toList()))
  * .forEachOrdered(System.out::println);
- *
+ * <p>
  * Permutations.of("A", "B", "C") .flatMap(Function.identity())
  * .forEachOrdered(System.out::print);
- *
+ * <p>
  * Permutations.of("A", "B", "C") .parallel() .flatMap(Function.identity())
  * .forEachOrdered(System.out::print);
- *
+ * <p>
  * Permutations.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
  * .findFirst() .get() .collect(toList())
- *
+ * @since 2017-09-01
  */
-public final class CPermutationUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CPermutationUtils.class);
-
-    private CPermutationUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CPermutationUtils {
 
     public static long factorial(int n) {
         if (n > 20 || n < 0) {

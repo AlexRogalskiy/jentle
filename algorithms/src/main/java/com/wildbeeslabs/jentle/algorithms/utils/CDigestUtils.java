@@ -23,42 +23,33 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
-import javax.xml.bind.DatatypeConverter;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
- *
  * Custom hash utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
+@UtilityClass
 public final class CDigestUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CDigestUtils.class);
 
     // Default md5 hash algorithm
     private static final String DEFAULT_MD5_HASH = "MD5";
     // Default sha-256 hash algorithm
     private static final String DEFAULT_SHA256_HASH = "SHA-256";
-
-    private CDigestUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     public static byte[] md5(final String value) throws NoSuchAlgorithmException {
         Objects.requireNonNull(value);
@@ -92,7 +83,7 @@ public final class CDigestUtils {
         try {
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException ex) {
-            LOGGER.error(String.format("ERROR: cannot create digest instance for algorithm=%s, message=%s", algorithm, ex.getMessage()));
+            log.error(String.format("ERROR: cannot create digest instance for algorithm=%s, message=%s", algorithm, ex.getMessage()));
         }
         return null;
     }

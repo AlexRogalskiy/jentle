@@ -23,9 +23,9 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -38,16 +38,9 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CReflectionUtils {
-
-    /**
-     * Default Logger instance
-     */
-    protected static final Logger LOGGER = LogManager.getLogger(CReflectionUtils.class);
-
-    private CReflectionUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CReflectionUtils {
 
     /**
      * Returns the method by name of the supplied class
@@ -60,7 +53,7 @@ public final class CReflectionUtils {
         try {
             return clazz.getMethod(methodName.substring(0, 1).toUpperCase() + methodName.substring(1));
         } catch (NoSuchMethodException ex) {
-            LOGGER.error(String.format("ERROR: no such method=%s, message=%s", methodName, ex.getMessage()));
+            log.error(String.format("ERROR: no such method=%s, message=%s", methodName, ex.getMessage()));
             return null;
         }
     }
@@ -281,5 +274,13 @@ public final class CReflectionUtils {
      */
     public static boolean isNotStaticOrFinalOrAccessible(final Field field, boolean returnFinalFields, boolean returnAccessibleFields) {
         return isNotStaticOrFinal(field, returnFinalFields) && (!returnAccessibleFields || field.isAccessible());
+    }
+
+    public static void makeFinalStatic(final Field field, final Object newValue) throws Exception {
+        field.setAccessible(true);
+        final Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        field.set(null, newValue);
     }
 }

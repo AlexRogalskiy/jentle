@@ -23,23 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import java.util.Arrays;
 import java.util.Objects;
-
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import lombok.NonNull;
 
 /**
  * Custom exception utilities implementation
@@ -47,18 +44,10 @@ import lombok.NonNull;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
-public final class CExceptionUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CExceptionUtils.class);
-
-    private CExceptionUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CExceptionUtils {
 
     @FunctionalInterface
     public interface UnaryConsumerFunction<T, E extends Exception> {
@@ -92,11 +81,11 @@ public final class CExceptionUtils {
 
     /**
      * Wrap unary consumer exceptions
-     *
+     * <p>
      * .forEach(wrapUnaryConsumer(name ->
      * System.out.println(Class.forName(name))));
      * .forEach(wrapUnaryConsumer(ClassNameUtil::println));
-     *
+     * <p>
      * List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
      * integers.forEach(throwingConsumerWrapper(i -> writeToFile(i)));
      *
@@ -124,7 +113,7 @@ public final class CExceptionUtils {
             } catch (Exception ex) {
                 try {
                     final E exCast = exClass.cast(ex);
-                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
+                    log.error("Exception occured: message=" + exCast.getMessage());
                 } catch (ClassCastException ccEx) {
                     throw new RuntimeException(ex);
                 }
@@ -134,7 +123,7 @@ public final class CExceptionUtils {
 
     /**
      * Wrap binary consumer exceptions
-     *
+     * <p>
      * .forEach(wrapBinaryConsumer(name ->
      * System.out.println(Class.forName(name))));
      * .forEach(wrapBinaryConsumer(ClassNameUtil::println));
@@ -157,7 +146,7 @@ public final class CExceptionUtils {
 
     /**
      * Wrap function exceptions with binding context
-     *
+     * <p>
      * .map(wrapFunction(name -> Class.forName(name)));
      * .map(wrapFunction(Class::forName));
      *
@@ -180,7 +169,7 @@ public final class CExceptionUtils {
 
     /**
      * Wrap supplier exceptions
-     *
+     * <p>
      * wrapSupplier(() -> new StringJoiner(new String(new byte[]{77, 97, 114,
      * 107}, "UTF-8")));
      *
@@ -202,7 +191,7 @@ public final class CExceptionUtils {
 
     /**
      * Uncheck runnable exceptions
-     *
+     * <p>
      * uncheck(() -> Class.forName("default"));
      *
      * @param <E>
@@ -218,7 +207,7 @@ public final class CExceptionUtils {
 
     /**
      * Uncheck supplier exceptions
-     *
+     * <p>
      * uncheck(() -> Class.forName("default"));
      *
      * @param <R>
@@ -237,7 +226,7 @@ public final class CExceptionUtils {
 
     /**
      * Uncheck function exceptions with binding context
-     *
+     * <p>
      * uncheck(Class::forName, "default");
      *
      * @param <T>
@@ -272,7 +261,7 @@ public final class CExceptionUtils {
      * Returns the deepest cause of the supplied exception
      *
      * @param throwable the exception for which the stack trace is to be
-     * returned
+     *                  returned
      * @return the deepest cause of the supplied exception
      */
     public static Throwable getDeepestThrowable(final Throwable throwable) {
@@ -292,7 +281,7 @@ public final class CExceptionUtils {
      * Returns the stack trace of the supplied exception.
      *
      * @param throwable the exception for which the stack trace is to be
-     * returned
+     *                  returned
      * @return the stack trace, or null if the supplied exception is null
      */
     public static String getStackTrace(final Throwable throwable) {
@@ -334,9 +323,9 @@ public final class CExceptionUtils {
      * Locates a particular type of the supplied exception
      *
      * @param throwable the supplied exception
-     * @param type the type of exception to search for
-     * @return the first exception of the given type, if found, or null
+     * @param type      the type of exception to search for
      * @param <T>
+     * @return the first exception of the given type, if found, or null
      */
     public static <T extends Throwable> T findCause(final Throwable throwable, final Class<? extends T> type) {
         Throwable current = throwable;
@@ -358,7 +347,7 @@ public final class CExceptionUtils {
             } catch (Exception ex) {
                 try {
                     final E exCast = exClass.cast(ex);
-                    LOGGER.error("Exception occured: message=" + exCast.getMessage());
+                    log.error("Exception occured: message=" + exCast.getMessage());
                 } catch (ClassCastException ccEx) {
                     throw ex;
                 }
@@ -366,7 +355,7 @@ public final class CExceptionUtils {
         };
     }
 
-//    public long getStackCount() {
+    //    public long getStackCount() {
 //        return StackWalker.getInstance()
 //                .walk(Stream::count);
 //    }

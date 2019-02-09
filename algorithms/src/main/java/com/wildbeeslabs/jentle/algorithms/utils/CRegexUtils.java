@@ -23,28 +23,24 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.validator.routines.EmailValidator;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.NonNull;
-
-import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
- *
  * Custom pool utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CRegexUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CRegexUtils.class);
+@Slf4j
+@UtilityClass
+public class CRegexUtils {
 
     /**
      * Default regex patterns
@@ -60,10 +56,6 @@ public final class CRegexUtils {
     private static final Pattern DEFAULT_IPV6_STD_PATTERN = Pattern.compile("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
 
     private static final Pattern DEFAUL_IPV6_HEX_COMPRESSED_PATTERN = Pattern.compile("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
-
-    private CRegexUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     public static int execute(final String regex, final String text) {
         return CRegexUtils.execute(regex, text, 0);

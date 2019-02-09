@@ -25,50 +25,24 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.*;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.IntStream;
 
-import org.apache.commons.math3.util.Pair;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 /**
- *
  * Custom array utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CArrayUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CArrayUtils.class);
-
-    private CArrayUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CArrayUtils {
 
     public static <T> List<T> union(final T[] array1, final T[] array2, final Comparator<? super T> cmp) {
         final List<T> result = new ArrayList<>();

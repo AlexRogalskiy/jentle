@@ -23,34 +23,27 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom locale utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CLocaleUtils {
+@Slf4j
+@UtilityClass
+public class CLocaleUtils {
 
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CLocaleUtils.class);
     /**
      * Default locale source
      */
     public static final String DEFAULT_LOCALE_SOURCE = "resources/words";
-
-    private CLocaleUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     public static String getWord(final Locale currentLocale, final String key) {
         final ResourceBundle words = ResourceBundle.getBundle(DEFAULT_LOCALE_SOURCE, currentLocale);

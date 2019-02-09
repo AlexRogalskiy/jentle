@@ -24,16 +24,13 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
-import java.io.Serializable;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -41,31 +38,16 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import lombok.NonNull;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import org.apache.commons.lang3.SerializationUtils;
-
 /**
- *
  * Custom list utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CListUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CListUtils.class);
-
-    private CListUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CListUtils {
 
     public static <T> List<? extends T> removeDuplicates(final Collection<? extends T> list) {
         Objects.requireNonNull(list);

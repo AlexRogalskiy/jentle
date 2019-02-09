@@ -23,9 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.io.IOException;
-import java.util.Objects;
-
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -33,9 +32,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Custom HTTP utilities implementation
@@ -43,25 +43,17 @@ import org.jsoup.Jsoup;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
-public final class CHttpUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CHttpUtils.class);
-
-    private CHttpUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CHttpUtils {
 
     public static String readUrl(final String url) {
         Objects.requireNonNull(url);
         try {
             return Jsoup.connect(url).get().html();
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
         }
         return null;
     }
@@ -78,7 +70,7 @@ public final class CHttpUtils {
             final HttpEntity responseEntity = response.getEntity();
             return EntityUtils.toString(responseEntity);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
         } finally {
             if (Objects.nonNull(request)) {
                 request.releaseConnection();
@@ -100,7 +92,7 @@ public final class CHttpUtils {
             final HttpEntity responseEntity = response.getEntity();
             return EntityUtils.toString(responseEntity);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on url=%s, message=%s", url, ex.getMessage()));
         } finally {
             if (Objects.nonNull(request)) {
                 request.releaseConnection();

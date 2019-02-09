@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,19 +11,9 @@ import java.util.Objects;
 /**
  * Custom comparators utilities with null-safe implementation
  */
-public final class CComparatorUtils {
-
-    /**
-     * Default Logger instance
-     */
-    protected static final Logger LOGGER = LogManager.getLogger(CComparatorUtils.class);
-
-    /**
-     * Default private constructor
-     */
-    private CComparatorUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CComparatorUtils {
 
     /**
      * Default comparator class

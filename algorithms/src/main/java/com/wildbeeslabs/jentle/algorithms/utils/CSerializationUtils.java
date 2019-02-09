@@ -23,33 +23,21 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.io.*;
 
 /**
- *
  * Custom serialization utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CSerializationUtils {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CSerializationUtils.class);
-
-    private CSerializationUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CSerializationUtils {
 
     /**
      * Gets bytes representation of object instance
@@ -62,7 +50,7 @@ public final class CSerializationUtils {
             o.writeObject(value);
             o.flush();
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot serialize input value=%s, message=%s", value, ex.getMessage()));
+            log.error(String.format("ERROR: cannot serialize input value=%s, message=%s", value, ex.getMessage()));
         }
         return null;
     }
@@ -77,7 +65,7 @@ public final class CSerializationUtils {
         try (final ObjectInputStream o = new ObjectInputStream(new ByteArrayInputStream(array))) {
             return o.readObject();
         } catch (IOException | ClassNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot deserialize input stream=%s, message=%s", array, ex.getMessage()));
+            log.error(String.format("ERROR: cannot deserialize input stream=%s, message=%s", array, ex.getMessage()));
         }
         return null;
     }
@@ -86,8 +74,8 @@ public final class CSerializationUtils {
      * Clones object instance
      *
      * @param value - object instance to be cloned
-     * @return copy of object instance
      * @param <T>
+     * @return copy of object instance
      */
     public static <T> T cloneObject(final T value) {
         return (T) CSerializationUtils.deserialize(serialize(value));

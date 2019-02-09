@@ -23,48 +23,25 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.CSVWriter;
+import com.opencsv.*;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  * Custom file utilities implementation
@@ -72,22 +49,14 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
-public final class CFileUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CFileUtils.class);
+@Slf4j
+@UtilityClass
+public class CFileUtils {
     /**
      * Default file character encoding
      */
     public static final Charset DEFAULT_FILE_CHARACTER_ENCODING = StandardCharsets.UTF_8;
-
-    private CFileUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     public static <U extends CharSequence> List<U> readAllLines(final File inputFile) {
         Objects.requireNonNull(inputFile);
@@ -95,7 +64,7 @@ public final class CFileUtils {
         try {
             resultList = (List<U>) Files.readAllLines(inputFile.toPath(), DEFAULT_FILE_CHARACTER_ENCODING);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
+            log.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
         }
         return resultList;
     }
@@ -106,7 +75,7 @@ public final class CFileUtils {
         try (final BufferedReader br = Files.newBufferedReader(inputFile.toPath(), DEFAULT_FILE_CHARACTER_ENCODING)) {
             resultList = br.lines().filter(predicate).collect(Collectors.toList());
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
+            log.error(String.format("ERROR: cannot read from input file=%s, message=%s", String.valueOf(inputFile), ex.getMessage()));
         }
         return resultList;
     }
@@ -117,9 +86,9 @@ public final class CFileUtils {
         try (final PrintWriter writer = new PrintWriter(Files.newBufferedWriter(outputFile.toPath(), DEFAULT_FILE_CHARACTER_ENCODING))) {
             output.stream().forEach(writer::println);
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
-            LOGGER.error(String.format("ERROR: cannot create output file=%s, message=%s", String.valueOf(outputFile), ex.getMessage()));
+            log.error(String.format("ERROR: cannot create output file=%s, message=%s", String.valueOf(outputFile), ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read / writer operations on file=%s, message=%s", String.valueOf(outputFile), ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read / writer operations on file=%s, message=%s", String.valueOf(outputFile), ex.getMessage()));
         }
     }
 
@@ -128,7 +97,7 @@ public final class CFileUtils {
         try (final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(outputZip))) {
             for (final File file : listFiles) {
                 final String filePath = file.getCanonicalPath();
-                LOGGER.debug(String.format("Processing zip file: %s", filePath));
+                log.debug(String.format("Processing zip file: %s", filePath));
 
                 final String zipFilePath = FilenameUtils.getName(filePath);
                 final ZipEntry zipEntry = new ZipEntry(zipFilePath);
@@ -216,9 +185,9 @@ public final class CFileUtils {
                 }
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -235,7 +204,7 @@ public final class CFileUtils {
                 sb.append(System.lineSeparator());
             });
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -249,7 +218,7 @@ public final class CFileUtils {
                 sb.append(System.lineSeparator());
             });
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -265,7 +234,7 @@ public final class CFileUtils {
                 sb.append(System.lineSeparator());
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -280,9 +249,9 @@ public final class CFileUtils {
                 sb.append(System.lineSeparator());
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -293,9 +262,9 @@ public final class CFileUtils {
             return IOUtils.toString(inputStream, DEFAULT_FILE_CHARACTER_ENCODING.name());
             //return FileUtils.readFileToString(new File(filename), DEFAULT_FILE_CHARACTER_ENCODING.name());
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return null;
     }
@@ -312,9 +281,9 @@ public final class CFileUtils {
                 sb.append(System.lineSeparator());
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -325,7 +294,7 @@ public final class CFileUtils {
         final CSVParser parser = new CSVParserBuilder().withSeparator(separator).build();
         final StringBuilder sb = new StringBuilder();
         try (final BufferedReader br = Files.newBufferedReader(path, DEFAULT_FILE_CHARACTER_ENCODING);
-                final CSVReader reader = new CSVReaderBuilder(br).withCSVParser(parser).build()) {
+             final CSVReader reader = new CSVReaderBuilder(br).withCSVParser(parser).build()) {
             final List<String[]> rows = reader.readAll();
             rows.stream().map((row) -> {
                 for (String e : row) {
@@ -336,9 +305,9 @@ public final class CFileUtils {
                 sb.append(System.lineSeparator());
             });
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
         return sb.toString();
     }
@@ -346,26 +315,42 @@ public final class CFileUtils {
     public static void writeCsvFile(final String filename, final String[] data) {
         Objects.requireNonNull(filename);
         try (final FileOutputStream fos = new FileOutputStream(filename);
-                final OutputStreamWriter osw = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING);
-                final CSVWriter writer = new CSVWriter(osw, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+             final OutputStreamWriter osw = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING);
+             final CSVWriter writer = new CSVWriter(osw, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
             writer.writeNext(data);
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
     }
 
     public static void writeCsvFile(final String filename, final List<String[]> data) {
         Objects.requireNonNull(filename);
         try (final FileOutputStream fos = new FileOutputStream(filename);
-                final OutputStreamWriter osw = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING);
-                final CSVWriter writer = new CSVWriter(osw, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+             final OutputStreamWriter osw = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING);
+             final CSVWriter writer = new CSVWriter(osw, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
             writer.writeAll(data);
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot found file=%s, message=%s", filename, ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on file=%s, message=%s", filename, ex.getMessage()));
         }
+    }
+
+    public static File loadFile(final String path) {
+        return new File(CTestUtils.class.getClassLoader().getResource(path).getFile());
+    }
+
+    public static byte[] loadFileIntoByte(final String path) throws IOException {
+        return Files.readAllBytes(loadFile(path).toPath());
+    }
+
+    public static InputStream loadFileIntoInputStream(final String path) throws IOException {
+        return new ByteArrayInputStream(loadFileIntoByte(path));
+    }
+
+    public static String readFile7(final String path) throws IOException {
+        return new String(loadFileIntoByte(path), Charset.forName(StandardCharsets.UTF_8.name()));
     }
 }

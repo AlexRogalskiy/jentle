@@ -25,60 +25,31 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.bitwise.CBitwise;
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.DoubleSummaryStatistics;
-import java.util.IntSummaryStatistics;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.LongSummaryStatistics;
-import java.util.Objects;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
-import java.util.Queue;
-import java.util.Random;
-import java.util.function.DoubleBinaryOperator;
-import java.util.function.IntBinaryOperator;
-import java.util.function.IntConsumer;
-import java.util.function.LongBinaryOperator;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Range;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
 /**
- *
  * Custom numeric utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CNumericUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CNumericUtils.class);
+@Slf4j
+@UtilityClass
+public class CNumericUtils {
 
     /**
      * Default two pi constance
@@ -104,10 +75,6 @@ public final class CNumericUtils {
      * Default hundred percentage constant
      */
     public static final double HUNDRED_PERCENTAGE = 100.0;
-
-    private CNumericUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     public static double round(double value, int places) {
         assert (places > 0);
@@ -534,7 +501,6 @@ public final class CNumericUtils {
      *
      * @param angle the angle to normalize
      * @return the normalized angle that will be in the range of [0,2*PI[
-     * @see #normalAbsoluteAngle(double)
      * @see #isNear(double, double)
      */
     public static double normalNearAbsoluteAngle(double angle) {
@@ -606,7 +572,7 @@ public final class CNumericUtils {
      * exactly, the result interval is <em>closed</em>, it cannot be half-closed
      * as would be more satisfactory in a purely mathematical view.
      *
-     * @param a angle to normalize
+     * @param a      angle to normalize
      * @param center center of the desired 2&pi; interval for the result
      * @return a-2k * Math.PI; with integer k and center-Math.pi; &lt;= a-2k *
      * Math.PI; &lt;= center+Math.PI;

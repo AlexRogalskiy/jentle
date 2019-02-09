@@ -23,45 +23,24 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-
-import org.joda.time.DateTime;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.TemporalQueries;
-import java.time.temporal.WeekFields;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.TimeZone;
+import java.time.temporal.*;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import lombok.NonNull;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import static java.time.ZoneOffset.UTC;
 
 /**
  * Custom date utilities implementation
@@ -69,15 +48,11 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
-public final class CDateUtils {
+@Slf4j
+@UtilityClass
+public class CDateUtils {
 
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CDateUtils.class);
-    
     /**
      * Default date format locale
      */
@@ -92,7 +67,7 @@ public final class CDateUtils {
      * Default date format pattern
      */
     public static final String DEFAULT_DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    
+
     /**
      * Default time zone pattern
      */
@@ -121,10 +96,6 @@ public final class CDateUtils {
             .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
             .toFormatter();
 
-    private CDateUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
-
     public static enum TimeZoneOffsetBase {
         GMT, UTC
     }
@@ -148,7 +119,7 @@ public final class CDateUtils {
             df.setLenient(false);
             return df.parse(value);
         } catch (ParseException ex) {
-            LOGGER.error(String.format("ERROR: cannot parse input string=%s, timezone=%s, format=%s, locale=%s, message=%s", value, timezone, format, locale, ex.getMessage()));
+            log.error(String.format("ERROR: cannot parse input string=%s, timezone=%s, format=%s, locale=%s, message=%s", value, timezone, format, locale, ex.getMessage()));
         }
         return null;
     }
@@ -251,7 +222,7 @@ public final class CDateUtils {
                 .collect(Collectors.toList());
     }
 
-//    public static List<LocalDate> getDatesBetween(final LocalDate startDate, final LocalDate endDate) {
+    //    public static List<LocalDate> getDatesBetween(final LocalDate startDate, final LocalDate endDate) {
 //        return startDate.datesUntil(endDate).collect(Collectors.toList());
 //    }
 //    public LocalDate convertToLocalDate(final Date dateToConvert) {
@@ -331,7 +302,7 @@ public final class CDateUtils {
         }
         return LocalDateTime.of(date, time);
     }
-    
+
     public static Integer getDaysDiff(Date startDate, Date endDate) {
         if (Objects.isNull(startDate) || Objects.isNull(endDate)) {
             return null;
@@ -418,5 +389,13 @@ public final class CDateUtils {
 
     public static boolean isInPast(Date date) {
         return (Objects.nonNull(date) && date.before(CDateUtils.now()));
+    }
+
+    public static long now2() {
+        return offsetDateTimeNow().toInstant().toEpochMilli();
+    }
+
+    public static OffsetDateTime offsetDateTimeNow() {
+        return OffsetDateTime.now(UTC);
     }
 }

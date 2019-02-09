@@ -28,17 +28,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -48,31 +41,21 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  * Custom JSON utilities implementation
  *
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
-public final class CJsonUtils {
+@Slf4j
+@UtilityClass
+public class CJsonUtils {
 
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CJsonUtils.class);
     /**
      * Default file character encoding
      */
     public static final Charset DEFAULT_FILE_CHARACTER_ENCODING = StandardCharsets.UTF_8;
-
-    private CJsonUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     public static <K, V> String toJson(final Map<K, V> data) {
         final Gson gson = new Gson();
@@ -81,11 +64,11 @@ public final class CJsonUtils {
 
     public static <V> void toJson(final String filename, final List<V> data) {
         try (final FileOutputStream fos = new FileOutputStream(filename);
-                final OutputStreamWriter writer = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING)) {
+             final OutputStreamWriter writer = new OutputStreamWriter(fos, DEFAULT_FILE_CHARACTER_ENCODING)) {
             final Gson gson = new Gson();
             gson.toJson(data, writer);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process write operations to file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process write operations to file=%s, message=%s", filename, ex.getMessage()));
         }
     }
 
@@ -96,7 +79,7 @@ public final class CJsonUtils {
             final JsonElement tree = gson.toJsonTree(data);
             gson.toJson(tree, writer);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process write operations to file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process write operations to file=%s, message=%s", filename, ex.getMessage()));
         }
     }
 
@@ -110,7 +93,7 @@ public final class CJsonUtils {
                     .create();
             gson.toJson(entity, prs);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations on output stream, message=%s", ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations on output stream, message=%s", ex.getMessage()));
         }
     }
 
@@ -126,7 +109,7 @@ public final class CJsonUtils {
             return (List<V>) gson.fromJson(reader, new TypeToken<List<V>>() {
             }.getType());
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations from file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations from file=%s, message=%s", filename, ex.getMessage()));
         }
         return null;
     }
@@ -137,18 +120,18 @@ public final class CJsonUtils {
         try (final Reader reader = Files.newBufferedReader(path, DEFAULT_FILE_CHARACTER_ENCODING)) {
             return gson.fromJson(reader, clazz);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations from file=%s, message=%s", filename, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations from file=%s, message=%s", filename, ex.getMessage()));
         }
         return null;
     }
 
     public static <V> V fromJsonUrl(final String url, final Class<? extends V> clazz) {
         try (final InputStream is = new URL(url).openStream();
-                final Reader reader = new InputStreamReader(is, DEFAULT_FILE_CHARACTER_ENCODING)) {
+             final Reader reader = new InputStreamReader(is, DEFAULT_FILE_CHARACTER_ENCODING)) {
             final Gson gson = new Gson();
             return gson.fromJson(reader, clazz);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot process read operations from url=%s, message=%s", url, ex.getMessage()));
+            log.error(String.format("ERROR: cannot process read operations from url=%s, message=%s", url, ex.getMessage()));
         }
         return null;
     }

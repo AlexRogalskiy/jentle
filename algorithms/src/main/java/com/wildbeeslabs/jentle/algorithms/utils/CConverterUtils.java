@@ -26,42 +26,14 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import com.wildbeeslabs.jentle.collections.map.CCheckedMap;
 import com.wildbeeslabs.jentle.collections.set.CCheckedSet;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.RandomAccess;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.IntPredicate;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
 import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.*;
+import java.util.stream.*;
 
 /**
  * Custom collection converter utilities implementation
@@ -69,19 +41,10 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
-public final class CConverterUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CConverterUtils.class);
-
-    private CConverterUtils() {
-        LOGGER.debug("Initializing converter utilities...");
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CConverterUtils {
 
     public static <T> Stream<T> streamOf(@NonNull final Iterable<T> iterable, boolean parallel) {
         return StreamSupport.stream(iterable.spliterator(), parallel);
@@ -99,6 +62,7 @@ public final class CConverterUtils {
 //    public static <T> Stream<T> streamOf(@NonNull final Collection<String> collection) {
 //        return collection.stream().flatMap(s -> Stream.ofNullable(s));
 //    }
+
     /**
      * Creates an Object {@link Set} from the supplied objects.
      *
@@ -214,7 +178,7 @@ public final class CConverterUtils {
             try {
                 m2.put(keyType.cast(e.getKey()), valueType.cast(e.getValue()));
             } catch (ClassCastException ex) {
-                LOGGER.error(String.format("ERROR: cannot convert map key=%s, value=%s to key type=%s, key value=%s, message=%s", e.getKey(), e.getValue(), keyType, valueType, ex.getMessage()));
+                log.error(String.format("ERROR: cannot convert map key=%s, value=%s to key type=%s, key value=%s, message=%s", e.getKey(), e.getValue(), keyType, valueType, ex.getMessage()));
                 if (strict) {
                     throw ex;
                 }
@@ -224,7 +188,6 @@ public final class CConverterUtils {
     }
 
     /**
-     *
      * @param <E>
      * @param rawList
      * @param type
@@ -240,7 +203,7 @@ public final class CConverterUtils {
             try {
                 l.add(type.cast(e));
             } catch (ClassCastException ex) {
-                LOGGER.error(String.format("ERROR: cannot convert list value=%s to type=%s, message=%s", e, type, ex.getMessage()));
+                log.error(String.format("ERROR: cannot convert list value=%s to type=%s, message=%s", e, type, ex.getMessage()));
                 if (strict) {
                     throw ex;
                 }
@@ -332,7 +295,6 @@ public final class CConverterUtils {
      * @param generator
      * @param objects
      * @return
-     *
      * @see String[] stringArr = {"1","2","3"}; Double[] doubleArr =
      * toArray(Double::parseDouble, Double[]::new, stringArr);
      */

@@ -27,42 +27,25 @@ import com.wildbeeslabs.jentle.collections.graph.CGraph;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;
 import com.wildbeeslabs.jentle.collections.list.node.ACListGraphNode;
 import com.wildbeeslabs.jentle.collections.list.node.CListGraphNode;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.Stack;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.*;
 
 /**
- *
  * Custom graph utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CGraphUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CGraphUtils.class);
-
-    private CGraphUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CGraphUtils {
 
     public static <T> CGraph.CGraphNode<T>[] findTasksOrder(final T[] tasks, final T[][] dependencies) {
         final CGraph<T> graph = buildGraph(tasks, dependencies);

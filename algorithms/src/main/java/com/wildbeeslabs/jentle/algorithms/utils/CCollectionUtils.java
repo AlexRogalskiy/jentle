@@ -25,41 +25,16 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.codepoetics.protonpack.Indexed;
 import com.codepoetics.protonpack.StreamUtils;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.wildbeeslabs.jentle.algorithms.list.CList;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.IntSummaryStatistics;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.BiPredicate;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.ToIntFunction;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
 /**
  * Custom collection utilities implementation
@@ -67,19 +42,10 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
-public final class CCollectionUtils {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CCollectionUtils.class);
-
-    private CCollectionUtils() {
-        LOGGER.debug("Initializing collection utilities...");
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CCollectionUtils {
 
     public static <T> Map<Integer, IntSummaryStatistics> getMapStatisticsBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends Integer> groupingBy, final ToIntFunction<? super T> mapper) {
         return stream.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.summarizingInt(mapper)));
@@ -148,7 +114,7 @@ public final class CCollectionUtils {
     }
 
     public static <T, U> Stream<U> getStreamBy(@NonNull final Stream<? extends T> stream, final Function<? super T, ? extends U> mapper, final Predicate<? super U> predicate) {
-        return stream.map(mapper).filter(predicate);
+        return (Stream<U>) stream.map(mapper).filter(predicate);
     }
 
     public static <T> Stream<? extends T> getStreamSortedBy(@NonNull final Stream<? extends T> stream, final Comparator<? super T> cmp) {
@@ -160,9 +126,9 @@ public final class CCollectionUtils {
                 .stream()
                 .sorted(Comparator.comparing(entry -> entry.getValue(), comparator))
                 .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     public static <K, V> Map<K, V> sortByKey(final Map<K, V> map, Comparator<? super K> comparator) {
@@ -170,9 +136,9 @@ public final class CCollectionUtils {
                 .stream()
                 .sorted(Comparator.comparing(entry -> entry.getKey(), comparator))
                 .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     public static <T, K> Map<K, Integer> getMapSumBy(@NonNull final Stream<? extends T> stream, final Function<T, K> keys, final Function<T, Integer> values) {
@@ -382,6 +348,16 @@ public final class CCollectionUtils {
 
         default <V> TriFunction<A, B, C, V> andThen(@NonNull Function<? super R, ? extends V> after) {
             return (A a, B b, C c) -> after.apply(apply(a, b, c));
+        }
+    }
+
+    public static <E> Collection<E> difference(final Collection<E> first, final Collection<E> second) {
+        if (first instanceof List) {
+            return Lists.difference((List) first, (List) second);
+        } else if (first instanceof Set) {
+            return Sets.difference((Set) first, (Set) second);
+        } else {
+            throw new IllegalArgumentException("At this moment Javers don't support " + first.getClass().getSimpleName());
         }
     }
 

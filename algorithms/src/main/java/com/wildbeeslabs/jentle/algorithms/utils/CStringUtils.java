@@ -27,12 +27,12 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import pl.allegro.finance.tradukisto.MoneyConverters;
 
 import java.io.IOException;
@@ -57,12 +57,9 @@ import java.util.stream.Stream;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CStringUtils {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CStringUtils.class);
+@Slf4j
+@UtilityClass
+public class CStringUtils {
 
     /**
      * Default replace prefix
@@ -76,10 +73,6 @@ public final class CStringUtils {
      * Default regular expression (only alpha-numeric characters)
      */
     public static final String DEFAULT_ALPHANUMERIC_PATTERN = "[^a-zA-Z0-9]";
-
-    private CStringUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     /**
      * Check whether string consists of unique set of characters

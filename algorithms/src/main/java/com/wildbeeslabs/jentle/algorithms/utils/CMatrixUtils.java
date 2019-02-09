@@ -25,47 +25,27 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.tree.CTrie3;
+import lombok.*;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 /**
- *
  * Custom matrix utilities implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-09-01
- * @param <T>
- *
  */
-public final class CMatrixUtils<T> {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CMatrixUtils.class);
-
-    private CMatrixUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CMatrixUtils<T> {
 
     public static <T> boolean matricesAreEqual(final T[][] m1, final T[][] m2, final Comparator<? super T> cmp) {
         Objects.requireNonNull(m1);
