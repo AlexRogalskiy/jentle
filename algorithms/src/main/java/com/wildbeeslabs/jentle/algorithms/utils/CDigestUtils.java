@@ -98,4 +98,36 @@ public final class CDigestUtils {
         }
         return null;
     }
+
+    public static int shortDigest(final String text) {
+        byte[] hashBytes = digest(text);
+
+        int result = 0;
+        for (int i = 0; i < hashBytes.length; i++) {
+            result += Math.abs(hashBytes[i]) * (i + 1);
+        }
+        return result;
+    }
+
+    public static String longDigest(final String text) {
+        byte[] hashBytes = digest(text);
+
+        final StringBuffer hexString = new StringBuffer();
+        for (int i = 0; i < hashBytes.length; i += 2) {
+            String hex = Integer.toHexString(0xff & hashBytes[i]);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+
+    private static byte[] digest(final String text) {
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.update(text.getBytes(StandardCharsets.UTF_8));
+            return digest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

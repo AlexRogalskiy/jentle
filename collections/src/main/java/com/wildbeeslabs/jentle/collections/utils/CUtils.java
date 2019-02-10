@@ -27,38 +27,37 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
-import java.io.Serializable;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Objects;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import static org.apache.commons.lang3.ArrayUtils.toArray;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Collection utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+
+/**
+ * Custom exception utilities implementation
+ *
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
+ */
+@Slf4j
+@UtilityClass
 public final class CUtils {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CUtils.class);
-
-    private CUtils() {
-        // PRIVATE CONSTRUCTOR
-    }
 
     /**
      * Default sort comparator
@@ -66,7 +65,7 @@ public final class CUtils {
     public static final CUtils.CSortComparator DEFAULT_SORT_COMPARATOR = CUtils.getDefaultSortComparator();
 
     public static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
-        
+
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -136,7 +135,7 @@ public final class CUtils {
         try {
             return (T) clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
-            LOGGER.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+            log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
         }
         return null;
     }

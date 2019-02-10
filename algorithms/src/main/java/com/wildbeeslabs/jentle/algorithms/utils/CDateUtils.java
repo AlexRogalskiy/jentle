@@ -398,4 +398,8 @@ public class CDateUtils {
     public static OffsetDateTime offsetDateTimeNow() {
         return OffsetDateTime.now(UTC);
     }
+
+    public static ZonedDateTime now3() {
+        return ZonedDateTime.now();
+    }
 }

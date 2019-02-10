@@ -211,4 +211,49 @@ public class CListUtils {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
+
+    public static <T> List<T> immutableListOf(final T... elements) {
+        return Arrays.stream(Optional.ofNullable(elements).orElseGet(() -> (T[]) new Objects[]{})).collect(Collectors.toList());
+    }
+
+    public static <T> List<T> immutableListOf(final Collection<T> elements) {
+        return Optional.ofNullable(elements).orElseGet(Collections::emptyList).stream().collect(Collectors.toList());
+    }
+
+    /**
+     * returns new list with elements from input that satisfies given filter condition
+     */
+    public static <T> List<T> positiveFilter(final List<T> input, final Predicate<T> filter) {
+        Objects.requireNonNull(input);
+        Objects.requireNonNull(filter);
+        return input.stream().filter(filter).collect(Collectors.toList());
+    }
+
+    /**
+     * returns new list with elements from input that don't satisfies given filter condition
+     */
+    public static <T> List<T> negativeFilter(final List<T> input, final Predicate<T> filter) {
+        Objects.requireNonNull(input);
+        Objects.requireNonNull(filter);
+        return input.stream().filter(element -> !filter.test(element)).collect(Collectors.toList());
+    }
+
+    public static <t> Collector<t, List<t>, List<t>> toImmutableList() {
+        return Collector.of(ArrayList::new, List::add, (left, right) -> {
+            left.addAll(right);
+            return left;
+        }, Collections::unmodifiableList);
+    }
+
+    public static <E> List<E> difference(final List<E> first, final List<E> second) {
+        if (Objects.isNull(first)) {
+            return Collections.EMPTY_LIST;
+        }
+        if (Objects.isNull(second)) {
+            return first;
+        }
+        final List<E> difference = new ArrayList<>(first);
+        difference.removeAll(second);
+        return difference;
+    }
 }

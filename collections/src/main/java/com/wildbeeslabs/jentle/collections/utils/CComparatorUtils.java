@@ -23,23 +23,23 @@
  */
 package com.wildbeeslabs.jentle.collections.utils;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
- *
  * Custom comparators for order with null-safe implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
-public final class CComparatorUtils<T> {
-
-    private CComparatorUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@Slf4j
+@UtilityClass
+public class CComparatorUtils<T> {
 
     /**
      * Compare null-safe integer arguments for order

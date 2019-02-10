@@ -25,8 +25,6 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.codepoetics.protonpack.Indexed;
 import com.codepoetics.protonpack.StreamUtils;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.wildbeeslabs.jentle.algorithms.list.CList;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -353,9 +351,9 @@ public class CCollectionUtils {
 
     public static <E> Collection<E> difference(final Collection<E> first, final Collection<E> second) {
         if (first instanceof List) {
-            return Lists.difference((List) first, (List) second);
+            return CListUtils.difference((List) first, (List) second);
         } else if (first instanceof Set) {
-            return Sets.difference((Set) first, (Set) second);
+            return CSetUtils.difference((Set) first, (Set) second);
         } else {
             throw new IllegalArgumentException("At this moment Javers don't support " + first.getClass().getSimpleName());
         }

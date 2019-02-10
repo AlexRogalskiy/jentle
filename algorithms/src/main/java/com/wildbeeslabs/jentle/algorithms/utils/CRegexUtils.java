@@ -57,6 +57,17 @@ public class CRegexUtils {
 
     private static final Pattern DEFAUL_IPV6_HEX_COMPRESSED_PATTERN = Pattern.compile("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
 
+    private static final String TO_ESCAPE = "\\.[]{}()*+-?^$|";
+
+    public static String escape(final String literal) {
+        String escaped = literal;
+        for (int i = 0; i < TO_ESCAPE.length(); i++) {
+            char c = TO_ESCAPE.charAt(i);
+            escaped = escaped.replace(c + "", "\\" + c);
+        }
+        return escaped;
+    }
+
     public static int execute(final String regex, final String text) {
         return CRegexUtils.execute(regex, text, 0);
     }
