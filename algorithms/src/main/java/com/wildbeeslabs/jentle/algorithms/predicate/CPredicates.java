@@ -23,27 +23,23 @@
  */
 package com.wildbeeslabs.jentle.algorithms.predicate;
 
-import java.util.Random;
-import java.util.function.Predicate;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Random;
+import java.util.function.Predicate;
+
 /**
- *
  * Custom predicates implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CPredicates {
+@UtilityClass
+public class CPredicates {
 
-    private CPredicates() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
-
-    public final static Predicate<Object> randBoolean = predicate -> {
-        return new Random().nextBoolean();
-    };
+    public final static Predicate<Object> randBoolean = predicate -> new Random().nextBoolean();
 
     public static final Predicate<String> notEmpty = (String it) -> StringUtils.isNotEmpty(it);
     public static final Predicate<String> notBlank = (String it) -> StringUtils.isNotBlank(it);
