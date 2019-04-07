@@ -25,36 +25,28 @@ package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom tour implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public class CTour<T extends CPlace> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     /**
      * Default travel list
@@ -113,10 +105,10 @@ public class CTour<T extends CPlace> {
     }
 
     public double getBestDistance(int iterations, double temperature, double coolRate) {
-        LOGGER.debug("Initial state: iterations=" + iterations + ", temperature=" + temperature + ", coolRate=" + coolRate);
+        log.debug("Initial state: iterations=" + iterations + ", temperature=" + temperature + ", coolRate=" + coolRate);
         double t = temperature;
         double bestDistance = this.getDistance();
-        LOGGER.debug("Initial travel distance=" + bestDistance);
+        log.debug("Initial travel distance=" + bestDistance);
 
         final CTour<T> currentSolution = this;
         for (int i = 0; i < iterations; i++) {

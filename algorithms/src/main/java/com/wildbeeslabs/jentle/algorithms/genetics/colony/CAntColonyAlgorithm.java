@@ -23,31 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics.colony;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.OptionalInt;
-import java.util.Random;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.*;
 import java.util.stream.IntStream;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom ant colony algorithm implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CAntColonyAlgorithm {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CAntColonyAlgorithm.class);
 
     private final double c = 1.0;
     private final double alpha = 1;
@@ -80,7 +69,7 @@ public final class CAntColonyAlgorithm {
         this.trails = new double[this.numberOfCities][this.numberOfCities];
         this.probabilities = new double[this.numberOfCities];
         IntStream.range(0, this.numberOfAnts)
-                .forEach(i -> this.ants.add(new CAnt(this.numberOfCities)));
+            .forEach(i -> this.ants.add(new CAnt(this.numberOfCities)));
     }
 
     /**
@@ -92,8 +81,8 @@ public final class CAntColonyAlgorithm {
     public double[][] generateRandomMatrix(int n) {
         double[][] randomMatrix = new double[n][n];
         IntStream.range(0, n)
-                .forEach(i -> IntStream.range(0, n)
-                        .forEach(j -> randomMatrix[i][j] = Math.abs(random.nextInt(100) + 1)));
+            .forEach(i -> IntStream.range(0, n)
+                .forEach(j -> randomMatrix[i][j] = Math.abs(random.nextInt(100) + 1)));
         return randomMatrix;
     }
 
@@ -102,10 +91,10 @@ public final class CAntColonyAlgorithm {
      */
     public void startAntOptimization() {
         IntStream.rangeClosed(1, 3)
-                .forEach(i -> {
-                    LOGGER.debug("Attempt #" + i);
-                    solve();
-                });
+            .forEach(i -> {
+                log.debug("Attempt #" + i);
+                solve();
+            });
     }
 
     /**
@@ -117,13 +106,13 @@ public final class CAntColonyAlgorithm {
         this.setupAnts();
         this.clearTrails();
         IntStream.range(0, this.maxIterations)
-                .forEach(i -> {
-                    moveAnts();
-                    updateTrails();
-                    updateBest();
-                });
-        LOGGER.debug("Best tour length: " + (this.bestTourLength - this.numberOfCities));
-        LOGGER.debug("Best tour order: " + Arrays.toString(this.bestTourOrder));
+            .forEach(i -> {
+                moveAnts();
+                updateTrails();
+                updateBest();
+            });
+        log.debug("Best tour length: " + (this.bestTourLength - this.numberOfCities));
+        log.debug("Best tour order: " + Arrays.toString(this.bestTourOrder));
         return this.bestTourOrder.clone();
     }
 
@@ -132,12 +121,12 @@ public final class CAntColonyAlgorithm {
      */
     private void setupAnts() {
         IntStream.range(0, this.numberOfAnts)
-                .forEach(i -> {
-                    this.ants.forEach(ant -> {
-                        ant.clear();
-                        ant.visitCity(-1, random.nextInt(this.numberOfCities));
-                    });
+            .forEach(i -> {
+                this.ants.forEach(ant -> {
+                    ant.clear();
+                    ant.visitCity(-1, random.nextInt(this.numberOfCities));
                 });
+            });
         this.currentIndex = 0;
     }
 
@@ -146,10 +135,10 @@ public final class CAntColonyAlgorithm {
      */
     private void moveAnts() {
         IntStream.range(this.currentIndex, this.numberOfCities - 1)
-                .forEach(i -> {
-                    this.ants.forEach(ant -> ant.visitCity(this.currentIndex, selectNextCity(ant)));
-                    this.currentIndex++;
-                });
+            .forEach(i -> {
+                this.ants.forEach(ant -> ant.visitCity(this.currentIndex, selectNextCity(ant)));
+                this.currentIndex++;
+            });
     }
 
     /**
@@ -159,8 +148,8 @@ public final class CAntColonyAlgorithm {
         int t = this.random.nextInt(this.numberOfCities - this.currentIndex);
         if (this.random.nextDouble() < this.randomFactor) {
             OptionalInt cityIndex = IntStream.range(0, this.numberOfCities)
-                    .filter(i -> i == t && !ant.visited(i))
-                    .findFirst();
+                .filter(i -> i == t && !ant.visited(i))
+                .findFirst();
             if (cityIndex.isPresent()) {
                 return cityIndex.getAsInt();
             }
@@ -225,7 +214,7 @@ public final class CAntColonyAlgorithm {
         if (Objects.isNull(this.bestTourOrder)) {
             this.bestTourOrder = ants.get(0).trail;
             this.bestTourLength = ants.get(0)
-                    .trailLength(this.graph);
+                .trailLength(this.graph);
         }
         ants.stream().filter((a) -> (a.trailLength(this.graph) < this.bestTourLength)).map((a) -> {
             this.bestTourLength = a.trailLength(this.graph);
@@ -240,9 +229,9 @@ public final class CAntColonyAlgorithm {
      */
     private void clearTrails() {
         IntStream.range(0, this.numberOfCities)
-                .forEach(i -> {
-                    IntStream.range(0, this.numberOfCities)
+            .forEach(i -> {
+                IntStream.range(0, this.numberOfCities)
                     .forEach(j -> this.trails[i][j] = c);
-                });
+            });
     }
 }

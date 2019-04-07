@@ -23,15 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.nlp;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import lombok.extern.slf4j.Slf4j;
 import opennlp.tools.namefind.NameFinderME;
 import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.sentdetect.SentenceDetector;
@@ -41,18 +33,16 @@ import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.Span;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
+@Slf4j
 public class CTextAnalyzer implements Runnable {
 
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CTextAnalyzer.class);
-
-    static TokenizerModel tm = null;
-    static TokenNameFinderModel locModel = null;
+    public static TokenizerModel tm = null;
+    public static TokenNameFinderModel locModel = null;
     String doc;
     NameFinderME myNameFinder;
     TokenizerME wordBreaker;
@@ -88,27 +78,27 @@ public class CTextAnalyzer implements Runnable {
                     locModel = new TokenNameFinderModel(new FileInputStream(new File(modelPath + "en-ner-location.bin")));
                     // new NameFinderME(locModel); 
                 } catch (IOException ex) {
-                    LOGGER.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
+                    log.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
                 }
             }
 
-            LOGGER.debug("getting data");
+            log.debug("getting data");
             List<String> docs = getMyDocsFromSomewhere();
-            LOGGER.debug("done getting data");
+            log.debug("done getting data");
             // FileWriter fw = new FileWriter("C:\\apache\\modelbuilder\\sentences.txt"); 
 
             try {
                 for (final String docu : docs) {
                     //you could also use the runnable here and launch in a diff thread
                     new CTextAnalyzer(docu,
-                            new SentenceDetectorME(new SentenceModel(new FileInputStream(new File(modelPath + "en-sent.zip")))),
-                            new NameFinderME(locModel), new TokenizerME(tm)).run();
+                        new SentenceDetectorME(new SentenceModel(new FileInputStream(new File(modelPath + "en-sent.zip")))),
+                        new NameFinderME(locModel), new TokenizerME(tm)).run();
                 }
             } catch (IOException ex) {
-                LOGGER.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
+                log.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
             }
         } catch (FileNotFoundException ex) {
-            LOGGER.error(String.format("ERROR: cannot read from input stream, message={%s}", ex.getMessage()));
+            log.error(String.format("ERROR: cannot read from input stream, message={%s}", ex.getMessage()));
         }
     }
 

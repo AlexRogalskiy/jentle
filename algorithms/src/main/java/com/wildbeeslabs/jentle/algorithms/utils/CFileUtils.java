@@ -339,7 +339,7 @@ public class CFileUtils {
     }
 
     public static File loadFile(final String path) {
-        return new File(CTestUtils.class.getClassLoader().getResource(path).getFile());
+        return new File(CFileUtils.class.getClassLoader().getResource(path).getFile());
     }
 
     public static byte[] loadFileIntoByte(final String path) throws IOException {

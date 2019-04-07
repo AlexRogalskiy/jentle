@@ -24,47 +24,24 @@
 package com.wildbeeslabs.jentle.algorithms.misc;
 
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
- *
  * Custom miscellaneous algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CMisc {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CMisc.class);
 
     private CMisc() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -563,7 +540,8 @@ public final class CMisc {
         List<HtWt> bestSequence = null;
         for (int i = 0; i < list.size(); i++) {
             final List<HtWt> longestAtIndex = bestSequenceAtIndex(list, result, i);
-            result.add(i, longestAtIndex);;
+            result.add(i, longestAtIndex);
+            ;
             bestSequence = max(bestSequence, longestAtIndex);
         }
         return bestSequence;
@@ -704,8 +682,7 @@ public final class CMisc {
     }
 
     private static Map<DocPair, Double> computeIntersections(final CHashMapList<Integer, Integer> wordToDocs) {
-        @SuppressWarnings("UnusedAssignment")
-        final Map<DocPair, Double> similarities = new HashMap<>();
+        @SuppressWarnings("UnusedAssignment") final Map<DocPair, Double> similarities = new HashMap<>();
         final Set<Integer> words = wordToDocs.keySet();
         words.stream().map((word) -> wordToDocs.get(word)).map((docs) -> {
             Collections.sort(docs);
@@ -837,9 +814,9 @@ public final class CMisc {
                 final List<Stack<String>> stackList = state.getState();
                 stackList.forEach(stack -> {
                     while (!stack.isEmpty()) {
-                        LOGGER.debug(stack.pop());
+                        log.debug(stack.pop());
                     }
-                    LOGGER.debug(" ");
+                    log.debug(" ");
                 });
             }
 
@@ -863,8 +840,8 @@ public final class CMisc {
                 State currentState = initState;
                 boolean noStateFound = false;
                 while (!currentState.getState()
-                        .get(0)
-                        .equals(goalStateStack) || noStateFound) {
+                    .get(0)
+                    .equals(goalStateStack) || noStateFound) {
                     noStateFound = true;
                     State nextState = findNextState(currentState, goalStateStack);
                     if (nextState != null) {
@@ -880,12 +857,12 @@ public final class CMisc {
                 List<Stack<String>> listOfStacks = currentState.getState();
                 int currentStateHeuristics = currentState.getHeuristics();
                 return listOfStacks.stream()
-                        .map(stack -> {
-                            return applyOperationsOnState(listOfStacks, stack, currentStateHeuristics, goalStateStack);
-                        })
-                        .filter(Objects::nonNull)
-                        .findFirst()
-                        .orElse(null);
+                    .map(stack -> {
+                        return applyOperationsOnState(listOfStacks, stack, currentStateHeuristics, goalStateStack);
+                    })
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
             }
 
             public State applyOperationsOnState(final List<Stack<String>> listOfStacks, final Stack<String> stack, int currentStateHeuristics, final Stack<String> goalStateStack) {
@@ -921,12 +898,12 @@ public final class CMisc {
 
             private State pushElementToExistingStacks(final Stack currentStack, final List<Stack<String>> currentStackList, String block, int currentStateHeuristics, Stack<String> goalStateStack) {
                 Optional<State> newState = currentStackList.stream()
-                        .filter(stack -> stack != currentStack)
-                        .map(stack -> {
-                            return pushElementToStack(stack, block, currentStackList, currentStateHeuristics, goalStateStack);
-                        })
-                        .filter(Objects::nonNull)
-                        .findFirst();
+                    .filter(stack -> stack != currentStack)
+                    .map(stack -> {
+                        return pushElementToStack(stack, block, currentStackList, currentStateHeuristics, goalStateStack);
+                    })
+                    .filter(Objects::nonNull)
+                    .findFirst();
 
                 return newState.orElse(null);
             }
@@ -948,10 +925,10 @@ public final class CMisc {
             public int getHeuristicsValue(final List<Stack<String>> currentState, final Stack<String> goalStateStack) {
                 Integer heuristicValue;
                 heuristicValue = currentState.stream()
-                        .mapToInt(stack -> {
-                            return getHeuristicsValueForStack(stack, currentState, goalStateStack);
-                        })
-                        .sum();
+                    .mapToInt(stack -> {
+                        return getHeuristicsValueForStack(stack, currentState, goalStateStack);
+                    })
+                    .sum();
                 return heuristicValue;
             }
 
@@ -982,7 +959,7 @@ public final class CMisc {
                 final List<State> solutionSequence = сlimbing.getRouteWithHillClimbing(startState, endState);
                 solutionSequence.forEach(CClimbing::printEachStep);
             } catch (Exception ex) {
-                LOGGER.debug("ERROR: cannot process climbing routes: message=" + ex.getMessage());
+                log.debug("ERROR: cannot process climbing routes: message=" + ex.getMessage());
             }
         }
     }

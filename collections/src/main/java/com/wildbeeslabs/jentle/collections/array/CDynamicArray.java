@@ -25,26 +25,26 @@ package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
- *
  * Custom dynamic array implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 public class CDynamicArray<T extends Serializable> extends ACArray<T> {
 
     /**
@@ -152,7 +152,7 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         this.size += delta;
         if (this.size > this.capacity) {
             this.capacity = (int) Math.floor(this.size * DEFAULT_ENLARGE_CAPACITY_FACTOR);
-            LOGGER.info(String.format("CDynamicArray (enlarged capacity=%d)", this.capacity));
+            log.info(String.format("CDynamicArray (enlarged capacity=%d)", this.capacity));
             this.changeCapacity();
         }
     }
@@ -161,7 +161,7 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         this.size = (delta > this.size ? 0 : this.size - delta);
         if ((int) Math.floor(this.size * DEFAULT_SHRINK_CAPACITY_FACTOR) < this.capacity) {
             this.capacity = (int) Math.floor(this.size * DEFAULT_SHRINK_CAPACITY_FACTOR);
-            LOGGER.info(String.format("CDynamicArray (shrinked capacity=%d)", this.capacity));
+            log.info(String.format("CDynamicArray (shrinked capacity=%d)", this.capacity));
             this.changeCapacity();
         }
     }
@@ -235,9 +235,9 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .appendSuper(super.toString())
-                .append("capacity", this.capacity)
-                .toString();
+            .appendSuper(super.toString())
+            .append("capacity", this.capacity)
+            .toString();
     }
 
     @Override
@@ -247,16 +247,16 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         }
         final CDynamicArray<T> other = (CDynamicArray<T>) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
-                .append(this.capacity, other.capacity)
-                .isEquals();
+            .appendSuper(super.equals(obj))
+            .append(this.capacity, other.capacity)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(19, 51)
-                .appendSuper(super.hashCode())
-                .append(this.capacity)
-                .toHashCode();
+            .appendSuper(super.hashCode())
+            .append(this.capacity)
+            .toHashCode();
     }
 }

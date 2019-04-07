@@ -1,88 +1,75 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wildbeeslabs.jentle</groupId>
     <artifactId>jentle-algorithms</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    
+
     <name>jentle-algorithms</name>
     <url>http://maven.apache.org/</url>
     <description>Java algorithms framework</description>
     <inceptionYear>2017</inceptionYear>
-    
+
     <parent>
         <groupId>com.wildbeeslabs</groupId>
         <artifactId>jentle</artifactId>
         <version>1.0.0</version>
     </parent>
-    
+
     <properties>
+        <main.basedir>${project.basedir}/</main.basedir>
+        <main-class>com.wildbeeslabs.jentle.algorithms.AppLoader</main-class>
+
         <jentle.collections.version>1.0.0</jentle.collections.version>
-        <apache.commons.math.version>3.5</apache.commons.math.version>
+        <apache.commons.math.version>3.6.1</apache.commons.math.version>
         <apache.commons.io.version>1.3.2</apache.commons.io.version>
-        <apache.commons.validator.version>1.4.1</apache.commons.validator.version>
-        <apache.commons.codec.version>1.11</apache.commons.codec.version>
+        <apache.commons.validator.version>1.6</apache.commons.validator.version>
+        <apache.commons.codec.version>1.12</apache.commons.codec.version>
+        <apache.commons.text.version>1.6</apache.commons.text.version>
+
         <com.codepoetics.protonpack.version>1.15</com.codepoetics.protonpack.version>
-        <pl.allergro.finance.tradukisto.version>1.0.1</pl.allergro.finance.tradukisto.version>
-        <org.jgrapht.core.version>1.0.1</org.jgrapht.core.version>
+        <pl.allergro.finance.tradukisto.version>1.8.0</pl.allergro.finance.tradukisto.version>
+        <org.jgrapht.core.version>1.3.0</org.jgrapht.core.version>
         <org.squirrelframework.version>0.3.8</org.squirrelframework.version>
-        <com.google.guava.version>26.0-jre</com.google.guava.version>
+        <com.google.guava.version>27.0-jre</com.google.guava.version>
         <com.vdurmont.emoji.version>4.0.0</com.vdurmont.emoji.version>
         <org.jsoup.version>1.11.3</org.jsoup.version>
-        <com.opencsv.version>4.2</com.opencsv.version>
-        <org.apache.httpclient>4.5.6</org.apache.httpclient>
+        <com.opencsv.version>4.5</com.opencsv.version>
+        <org.apache.httpclient>4.5.7</org.apache.httpclient>
         <com.google.gson.version>2.8.5</com.google.gson.version>
         <joda.time.version>2.10.1</joda.time.version>
-        <opennlp.tools.version>1.9.0</opennlp.tools.version>
+        <opennlp.tools.version>1.9.1</opennlp.tools.version>
     </properties>
-    
+
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>${maven.jar.plugin.version}</version>
                     <configuration>
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
-                                <mainClass>com.wildbeeslabs.jentle.algorithms.AppLoader</mainClass>
+                                <mainClass>${main-class}</mainClass>
                                 <classpathPrefix>dependency-jars/</classpathPrefix>
                             </manifest>
                         </archive>
                     </configuration>
                 </plugin>
-		     
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.5.1</version>
-                    <executions>
-                        <execution>
-                            <id>copy-dependencies</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy-dependencies</goal>
-                            </goals>
-                            <configuration>
-                                <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
-                                <overWriteReleases>false</overWriteReleases>
-                                <overWriteSnapshots>false</overWriteSnapshots>
-                                <overWriteIfNewer>true</overWriteIfNewer>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-  			 
-                <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven.assembly.plugin.version}</version>
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>com.wildbeeslabs.jentle.algorithms.AppLoader</mainClass>
+                                <mainClass>${main-class}</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>
@@ -99,10 +86,11 @@
                         </execution>
                     </executions>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
+                    <version>${maven.shade.plugin.version}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -111,8 +99,9 @@
                             <configuration>
                                 <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <transformers>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                        <mainClass>com.wildbeeslabs.jentle.algorithms.AppLoader</mainClass>
+                                    <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <mainClass>${main-class}</mainClass>
                                     </transformer>
                                 </transformers>
                             </configuration>
@@ -122,111 +111,134 @@
             </plugins>
         </pluginManagement>
     </build>
-    
+
     <dependencies>
-        <!-- Jentle collections -->
+
+        <!-- Jentle collections library dependencies -->
         <dependency>
             <groupId>com.wildbeeslabs.jentle</groupId>
             <artifactId>jentle-collections</artifactId>
             <version>${jentle.collections.version}</version>
         </dependency>
-        <!-- Apache Commons Math -->
+
+        <!-- Apache Commons library dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>${apache.commons.math.version}</version>
         </dependency>
-        <!-- Apache Commons IO -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${apache.commons.io.version}</version>
         </dependency>
-        <!-- Apache Commons Validator -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${apache.commons.text.version}</version>
+        </dependency>
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>${apache.commons.validator.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!-- Apache Commons Codec -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>${apache.commons.codec.version}</version>
         </dependency>
-        <!-- Jenetics libs -->
+
+        <!-- Jenetics library dependencies -->
         <dependency>
             <groupId>io.jenetics</groupId>
             <artifactId>jenetics</artifactId>
             <version>4.0.0</version>
         </dependency>
-        <!-- Stream utils -->
+
+        <!-- Proton pack library dependencies -->
         <dependency>
             <groupId>com.codepoetics</groupId>
             <artifactId>protonpack</artifactId>
             <version>${com.codepoetics.protonpack.version}</version>
         </dependency>
-        <!-- Finance converters -->
+
+        <!-- Finance library dependencies -->
         <dependency>
             <groupId>pl.allegro.finance</groupId>
             <artifactId>tradukisto</artifactId>
             <version>${pl.allergro.finance.tradukisto.version}</version>
         </dependency>
-        <!-- Graph algorithms -->
+
+        <!-- JGrapht library dependencies -->
         <dependency>
             <groupId>org.jgrapht</groupId>
             <artifactId>jgrapht-core</artifactId>
             <version>${org.jgrapht.core.version}</version>
         </dependency>
-        <!-- Squirrel state machine -->
+
+        <!-- Squirrel library dependencies -->
         <dependency>
             <groupId>org.squirrelframework</groupId>
             <artifactId>squirrel-foundation</artifactId>
             <version>${org.squirrelframework.version}</version>
         </dependency>
-        <!-- Google Guava library  -->
+
+        <!-- Google Guava library dependencies  -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${com.google.guava.version}</version>
         </dependency>
-        <!-- Emojis library -->
+
+        <!-- Emojis library dependencies -->
         <dependency>
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>
             <version>${com.vdurmont.emoji.version}</version>
         </dependency>
-        <!-- JSoup library -->
+
+        <!-- JSoup library dependencies -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${org.jsoup.version}</version>
         </dependency>
-        <!-- CSV library -->
+
+        <!-- OpenCsv library dependencies -->
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>${com.opencsv.version}</version>
         </dependency>
-        <!-- Apache HTTP library -->
+
+        <!-- Apache HTTP library dependencies -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${org.apache.httpclient}</version>
         </dependency>
-        <!-- Google JSON library -->
+
+        <!-- Google JSON library dependencies -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${com.google.gson.version}</version>
         </dependency>
-        <!-- Joda time library -->
+
+        <!-- Joda time library dependencies -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${joda.time.version}</version>
         </dependency>
-        <!-- Apache Open NLP libraries -->
+
+        <!-- Apache Open NLP library dependencies -->
         <dependency>
             <groupId>org.apache.opennlp</groupId>
             <artifactId>opennlp-tools</artifactId>

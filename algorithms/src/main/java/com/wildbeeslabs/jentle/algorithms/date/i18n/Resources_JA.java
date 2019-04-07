@@ -29,29 +29,23 @@ import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormatProvider;
 import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import com.wildbeeslabs.jentle.algorithms.date.time.unit.DecadeTimeUnit;
 import com.wildbeeslabs.jentle.algorithms.date.time.unit.MillenniumTimeUnit;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import org.apache.commons.lang3.StringUtils;
-
 /**
- *
  * Default resources bundle [JA]
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -205,22 +199,22 @@ public class Resources_JA extends Resources implements ITimeFormatProvider {
             try {
                 setFuturePluralName(bundle.getString(this.getUnitName(unit) + "FuturePluralName"));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future plural name by key=%s", this.getUnitName(unit) + "FuturePluralName"), ex);
+                log.error(String.format("ERROR: cannot set future plural name by key=%s", this.getUnitName(unit) + "FuturePluralName"), ex);
             }
             try {
                 setFutureSingularName((bundle.getString(this.getUnitName(unit) + "FutureSingularName")));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future singular name by key=%s", this.getUnitName(unit) + "FutureSingularName"), ex);
+                log.error(String.format("ERROR: cannot set future singular name by key=%s", this.getUnitName(unit) + "FutureSingularName"), ex);
             }
             try {
                 setPastPluralName((bundle.getString(this.getUnitName(unit) + "PastPluralName")));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set past plural name by key=%s", this.getUnitName(unit) + "PastPluralName"), ex);
+                log.error(String.format("ERROR: cannot set past plural name by key=%s", this.getUnitName(unit) + "PastPluralName"), ex);
             }
             try {
                 setPastSingularName((bundle.getString(this.getUnitName(unit) + "PastSingularName")));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future plural name by key=%s", this.getUnitName(unit) + "PastSingularName"), ex);
+                log.error(String.format("ERROR: cannot set future plural name by key=%s", this.getUnitName(unit) + "PastSingularName"), ex);
             }
         }
 

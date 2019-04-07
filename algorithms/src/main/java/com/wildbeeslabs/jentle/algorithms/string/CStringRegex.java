@@ -24,14 +24,11 @@
 package com.wildbeeslabs.jentle.algorithms.string;
 
 import com.vdurmont.emoji.EmojiParser;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  * Custom converter utilities implementation
@@ -39,18 +36,13 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
+@Slf4j
 public final class CStringRegex {
 
     private static final String DEFAULT_EMOJI_PATTERN = "[^\\p{L}\\p{N}\\p{P}\\p{Z}]";
     private static final String DEFAULT_MULTI_STRING_PATTERN = "^(?=.*?\\p{Lu})(?=.*?\\p{Ll})(?=.*?\\d)(?=.*?[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?]).*$";
     private static final String DEFAULT_SPECIAL_CHARS_PATTERN = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CStringRegex.class);
 
     private CStringRegex() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -60,7 +52,7 @@ public final class CStringRegex {
      * Builds a regular expression to search for the terms
      *
      * @param terms a list of search terms.
-     * @param sb place to build the regular expression.
+     * @param sb    place to build the regular expression.
      * @throws IllegalArgumentException if the length of terms is zero.
      */
     private static void buildFindAnyPattern(final String[] terms, final StringBuffer sb) {
@@ -100,10 +92,10 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string contains any
      * of the given terms.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getContainsAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -122,10 +114,10 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string equals any
      * of the given terms.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getEqualsAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -144,10 +136,10 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string starts with
      * any of the given terms.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getStartsWithAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -166,10 +158,10 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string ends with
      * any of the given terms.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getEndsWithAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -188,12 +180,12 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string contains any
      * of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getContainsAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -212,12 +204,12 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string equals any
      * of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getEqualsAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -236,12 +228,12 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string starts with
      * any of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getStartsWithAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -260,12 +252,12 @@ public final class CStringRegex {
     /**
      * Compile a pattern that can will match a string if the string ends with
      * any of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * Usage:<br>
      * <code>boolean b = getEndsWithAnyPattern(terms).matcher(s).matches();</code>
-     *
+     * <p>
      * If multiple strings are matched against the same set of terms, it is more
      * efficient to reuse the pattern returned by this function.
      *
@@ -283,22 +275,21 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string contains any of the given terms.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getContainsAnyPattern(String[])
-     *
-     * @param s String that may contain any of the given terms.
+     * @param s     String that may contain any of the given terms.
      * @param terms list of substrings that may be contained in the given
-     * string.
+     *              string.
      * @return true iff one of the terms is a substring of the given string.
+     * @see #getContainsAnyPattern(String[])
      */
     public static boolean containsAny(final String s, final String[] terms) {
         return getContainsAnyPattern(terms).matcher(s).matches();
@@ -306,21 +297,20 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string equals any of the given terms.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getEqualsAnyPattern(String[])
-     *
-     * @param s String that may equal any of the given terms.
+     * @param s     String that may equal any of the given terms.
      * @param terms list of strings that may equal the given string.
      * @return true iff one of the terms is equal to the given string.
+     * @see #getEqualsAnyPattern(String[])
      */
     public static boolean equalsAny(final String s, final String[] terms) {
         return getEqualsAnyPattern(terms).matcher(s).matches();
@@ -328,21 +318,20 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string starts with any of the given terms.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getStartsWithAnyPattern(String[])
-     *
-     * @param s String that may start with any of the given terms.
+     * @param s     String that may start with any of the given terms.
      * @param terms list of strings that may start with the given string.
      * @return true iff the given string starts with one of the given terms.
+     * @see #getStartsWithAnyPattern(String[])
      */
     public static boolean startsWithAny(final String s, final String[] terms) {
         return getStartsWithAnyPattern(terms).matcher(s).matches();
@@ -350,21 +339,20 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string ends with any of the given terms.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getEndsWithAnyPattern(String[])
-     *
-     * @param s String that may end with any of the given terms.
+     * @param s     String that may end with any of the given terms.
      * @param terms list of strings that may end with the given string.
      * @return true iff the given string ends with one of the given terms.
+     * @see #getEndsWithAnyPattern(String[])
      */
     public static boolean endsWithAny(final String s, final String[] terms) {
         return getEndsWithAnyPattern(terms).matcher(s).matches();
@@ -372,24 +360,23 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string contains any of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getContainsAnyIgnoreCasePattern(String[])
-     *
-     * @param s String that may contain any of the given terms.
+     * @param s     String that may contain any of the given terms.
      * @param terms list of substrings that may be contained in the given
-     * string.
+     *              string.
      * @return true iff one of the terms is a substring of the given string.
+     * @see #getContainsAnyIgnoreCasePattern(String[])
      */
     public static boolean containsAnyIgnoreCase(String s, String[] terms) {
         return getContainsAnyIgnoreCasePattern(terms).matcher(s).matches();
@@ -397,23 +384,22 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string equals any of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getEqualsAnyIgnoreCasePattern(String[])
-     *
-     * @param s String that may equal any of the given terms.
+     * @param s     String that may equal any of the given terms.
      * @param terms list of strings that may equal the given string.
      * @return true iff one of the terms is equal to the given string.
+     * @see #getEqualsAnyIgnoreCasePattern(String[])
      */
     public static boolean equalsAnyIgnoreCase(final String s, final String[] terms) {
         return getEqualsAnyIgnoreCasePattern(terms).matcher(s).matches();
@@ -421,23 +407,22 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string starts with any of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getStartsWithAnyIgnoreCasePattern(String[])
-     *
-     * @param s String that may start with any of the given terms.
+     * @param s     String that may start with any of the given terms.
      * @param terms list of strings that may start with the given string.
      * @return true iff the given string starts with one of the given terms.
+     * @see #getStartsWithAnyIgnoreCasePattern(String[])
      */
     public static boolean startsWithAnyIgnoreCase(final String s, final String[] terms) {
         return getStartsWithAnyIgnoreCasePattern(terms).matcher(s).matches();
@@ -445,23 +430,22 @@ public final class CStringRegex {
 
     /**
      * Tests to see if the given string ends with any of the given terms.
-     *
+     * <p>
      * Case is ignored when matching using Unicode case rules.
-     *
+     * <p>
      * This implementation is more efficient than the brute force approach of
      * testing the string against each of the terms. It instead compiles a
      * single regular expression that can test all the terms at once, and uses
      * that expression against the string.
-     *
+     * <p>
      * This is a convenience method. If multiple strings are tested against the
      * same set of terms, it is more efficient not to compile the regular
      * expression multiple times.
      *
-     * @see #getEndsWithAnyIgnoreCasePattern(String[])
-     *
-     * @param s String that may end with any of the given terms.
+     * @param s     String that may end with any of the given terms.
      * @param terms list of strings that may end with the given string.
      * @return true iff the given string ends with one of the given terms.
+     * @see #getEndsWithAnyIgnoreCasePattern(String[])
      */
     public static boolean endsWithAnyIgnoreCase(final String s, final String[] terms) {
         return getEndsWithAnyIgnoreCasePattern(terms).matcher(s).matches();

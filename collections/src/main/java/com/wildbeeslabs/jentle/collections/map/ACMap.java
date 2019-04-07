@@ -24,39 +24,28 @@
 package com.wildbeeslabs.jentle.collections.map;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IMap;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.AbstractMap;
 import java.util.Set;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom abstract map implementation
  *
+ * @param <K>
+ * @param <V>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <K>
- * @param <V>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class ACMap<K, V> extends AbstractMap<K, V> implements IMap<K, V> {//IBaseMap<K, V>
-
-    /**
-     * Default Logger instance
-     */
-    @Getter(AccessLevel.NONE)
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Override
     public Set<Entry<K, V>> entrySet() {
@@ -67,12 +56,8 @@ public abstract class ACMap<K, V> extends AbstractMap<K, V> implements IMap<K, V
         try {
             return clazz.cast(obj);
         } catch (ClassCastException ex) {
-            this.getLogger().error(String.format("ERROR: cannot convert obj=(%s) to clazz=(%s)", String.valueOf(obj), String.valueOf(clazz)));
+            log.error(String.format("ERROR: cannot convert obj=(%s) to clazz=(%s)", String.valueOf(obj), String.valueOf(clazz)));
             return null;
         }
-    }
-
-    protected Logger getLogger() {
-        return this.LOGGER;
     }
 }

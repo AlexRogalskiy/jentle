@@ -23,12 +23,11 @@
  */
 package com.wildbeeslabs.jentle.algorithms.bitwise;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /*
  *
@@ -54,12 +53,8 @@ import org.apache.log4j.Logger;
  # a = a ^b
  * 
  */
+@Slf4j
 public final class CBitwise {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CBitwise.class);
 
     private CBitwise() {
         // PRIVATE EMPTY CONSTRUCTOR

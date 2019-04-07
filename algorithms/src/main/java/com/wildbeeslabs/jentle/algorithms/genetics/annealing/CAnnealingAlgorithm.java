@@ -23,33 +23,27 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics.annealing;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- *
  * Custom annealing algorithm implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CAnnealingAlgorithm {
 
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CAnnealingAlgorithm.class);
-
     public static double simulate(double startingTemperature, int numberOfIterations, double coolingRate, int numberOfCities) {
-        LOGGER.debug("Starting SA with temperature: " + startingTemperature + ", # of iterations: " + numberOfIterations + " and colling rate: " + coolingRate);
+        log.debug("Starting SA with temperature: " + startingTemperature + ", # of iterations: " + numberOfIterations + " and colling rate: " + coolingRate);
         double t = startingTemperature;
 
         final CTravel travel = new CTravel(numberOfCities);
         travel.generateInitialTravel();
 
         double bestDistance = travel.getDistance();
-        LOGGER.debug("Initial distance of travel: " + bestDistance);
+        log.debug("Initial distance of travel: " + bestDistance);
 
         CTravel bestSolution = travel;
         CTravel currentSolution = bestSolution;
@@ -67,7 +61,7 @@ public final class CAnnealingAlgorithm {
                 continue;
             }
             if (i % 100 == 0) {
-                LOGGER.debug("Iteration #" + i);
+                log.debug("Iteration #" + i);
             }
         }
         return bestDistance;

@@ -26,32 +26,24 @@ package com.wildbeeslabs.jentle.collections.stack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- *
  * Custom abstract stack implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public abstract class ACStack<T> implements IStack<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     public void duplicate() throws EmptyStackException, OverflowStackException {
         final T first = this.pop();

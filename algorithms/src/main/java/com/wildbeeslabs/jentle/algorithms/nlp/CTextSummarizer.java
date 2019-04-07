@@ -23,26 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.nlp;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom text summarizer algorithm implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public class CTextSummarizer {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CTextSummarizer.class);
 
     private Map<String, Integer> getWordCounts(final String text) {
         if (Objects.isNull(text)) {
@@ -95,20 +89,20 @@ public class CTextSummarizer {
         //return a List<string>
         final List<String> sortedCollection = new ArrayList<>(wordFrequencies.keySet());
         Collections.sort(sortedCollection);
-        Collections.reverse(sortedCollection);	//largest to smallest
+        Collections.reverse(sortedCollection);    //largest to smallest
         return sortedCollection;
     }
 
     private String[] getSentences(String text) {
         text = text.replace("Mr.", "Mr").replace("Ms.", "Ms").replace("Dr.", "Dr").replace("Jan.", "Jan").replace("Feb.", "Feb")
-                .replace("Mar.", "Mar").replace("Apr.", "Apr").replace("Jun.", "Jun").replace("Jul.", "Jul").replace("Aug.", "Aug")
-                .replace("Sep.", "Sep").replace("Spet.", "Sept").replace("Oct.", "Oct").replace("Nov.", "Nov").replace("Dec.", "Dec")
-                .replace("St.", "St").replace("Prof.", "Prof").replace("Mrs.", "Mrs").replace("Gen.", "Gen")
-                .replace("Corp.", "Corp").replace("Mrs.", "Mrs").replace("Sr.", "Sr").replace("Jr.", "Jr").replace("cm.", "cm")
-                .replace("Ltd.", "Ltd").replace("Col.", "Col").replace("vs.", "vs").replace("Capt.", "Capt")
-                .replace("Univ.", "University").replace("Sgt.", "Sgt").replace("ft.", "ft").replace("in.", "in")
-                .replace("Ave.", "Ave").replace("Univ.", "University").replace("Lt.", "Lt").replace("etc.", "etc").replace("mm.", "mm")
-                .replace("\n\n", "").replace("\n", "").replace("\r", "");
+            .replace("Mar.", "Mar").replace("Apr.", "Apr").replace("Jun.", "Jun").replace("Jul.", "Jul").replace("Aug.", "Aug")
+            .replace("Sep.", "Sep").replace("Spet.", "Sept").replace("Oct.", "Oct").replace("Nov.", "Nov").replace("Dec.", "Dec")
+            .replace("St.", "St").replace("Prof.", "Prof").replace("Mrs.", "Mrs").replace("Gen.", "Gen")
+            .replace("Corp.", "Corp").replace("Mrs.", "Mrs").replace("Sr.", "Sr").replace("Jr.", "Jr").replace("cm.", "cm")
+            .replace("Ltd.", "Ltd").replace("Col.", "Col").replace("vs.", "vs").replace("Capt.", "Capt")
+            .replace("Univ.", "University").replace("Sgt.", "Sgt").replace("ft.", "ft").replace("in.", "in")
+            .replace("Ave.", "Ave").replace("Univ.", "University").replace("Lt.", "Lt").replace("etc.", "etc").replace("mm.", "mm")
+            .replace("\n\n", "").replace("\n", "").replace("\r", "");
         //solved! now fix alphabet letters like A. B. etc...use a regex
         text = text.replaceAll("([A-Z])\\.", "$1");
 

@@ -1,74 +1,58 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wildbeeslabs.jentle</groupId>
     <artifactId>jentle-collections</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    
+
     <name>jentle-collections</name>
     <url>http://maven.apache.org/</url>
     <description>Java collection framework</description>
     <inceptionYear>2017</inceptionYear>
-    
+
     <parent>
         <groupId>com.wildbeeslabs</groupId>
         <artifactId>jentle</artifactId>
         <version>1.0.0</version>
     </parent>
-    
+
     <properties>
-        <!--<jentle.algorithms.version>1.0.0</jentle.algorithms.version>-->
+        <main.basedir>${project.basedir}/</main.basedir>
+        <main-class>com.wildbeeslabs.jentle.collections.AppLoader</main-class>
+
         <apache.commons.collections.version>4.1</apache.commons.collections.version>
         <edu.princeton.cs.version>0.1.0-SNAPSHOT</edu.princeton.cs.version>
     </properties>
-  
+
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>${maven.jar.plugin.version}</version>
                     <configuration>
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
-                                <mainClass>com.wildbeeslabs.jentle.collections.AppLoader</mainClass>
+                                <mainClass>${main-class}</mainClass>
                                 <classpathPrefix>dependency-jars/</classpathPrefix>
                             </manifest>
                         </archive>
                     </configuration>
                 </plugin>
-		     
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.5.1</version>
-                    <executions>
-                        <execution>
-                            <id>copy-dependencies</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy-dependencies</goal>
-                            </goals>
-                            <configuration>
-                                <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
-                                <overWriteReleases>false</overWriteReleases>
-                                <overWriteSnapshots>false</overWriteSnapshots>
-                                <overWriteIfNewer>true</overWriteIfNewer>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-  			 
-                <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven.assembly.plugin.version}</version>
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>com.wildbeeslabs.jentle.collections.AppLoader</mainClass>
+                                <mainClass>${main-class}</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>
@@ -85,10 +69,11 @@
                         </execution>
                     </executions>
                 </plugin>
-            
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
+                    <version>${maven.shade.plugin.version}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -97,8 +82,9 @@
                             <configuration>
                                 <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <transformers>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                        <mainClass>com.wildbeeslabs.jentle.collections.AppLoader</mainClass>
+                                    <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <mainClass>${main-class}</mainClass>
                                     </transformer>
                                 </transformers>
                             </configuration>
@@ -108,20 +94,15 @@
             </plugins>
         </pluginManagement>
     </build>
-  
+
     <dependencies>
-        <!-- Jentle algorithms -->
-        <!--        <dependency>
-            <groupId>com.wildbeeslabs.jentle</groupId>
-            <artifactId>jentle-algorithms</artifactId>
-            <version>${jentle.algorithms.version}</version>
-        </dependency>-->
-        <!-- Princeton Library -->
+        <!-- Princeton library dependencies -->
         <dependency>
             <groupId>edu.princeton.cs</groupId>
             <artifactId>edu.princeton.cs.introcs</artifactId>
             <version>${edu.princeton.cs.version}</version>
         </dependency>
+
         <!-- Apache Commons Collections -->
         <dependency>
             <groupId>org.apache.commons</groupId>

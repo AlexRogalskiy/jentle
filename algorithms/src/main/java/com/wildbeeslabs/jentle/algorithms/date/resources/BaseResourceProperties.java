@@ -24,39 +24,27 @@
 package com.wildbeeslabs.jentle.algorithms.date.resources;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CConverterUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
- *
  * Default base resource properties implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class BaseResourceProperties extends Properties {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     public <R extends BaseResource> Collection<R> getProperties() {
         return CConverterUtils.toList(this.defaults.values().stream(), item -> (R) item);
@@ -94,7 +82,7 @@ public class BaseResourceProperties extends Properties {
         try (final InputStream in = this.getClass().getClassLoader().getResourceAsStream(source)) {
             this.defaults.load(in);
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: cannot load data from source=(%s), message=(%s)", source, ex.getMessage()));
+            log.error(String.format("ERROR: cannot load data from source=(%s), message=(%s)", source, ex.getMessage()));
         }
     }
 

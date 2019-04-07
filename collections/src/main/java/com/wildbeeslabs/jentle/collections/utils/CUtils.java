@@ -34,6 +34,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Objects;
@@ -133,8 +134,12 @@ public final class CUtils {
 
     public static <T> T getInstance(final Class<? extends T> clazz) {
         try {
-            return (T) clazz.newInstance();
+            return (T) clazz.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
+            log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+        } catch (NoSuchMethodException ex) {
+            log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+        } catch (InvocationTargetException ex) {
             log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
         }
         return null;

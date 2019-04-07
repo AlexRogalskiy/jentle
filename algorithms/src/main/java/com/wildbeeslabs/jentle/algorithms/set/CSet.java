@@ -23,26 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.set;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.BitSet;
 import java.util.Objects;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom set algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CSet {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CSet.class);
 
     private CSet() {
         // PRIVATE EMPTY CONSTRUCTOR

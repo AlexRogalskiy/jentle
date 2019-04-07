@@ -23,19 +23,19 @@
  */
 package com.wildbeeslabs.jentle.algorithms.format;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Helper class to handle string format operations
@@ -43,14 +43,9 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
+@Slf4j
 public final class CStringFormatter {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CStringFormatter.class);
 
     /**
      * Default UTF8 byte masks
@@ -86,7 +81,7 @@ public final class CStringFormatter {
      *
      * @param str input string.
      * @return String Unzip raw string.
-     * @exception Exception On unzip operation.
+     * @throws Exception On unzip operation.
      * @see Exception
      */
     public static String ungzip(final String str) throws Exception {
@@ -101,7 +96,7 @@ public final class CStringFormatter {
      *
      * @param bytes input array of bytes.
      * @return String Unzip raw string.
-     * @exception Exception On unzip operation.
+     * @throws Exception On unzip operation.
      * @see Exception
      */
     public static String ungzip(final byte[] bytes) throws Exception {
@@ -109,7 +104,7 @@ public final class CStringFormatter {
             InputStreamReader isr = new InputStreamReader(new GZIPInputStream(new ByteArrayInputStream(bytes)), StandardCharsets.UTF_8);
             final StringWriter sw = new StringWriter();
             char[] chars = new char[1024];
-            for (int len; (len = isr.read(chars)) > 0;) {
+            for (int len; (len = isr.read(chars)) > 0; ) {
                 sw.write(chars, 0, len);
             }
             return sw.toString();
@@ -129,7 +124,7 @@ public final class CStringFormatter {
             return false;
         }
         return (bytes[0] == (byte) GZIPInputStream.GZIP_MAGIC)
-                && (bytes[1] == (byte) (GZIPInputStream.GZIP_MAGIC >>> 8));
+            && (bytes[1] == (byte) (GZIPInputStream.GZIP_MAGIC >>> 8));
     }
 
     /**
@@ -175,8 +170,8 @@ public final class CStringFormatter {
     /**
      * Converts string from input to output character encoding
      *
-     * @param value input string.
-     * @param inputCharset input character encoding,
+     * @param value         input string.
+     * @param inputCharset  input character encoding,
      * @param outputCharset output character encoding.
      * @return
      */
@@ -190,7 +185,7 @@ public final class CStringFormatter {
     /**
      * Returns an UTF-8 encoded String
      *
-     * @param bytes The byte array to be transformed to
+     * @param bytes  The byte array to be transformed to
      * @param length The length of the byte array to be converted
      * @return encode string.
      */
@@ -223,7 +218,7 @@ public final class CStringFormatter {
      * position.
      *
      * @param bytes The byte[] representation of an UniCode string.
-     * @param pos The current position to start decoding the char
+     * @param pos   The current position to start decoding the char
      * @return The decoded char, or -1 if no char can be decoded TODO : Should
      * stop after the third byte, as a char is only 2 bytes long.
      */
@@ -238,32 +233,32 @@ public final class CStringFormatter {
             if ((bytes[pos] & UTF8_TWO_BYTES_MASK) == UTF8_TWO_BYTES) {
                 // Two bytes char
                 return (char) (((bytes[pos] & 0x1C) << 6) + // 110x-xxyy
-                        // 10zz-zzzz
-                        // ->
-                        // 0000-0xxx
-                        // 0000-0000
-                        ((bytes[pos] & 0x03) << 6) + // 110x-xxyy 10zz-zzzz
-                        // -> 0000-0000
-                        // yy00-0000
-                        (bytes[pos + 1] & 0x3F) // 110x-xxyy 10zz-zzzz -> 0000-0000
-                        // 00zz-zzzz
-                        ); // -> 0000-0xxx yyzz-zzzz (07FF)
+                    // 10zz-zzzz
+                    // ->
+                    // 0000-0xxx
+                    // 0000-0000
+                    ((bytes[pos] & 0x03) << 6) + // 110x-xxyy 10zz-zzzz
+                    // -> 0000-0000
+                    // yy00-0000
+                    (bytes[pos + 1] & 0x3F) // 110x-xxyy 10zz-zzzz -> 0000-0000
+                    // 00zz-zzzz
+                ); // -> 0000-0xxx yyzz-zzzz (07FF)
             } else if ((bytes[pos] & UTF8_THREE_BYTES_MASK) == UTF8_THREE_BYTES) {
                 // Three bytes char
                 return (char) ( // 1110-tttt 10xx-xxyy 10zz-zzzz -> tttt-0000-0000-0000
-                        ((bytes[pos] & 0x0F) << 12)
+                    ((bytes[pos] & 0x0F) << 12)
                         + // 1110-tttt 10xx-xxyy 10zz-zzzz -> 0000-xxxx-0000-0000
                         ((bytes[pos + 1] & 0x3C) << 6)
                         + // 1110-tttt 10xx-xxyy 10zz-zzzz -> 0000-0000-yy00-0000
                         ((bytes[pos + 1] & 0x03) << 6)
                         + // 1110-tttt 10xx-xxyy 10zz-zzzz -> 0000-0000-00zz-zzzz
                         (bytes[pos + 2] & 0x3F) // -> tttt-xxxx yyzz-zzzz (FF FF)
-                        );
+                );
             } else if ((bytes[pos] & UTF8_FOUR_BYTES_MASK) == UTF8_FOUR_BYTES) {
                 // Four bytes char
                 return (char) ( // 1111-0ttt 10uu-vvvv 10xx-xxyy 10zz-zzzz -> 000t-tt00
-                        // 0000-0000 0000-0000
-                        ((bytes[pos] & 0x07) << 18)
+                    // 0000-0000 0000-0000
+                    ((bytes[pos] & 0x07) << 18)
                         + // 1111-0ttt 10uu-vvvv 10xx-xxyy 10zz-zzzz -> 0000-00uu
                         // 0000-0000 0000-0000
                         ((bytes[pos + 1] & 0x30) << 16)
@@ -279,12 +274,12 @@ public final class CStringFormatter {
                         + // 1111-0ttt 10uu-vvvv 10xx-xxyy 10zz-zzzz -> 0000-0000
                         // 0000-0000 00zz-zzzz
                         (bytes[pos + 3] & 0x3F) // -> 000t-ttuu vvvv-xxxx yyzz-zzzz (1FFFFF)
-                        );
+                );
             } else if ((bytes[pos] & UTF8_FIVE_BYTES_MASK) == UTF8_FIVE_BYTES) {
                 // Five bytes char
                 return (char) ( // 1111-10tt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz ->
-                        // 0000-00tt 0000-0000 0000-0000 0000-0000
-                        ((bytes[pos] & 0x03) << 24)
+                    // 0000-00tt 0000-0000 0000-0000 0000-0000
+                    ((bytes[pos] & 0x03) << 24)
                         + // 1111-10tt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz ->
                         // 0000-0000 uuuu-uu00 0000-0000 0000-0000
                         ((bytes[pos + 1] & 0x3F) << 18)
@@ -303,13 +298,13 @@ public final class CStringFormatter {
                         + // 1111-10tt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz ->
                         // 0000-0000 0000-0000 0000-0000 00zz-zzzz
                         (bytes[pos + 4] & 0x3F) // -> 0000-00tt uuuu-uuvv wwww-xxxx yyzz-zzzz (03 FF FF FF)
-                        );
+                );
             } else if ((bytes[pos] & UTF8_FIVE_BYTES_MASK) == UTF8_FIVE_BYTES) {
                 // Six bytes char
                 return (char) ( // 1111-110s 10tt-tttt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz
-                        // ->
-                        // 0s00-0000 0000-0000 0000-0000 0000-0000
-                        ((bytes[pos] & 0x01) << 30)
+                    // ->
+                    // 0s00-0000 0000-0000 0000-0000 0000-0000
+                    ((bytes[pos] & 0x01) << 30)
                         + // 1111-110s 10tt-tttt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz
                         // ->
                         // 00tt-tttt 0000-0000 0000-0000 0000-0000
@@ -338,7 +333,7 @@ public final class CStringFormatter {
                         // ->
                         // 0000-0000 0000-0000 0000-0000 00zz-zzzz
                         (bytes[pos + 5] & 0x3F) // -> 0stt-tttt uuuu-uuvv wwww-xxxx yyzz-zzzz (7F FF FF FF)
-                        );
+                );
             } else {
                 return (char) -1;
             }
@@ -350,7 +345,6 @@ public final class CStringFormatter {
      * position.
      *
      * @param c The character to be transformed to an array of bytes
-     *
      * @return The byte array representing the char
      */
     public static final byte[] charToBytes(char c) {

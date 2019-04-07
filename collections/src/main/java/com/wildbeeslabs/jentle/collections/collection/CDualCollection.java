@@ -23,38 +23,27 @@
  */
 package com.wildbeeslabs.jentle.collections.collection;
 
-import java.io.Serializable;
-import java.util.AbstractCollection;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Objects;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.io.Serializable;
+import java.util.*;
 
 /**
- *
  * Custom double collection implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class CDualCollection<T> extends AbstractCollection<T> implements Serializable {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected final Collection<T> first;
     protected final Collection<T> second;

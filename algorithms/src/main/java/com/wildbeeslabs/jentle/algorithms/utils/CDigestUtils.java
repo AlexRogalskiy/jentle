@@ -26,7 +26,6 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -50,6 +49,8 @@ public final class CDigestUtils {
     private static final String DEFAULT_MD5_HASH = "MD5";
     // Default sha-256 hash algorithm
     private static final String DEFAULT_SHA256_HASH = "SHA-256";
+    // Default hex array
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     public static byte[] md5(final String value) throws NoSuchAlgorithmException {
         Objects.requireNonNull(value);
@@ -70,7 +71,13 @@ public final class CDigestUtils {
     }
 
     public static String toHexString(byte[] digest) throws NoSuchAlgorithmException {
-        return DatatypeConverter.printHexBinary(digest);
+        char[] hexChars = new char[digest.length * 2];
+        for (int j = 0; j < digest.length; j++) {
+            int v = digest[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
     }
 
     /**

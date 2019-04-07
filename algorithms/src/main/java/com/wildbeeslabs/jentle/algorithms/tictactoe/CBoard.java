@@ -23,28 +23,21 @@
  */
 package com.wildbeeslabs.jentle.algorithms.tictactoe;
 
-import com.wildbeeslabs.jentle.algorithms.maze.CBFSMazeAlgorithm;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * Custom tic-tac-toe board implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public class CBoard {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CBoard.class);
 
     private int[][] boardValues;
     private int totalMoves;
@@ -181,7 +174,7 @@ public class CBoard {
             for (int j = 0; j < size; j++) {
                 System.out.print(this.boardValues[i][j] + " ");
             }
-            LOGGER.debug(StringUtils.LF);
+            log.debug(StringUtils.LF);
         }
     }
 
@@ -201,16 +194,16 @@ public class CBoard {
     public void printStatus() {
         switch (this.checkStatus()) {
             case P1:
-                LOGGER.debug("Player 1 wins");
+                log.debug("Player 1 wins");
                 break;
             case P2:
-                LOGGER.debug("Player 2 wins");
+                log.debug("Player 2 wins");
                 break;
             case DRAW:
-                LOGGER.debug("Game Draw");
+                log.debug("Game Draw");
                 break;
             case IN_PROGRESS:
-                LOGGER.debug("Game In Progress");
+                log.debug("Game In Progress");
                 break;
         }
     }

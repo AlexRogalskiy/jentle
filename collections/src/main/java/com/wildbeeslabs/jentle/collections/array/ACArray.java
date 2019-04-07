@@ -24,44 +24,29 @@
 package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IArray;
-
-import java.io.Serializable;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.IntFunction;
-
 import lombok.AccessLevel;
 import lombok.Setter;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.io.Serializable;
+import java.util.*;
+import java.util.function.IntFunction;
 
 /**
- *
  * Custom abstract array implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 public abstract class ACArray<T extends Serializable> extends AbstractList<T> implements IArray<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Setter(AccessLevel.NONE)
     protected T[] array;
@@ -133,10 +118,10 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .append("class", this.getClass().getName())
-                .append("data", Arrays.deepToString(this.array))
-                .append("size", this.size)
-                .toString();
+            .append("class", this.getClass().getName())
+            .append("data", Arrays.deepToString(this.array))
+            .append("size", this.size)
+            .toString();
     }
 
     @Override
@@ -146,16 +131,16 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
         }
         final ACArray<T> other = (ACArray<T>) obj;
         return new EqualsBuilder()
-                .append(this.size, other.size)
-                .append(Arrays.deepEquals(this.array, other.array), true)
-                .isEquals();
+            .append(this.size, other.size)
+            .append(Arrays.deepEquals(this.array, other.array), true)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(9, 71)
-                .append(this.size)
-                .append(Arrays.deepHashCode(this.array))
-                .toHashCode();
+            .append(this.size)
+            .append(Arrays.deepHashCode(this.array))
+            .toHashCode();
     }
 }

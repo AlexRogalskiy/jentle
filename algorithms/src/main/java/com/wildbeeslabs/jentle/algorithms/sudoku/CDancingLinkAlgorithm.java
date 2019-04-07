@@ -23,25 +23,19 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sudoku;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Arrays;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom back tracking algorithm implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CDancingLinkAlgorithm {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CDancingLinkAlgorithm.class);
 
     private static final int BOARD_SIZE = 9;
     private static final int SUBSECTION_SIZE = 3;

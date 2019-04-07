@@ -25,36 +25,28 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ITreeLike;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
 import java.util.Optional;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom abstract tree-like implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public abstract class ACTreeLike<T, U extends ACNode<T>> implements ITreeLike<T, U> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected U root;
     protected final Comparator<? super T> cmp;
@@ -80,10 +72,6 @@ public abstract class ACTreeLike<T, U extends ACNode<T>> implements ITreeLike<T,
 //            return null;
 //        }
         return this.root;
-    }
-
-    protected Logger getLogger() {
-        return this.LOGGER;
     }
 
     protected abstract U createTreeNode(final Optional<? extends T> value);

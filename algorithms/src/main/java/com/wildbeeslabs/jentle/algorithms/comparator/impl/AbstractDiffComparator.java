@@ -8,10 +8,9 @@ import com.wildbeeslabs.jentle.algorithms.utils.CReflectionUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,15 +18,11 @@ import java.util.stream.Collectors;
 /**
  * Abstract difference comparator implementation
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public abstract class AbstractDiffComparator<T, E extends DiffEntry<?>> implements DiffComparator<T> {
-
-    /**
-     * Default Logger instance
-     */
-    private final Logger LOGGER = LogManager.getLogger(getClass());
 
     /**
      * Default initial legacy difference comparator
@@ -229,14 +224,5 @@ public abstract class AbstractDiffComparator<T, E extends DiffEntry<?>> implemen
             return getFieldsList(clazz);
         }
         return CollectionUtils.subtract(getPropertiesToInclude(), getPropertiesToExclude());
-    }
-
-    /**
-     * Returns Logger instance {@link Logger}
-     *
-     * @return Logger instance
-     */
-    protected Logger getLogger() {
-        return LOGGER;
     }
 }

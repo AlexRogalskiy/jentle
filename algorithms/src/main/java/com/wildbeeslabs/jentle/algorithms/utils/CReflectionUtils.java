@@ -127,8 +127,8 @@ public class CReflectionUtils {
 
     public static List<Field> getValidFields(final Field[] fields, boolean returnFinalFields) {
         return Arrays.stream(fields)
-                .filter(field -> CReflectionUtils.isNotStaticOrFinal(field, returnFinalFields))
-                .collect(Collectors.toList());
+            .filter(field -> CReflectionUtils.isNotStaticOrFinal(field, returnFinalFields))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -273,7 +273,7 @@ public class CReflectionUtils {
      * @return true - if field is non-static/final/accessible, false - otherwise
      */
     public static boolean isNotStaticOrFinalOrAccessible(final Field field, boolean returnFinalFields, boolean returnAccessibleFields) {
-        return isNotStaticOrFinal(field, returnFinalFields) && (!returnAccessibleFields || field.isAccessible());
+        return isNotStaticOrFinal(field, returnFinalFields) && (!returnAccessibleFields || field.trySetAccessible());
     }
 
     public static void makeFinalStatic(final Field field, final Object newValue) throws Exception {

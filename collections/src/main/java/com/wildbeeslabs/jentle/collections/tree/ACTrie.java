@@ -25,39 +25,27 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ITrie;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Optional;
-import lombok.AccessLevel;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
- *
  * Custom abstract trie implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public abstract class ACTrie<T, U extends ACBaseTrieNode<T, U>> implements ITrie<T, U> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     @Setter(AccessLevel.NONE)
     protected U root;

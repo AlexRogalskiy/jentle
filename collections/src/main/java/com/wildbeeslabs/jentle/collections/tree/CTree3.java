@@ -23,39 +23,27 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.*;
 
 /**
- *
  * Custom tree3 implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public class CTree3<T> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
     /**
      * Default indent of formatted output
      */

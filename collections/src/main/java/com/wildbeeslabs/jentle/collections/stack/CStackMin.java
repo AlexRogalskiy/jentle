@@ -26,23 +26,23 @@ package com.wildbeeslabs.jentle.collections.stack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
 import java.util.Objects;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- *
  * Custom stack with minimum implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -81,7 +81,7 @@ public class CStackMin<T> extends CStack<T> {
         try {
             return this.minStack.peek();
         } catch (EmptyStackException ex) {
-            LOGGER.error(String.format("ERROR: minimum stack is empty: message={%s}", ex.getMessage()));
+            log.error(String.format("ERROR: minimum stack is empty: message={%s}", ex.getMessage()));
             return null;
         }
     }

@@ -23,15 +23,14 @@
  */
 package com.wildbeeslabs.jentle.algorithms.metrics;
 
-import java.io.Serializable;
-import java.util.Iterator;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.io.Serializable;
+import java.util.Iterator;
+
 /**
- *
  * Custom counter watch implementation
  *
  * @author Alex
@@ -96,7 +95,7 @@ public class CCounter implements Iterator, Serializable {
 
     @Override
     public Object next() {
-        return new Long(this.getNext());
+        return Long.valueOf(this.getNext());
     }
 
     @Override

@@ -23,23 +23,17 @@
  */
 package com.wildbeeslabs.jentle.algorithms.math;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- *
  * Custom prime generator implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CPrimeGenerator {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CPrimeGenerator.class);
 
     private static boolean[] crossOut;
     private static int[] result;

@@ -23,40 +23,28 @@
  */
 package com.wildbeeslabs.jentle.algorithms.xml;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * Custom parser utility implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-@XmlRootElement
+@Slf4j
+@JacksonXmlRootElement(localName = "registry", namespace = "io.jentle")
 public class CXkbConfigRegistry {
 
-    /**
-     * Default Logger instance
-     */
-    protected static final Logger LOGGER = LogManager.getLogger(CXkbConfigRegistry.class);
     /**
      * Default bundle source
      */
@@ -69,17 +57,17 @@ public class CXkbConfigRegistry {
         @ToString
         public static class ModelConfigItem {
 
-            @XmlElement
+            @JacksonXmlProperty
             public String name;
 
-            @XmlElement
+            @JacksonXmlProperty
             public String description;
 
-            @XmlElement
+            @JacksonXmlProperty
             public String vendor;
         }
 
-        @XmlElement
+        @JacksonXmlProperty
         ModelConfigItem configItem;
     }
 
@@ -93,44 +81,45 @@ public class CXkbConfigRegistry {
         @ToString
         public static class LayoutConfigItem {
 
-            @XmlElement
+            @JacksonXmlProperty
             public String name;
 
-            @XmlElement
+            @JacksonXmlProperty
             public String description;
         }
 
-        @XmlElement
+        @JacksonXmlProperty
         public LayoutConfigItem configItem;
     }
 
-    @XmlElementWrapper(name = "modelList")
-    @XmlElement(name = "model")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlProperty
     private final List<Model> modelList = new ArrayList<>();
 
-    @XmlElementWrapper(name = "layoutList")
-    @XmlElement(name = "layout")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlProperty
     private final List<Layout> layoutList = new ArrayList<>();
 
     private static CXkbConfigRegistry instance = null;
 
     public static CXkbConfigRegistry getXkbConfigRegistry() {
-        return CXkbConfigRegistry.getXkbConfigRegistry(CXkbConfigRegistry.DEFAULT_CONFIG_SOURCE);
+        //return CXkbConfigRegistry.getXkbConfigRegistry(CXkbConfigRegistry.DEFAULT_CONFIG_SOURCE);
+        return null;
     }
 
-    public static CXkbConfigRegistry getXkbConfigRegistry(final String source) {
-        if (Objects.isNull(instance)) {
-            try {
-                JAXBContext jc = JAXBContext.newInstance(CXkbConfigRegistry.class);
-                Unmarshaller unmarshaller = jc.createUnmarshaller();
-                final File xml = new File(source);
-                if (xml.exists()) {
-                    instance = (CXkbConfigRegistry) unmarshaller.unmarshal(xml);
-                }
-            } catch (JAXBException ex) {
-                LOGGER.error(String.format("ERROR: cannot load configuration from source=(%s), message=(%s)", source, ex.getMessage()));
-            }
-        }
-        return instance;
-    }
+//    public static CXkbConfigRegistry getXkbConfigRegistry(final String source) {
+//        if (Objects.isNull(instance)) {
+//            try {
+//                JAXBContext jc = JAXBContext.newInstance(CXkbConfigRegistry.class);
+//                Unmarshaller unmarshaller = jc.createUnmarshaller();
+//                final File xml = new File(source);
+//                if (xml.exists()) {
+//                    instance = (CXkbConfigRegistry) unmarshaller.unmarshal(xml);
+//                }
+//            } catch (JAXBException ex) {
+//                log.error(String.format("ERROR: cannot load configuration from source=(%s), message=(%s)", source, ex.getMessage()));
+//            }
+//        }
+//        return instance;
+//    }
 }

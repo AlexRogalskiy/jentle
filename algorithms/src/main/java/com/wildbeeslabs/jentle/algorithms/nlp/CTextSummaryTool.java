@@ -23,49 +23,37 @@
  */
 package com.wildbeeslabs.jentle.algorithms.nlp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
+import lombok.extern.slf4j.Slf4j;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.InvalidFormatException;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
- *
  * Custom text summary tool implementation
- *
- * @see http://opennlp.sourceforge.net/models-1.5/
  *
  * @author Alex
  * @version 1.0.0
+ * @see http://opennlp.sourceforge.net/models-1.5/
  * @since 2017-08-07
  */
+@Slf4j
 public class CTextSummaryTool {
 
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CTextSummaryTool.class);
-
-//Text into sentences
+    //Text into sentences
     public static String[] splitToSentences(final String content) {
         String[] sent = sentenceDetect.sentDetect(content);
         return sent;
     }
 
-//Text into paragraphs
+    //Text into paragraphs
     public static String[] splitToParagraphs(final String content) {
         String[] mystring = content.split("\n\r\n");
         return mystring;
@@ -79,7 +67,7 @@ public class CTextSummaryTool {
         return result;
     }
 
-//Computing the intersection(common words) between two sentences
+    //Computing the intersection(common words) between two sentences
     public static float sentenceIntersection(final String sentence1, final String sentence2) {
         final String[] sent1 = tokenizer.tokenize(sentence1);
         final String[] sent2 = tokenizer.tokenize(sentence2);
@@ -183,9 +171,9 @@ public class CTextSummaryTool {
             model = new SentenceModel(sentenceModelIS);
             sentenceDetect = new SentenceDetectorME(model);
         } catch (InvalidFormatException ex) {
-            LOGGER.error(String.format("ERROR: invalid format stream, message={%s}", ex.getMessage()));
+            log.error(String.format("ERROR: invalid format stream, message={%s}", ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
+            log.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
         }
 
         final InputStream tokenizerModelIS = this.getClass().getResourceAsStream("src/main/resources/Data/en-token.bin"); //new FileInputStream("src/main/resources/Data/en-token.bin");
@@ -194,9 +182,9 @@ public class CTextSummaryTool {
             tokenModel = new TokenizerModel(tokenizerModelIS);
             tokenizer = new TokenizerME(tokenModel);
         } catch (InvalidFormatException ex) {
-            LOGGER.error(String.format("ERROR: invalid format stream, message={%s}", ex.getMessage()));
+            log.error(String.format("ERROR: invalid format stream, message={%s}", ex.getMessage()));
         } catch (IOException ex) {
-            LOGGER.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
+            log.error(String.format("ERROR: invalid process stream, message={%s}", ex.getMessage()));
         }
     }
 
@@ -207,7 +195,7 @@ public class CTextSummaryTool {
         try {
             content = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
         } catch (FileNotFoundException e) {
-            LOGGER.error(String.format("ERROR: cannot read from input stream, message={%s}", e.getMessage()));
+            log.error(String.format("ERROR: cannot read from input stream, message={%s}", e.getMessage()));
         }
 
         String[] paragraphs = splitToParagraphs(content);
@@ -219,6 +207,6 @@ public class CTextSummaryTool {
                 summary.append(bestSent);
             }
         }
-        LOGGER.debug(summary);
+        log.debug(summary.toString());
     }
 }

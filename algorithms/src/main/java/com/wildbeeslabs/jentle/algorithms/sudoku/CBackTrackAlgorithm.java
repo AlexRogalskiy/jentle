@@ -23,26 +23,20 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sudoku;
 
-import java.util.stream.IntStream;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.stream.IntStream;
 
 /**
- *
  * Custom back tracking algorithm implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CBackTrackAlgorithm {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CBackTrackAlgorithm.class);
 
     private static final int BOARD_SIZE = 9;
     private static final int SUBSECTION_SIZE = 3;
@@ -57,9 +51,9 @@ public final class CBackTrackAlgorithm {
     public void printBoard() {
         for (int row = BOARD_START_INDEX; row < BOARD_SIZE; row++) {
             for (int column = BOARD_START_INDEX; column < BOARD_SIZE; column++) {
-                LOGGER.debug(board[row][column] + StringUtils.SPACE);
+                log.debug(board[row][column] + StringUtils.SPACE);
             }
-            LOGGER.debug(StringUtils.LF);
+            log.debug(StringUtils.LF);
         }
     }
 
@@ -83,8 +77,8 @@ public final class CBackTrackAlgorithm {
 
     private boolean isValid(int[][] board, int row, int column) {
         return rowConstraint(board, row)
-                && columnConstraint(board, column)
-                && subsectionConstraint(board, row, column);
+            && columnConstraint(board, column)
+            && subsectionConstraint(board, row, column);
     }
 
     private boolean subsectionConstraint(int[][] board, int row, int column) {
@@ -108,13 +102,13 @@ public final class CBackTrackAlgorithm {
     private boolean columnConstraint(int[][] board, int column) {
         boolean[] constraint = new boolean[BOARD_SIZE];
         return IntStream.range(BOARD_START_INDEX, BOARD_SIZE)
-                .allMatch(row -> checkConstraint(board, row, constraint, column));
+            .allMatch(row -> checkConstraint(board, row, constraint, column));
     }
 
     private boolean rowConstraint(int[][] board, int row) {
         boolean[] constraint = new boolean[BOARD_SIZE];
         return IntStream.range(BOARD_START_INDEX, BOARD_SIZE)
-                .allMatch(column -> checkConstraint(board, row, constraint, column));
+            .allMatch(column -> checkConstraint(board, row, constraint, column));
     }
 
     private boolean checkConstraint(int[][] board, int row, boolean[] constraint, int column) {

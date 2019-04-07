@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 import pl.allegro.finance.tradukisto.MoneyConverters;
 
 import java.io.IOException;
@@ -591,17 +591,17 @@ public class CStringUtils {
     public static boolean checkForAllLetters(final String input) {
         Objects.requireNonNull(input);
         return input.toLowerCase()
-                .replaceAll("[^a-z]", "")
-                .replaceAll("(.)(?=.*\\1)", "")
-                .length() == 26;
+            .replaceAll("[^a-z]", "")
+            .replaceAll("(.)(?=.*\\1)", "")
+            .length() == 26;
     }
 
     public static boolean checkForAllLetters2(final String input) {
         Objects.requireNonNull(input);
         long c = input.toLowerCase().chars()
-                .filter(ch -> ch >= 'a' && ch <= 'z')
-                .distinct()
-                .count();
+            .filter(ch -> ch >= 'a' && ch <= 'z')
+            .distinct()
+            .count();
         return c == 26;
     }
 
@@ -626,7 +626,7 @@ public class CStringUtils {
     public boolean isPalindrome(final String text) {
         String temp = text.replaceAll("\\s+", StringUtils.EMPTY).toLowerCase();
         return IntStream.range(0, temp.length() / 2)
-                .noneMatch(i -> temp.charAt(i) != temp.charAt(temp.length() - i - 1));
+            .noneMatch(i -> temp.charAt(i) != temp.charAt(temp.length() - i - 1));
     }
 
     public static String removeLastCharRegex(final String text) {

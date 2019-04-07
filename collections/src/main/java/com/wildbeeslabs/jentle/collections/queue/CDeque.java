@@ -25,25 +25,25 @@ package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- *
  * Custom deque implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -101,7 +101,7 @@ public class CDeque<T> extends ACQueue<T> {
         try {
             return this.removeFirst();
         } catch (EmptyQueueException ex) {
-            LOGGER.error(ex.getMessage());
+            log.error(ex.getMessage());
             return null;
         }
     }

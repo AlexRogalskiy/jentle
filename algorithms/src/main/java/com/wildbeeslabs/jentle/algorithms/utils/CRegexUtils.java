@@ -26,7 +26,6 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -103,9 +102,9 @@ public class CRegexUtils {
         return CRegexUtils.isIPv6StdAddress(input) || CRegexUtils.isIPv6HexCompressedAddress(input);
     }
 
-    public static boolean isValidEmailAddress(final String value, final Boolean allowLocal) {
-        return EmailValidator.getInstance(allowLocal).isValid(value);
-    }
+//    public static boolean isValidEmailAddress(final String value, final Boolean allowLocal) {
+//        return EmailValidator.getInstance(allowLocal).isValid(value);
+//    }
 
     public boolean isValidEmailAddress(final String input) {
         return CRegexUtils.DEFAULT_EMAIL_PATTERN.matcher(input).matches();

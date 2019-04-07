@@ -24,40 +24,27 @@
 package com.wildbeeslabs.jentle.algorithms.date.resources;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CConverterUtils;
-
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.ListResourceBundle;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.*;
 
 /**
- *
  * Default base resource bundle implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class BaseResourceBundle extends ListResourceBundle {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
     /**
      * Default bundle source
      */
@@ -114,7 +101,7 @@ public class BaseResourceBundle extends ListResourceBundle {
         return this.resources.containsKey(key);
     }
 
-//    public Object[][] getContents() {
+    //    public Object[][] getContents() {
 //        return this.getProperties().stream().map((item) -> item.toArray()).collect(CCollectionUtils.toArray(Object[][]::new));
 //    }
     public Enumeration<String> getKeys() {
@@ -134,7 +121,7 @@ public class BaseResourceBundle extends ListResourceBundle {
                 return Arrays.asList("db");
             }
 
-//            @Override
+            //            @Override
 //            public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException,
 //                    InstantiationException, IOException {
 //                if ((baseName == null) || (locale == null) || (format == null) || (loader == null)) {

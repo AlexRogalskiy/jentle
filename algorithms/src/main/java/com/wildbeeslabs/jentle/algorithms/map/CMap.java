@@ -23,36 +23,23 @@
  */
 package com.wildbeeslabs.jentle.algorithms.map;
 
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import lombok.NonNull;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom mp algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CMap {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CMap.class);
 
     private CMap() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -60,35 +47,35 @@ public final class CMap {
 
     public static <T, K> Map<K, List<T>> getSortedMapByKey(@NonNull final Map<K, List<T>> map, final Comparator<? super K> comparator) {
         return map.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey(comparator))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            .sorted(Map.Entry.comparingByKey(comparator))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     public <K, V extends Comparable<V>> Entry<K, V> getMaxValue(final Map<K, V> map, final Comparator<? super V> comparator) {
         Optional<Entry<K, V>> maxValue = map.entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue(comparator));
+            .stream()
+            .max(Map.Entry.comparingByValue(comparator));
         return maxValue.orElse(null);
     }
 
     public <K, V extends Comparable<V>> Entry<K, V> getMinValue(final Map<K, V> map, final Comparator<? super V> comparator) {
         Optional<Entry<K, V>> minValue = map.entrySet()
-                .stream()
-                .min(Map.Entry.comparingByValue(comparator));
+            .stream()
+            .min(Map.Entry.comparingByValue(comparator));
         return minValue.orElse(null);
     }
 
     public <K extends Comparable<K>, V> Entry<K, V> getMaxKey(final Map<K, V> map, final Comparator<? super K> comparator) {
         Optional<Entry<K, V>> maxKey = map.entrySet()
-                .stream()
-                .max(Map.Entry.comparingByKey(comparator));
+            .stream()
+            .max(Map.Entry.comparingByKey(comparator));
         return maxKey.orElse(null);
     }
 
     public <K extends Comparable<K>, V> Entry<K, V> getMinKey(final Map<K, V> map, final Comparator<? super K> comparator) {
         Optional<Entry<K, V>> minKey = map.entrySet()
-                .stream()
-                .min(Map.Entry.comparingByKey(comparator));
+            .stream()
+            .min(Map.Entry.comparingByKey(comparator));
         return minKey.orElse(null);
     }
 
@@ -98,16 +85,16 @@ public final class CMap {
 
     public static <K, V> Map<K, V> filterByKey(@NonNull final Map<K, V> map, final Predicate<? super K> predicate) {
         return map.entrySet()
-                .stream()
-                .filter(entry -> predicate.test(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            .stream()
+            .filter(entry -> predicate.test(entry.getKey()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public static <K, V> Map<K, V> filterByValue(@NonNull final Map<K, V> map, final Predicate<? super V> predicate) {
         return map.entrySet()
-                .stream()
-                .filter(entry -> predicate.test(entry.getValue()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            .stream()
+            .filter(entry -> predicate.test(entry.getValue()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public static <K, V> List<V> getMapValues(final Map<K, V> map, final Comparator<? super K> comparator) {
@@ -124,10 +111,10 @@ public final class CMap {
 
     public <K, V> List<K> keys(final Map<K, V> map, final V value, final Comparator<? super V> comparator) {
         return map
-                .entrySet()
-                .stream()
-                .filter(entry -> Objects.compare(value, entry.getValue(), comparator) == 0)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+            .entrySet()
+            .stream()
+            .filter(entry -> Objects.compare(value, entry.getValue(), comparator) == 0)
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
     }
 }

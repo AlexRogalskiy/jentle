@@ -23,38 +23,31 @@
  */
 package com.wildbeeslabs.jentle.algorithms.dispatcher;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveTask;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom pool recursive task implementation
  *
- * @author Alex
- * @version 1.0.0
- * @since 2017-08-07
  * @param <T>
  * @param <R>
  * @param <U>
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> extends RecursiveTask<R> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     private final T value;
 
@@ -69,7 +62,7 @@ public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> ex
                 try {
                     return e.get();
                 } catch (InterruptedException | ExecutionException ex) {
-                    LOGGER.error("ERROR: cannot get recursive task execution result");
+                    log.error("ERROR: cannot get recursive task execution result");
                 }
                 return null;
             }).map(RecursiveTask::join).reduce((x, y) -> reduceData(x, y)).get();
@@ -86,7 +79,7 @@ public abstract class CRecursiveTask<T, R, U extends CRecursiveTask<T, R, U>> ex
     protected abstract R reduceData(final R first, final R second);
 
     protected R processing(final T value) {
-        LOGGER.info(String.format("The result=(%s) was processed by thread=(%s)", value, Thread.currentThread().getName()));
+        log.info(String.format("The result=(%s) was processed by thread=(%s)", value, Thread.currentThread().getName()));
         return this.process(value);
     }
 }

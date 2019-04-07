@@ -25,25 +25,25 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.interfaces.ITree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- *
  * Custom abstract tree implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -56,7 +56,7 @@ public abstract class ACTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTr
     protected U insertToLeft(final U node, final Optional<? extends T> value) {
         Objects.requireNonNull(node);
         if (Objects.nonNull(node.getLeft())) {
-            LOGGER.debug(String.format("Node (%s) has already left child", node));
+            log.debug(String.format("Node (%s) has already left child", node));
             return null;
         }
         final U newNode = this.createTreeNode(value);
@@ -68,7 +68,7 @@ public abstract class ACTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTr
     protected U insertToRight(final U node, final Optional<? extends T> value) {
         Objects.requireNonNull(node);
         if (Objects.nonNull(node.getRight())) {
-            LOGGER.debug(String.format("Node (%s) has already right child", node));
+            log.debug(String.format("Node (%s) has already right child", node));
             return null;
         }
         final U newNode = this.createTreeNode(value);

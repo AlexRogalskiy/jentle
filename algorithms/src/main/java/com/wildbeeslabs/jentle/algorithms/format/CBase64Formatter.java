@@ -23,8 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.format;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Helper class to handle base64 format operations
@@ -32,14 +31,9 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
+@Slf4j
 public final class CBase64Formatter {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CStringFormatter.class);
 
     /**
      * Default byte masks

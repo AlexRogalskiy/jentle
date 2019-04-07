@@ -27,39 +27,25 @@ import com.wildbeeslabs.jentle.algorithms.date.time.IDuration;
 import com.wildbeeslabs.jentle.algorithms.date.time.ITimeFormat;
 import com.wildbeeslabs.jentle.algorithms.date.time.SimpleTimeFormat;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListResourceBundle;
-import java.util.Objects;
-import java.util.ResourceBundle;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.*;
 
 /**
- *
  * Default resources bundle
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class Resources extends ListResourceBundle {
-
-    /**
-     * Default Logger instance
-     */
-    protected static final Logger LOGGER = LogManager.getLogger(Resources.class);
 
     @Override
     public Object[][] getContents() {
@@ -108,22 +94,22 @@ public abstract class Resources extends ListResourceBundle {
             try {
                 setFuturePluralName(bundle.getString(resourceKeyPrefix + "FuturePluralName"));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future plural name by key=%s", resourceKeyPrefix + "FuturePluralName"), ex);
+                log.error(String.format("ERROR: cannot set future plural name by key=%s", resourceKeyPrefix + "FuturePluralName"), ex);
             }
             try {
                 setFutureSingularName((bundle.getString(resourceKeyPrefix + "FutureSingularName")));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future singular name by key=%s", resourceKeyPrefix + "FutureSingularName"), ex);
+                log.error(String.format("ERROR: cannot set future singular name by key=%s", resourceKeyPrefix + "FutureSingularName"), ex);
             }
             try {
                 setPastPluralName((bundle.getString(resourceKeyPrefix + "PastPluralName")));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set past plural name by key=%s", resourceKeyPrefix + "PastPluralName"), ex);
+                log.error(String.format("ERROR: cannot set past plural name by key=%s", resourceKeyPrefix + "PastPluralName"), ex);
             }
             try {
                 setPastSingularName((bundle.getString(resourceKeyPrefix + "PastSingularName")));
             } catch (Exception ex) {
-                LOGGER.error(String.format("ERROR: cannot set future plural name by key=%s", resourceKeyPrefix + "PastSingularName"), ex);
+                log.error(String.format("ERROR: cannot set future plural name by key=%s", resourceKeyPrefix + "PastSingularName"), ex);
             }
             names.stream().forEach((name) -> {
                 if (name.isFuture()) {

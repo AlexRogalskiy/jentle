@@ -24,38 +24,26 @@
 package com.wildbeeslabs.jentle.algorithms.random;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CDigestUtils;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom random GUID utility implementation.
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public class CRandomGuid {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CRandomGuid.class);
 
     @Setter(AccessLevel.NONE)
     public String valueBeforeMD5 = StringUtils.EMPTY;
@@ -73,7 +61,7 @@ public class CRandomGuid {
      * Constructor with security option of instantiating random generator.
      *
      * @param secure - seed flag (true - secure random generator, false -
-     * standard random generator)
+     *               standard random generator)
      */
     public CRandomGuid(boolean secure) {
         getRandomGUID(secure);
@@ -105,7 +93,7 @@ public class CRandomGuid {
             }
             this.valueAfterMD5 = sbAfterMD5.toString();
         } catch (NoSuchAlgorithmException ex) {
-            LOGGER.error(String.format("ERROR: cannot create random GUID, message=%s", ex.getMessage()));
+            log.error(String.format("ERROR: cannot create random GUID, message=%s", ex.getMessage()));
         }
     }
 

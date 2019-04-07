@@ -23,28 +23,22 @@
  */
 package com.wildbeeslabs.jentle.algorithms.sudoku;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
- *
  * Custom dancing links implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public class CDancingLinks {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CBackTrackAlgorithm.class);
 
     private static final int DEFAULT_SIZE = 9;
 
@@ -160,8 +154,8 @@ public class CDancingLinks {
             for (int j = 0; j < size; j++) {
                 ret.append(aResult[j]).append(" ");
             }
-            LOGGER.debug(ret);
+            log.debug(ret.toString());
         }
-        LOGGER.debug(StringUtils.LF);
+        log.debug(StringUtils.LF);
     }
 }

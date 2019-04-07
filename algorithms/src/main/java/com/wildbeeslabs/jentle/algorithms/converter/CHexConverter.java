@@ -24,14 +24,11 @@
 package com.wildbeeslabs.jentle.algorithms.converter;
 
 import com.google.common.io.BaseEncoding;
-import java.math.BigInteger;
-import javax.xml.bind.DatatypeConverter;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+
+import java.math.BigInteger;
 
 /**
  * Helper class to encode / decode hex string
@@ -39,14 +36,9 @@ import org.apache.commons.codec.binary.Hex;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
+@Slf4j
 public final class CHexConverter {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CHexConverter.class);
 
     /**
      * Create a byte Array from String of hexadecimal digits using Character
@@ -124,11 +116,15 @@ public final class CHexConverter {
     }
 
     public String encodeUsingDataTypeConverter(byte[] bytes) {
-        return DatatypeConverter.printHexBinary(bytes);
+        return Hex.encodeHexString(bytes);
     }
 
-    public byte[] decodeUsingDataTypeConverter(String hexString) {
-        return DatatypeConverter.parseHexBinary(hexString);
+    public byte[] decodeUsingDataTypeConverter(final String hexString) {
+        try {
+            return Hex.decodeHex(hexString);
+        } catch (DecoderException e) {
+            return null;
+        }
     }
 
     public String encodeUsingApacheCommons(byte[] bytes) throws DecoderException {

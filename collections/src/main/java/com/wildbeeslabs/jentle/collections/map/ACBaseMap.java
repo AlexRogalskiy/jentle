@@ -24,31 +24,21 @@
 package com.wildbeeslabs.jentle.collections.map;
 
 import com.wildbeeslabs.jentle.collections.interfaces.IBaseMap;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom abstract base map implementation
  *
+ * @param <K>
+ * @param <V>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <K>
- * @param <V>
  */
 @Data
 @EqualsAndHashCode
 @ToString
 public abstract class ACBaseMap<K, V> implements IBaseMap<K, V> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
 }

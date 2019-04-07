@@ -28,27 +28,18 @@ import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
- *
  * Custom abstract graph implementation
  *
+ * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
 @Data
 @EqualsAndHashCode
 @ToString
 public abstract class ACGraph<T, E extends ACBaseGraphNode<T, E>> implements IGraph<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
-
 }

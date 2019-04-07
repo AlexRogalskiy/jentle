@@ -29,10 +29,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Stack;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -42,12 +40,8 @@ import org.apache.log4j.Logger;
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CHillClimbingAlgorithm {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CHillClimbingAlgorithm.class);
 
     public static void main(String[] args) {
         final CHillClimbingAlgorithm hillClimbing = new CHillClimbingAlgorithm();
@@ -59,18 +53,18 @@ public final class CHillClimbingAlgorithm {
             final List<CState> solutionSequence = hillClimbing.getRouteWithHillClimbing(startState, goalState);
             solutionSequence.forEach(CHillClimbingAlgorithm::printEachStep);
         } catch (Exception e) {
-            LOGGER.error("ERROR: cannot list hill-climbing solution", e);
+            log.error("ERROR: cannot list hill-climbing solution", e);
         }
     }
 
     private static void printEachStep(final CState state) {
         final List<Stack<String>> stackList = state.getState();
-        LOGGER.debug("----------------");
+        log.debug("----------------");
         stackList.forEach(stack -> {
             while (!stack.isEmpty()) {
-                LOGGER.debug(stack.pop());
+                log.debug(stack.pop());
             }
-            LOGGER.debug(StringUtils.SPACE);
+            log.debug(StringUtils.SPACE);
         });
     }
 

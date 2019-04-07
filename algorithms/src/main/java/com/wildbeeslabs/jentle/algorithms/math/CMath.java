@@ -24,37 +24,21 @@
 package com.wildbeeslabs.jentle.algorithms.math;
 
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom math algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CMath {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CMath.class);
 
     private CMath() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -394,8 +378,8 @@ public final class CMath {
                     dp[i][j] = i;
                 } else {
                     dp[i][j] = LevenshteinDistance.min(dp[i - 1][j - 1] + LevenshteinDistance.costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
-                            dp[i - 1][j] + 1,
-                            dp[i][j - 1] + 1);
+                        dp[i - 1][j] + 1,
+                        dp[i][j - 1] + 1);
                 }
             }
         }
@@ -562,8 +546,8 @@ public final class CMath {
 
         public boolean isEquivalent(final Line<T> line) {
             return isEquivalent(line.slope, this.slope)
-                    && isEquivalent(line.yIntercept, this.yIntercept)
-                    && (line.infiniteSlope = this.infiniteSlope);
+                && isEquivalent(line.yIntercept, this.yIntercept)
+                && (line.infiniteSlope = this.infiniteSlope);
         }
 
         private boolean isEquivalent(double a, double b) {
@@ -684,7 +668,7 @@ public final class CMath {
             }
 
             int substitution = calculate(x.substring(1), y.substring(1))
-                    + costOfSubstitution(x.charAt(0), y.charAt(0));
+                + costOfSubstitution(x.charAt(0), y.charAt(0));
             int insertion = calculate(x, y.substring(1)) + 1;
             int deletion = calculate(x.substring(1), y) + 1;
 

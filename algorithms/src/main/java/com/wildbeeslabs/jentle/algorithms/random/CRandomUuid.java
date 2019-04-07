@@ -23,24 +23,19 @@
  */
 package com.wildbeeslabs.jentle.algorithms.random;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.security.SecureRandom;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
- *
  * Custom random UUID utility implementation.
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public class CRandomUuid {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CRandomUuid.class);
 
     /**
      * Default singleton instance

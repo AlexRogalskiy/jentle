@@ -27,38 +27,25 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
- *
  * Custom list algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CList {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CList.class);
 
     private CList() {
         // PRIVATE EMPTY CONSTRUCTOR
@@ -189,7 +176,7 @@ public final class CList {
                 slow = slow.getNext();
             }
         } catch (EmptyStackException ex) {
-            LOGGER.error(String.format("ERROR: empty stack, message=%s", ex.getMessage()));
+            log.error(String.format("ERROR: empty stack, message=%s", ex.getMessage()));
         }
         return true;
     }
@@ -452,9 +439,9 @@ public final class CList {
 
     public static <T> T getFindFirst(@NonNull final List<? extends T> list) {
         return list.stream()
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
     }
 
     public static <T> Optional<T> middle(final List<T> list) {
@@ -477,8 +464,8 @@ public final class CList {
     public static <T> List<T> removeAll(final List<T> list, final T element, final Comparator<? super T> cmp) {
         Objects.requireNonNull(list);
         return list.stream()
-                .filter(e -> Objects.compare(e, element, cmp) != 0)
-                .collect(Collectors.toList());
+            .filter(e -> Objects.compare(e, element, cmp) != 0)
+            .collect(Collectors.toList());
     }
 
     public static <T> boolean removeAll(final List<T> list, final T element, final Predicate<? super T> filter) {

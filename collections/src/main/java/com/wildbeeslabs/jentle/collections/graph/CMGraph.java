@@ -26,24 +26,23 @@ package com.wildbeeslabs.jentle.collections.graph;
 import com.wildbeeslabs.jentle.collections.graph.CGraph.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Objects;
+
 /**
- *
  * Custom matrix graph implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
 
@@ -63,8 +62,12 @@ public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
 
     private T getDataByDefault() {
         try {
-            return (T) this.graph.getClass().getComponentType().newInstance();
+            return (T) this.graph.getClass().getComponentType().getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
+            return null;
+        } catch (NoSuchMethodException ex) {
+            return null;
+        } catch (InvocationTargetException ex) {
             return null;
         }
     }
@@ -147,10 +150,10 @@ public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .appendSuper(super.toString())
-                .append("class", this.getClass().getName())
-                .append("data", Arrays.deepToString(this.graph))
-                .toString();
+            .appendSuper(super.toString())
+            .append("class", this.getClass().getName())
+            .append("data", Arrays.deepToString(this.graph))
+            .toString();
     }
 
     @Override
@@ -160,16 +163,16 @@ public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
         }
         final CMGraph<T> other = (CMGraph<T>) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
-                .append(Arrays.deepEquals(this.graph, other.graph), true)
-                .isEquals();
+            .appendSuper(super.equals(obj))
+            .append(Arrays.deepEquals(this.graph, other.graph), true)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(31, 61)
-                .appendSuper(super.hashCode())
-                .append(Arrays.deepHashCode(this.graph))
-                .toHashCode();
+            .appendSuper(super.hashCode())
+            .append(Arrays.deepHashCode(this.graph))
+            .toHashCode();
     }
 }

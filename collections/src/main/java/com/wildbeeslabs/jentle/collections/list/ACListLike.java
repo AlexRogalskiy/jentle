@@ -26,37 +26,29 @@ package com.wildbeeslabs.jentle.collections.list;
 import com.wildbeeslabs.jentle.collections.interfaces.IListLike;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.AbstractSequentialList;
 import java.util.Comparator;
 import java.util.Optional;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom abstract list-like implementation
  *
+ * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
+@Slf4j
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class ACListLike<T, E extends ACNode<T>> extends AbstractSequentialList<T> implements IListLike<T, E> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected E first;
     protected int size;
@@ -95,10 +87,6 @@ public abstract class ACListLike<T, E extends ACNode<T>> extends AbstractSequent
 //            return null;
 //        }
         return this.first;
-    }
-
-    protected Logger getLogger() {
-        return this.LOGGER;
     }
 
     protected abstract E createNode(final Optional<? extends T> value);

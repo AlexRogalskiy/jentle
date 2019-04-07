@@ -23,26 +23,21 @@
  */
 package com.wildbeeslabs.jentle.algorithms.dispatcher;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom pool utilities implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public class CBaseDispatcher {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(this.getClass());
     /**
      * Default fork join pool
      */

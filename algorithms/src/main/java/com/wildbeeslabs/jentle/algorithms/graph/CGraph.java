@@ -26,21 +26,8 @@ package com.wildbeeslabs.jentle.algorithms.graph;
 import com.wildbeeslabs.jentle.collections.graph.CSGraph2;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNodeExtended;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
-
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.DirectedGraph;
-
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.CycleDetector;
@@ -53,20 +40,19 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DirectedSubgraph;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.Map.Entry;
+
 /**
- *
  * Custom graph algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CGraph {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CGraph.class);
 
     private CGraph() {
         // PRIVATE EMPTY CONSTRUCTOR

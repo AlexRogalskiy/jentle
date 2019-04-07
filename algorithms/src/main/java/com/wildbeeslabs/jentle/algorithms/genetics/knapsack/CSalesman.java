@@ -23,32 +23,25 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
-import java.util.stream.IntStream;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.stream.IntStream;
 
 /**
- *
  * Custom salesman implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 @Data
 @EqualsAndHashCode
 @ToString
 public class CSalesman {
-
-    /**
-     * Default Logger instance
-     */
-    protected static final Logger LOGGER = LogManager.getLogger(CSalesman.class);
 
     /**
      * Default number of places to visit
@@ -89,7 +82,7 @@ public class CSalesman {
 
     protected double distance(final int[] path) {
         return IntStream.range(0, this.numOfPlaces)
-                .mapToDouble(i -> adjacents[path[i]][path[(i + 1) % this.numOfPlaces]])
-                .sum();
+            .mapToDouble(i -> adjacents[path[i]][path[(i + 1) % this.numOfPlaces]])
+            .sum();
     }
 }

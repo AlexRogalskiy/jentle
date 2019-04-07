@@ -739,7 +739,7 @@ public final class CSort {
         Objects.requireNonNull(array);
         int n = array.length;
         int[] count = new int[n];
-        T[] res = CUtils.newArray2((Class<? extends T>) array.getClass(), n);
+        T[] res = (T[]) CUtils.newArray2(array.getClass(), n);
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (Objects.compare(array[i], array[j], cmp) < 0) {

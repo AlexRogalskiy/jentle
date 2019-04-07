@@ -23,23 +23,17 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics.binary;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- *
  * Custom simple genetic algorithm implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CSimpleGeneticAlgorithm {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CSimpleGeneticAlgorithm.class);
 
     private final double uniformRate = 0.5;
     private final double mutationRate = 0.025;
@@ -57,15 +51,15 @@ public final class CSimpleGeneticAlgorithm {
         int generationCount = 1, fitness = 0;
         updatePopulationFitness(myPop);
         while ((fitness = myPop.getFittest().getFitness()) < getMaxFitness()) {
-            LOGGER.debug("Generation: " + generationCount + " Correct genes found: " + fitness);
+            log.debug("Generation: " + generationCount + " Correct genes found: " + fitness);
             myPop = evolvePopulation(myPop);
             updatePopulationFitness(myPop);
             generationCount++;
         }
-        LOGGER.debug("Solution found!");
-        LOGGER.debug("Generation: " + generationCount);
-        LOGGER.debug("Genes: ");
-        LOGGER.debug(myPop.getFittest());
+        log.debug("Solution found!");
+        log.debug("Generation: " + generationCount);
+        log.debug("Genes: ");
+        log.debug(myPop.getFittest().toString());
         return true;
     }
 

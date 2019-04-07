@@ -24,9 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.string;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Custom string search implementation
@@ -34,14 +32,9 @@ import org.apache.log4j.Logger;
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
+@Slf4j
 public final class CStringSearch {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CStringSearch.class);
 
     private CStringSearch() {
         // PRIVATE EMPTY CONSTRUCTOR

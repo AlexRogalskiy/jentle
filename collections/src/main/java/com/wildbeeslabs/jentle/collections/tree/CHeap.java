@@ -25,36 +25,28 @@ package com.wildbeeslabs.jentle.collections.tree;
 
 import com.wildbeeslabs.jentle.collections.exception.NoSpaceAvailableException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Objects;
-
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Objects;
 
 /**
- *
  * Custom heap implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
+@Slf4j
 @Data
 public class CHeap<T> {
-
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LogManager.getLogger(getClass());
 
     protected int size;
     protected int capacity;
@@ -107,12 +99,12 @@ public class CHeap<T> {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .appendSuper(super.toString())
-                .append("className", this.getClass().getName())
-                .append("size", this.size)
-                .append("capacity", this.capacity)
-                .append("data", Arrays.deepToString(this.array))
-                .toString();
+            .appendSuper(super.toString())
+            .append("className", this.getClass().getName())
+            .append("size", this.size)
+            .append("capacity", this.capacity)
+            .append("data", Arrays.deepToString(this.array))
+            .toString();
     }
 
     @Override
@@ -122,20 +114,20 @@ public class CHeap<T> {
         }
         final CHeap<T> other = (CHeap<T>) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
-                .append(this.size, other.size)
-                .append(this.capacity, other.capacity)
-                .appendSuper(Arrays.deepEquals(this.array, other.array))
-                .isEquals();
+            .appendSuper(super.equals(obj))
+            .append(this.size, other.size)
+            .append(this.capacity, other.capacity)
+            .appendSuper(Arrays.deepEquals(this.array, other.array))
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(19, 51)
-                .appendSuper(super.hashCode())
-                .append(this.size)
-                .append(this.capacity)
-                .append(Arrays.deepHashCode(this.array))
-                .toHashCode();
+            .appendSuper(super.hashCode())
+            .append(this.size)
+            .append(this.capacity)
+            .append(Arrays.deepHashCode(this.array))
+            .toHashCode();
     }
 }

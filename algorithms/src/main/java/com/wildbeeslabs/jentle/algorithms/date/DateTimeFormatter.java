@@ -26,10 +26,9 @@ package com.wildbeeslabs.jentle.algorithms.date;
 import com.wildbeeslabs.jentle.algorithms.date.time.*;
 import com.wildbeeslabs.jentle.algorithms.date.time.unit.*;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -44,12 +43,8 @@ import static com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit.DEF
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class DateTimeFormatter {
-
-    /**
-     * Default Logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(DateTimeFormatter.class);
 
     private volatile Date reference;
     private volatile Locale locale = Locale.getDefault();

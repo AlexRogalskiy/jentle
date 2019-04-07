@@ -25,31 +25,23 @@ package com.wildbeeslabs.jentle.algorithms.maze;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CCollectionUtils;
 import com.wildbeeslabs.jentle.algorithms.utils.CFileUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
- *
  * Custom maze implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public class CMaze {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CMaze.class);
 
     private static final int ROAD = 0;
     private static final int WALL = 1;
@@ -140,12 +132,12 @@ public class CMaze {
 
     public void printPath(final List<CCoordinate> path) {
         int[][] tempMaze = Arrays.stream(this.maze)
-                .map(int[]::clone)
-                .toArray(int[][]::new);
+            .map(int[]::clone)
+            .toArray(int[][]::new);
         path.stream().filter((coordinate) -> !(this.isStart(coordinate.getX(), coordinate.getY()) || this.isExit(coordinate.getX(), coordinate.getY()))).forEach((coordinate) -> {
             tempMaze[coordinate.getX()][coordinate.getY()] = PATH;
         });
-        LOGGER.debug(toString(tempMaze));
+        log.debug(toString(tempMaze));
     }
 
     public String toString(int[][] maze) {

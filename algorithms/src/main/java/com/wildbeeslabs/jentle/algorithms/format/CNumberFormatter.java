@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.format;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -30,23 +32,16 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  * Helper class to handle number format operations
  *
  * @author alexander.rogalskiy
  * @version 1.0
  * @since 2017-12-12
- *
  */
+@Slf4j
 public final class CNumberFormatter {
 
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CNumberFormatter.class);
     /**
      * Default number format pattern
      */
@@ -99,13 +94,13 @@ public final class CNumberFormatter {
      * Round the given value to the specified number of decimal places. The
      * value is rounded using the {@link BigDecimal#ROUND_HALF_UP} method.
      *
-     * @param x the value to round.
+     * @param x     the value to round.
      * @param scale the number of digits to the right of the decimal point.
      * @return the rounded value.
      * @since 1.1
      */
     public static double round(double x, int scale) {
-        return CNumberFormatter.round(x, scale, BigDecimal.ROUND_HALF_UP);
+        return CNumberFormatter.round(x, scale, RoundingMode.HALF_UP);
     }
 
     /**
@@ -113,18 +108,18 @@ public final class CNumberFormatter {
      * value is rounded using the given method which is any method defined in
      * {@link BigDecimal}.
      *
-     * @param x the value to round.
-     * @param scale the number of digits to the right of the decimal point.
+     * @param x              the value to round.
+     * @param scale          the number of digits to the right of the decimal point.
      * @param roundingMethod the rounding method as defined in
-     * {@link BigDecimal}.
+     *                       {@link BigDecimal}.
      * @return the rounded value.
      * @since 1.1
      */
-    public static double round(double x, int scale, int roundingMethod) {
+    public static double round(double x, int scale, final RoundingMode roundingMode) {
         try {
             return (new BigDecimal(Double.toString(x))
-                    .setScale(scale, roundingMethod))
-                    .doubleValue();
+                .setScale(scale, roundingMode))
+                .doubleValue();
         } catch (NumberFormatException ex) {
             if (Double.isInfinite(x)) {
                 return x;

@@ -24,34 +24,22 @@
 package com.wildbeeslabs.jentle.algorithms.rating;
 
 import com.wildbeeslabs.jentle.algorithms.format.CNumberFormatter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.util.*;
 
 /**
- *
  * Custom slope one algorithm implementation
  *
- * @author Alex
- * @version 1.0.0
  * @param <T>
  * @param <E>
+ * @author Alex
+ * @version 1.0.0
  * @since 2017-08-07
  */
+@Slf4j
 public final class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem> {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LogManager.getLogger(CSlopeOneAlgorithm.class);
 
     private final List<T> items = new ArrayList<>();
     private final Map<T, Map<T, Double>> diff = new HashMap<>();
@@ -65,9 +53,9 @@ public final class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem>
     }
 
     public void slopeOne() {
-        LOGGER.debug("Slope One - Before the Prediction");
+        log.debug("Slope One - Before the Prediction");
         buildDifferencesMatrix(this.inputData);
-        LOGGER.debug("\nSlope One - With Predictions");
+        log.debug("\nSlope One - With Predictions");
         predict(this.inputData);
     }
 
@@ -154,14 +142,14 @@ public final class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem>
 
     private void printData(final Map<E, Map<T, Double>> data) {
         for (final E user : data.keySet()) {
-            LOGGER.debug(user.getName() + ":");
+            log.debug(user.getName() + ":");
             print(data.get(user));
         }
     }
 
     private void print(final Map<T, Double> hashMap) {
         hashMap.keySet().stream().forEach((j) -> {
-            LOGGER.debug(StringUtils.SPACE + j.getName() + " --> " + CNumberFormatter.formatByPattern(hashMap.get(j).doubleValue(), "#0.000"));
+            log.debug(StringUtils.SPACE + j.getName() + " --> " + CNumberFormatter.formatByPattern(hashMap.get(j).doubleValue(), "#0.000"));
         });
     }
 
