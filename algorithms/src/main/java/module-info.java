@@ -27,4 +27,5 @@ module jentle.algorithms {
     requires commons.collections;
     requires org.apache.commons.text;
     requires jgrapht.core;
+    requires java.rmi;
 }

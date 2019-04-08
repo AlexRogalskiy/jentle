@@ -102,6 +102,16 @@
             <artifactId>edu.princeton.cs.introcs</artifactId>
             <version>${edu.princeton.cs.version}</version>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>edu.princeton.cs.introcs</groupId>-->
+        <!--<artifactId>stdlib-package</artifactId>-->
+        <!--<version>1.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>edu.princeton.cs</groupId>-->
+        <!--<artifactId>algs4</artifactId>-->
+        <!--<version>1.0.3</version>-->
+        <!--</dependency>-->
 
         <!-- Apache Commons Collections -->
         <dependency>
