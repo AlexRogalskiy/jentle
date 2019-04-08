@@ -922,34 +922,23 @@
             <name>Sonatype snapshot repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </releases>
         </repository>
-        <!--<repository>-->
-        <!--<id>org.coursera.algs4</id>-->
-        <!--<name>Algs4 coursera course custom repository</name>-->
-        <!--<url>https://bintray.com/algs4/maven/algs4</url>-->
-        <!--<snapshots>-->
-        <!--<enabled>true</enabled>-->
-        <!--</snapshots>-->
-        <!--<releases>-->
-        <!--<enabled>false</enabled>-->
-        <!--<updatePolicy>never</updatePolicy>-->
-        <!--</releases>-->
-        <!--</repository>-->
         <repository>
             <id>org.coursera.algs4</id>
             <name>Algs4 coursera course custom repository</name>
-            <url>http://kompics.sics.se/maven/repository/</url>
+            <!--<url>http://kompics.sics.se/maven/repository/</url>-->
+            <url>https://bintray.com/algs4/maven/algs4</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </releases>
         </repository>

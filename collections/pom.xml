@@ -25,6 +25,7 @@
 
         <apache.commons.collections.version>4.1</apache.commons.collections.version>
         <edu.princeton.cs.version>0.1.0-SNAPSHOT</edu.princeton.cs.version>
+        <edu.princeton.algs4.version>1.0.4</edu.princeton.algs4.version>
     </properties>
 
     <build>
@@ -105,11 +106,10 @@
         <!--<dependency>-->
         <!--<groupId>edu.princeton.cs</groupId>-->
         <!--<artifactId>algs4</artifactId>-->
-        <!--<version>1.0.4</version>-->
-        <!--<type>pom</type>-->
+        <!--<version>${edu.princeton.algs4.version}</version>-->
         <!--</dependency>-->
 
-        <!-- Apache Commons Collections -->
+        <!-- Apache Commons library dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
