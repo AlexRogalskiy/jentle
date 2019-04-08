@@ -8,7 +8,6 @@ module jentle.algorithms {
     requires org.apache.commons.lang3;
     requires tradukisto;
     requires commons.io;
-    //requires jgrapht.core;
     requires jentle.collections;
     requires io.jenetics.base;
     requires com.fasterxml.jackson.dataformat.xml;
@@ -27,4 +26,5 @@ module jentle.algorithms {
     requires commons.math3;
     requires commons.collections;
     requires org.apache.commons.text;
+    requires jgrapht.core;
 }

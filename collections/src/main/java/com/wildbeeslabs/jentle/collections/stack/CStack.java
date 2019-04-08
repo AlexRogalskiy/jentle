@@ -26,24 +26,22 @@ package com.wildbeeslabs.jentle.collections.stack;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- *
  * Custom stack implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
