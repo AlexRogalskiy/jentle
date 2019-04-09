@@ -27,6 +27,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -282,5 +283,15 @@ public class CReflectionUtils {
         modifiersField.setAccessible(true);
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.set(null, newValue);
+    }
+
+    public static Annotation getAnnotation(final AnnotatedElement element, final String annotationTypeName) {
+        Class<?> annotationType = null;
+        try {
+            annotationType = Class.forName(annotationTypeName);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex);
+        }
+        return element.getAnnotation(annotationType.asSubclass(Annotation.class));
     }
 }

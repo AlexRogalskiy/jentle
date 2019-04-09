@@ -121,22 +121,22 @@ public class CCollectionUtils {
 
     public static <K, V> Map<K, V> sortByValue(final Map<K, V> map, Comparator<? super V> comparator) {
         return map.entrySet()
-                .stream()
-                .sorted(Comparator.comparing(entry -> entry.getValue(), comparator))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            .stream()
+            .sorted(Comparator.comparing(entry -> entry.getValue(), comparator))
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     public static <K, V> Map<K, V> sortByKey(final Map<K, V> map, Comparator<? super K> comparator) {
         return map.entrySet()
-                .stream()
-                .sorted(Comparator.comparing(entry -> entry.getKey(), comparator))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            .stream()
+            .sorted(Comparator.comparing(entry -> entry.getKey(), comparator))
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     public static <T, K> Map<K, Integer> getMapSumBy(@NonNull final Stream<? extends T> stream, final Function<T, K> keys, final Function<T, Integer> values) {
@@ -189,15 +189,15 @@ public class CCollectionUtils {
 
     public static <T extends CharSequence> List<String> split(final T value, final String delimiter, final Predicate<? super String> predicate) {
         return Arrays.stream(String.valueOf(value).split(delimiter))
-                .map(String::trim)
-                .filter(predicate)
-                .collect(Collectors.toList());
+            .map(String::trim)
+            .filter(predicate)
+            .collect(Collectors.toList());
     }
 
     public static List<Character> splitToListOfChars(final CharSequence value) {
         return String.valueOf(value).chars()
-                .mapToObj(item -> (char) item)
-                .collect(Collectors.toList());
+            .mapToObj(item -> (char) item)
+            .collect(Collectors.toList());
     }
 
     public static <T, K> Map<K, Long> countBy(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy) {
@@ -254,9 +254,9 @@ public class CCollectionUtils {
     public static <T> List<T> generate(final Supplier<T> supplier, int skip, int limit) {
         final Stream<T> infiniteStreamOfRandomUUID = Stream.generate(supplier);
         return infiniteStreamOfRandomUUID
-                .skip(skip)
-                .limit(limit)
-                .collect(Collectors.toList());
+            .skip(skip)
+            .limit(limit)
+            .collect(Collectors.toList());
     }
 
     public static List<UUID> generateUUID(int skip, int limit) {
@@ -319,16 +319,16 @@ public class CCollectionUtils {
     private static int partition(final Integer[] arr, int left, int right) {
         int pivot = arr[right];
         final Integer[] leftArr = IntStream.range(left, right)
-                .filter(i -> arr[i] < pivot)
-                .map(i -> arr[i])
-                .boxed()
-                .toArray(Integer[]::new);
+            .filter(i -> arr[i] < pivot)
+            .map(i -> arr[i])
+            .boxed()
+            .toArray(Integer[]::new);
 
         final Integer[] rightArr = IntStream.range(left, right)
-                .filter(i -> arr[i] > pivot)
-                .map(i -> arr[i])
-                .boxed()
-                .toArray(Integer[]::new);
+            .filter(i -> arr[i] > pivot)
+            .map(i -> arr[i])
+            .boxed()
+            .toArray(Integer[]::new);
 
         int leftArraySize = leftArr.length;
         System.arraycopy(leftArr, 0, arr, left, leftArraySize);
@@ -410,5 +410,47 @@ public class CCollectionUtils {
                 };
             }
         };
+    }
+
+    public static <E extends Comparable<E>> E max(final Collection<E> c) {
+        if (c.isEmpty())
+            throw new IllegalArgumentException("Pusta kolekcja");
+
+        E result = null;
+        for (final E e : c)
+            if (Objects.isNull(result) || e.compareTo(result) > 0) {
+                result = Objects.requireNonNull(e);
+            }
+        return result;
+    }
+
+    public static <T extends Comparable<? super T>> T max(final List<? extends T> list) {
+        final Iterator<? extends T> i = list.iterator();
+        T result = i.next();
+        while (i.hasNext()) {
+            T t = i.next();
+            if (t.compareTo(result) > 0)
+                result = t;
+        }
+        return result;
+    }
+
+    public static <E> E reduce(final List<? extends E> list, final com.wildbeeslabs.jentle.algorithms.utils.CFunctionUtils.Function<E> f, E initVal) {
+        List<E> snapshot;
+        synchronized (list) {
+            snapshot = new ArrayList<>(list);
+        }
+        E result = initVal;
+        for (final E e : snapshot)
+            result = f.apply(result, e);
+        return result;
+    }
+
+    public static void swap(final List<?> list, int i, int j) {
+        swapHelper(list, i, j);
+    }
+
+    private static <E> void swapHelper(final List<E> list, int i, int j) {
+        list.set(i, list.set(j, list.get(i)));
     }
 }

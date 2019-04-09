@@ -1291,4 +1291,25 @@ public class CArrayUtils {
         Objects.requireNonNull(list);
         return list.stream().map((element) -> element.doubleValue()).reduce(initialValue, (accumulator, _item) -> accumulator + _item);
     }
+
+    public static List<Integer> intArrayAsList(final int[] a) {
+        Objects.requireNonNull(a);
+
+        return new AbstractList<>() {
+            public Integer get(int i) {
+                return a[i];
+            }
+
+            @Override
+            public Integer set(int i, final Integer val) {
+                int oldVal = a[i];
+                a[i] = val;
+                return oldVal;
+            }
+
+            public int size() {
+                return a.length;
+            }
+        };
+    }
 }
