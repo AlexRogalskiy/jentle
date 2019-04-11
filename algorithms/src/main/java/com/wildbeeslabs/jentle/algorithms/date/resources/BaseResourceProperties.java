@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date.resources;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CConverterUtils;
+import com.wildbeeslabs.jentle.algorithms.converter.CConverterUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

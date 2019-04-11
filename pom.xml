@@ -813,6 +813,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -826,6 +827,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -837,6 +839,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -848,6 +851,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -859,6 +863,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -870,6 +875,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -881,6 +887,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -892,6 +899,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -903,6 +911,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -915,6 +924,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
         <repository>
@@ -927,19 +937,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
-            </releases>
-        </repository>
-        <repository>
-            <id>org.coursera.algs4</id>
-            <name>Algs4 coursera course custom repository</name>
-            <!--<url>http://kompics.sics.se/maven/repository/</url>-->
-            <url>https://bintray.com/algs4/maven/algs4</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
     </repositories>
@@ -986,7 +984,7 @@
     </pluginRepositories>
 
     <dependencies>
-        <!-- Testing dependencies -->
+        <!-- Testing library dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -1018,7 +1016,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Logback dependencies -->
+        <!-- Logback library dependencies -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
@@ -1030,14 +1028,14 @@
             <version>${logback.version}</version>
         </dependency>
 
-        <!-- Lombok dependencies -->
+        <!-- Lombok library dependencies -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
 
-        <!-- Apache Commons dependencies -->
+        <!-- Apache Commons library dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

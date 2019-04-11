@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.algorithms.comparator.impl;
 
 import com.wildbeeslabs.jentle.algorithms.comparator.entry.DefaultDiffEntry;
 import com.wildbeeslabs.jentle.algorithms.comparator.entry.DiffEntry;
-import com.wildbeeslabs.jentle.algorithms.utils.CComparatorUtils;
+import com.wildbeeslabs.jentle.algorithms.comparator.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.algorithms.utils.CReflectionUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.wildbeeslabs.jentle.algorithms.utils.CStringUtils.sanitize;
+import static com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils.sanitize;
 
 /**
  * Default difference comparator implementation

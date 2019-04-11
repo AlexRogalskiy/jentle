@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jentle.algorithms.number;
 
 import com.wildbeeslabs.jentle.algorithms.bitwise.CBitwise;
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;

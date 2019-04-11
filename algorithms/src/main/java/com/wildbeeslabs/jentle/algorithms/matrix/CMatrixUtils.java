@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jentle.algorithms.matrix;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.tree.CTrie3;
@@ -38,14 +38,13 @@ import java.util.stream.IntStream;
 /**
  * Custom matrix utilities implementation
  *
- * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-09-01
  */
 @Slf4j
 @UtilityClass
-public class CMatrixUtils<T> {
+public class CMatrixUtils {
 
     public static <T> boolean matricesAreEqual(final T[][] m1, final T[][] m2, final Comparator<? super T> cmp) {
         Objects.requireNonNull(m1);
@@ -166,6 +165,7 @@ public class CMatrixUtils<T> {
     public static <T> boolean findElement(final T[][] matrix, final T elem, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         int row = 0;
         int col = matrix[0].length - 1;
         while (row < matrix.length && col >= 0) {
@@ -183,6 +183,7 @@ public class CMatrixUtils<T> {
     public static <T> Coordinate<T> findElement2(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         final Coordinate<T> origin = new Coordinate(0, 0);
         final Coordinate<T> dest = new Coordinate(matrix.length - 1, matrix[0].length - 1);
         return findElement(matrix, origin, dest, value, cmp);
@@ -198,7 +199,7 @@ public class CMatrixUtils<T> {
             return null;
         }
 
-        final Coordinate<T> start = (Coordinate<T>) origin.clone();
+        final Coordinate<T> start = origin.clone();
         int diagDist = Math.min(dest.row - origin.row, dest.column - origin.column);
         final Coordinate<T> end = new Coordinate<>(start.row + diagDist, start.column + diagDist);
         final Coordinate<T> p = new Coordinate<>(0, 0);
@@ -271,6 +272,7 @@ public class CMatrixUtils<T> {
     public static <T> Coordinate<T> findElement3(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         int l = matrix.length - 1;
         int k = 0;
         while (l >= 0 && k <= matrix[0].length - 1) {
@@ -288,11 +290,12 @@ public class CMatrixUtils<T> {
     public static <T> boolean checkDiagonal(final T[][] matrix, boolean isMainDiagonal, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         int row = 0;
         int column = isMainDiagonal ? 0 : matrix[0].length - 1;
         int direction = isMainDiagonal ? 1 : -1;
         final T first = matrix[0][column];
-        for (final T[] subMatrix : matrix) {
+        for (final T[] ignored : matrix) {
             if (Objects.compare(matrix[row][column], first, cmp) != 0) {
                 return false;
             }
@@ -305,6 +308,7 @@ public class CMatrixUtils<T> {
     public static <T> List<Integer> computeAreaSize(final T[][] matrix, final T emptyValue, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         boolean[][] visited = new boolean[matrix.length][matrix[0].length];
         final List<Integer> areaSize = new ArrayList<>();
         for (int r = 0; r < matrix.length; r++) {
@@ -354,11 +358,11 @@ public class CMatrixUtils<T> {
         return true;
     }
 
-    public static <T> Subsquare findSquare(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+    public static <T> SubSquare findSquare(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
         for (int i = matrix.length; i >= 1; i--) {
-            final Subsquare square = findSquareWithSize(matrix, value, i, cmp);
+            final SubSquare square = findSquareWithSize(matrix, value, i, cmp);
             if (Objects.nonNull(square)) {
                 return square;
             }
@@ -366,12 +370,12 @@ public class CMatrixUtils<T> {
         return null;
     }
 
-    private static <T> Subsquare findSquareWithSize(final T[][] matrix, final T value, int squareSize, final Comparator<? super T> cmp) {
+    private static <T> SubSquare findSquareWithSize(final T[][] matrix, final T value, int squareSize, final Comparator<? super T> cmp) {
         int count = matrix.length - squareSize + 1;
         for (int row = 0; row < count; row++) {
             for (int col = 0; col < count; col++) {
                 if (isSquare(matrix, value, row, col, squareSize, cmp)) {
-                    return new Subsquare(row, col, squareSize);
+                    return new SubSquare(row, col, squareSize);
                 }
             }
         }
@@ -401,13 +405,13 @@ public class CMatrixUtils<T> {
     @Data
     @EqualsAndHashCode
     @ToString
-    public static class Subsquare {
+    public static class SubSquare {
 
         private int row;
         private int col;
         private int size;
 
-        public Subsquare(int row, int col, int size) {
+        public SubSquare(int row, int col, int size) {
             this.row = row;
             this.col = col;
             this.size = size;
@@ -419,8 +423,8 @@ public class CMatrixUtils<T> {
     @ToString
     public static class SquareCell {
 
-        public int zerosRight = 0;
-        public int zerosBelow = 0;
+        public int zerosRight;
+        public int zerosBelow;
 
         public SquareCell(int zerosRight, int zerosBelow) {
             this.zerosRight = zerosRight;
@@ -428,12 +432,13 @@ public class CMatrixUtils<T> {
         }
     }
 
-    public static <T> Subsquare findSquare2(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+    public static <T> SubSquare findSquare2(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         final SquareCell[][] processed = processSquare(matrix, value, cmp);
         for (int i = matrix.length; i >= 1; i--) {
-            final Subsquare square = findSquareWithSize2(processed, 0, i);
+            final SubSquare square = findSquareWithSize2(processed, 0, i);
             if (Objects.nonNull(square)) {
                 return square;
             }
@@ -441,12 +446,12 @@ public class CMatrixUtils<T> {
         return null;
     }
 
-    private static Subsquare findSquareWithSize2(final SquareCell[][] matrix, int value, int squareSize) {
+    private static SubSquare findSquareWithSize2(final SquareCell[][] matrix, int value, int squareSize) {
         int count = matrix.length - squareSize + 1;
         for (int row = 0; row < count; row++) {
             for (int col = 0; col < count; col++) {
                 if (isSquare2(matrix, value, row, col, squareSize)) {
-                    return new Subsquare(row, col, squareSize);
+                    return new SubSquare(row, col, squareSize);
                 }
             }
         }
@@ -513,6 +518,7 @@ public class CMatrixUtils<T> {
     public static SubMatrix getMaxMatrix(int[][] matrix) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         SubMatrix best = null;
         int rowCount = matrix.length;
         int colCount = matrix[0].length;
@@ -556,6 +562,7 @@ public class CMatrixUtils<T> {
     public static SubMatrix getMaxMatrix2(int[][] matrix) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
+
         SubMatrix best = null;
         int rowCount = matrix.length;
         int colCount = matrix[0].length;
@@ -800,8 +807,9 @@ public class CMatrixUtils<T> {
     }
 
     public static int[][] randomMatrix(int rows, int columns, int min, int max) {
-        assert (rows > 0);
-        assert (columns > 0);
+        assert rows > 0 : "Should be greater than zero";
+        assert columns > 0 : "Should be greater than zero";
+
         final int[][] matrix = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -812,8 +820,9 @@ public class CMatrixUtils<T> {
     }
 
     public static <T extends Serializable> T[][] fillMatrix(int rows, int columns, final Class<? extends T> clazz, final T defaultValue) {
-        assert (rows > 0);
-        assert (columns > 0);
+        assert rows > 0 : "Should be greater than zero";
+        assert columns > 0 : "Should be greater than zero";
+
         final T[][] matrix = com.wildbeeslabs.jentle.collections.utils.CUtils.newMatrix(clazz, rows, columns);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -824,7 +833,7 @@ public class CMatrixUtils<T> {
     }
 
     public static int getFactorsOf(int i, int factor) {
-        assert (factor > 0);
+        assert factor > 0 : "Should be greater than zero";
         int count = 0;
         while (i % factor == 0) {
             count++;
@@ -834,9 +843,20 @@ public class CMatrixUtils<T> {
     }
 
     public static double[][] generateRandomDoubleMatrix(int n, int lowerBound, int upperBound) {
-        assert (n > 0);
+        assert n > 0 : "Should be greater than zero";
         double[][] randomMatrix = new double[n][n];
         IntStream.range(0, n).forEach(i -> IntStream.range(0, n).forEach(j -> randomMatrix[i][j] = CRandom.generateRandomDouble(lowerBound, upperBound)));
         return randomMatrix;
+    }
+
+    /**
+     * Checks index bounds by lower / upper bounds
+     *
+     * @param index      - initial input index to check by
+     * @param lowerBound - initial input lower bound
+     * @param upperBound - initial input upper bound
+     */
+    private void checkBound(int index, int lowerBound, int upperBound) {
+        assert index >= lowerBound && index <= upperBound : String.format("Should be in range [{%s},{%s}]", lowerBound, upperBound);
     }
 }

@@ -21,8 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.regex;
+package com.wildbeeslabs.jentle.algorithms.regex.impl;
 
+import com.wildbeeslabs.jentle.algorithms.regex.iface.IGenericMatcher;
+import com.wildbeeslabs.jentle.algorithms.regex.iface.IMatches;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

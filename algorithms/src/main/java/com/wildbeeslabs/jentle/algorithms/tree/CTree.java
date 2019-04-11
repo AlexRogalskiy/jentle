@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.tree;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CListUtils;
+import com.wildbeeslabs.jentle.algorithms.list.CListUtils;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended2;

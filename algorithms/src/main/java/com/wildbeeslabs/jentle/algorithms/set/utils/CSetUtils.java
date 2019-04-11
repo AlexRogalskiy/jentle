@@ -21,19 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jentle.algorithms.set.utils;
 
-import com.google.common.collect.Sets;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collector;
 
 /**
- * Custom map utilities implementation
+ * Custom set utilities implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -41,15 +42,42 @@ import java.util.Set;
  */
 @Slf4j
 @UtilityClass
-public class CMapUtils {
+public class CSetUtils {
 
-    public static <K, V> Set<K> keysDifference(final Map<K, V> left, final Map<K, V> right) {
-        if (Objects.isNull(left)) {
-            return Collections.emptySet();
+    public static <E> Set<E> xor(final Set<E> first, final Set<E> second) {
+        final Set<E> xor = difference(first, second);
+        xor.addAll(difference(second, first));
+        return xor;
+    }
+
+    /**
+     * null args are allowed
+     */
+    public static <E> Set<E> difference(final Set<E> first, final Set<E> second) {
+        if (Objects.isNull(first)) {
+            return Collections.EMPTY_SET;
         }
-        if (Objects.isNull(right)) {
-            return left.keySet();
+        if (Objects.isNull(second)) {
+            return first;
         }
-        return Sets.difference(left.keySet(), right.keySet());
+        final Set<E> difference = new HashSet<>(first);
+        difference.removeAll(second);
+        return difference;
+    }
+
+    /**
+     * @return ImmutableSet
+     */
+    public static <F, T> Set<T> transform(final Set<F> input, final Function<F, T> transformation) {
+        Objects.requireNonNull(input);
+        Objects.requireNonNull(transformation);
+        return input.stream().map(transformation::apply).collect(toImmutableSet());
+    }
+
+    public static <t> Collector<t, Set<t>, Set<t>> toImmutableSet() {
+        return Collector.of(HashSet::new, Set::add, (left, right) -> {
+            left.addAll(right);
+            return left;
+        }, Collections::unmodifiableSet);
     }
 }

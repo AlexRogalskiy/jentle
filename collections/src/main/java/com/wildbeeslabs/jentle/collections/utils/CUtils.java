@@ -134,7 +134,7 @@ public final class CUtils {
 
     public static <T> T getInstance(final Class<? extends T> clazz) {
         try {
-            return (T) clazz.getDeclaredConstructor().newInstance();
+            return clazz.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
             log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
         } catch (NoSuchMethodException ex) {

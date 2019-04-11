@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
-import com.wildbeeslabs.jentle.algorithms.utils.CMatrixUtils;
+import com.wildbeeslabs.jentle.algorithms.matrix.CMatrixUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import io.jenetics.*;
 import io.jenetics.engine.Codecs;

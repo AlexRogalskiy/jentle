@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jentle.algorithms.list;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import lombok.NonNull;

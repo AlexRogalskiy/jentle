@@ -25,22 +25,21 @@ package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 import edu.princeton.cs.introcs.StdRandom;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Queue;
+
 /**
- *
  * Custom randomized queue implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

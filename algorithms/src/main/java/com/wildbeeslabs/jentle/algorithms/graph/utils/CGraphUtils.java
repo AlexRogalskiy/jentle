@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jentle.algorithms.graph.utils;
 
 import com.wildbeeslabs.jentle.collections.graph.CGraph;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;

@@ -17,7 +17,7 @@ module jentle.collections {
 
     requires static lombok;
     requires slf4j.api;
-    requires edu.princeton.cs.introcs;
     requires org.apache.commons.lang3;
     requires commons.collections4;
+    requires stdlib;
 }

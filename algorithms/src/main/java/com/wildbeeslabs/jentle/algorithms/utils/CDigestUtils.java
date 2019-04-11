@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,11 +46,17 @@ import java.util.Objects;
 @UtilityClass
 public final class CDigestUtils {
 
-    // Default md5 hash algorithm
+    /**
+     * Default md5 hash algorithm
+     */
     private static final String DEFAULT_MD5_HASH = "MD5";
-    // Default sha-256 hash algorithm
+    /**
+     * Default sha-256 hash algorithm
+     */
     private static final String DEFAULT_SHA256_HASH = "SHA-256";
-    // Default hex array
+    /**
+     * Default hex array
+     */
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     public static byte[] md5(final String value) throws NoSuchAlgorithmException {
@@ -130,7 +137,7 @@ public final class CDigestUtils {
 
     private static byte[] digest(final String text) {
         try {
-            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            final MessageDigest digest = MessageDigest.getInstance(DEFAULT_SHA256_HASH);
             digest.update(text.getBytes(StandardCharsets.UTF_8));
             return digest.digest();
         } catch (NoSuchAlgorithmException e) {

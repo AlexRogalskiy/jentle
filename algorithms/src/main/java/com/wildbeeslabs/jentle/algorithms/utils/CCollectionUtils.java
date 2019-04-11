@@ -26,6 +26,8 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import com.codepoetics.protonpack.Indexed;
 import com.codepoetics.protonpack.StreamUtils;
 import com.wildbeeslabs.jentle.algorithms.list.CList;
+import com.wildbeeslabs.jentle.algorithms.list.CListUtils;
+import com.wildbeeslabs.jentle.algorithms.set.utils.CSetUtils;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

@@ -3,7 +3,7 @@ package com.wildbeeslabs.jentle.algorithms.comparator.impl;
 import com.google.common.collect.Sets;
 import com.wildbeeslabs.jentle.algorithms.comparator.DiffComparator;
 import com.wildbeeslabs.jentle.algorithms.comparator.entry.DiffEntry;
-import com.wildbeeslabs.jentle.algorithms.utils.CComparatorUtils;
+import com.wildbeeslabs.jentle.algorithms.comparator.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.algorithms.utils.CReflectionUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.utils;
+package com.wildbeeslabs.jentle.algorithms.converter;
 
 import com.wildbeeslabs.jentle.collections.map.CCheckedMap;
 import com.wildbeeslabs.jentle.collections.set.CCheckedSet;

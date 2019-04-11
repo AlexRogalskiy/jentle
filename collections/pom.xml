@@ -24,8 +24,8 @@
         <main-class>com.wildbeeslabs.jentle.collections.AppLoader</main-class>
 
         <apache.commons.collections.version>4.1</apache.commons.collections.version>
-        <edu.princeton.cs.version>0.1.0-SNAPSHOT</edu.princeton.cs.version>
-        <edu.princeton.algs4.version>1.0.4</edu.princeton.algs4.version>
+        <princeton.java.algorithms.version>4.0.1</princeton.java.algorithms.version>
+        <jama.version>1.0.3</jama.version>
     </properties>
 
     <build>
@@ -97,17 +97,17 @@
     </build>
 
     <dependencies>
-        <!-- Princeton library dependencies -->
+        <!-- Google Princeton library dependencies -->
         <dependency>
-            <groupId>edu.princeton.cs</groupId>
-            <artifactId>edu.princeton.cs.introcs</artifactId>
-            <version>${edu.princeton.cs.version}</version>
+            <groupId>com.googlecode.princeton-java-algorithms</groupId>
+            <artifactId>algorithms</artifactId>
+            <version>${princeton.java.algorithms.version}</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>edu.princeton.cs</groupId>-->
-        <!--<artifactId>algs4</artifactId>-->
-        <!--<version>${edu.princeton.algs4.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>gov.nist.math</groupId>
+            <artifactId>jama</artifactId>
+            <version>${jama.version}</version>
+        </dependency>
 
         <!-- Apache Commons library dependencies -->
         <dependency>

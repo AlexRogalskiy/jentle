@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.string;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
+import com.wildbeeslabs.jentle.algorithms.number.CNumericUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.string;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CNumericUtils;
-import com.wildbeeslabs.jentle.algorithms.utils.CStringUtils;
+import com.wildbeeslabs.jentle.algorithms.number.CNumericUtils;
+import com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils;
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import com.wildbeeslabs.jentle.collections.tree.CTrie;
 import com.wildbeeslabs.jentle.collections.tree.CTrie3;
