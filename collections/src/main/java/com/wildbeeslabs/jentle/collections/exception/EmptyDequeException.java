@@ -29,7 +29,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
  * Custom EmptyDequeException implementation
  *
  * @author Alex
@@ -40,7 +39,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class EmptyDequeException extends Exception {
+public class EmptyDequeException extends RuntimeException {
 
     public EmptyDequeException(final String message) {
         super(message);

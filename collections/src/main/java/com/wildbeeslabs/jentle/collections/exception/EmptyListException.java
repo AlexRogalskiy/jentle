@@ -30,7 +30,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
  * Custom EmptyListException implementation
  *
  * @author Alex
@@ -41,7 +40,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class EmptyListException extends Exception {
+public class EmptyListException extends RuntimeException {
 
     public EmptyListException(final String message) {
         super(message);

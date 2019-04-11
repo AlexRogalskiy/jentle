@@ -29,7 +29,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
  * Custom OverflowQueueException implementation
  *
  * @author Alex
@@ -40,7 +39,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class OverflowQueueException extends Exception {
+public class OverflowQueueException extends RuntimeException {
 
     public OverflowQueueException(final String message) {
         super(message);

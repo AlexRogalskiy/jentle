@@ -24,30 +24,28 @@
 package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
 import lombok.AccessLevel;
-
 import lombok.Setter;
-
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Objects;
+
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
+
 /**
- *
  * Custom circular array implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 public class CCircularArray<T extends Serializable> extends ACArray<T> {
 
@@ -67,7 +65,7 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
             throw new InvalidDimensionException(String.format("ERROR: %s (invalid initial size=%d)", this.getClass().getName(), size));
         }
         this.size = size;
-        this.array = CUtils.newArray(clazz, this.size);
+        this.array = newArray(clazz, this.size);
         if (Objects.nonNull(array)) {
             this.array = Arrays.copyOfRange(array, 0, Math.min(this.size, array.length));
         }
@@ -152,9 +150,9 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .appendSuper(super.toString())
-                .append("head", this.head)
-                .toString();
+            .appendSuper(super.toString())
+            .append("head", this.head)
+            .toString();
     }
 
     @Override
@@ -164,16 +162,16 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
         }
         final CCircularArray<T> other = (CCircularArray<T>) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
-                .append(this.head, other.head)
-                .isEquals();
+            .appendSuper(super.equals(obj))
+            .append(this.head, other.head)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(7, 79)
-                .appendSuper(super.hashCode())
-                .append(this.head)
-                .toHashCode();
+            .appendSuper(super.hashCode())
+            .append(this.head)
+            .toHashCode();
     }
 }

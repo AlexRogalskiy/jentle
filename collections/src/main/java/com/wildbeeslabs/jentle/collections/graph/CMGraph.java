@@ -25,7 +25,6 @@ package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.graph.CGraph.CGraphNode;
 import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,6 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
+
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newMatrix;
 
 /**
  * Custom matrix graph implementation
@@ -49,7 +50,7 @@ public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
     protected CGraphNode<T>[][] graph;
 
     public CMGraph(final Class<? extends CGraphNode<T>> clazz, int numOfVertex) {
-        this.graph = CUtils.newMatrix(clazz, numOfVertex, numOfVertex);
+        this.graph = newMatrix(clazz, numOfVertex, numOfVertex);
     }
 
     public boolean has(int from, int to) {

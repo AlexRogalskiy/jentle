@@ -33,6 +33,8 @@ import org.apache.commons.math3.util.Pair;
 import java.util.*;
 import java.util.stream.IntStream;
 
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
+
 /**
  * Custom array utilities implementation
  *
@@ -588,7 +590,7 @@ public class CArrayUtils {
         Objects.requireNonNull(array);
         assert (k > 0 && k <= array.length);
         Arrays.sort(array, cmp);
-        final T[] smallest = CUtils.newArray(clazz, k);
+        final T[] smallest = newArray(clazz, k);
         System.arraycopy(array, 0, smallest, 0, k);
         return smallest;
     }
@@ -614,7 +616,7 @@ public class CArrayUtils {
     }
 
     private static <T> T[] heapToArray(final PriorityQueue<T> heap, final Class<? extends T[]> clazz) {
-        final T[] array = CUtils.newArray(clazz, heap.size());
+        final T[] array = newArray(clazz, heap.size());
         while (!heap.isEmpty()) {
             array[heap.size() - 1] = heap.poll();
         }
@@ -639,7 +641,7 @@ public class CArrayUtils {
         Objects.requireNonNull(array);
         assert (k > 0 && k <= array.length);
         final T threshold = rank(array, k - 1, cmp);
-        final T[] smallest = CUtils.newArray(clazz, k);
+        final T[] smallest = newArray(clazz, k);
         int count = 0;
         for (final T elem : array) {
             if (Objects.compare(elem, threshold, cmp) < 0) {

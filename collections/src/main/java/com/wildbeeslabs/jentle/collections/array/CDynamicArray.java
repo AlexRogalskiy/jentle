@@ -24,7 +24,6 @@
 package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -35,6 +34,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
+
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
 
 /**
  * Custom dynamic array implementation
@@ -76,7 +77,7 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         }
         this.size = size;
         this.capacity = (capacity < size ? size : capacity);
-        this.array = CUtils.newArray(clazz, this.capacity);
+        this.array = newArray(clazz, this.capacity);
         if (Objects.nonNull(array)) {
             this.array = Arrays.copyOfRange(array, 0, Math.min(this.size, array.length));
         }
@@ -167,8 +168,8 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
     }
 
     private void changeCapacity() {
-        //T[] temp = CUtils.newArray((Class<? extends T[]>) this.array.getClass(), this.capacity);
-        T[] temp = Arrays.copyOfRange(this.array, 0, this.size);
+        //T[] temp = newArray((Class<? extends T[]>) this.array.getClass(), this.capacity);
+        final T[] temp = Arrays.copyOfRange(this.array, 0, this.size);
         this.array = temp;
     }
 

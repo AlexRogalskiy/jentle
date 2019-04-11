@@ -30,7 +30,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
  * Custom EmptyQueueException implementation
  *
  * @author Alex
@@ -41,7 +40,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class EmptyQueueException extends Exception {
+public class EmptyQueueException extends RuntimeException {
 
     public EmptyQueueException(final String message) {
         super(message);

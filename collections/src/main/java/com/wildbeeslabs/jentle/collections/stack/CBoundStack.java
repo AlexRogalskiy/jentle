@@ -25,24 +25,23 @@ package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
 
 /**
- *
  * Custom bound stack implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -54,7 +53,7 @@ public class CBoundStack<T> extends ACStack<T> {
 
     public CBoundStack(int maxSize, final Class<? extends T[]> clazz) {
         assert (size > 0);
-        this.stack = CUtils.newArray(clazz, maxSize);
+        this.stack = newArray(clazz, maxSize);
         this.size = 0;
     }
 

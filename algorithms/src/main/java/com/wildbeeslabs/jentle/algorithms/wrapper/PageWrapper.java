@@ -1,8 +1,22 @@
 package com.wildbeeslabs.jentle.algorithms.wrapper;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class PageWrapper<T> {
+@Data
+@EqualsAndHashCode
+@ToString
+public class PageWrapper<T> implements Serializable {
+
+    /**
+     * Default explicit serialVersionUID for interoperability
+     */
+    private static final long serialVersionUID = -547298677024456198L;
+
     private List<T> content;
     private Boolean last;
     private Boolean first;
@@ -11,84 +25,4 @@ public class PageWrapper<T> {
     private Integer size;
     private Integer number;
     private Integer numberOfElements;
-//    private Sort sort;
-
-    public Boolean getLast() {
-        return last;
-    }
-
-    public void setLast(Boolean last) {
-        this.last = last;
-    }
-
-    public Boolean getFirst() {
-        return first;
-    }
-
-    public void setFirst(Boolean first) {
-        this.first = first;
-    }
-
-    public Integer getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public Integer getTotalElements() {
-        return totalElements;
-    }
-
-    public void setTotalElements(Integer totalElements) {
-        this.totalElements = totalElements;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public Integer getNumberOfElements() {
-        return numberOfElements;
-    }
-
-    public void setNumberOfElements(Integer numberOfElements) {
-        this.numberOfElements = numberOfElements;
-    }
-
-    public List<T> getContent() {
-        return content;
-    }
-
-    public void setContent(List<T> content) {
-        this.content = content;
-    }
-
-    //    public Sort getSort() {
-//        return sort;
-//    }
-//    public void setSort(Sort sort) {
-//        this.sort = sort;
-//    }
-    @Override
-    public String toString() {
-        return "PageImplWrapper [last=" + last + ", first=" + first
-                + ", totalPages=" + totalPages + ", totalElements="
-                + totalElements + ", size=" + size + ", number=" + number
-                + ", numberOfElements=" + numberOfElements + ", content="
-                + content;// + ", sort=" + sort + "]";
-    }
 }

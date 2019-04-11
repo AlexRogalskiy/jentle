@@ -28,12 +28,15 @@ import com.wildbeeslabs.jentle.collections.tree.CTrie3;
 import lombok.*;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newMatrix;
 
 /**
  * Custom matrix utilities implementation
@@ -46,9 +49,12 @@ import java.util.stream.IntStream;
 @UtilityClass
 public class CMatrixUtils {
 
-    public static <T> boolean matricesAreEqual(final T[][] m1, final T[][] m2, final Comparator<? super T> cmp) {
+    public static <T> boolean equals(final T[][] m1, final T[][] m2, final Comparator<? super T> cmp) {
         Objects.requireNonNull(m1);
+        Objects.requireNonNull(m1[0]);
         Objects.requireNonNull(m2);
+        Objects.requireNonNull(m2[0]);
+
         if (m1.length != m2.length || m1[0].length != m2[0].length) {
             return false;
         }
@@ -62,13 +68,18 @@ public class CMatrixUtils {
         return true;
     }
 
-    private static <T> void updateColumn(final T[][] matrix, int col, final T value) {
+    public static <T> void updateColumn(final T[][] matrix, int col, final T value) {
+        Objects.requireNonNull(matrix);
+
         for (final T[] row : matrix) {
             row[col] = value;
         }
     }
 
-    private static <T> void updateRow(final T[][] matrix, int row, final T value) {
+    public static <T> void updateRow(final T[][] matrix, int row, final T value) {
+        Objects.requireNonNull(matrix);
+        Objects.requireNonNull(matrix[row]);
+
         for (int j = 0; j < matrix[row].length; j++) {
             matrix[row][j] = value;
         }
@@ -76,7 +87,9 @@ public class CMatrixUtils {
 
     public static <T> void rotate(final T[][] matrix, int size) {
         Objects.requireNonNull(matrix);
-        if (Objects.isNull(matrix[0]) || matrix.length != matrix[0].length) {
+        Objects.requireNonNull(matrix[0]);
+
+        if (matrix.length != matrix[0].length) {
             return;
         }
         for (int layer = 0; layer < size / 2; layer++) {
@@ -93,11 +106,10 @@ public class CMatrixUtils {
         }
     }
 
-    public static <T> void replaceRCByDefault(final T[][] matrix, final T value, final T defaultValue) {
+    public static <T> void replaceBy(final T[][] matrix, final T value, final T defaultValue) {
         Objects.requireNonNull(matrix);
-        if (Objects.isNull(matrix[0])) {
-            return;
-        }
+        Objects.requireNonNull(matrix[0]);
+
         boolean rowHasZero = false, colHasZero = false;
         for (final T row : matrix[0]) {
             if (Objects.equals(row, value)) {
@@ -139,14 +151,13 @@ public class CMatrixUtils {
 
     public static <T> void shuffle(final T[][] matrix) {
         Objects.requireNonNull(matrix);
-        if (Objects.isNull(matrix[0])) {
-            return;
-        }
+        Objects.requireNonNull(matrix[0]);
+
         int nRows = matrix.length;
         int nColumns = matrix[0].length;
         int num = nRows * nColumns;
         for (int i = 0; i < num; i++) {
-            int j = i + CRandom.generateRandomInt(0, num - i);
+            int j = i + RandomUtils.nextInt(0, num - i);
             if (i != j) {
                 int row1 = i / nColumns;
                 int column1 = (i - row1 * nColumns) % nColumns;
@@ -162,16 +173,16 @@ public class CMatrixUtils {
         }
     }
 
-    public static <T> boolean findElement(final T[][] matrix, final T elem, final Comparator<? super T> cmp) {
+    public static <T> boolean exists(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
 
         int row = 0;
         int col = matrix[0].length - 1;
         while (row < matrix.length && col >= 0) {
-            if (Objects.compare(matrix[row][col], elem, cmp) == 0) {
+            if (Objects.compare(matrix[row][col], value, cmp) == 0) {
                 return true;
-            } else if (Objects.compare(matrix[row][col], elem, cmp) > 0) {
+            } else if (Objects.compare(matrix[row][col], value, cmp) > 0) {
                 col--;
             } else {
                 row++;
@@ -180,7 +191,7 @@ public class CMatrixUtils {
         return false;
     }
 
-    public static <T> Coordinate<T> findElement2(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+    public static <T> Coordinate<T> find(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
 
@@ -269,7 +280,7 @@ public class CMatrixUtils {
         }
     }
 
-    public static <T> Coordinate<T> findElement3(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
+    public static <T> Coordinate<T> search(final T[][] matrix, final T value, final Comparator<? super T> cmp) {
         Objects.requireNonNull(matrix);
         Objects.requireNonNull(matrix[0]);
 
@@ -511,7 +522,6 @@ public class CMatrixUtils {
                 this.col2 = col2;
                 this.sum = sum;
             }
-
         }
     }
 
@@ -614,10 +624,11 @@ public class CMatrixUtils {
         }
     }
 
-    public static void createCrossWord(final String[] list) {
+    public static Rectangle createCrossWord(final String[] list) {
         final WordGroup[] groupList = WordGroup.createWordGroups(list);
         int maxWordLength = groupList.length;
         final CTrie3[] trieList = new CTrie3[maxWordLength];
+        return maxRectangle(maxWordLength, groupList, trieList);
     }
 
     private static Rectangle maxRectangle(int maxWordLength, final WordGroup[] groupList, final CTrie3[] trieList) {
@@ -727,13 +738,13 @@ public class CMatrixUtils {
             return true;
         }
 
-        public Rectangle append(final String s) {
-            if (s.length() == this.length) {
+        public Rectangle append(final String value) {
+            if (value.length() == this.length) {
                 char temp[][] = new char[this.height + 1][this.length];
                 for (int i = 0; i < this.height; i++) {
                     System.arraycopy(this.matrix[i], 0, temp[i], 0, this.length);
                 }
-                s.getChars(0, this.length, temp[this.height], 0);
+                value.getChars(0, this.length, temp[this.height], 0);
                 return new Rectangle(temp);
             }
             return null;
@@ -823,7 +834,7 @@ public class CMatrixUtils {
         assert rows > 0 : "Should be greater than zero";
         assert columns > 0 : "Should be greater than zero";
 
-        final T[][] matrix = com.wildbeeslabs.jentle.collections.utils.CUtils.newMatrix(clazz, rows, columns);
+        final T[][] matrix = newMatrix(clazz, rows, columns);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 matrix[i][j] = SerializationUtils.clone(defaultValue);
@@ -832,31 +843,22 @@ public class CMatrixUtils {
         return matrix;
     }
 
-    public static int getFactorsOf(int i, int factor) {
-        assert factor > 0 : "Should be greater than zero";
-        int count = 0;
-        while (i % factor == 0) {
-            count++;
-            i /= factor;
-        }
-        return count;
-    }
-
     public static double[][] generateRandomDoubleMatrix(int n, int lowerBound, int upperBound) {
         assert n > 0 : "Should be greater than zero";
+
         double[][] randomMatrix = new double[n][n];
         IntStream.range(0, n).forEach(i -> IntStream.range(0, n).forEach(j -> randomMatrix[i][j] = CRandom.generateRandomDouble(lowerBound, upperBound)));
         return randomMatrix;
     }
 
     /**
-     * Checks index bounds by lower / upper bounds
+     * Checks index by lower / upper bounds
      *
      * @param index      - initial input index to check by
      * @param lowerBound - initial input lower bound
      * @param upperBound - initial input upper bound
      */
     private void checkBound(int index, int lowerBound, int upperBound) {
-        assert index >= lowerBound && index <= upperBound : String.format("Should be in range [{%s},{%s}]", lowerBound, upperBound);
+        assert (index >= lowerBound && index <= upperBound) : String.format("Should be in range [{%s},{%s}]", lowerBound, upperBound);
     }
 }

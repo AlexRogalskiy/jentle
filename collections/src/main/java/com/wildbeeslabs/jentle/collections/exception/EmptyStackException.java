@@ -30,7 +30,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
  * Custom EmptyStackException implementation
  *
  * @author Alex
@@ -41,7 +40,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class EmptyStackException extends Exception {
+public class EmptyStackException extends RuntimeException {
 
     public EmptyStackException(final String message) {
         super(message);

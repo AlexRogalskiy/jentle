@@ -1,16 +1,11 @@
 package com.wildbeeslabs.jentle.algorithms.pathfinder.repository;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.RandomUtils;
 
 import java.util.List;
-import java.util.Random;
 
 public class GraphDAO {
-
-    /**
-     * Default {@link Random} generator
-     */
-    private static final Random random = new Random();
 
     public List<String> listLocations() {
         return Lists.newArrayList(
@@ -19,7 +14,7 @@ public class GraphDAO {
     }
 
     public String getVoyageNumber(final String from, final String to) {
-        final int i = this.random.nextInt(5);
+        final int i = RandomUtils.nextInt(0, 5);
         if (i == 0) return "0100S";
         if (i == 1) return "0200T";
         if (i == 2) return "0300A";

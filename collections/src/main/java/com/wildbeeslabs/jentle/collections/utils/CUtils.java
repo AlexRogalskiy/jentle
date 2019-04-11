@@ -27,6 +27,7 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.interfaces.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CStack;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -48,14 +49,6 @@ import static org.apache.commons.lang3.ArrayUtils.toArray;
  * @version 1.0.0
  * @since 2017-08-07
  */
-
-/**
- * Custom exception utilities implementation
- *
- * @author alexander.rogalskiy
- * @version 1.0
- * @since 2017-12-12
- */
 @Slf4j
 @UtilityClass
 public final class CUtils {
@@ -65,9 +58,14 @@ public final class CUtils {
      */
     public static final CUtils.CSortComparator DEFAULT_SORT_COMPARATOR = CUtils.getDefaultSortComparator();
 
+    /**
+     * Default {@link Comparator} implementation
+     *
+     * @param <T> type of {@link Comparable} instance
+     */
     public static class CSortComparator<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
 
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = -4449018458348301596L;
 
         @Override
         public int compare(final T first, final T last) {
@@ -82,18 +80,20 @@ public final class CUtils {
     public static Object[] merge(final Object o1, final Object o2) {
         Objects.requireNonNull(o1);
         Objects.requireNonNull(o2);
+
         if (!o1.getClass().isArray() && !o2.getClass().isArray()) {
             return new Object[]{o1, o2};
         }
-        Object[] a1 = toArray(o1);
-        Object[] a2 = toArray(o2);
+        final Object[] a1 = toArray(o1);
+        final Object[] a2 = toArray(o2);
         return ArrayUtils.addAll(a1, a2);
     }
 
-    public static <T> T safeCast(final Object o, final Class<T> clazz) {
-        Objects.requireNonNull(o);
+    public static <T> T safeCast(final Object obj, final Class<T> clazz) {
+        Objects.requireNonNull(obj);
         Objects.requireNonNull(clazz);
-        return (clazz.isInstance(o)) ? clazz.cast(o) : null;
+
+        return (clazz.isInstance(obj)) ? clazz.cast(obj) : null;
     }
 
     public static <T> Collection<? extends T> union(final Iterable<? extends T> first, final Iterable<? extends T> second) {
@@ -114,33 +114,31 @@ public final class CUtils {
         return result;
     }
 
-    public static <T> T[] newArray(final Class<? extends T[]> type, int size) {
-        assert (Objects.nonNull(type));
-        assert (size >= 0);
+    public static <T> T[] newArray(@NonNull final Class<? extends T[]> type, int size) {
+        assert size >= 0 : "Should be greater than or equal zero";
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
-    public static <T> T[] newArray2(final Class<? extends T> type, int size) {
-        assert (Objects.nonNull(type));
-        assert (size >= 0);
+    public static <T> T[] newArray2(@NonNull final Class<? extends T> type, int size) {
+        assert size >= 0 : "Should be greater than or equal zero";
         return (T[]) Array.newInstance(type, size);
     }
 
-    public static <T> T[][] newMatrix(final Class<? extends T> type, int rows, int columns) {
-        assert (Objects.nonNull(type));
-        assert (rows >= 0 && columns >= 0);
-        return (T[][]) Array.newInstance(type, rows, columns);
+    public static <T> T[][] newMatrix(@NonNull final Class<? extends T> type, int rowCount, int colCount) {
+        assert rowCount >= 0 : "Should be greater than or equal zero";
+        assert colCount >= 0 : "Should be greater than or equal zero";
+        return (T[][]) Array.newInstance(type, rowCount, colCount);
     }
 
-    public static <T> T getInstance(final Class<? extends T> clazz) {
+    public static <T> T getInstance(@NonNull final Class<? extends T> clazz) {
         try {
             return clazz.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
-            log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+            log.error("ERROR: cannot initialize class instance={}, message={}", clazz, ex.getMessage());
         } catch (NoSuchMethodException ex) {
-            log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+            log.error("ERROR: cannot execute method of class instance={}, message={}", clazz, ex.getMessage());
         } catch (InvocationTargetException ex) {
-            log.error("ERROR: cannot initialize class instance=" + clazz + ", message=" + ex.getMessage());
+            log.error("ERROR: cannot get class instance={}, message={}", clazz, ex.getMessage());
         }
         return null;
     }

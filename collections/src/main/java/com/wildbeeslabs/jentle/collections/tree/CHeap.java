@@ -36,6 +36,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
+
 /**
  * Custom heap implementation
  *
@@ -61,7 +63,7 @@ public class CHeap<T> {
         this.size = 0;
         this.capacity = capacity;
         this.cmp = cmp;
-        this.array = CUtils.newArray(clazz, this.capacity);
+        this.array = newArray(clazz, this.capacity);
     }
 
     public void insert(final T item) throws NoSpaceAvailableException {

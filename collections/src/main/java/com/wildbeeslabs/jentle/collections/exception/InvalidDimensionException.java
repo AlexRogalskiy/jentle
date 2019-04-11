@@ -30,7 +30,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
  * Custom InvalidDimensionException implementation
  *
  * @author Alex
@@ -41,7 +40,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class InvalidDimensionException extends Exception {
+public class InvalidDimensionException extends RuntimeException {
 
     public InvalidDimensionException(final String message) {
         super(message);
@@ -54,7 +53,7 @@ public class InvalidDimensionException extends Exception {
     public InvalidDimensionException(final String message, final Throwable cause) {
         super(message, cause);
     }
-    
+
     @Override
     public String getMessage() {
         return super.getMessage();

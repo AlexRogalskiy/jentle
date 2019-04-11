@@ -23,12 +23,28 @@
  */
 package com.wildbeeslabs.jentle.algorithms.wrapper;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
+@Data
+@EqualsAndHashCode
+@ToString
 public class MapWrapper<K, V, T extends Map<K, V> & Serializable> implements Serializable {
+
+    /**
+     * Default explicit serialVersionUID for interoperability
+     */
+    private static final long serialVersionUID = -1216562372938767290L;
+
+    /**
+     * Wrapped {@link Map} instance
+     */
     private final T map;
 
     public MapWrapper(final T map) {
@@ -42,6 +58,6 @@ public class MapWrapper<K, V, T extends Map<K, V> & Serializable> implements Ser
 
     public static <K, V, T extends Map<K, V> & Serializable> T getMap(final Map<String, Serializable> intent, final String name) {
         final Serializable elem = intent.get(name);
-        return Objects.isNull(elem) ? (T) Collections.emptyMap() : ((MapWrapper<K, V, T>) elem).map;
+        return Objects.isNull(elem) ? (T) Collections.emptyMap() : ((MapWrapper<K, V, T>) elem).getMap();
     }
 }

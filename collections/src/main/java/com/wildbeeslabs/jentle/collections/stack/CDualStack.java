@@ -25,22 +25,23 @@ package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Queue;
+
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
+
 /**
- *
  * Custom dual stack implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -57,7 +58,7 @@ public class CDualStack<T> extends ACStack<T> {
         this.index1 = -1;
         this.index2 = maxSize;
         this.size = maxSize;
-        this.array = CUtils.newArray(clazz, maxSize);
+        this.array = newArray(clazz, maxSize);
     }
 
     public void push1(final T value) throws OverflowStackException {

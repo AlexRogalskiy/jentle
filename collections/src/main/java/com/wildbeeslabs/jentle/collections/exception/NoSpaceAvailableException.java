@@ -30,7 +30,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
  * Custom NoSpaceAvailableException implementation
  *
  * @author Alex
@@ -41,7 +40,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class NoSpaceAvailableException extends Exception {
+public class NoSpaceAvailableException extends RuntimeException {
 
     public NoSpaceAvailableException(final String message) {
         super(message);

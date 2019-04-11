@@ -37,7 +37,7 @@ import java.util.function.Predicate;
  * @since 2017-08-07
  */
 @UtilityClass
-public class CPredicates {
+public class CPredicateUtils {
 
     public final static Predicate<Object> randBoolean = predicate -> new Random().nextBoolean();
 

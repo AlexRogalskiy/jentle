@@ -24,24 +24,23 @@
 package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
-import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
 
 /**
- *
  * Custom bound queue implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -55,7 +54,7 @@ public class CBoundQueue<T> extends ACQueue<T> {
 
     public CBoundQueue(int maxSize, final Class<? extends T[]> clazz) {
         assert (size > 0);
-        this.queue = CUtils.newArray(clazz, maxSize);
+        this.queue = newArray(clazz, maxSize);
         this.head = 0;
         this.tail = maxSize - 1;
         this.size = 0;
@@ -77,7 +76,7 @@ public class CBoundQueue<T> extends ACQueue<T> {
     @Override
     public T poll() {
         if (this.isEmpty()) {
-            return null;//throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         final T removed = this.queue[this.head];
         this.queue[this.head] = null;

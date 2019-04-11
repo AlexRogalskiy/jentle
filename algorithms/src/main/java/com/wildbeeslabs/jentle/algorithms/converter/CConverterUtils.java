@@ -99,11 +99,11 @@ public class CConverterUtils {
 
     public static <T, A extends List<T>> Collector<T, A, List<T>> toImmutableList(final Supplier<A> supplier) {
         return Collector.of(
-                supplier,
-                List::add, (left, right) -> {
-                    left.addAll(right);
-                    return left;
-                }, Collections::unmodifiableList);
+            supplier,
+            List::add, (left, right) -> {
+                left.addAll(right);
+                return left;
+            }, Collections::unmodifiableList);
     }
 
     public static <T, U> U[] toArray(@NonNull final Map<? extends T, ? extends U> map, final Class<? extends U[]> type) {
@@ -276,10 +276,10 @@ public class CConverterUtils {
 
     public static <T, M> M convertTo(final T[] array, final IntPredicate indexPredicate, final Collector<T, ?, M> collector) {
         return IntStream
-                .range(0, array.length)
-                .filter(indexPredicate)
-                .mapToObj(i -> array[i])
-                .collect(collector);
+            .range(0, array.length)
+            .filter(indexPredicate)
+            .mapToObj(i -> array[i])
+            .collect(collector);
     }
 
     public static <T, M> M convert(@NonNull final Stream<Optional<T>> stream, final Collector<T, ?, M> collector) {
@@ -344,10 +344,10 @@ public class CConverterUtils {
 
     public static <T> Collector<T, ?, LinkedList<T>> toLinkedList() {
         return Collector.of(LinkedList::new, LinkedList::add,
-                (first, second) -> {
-                    first.addAll(second);
-                    return first;
-                });
+            (first, second) -> {
+                first.addAll(second);
+                return first;
+            });
     }
 
     public static Collection<Character> toCodePoints(@NonNull final String value) {

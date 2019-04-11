@@ -122,14 +122,14 @@ public class CNumericUtils {
     public static List<Integer> primeNumbersTill(int n) {
         assert (n >= 0);
         return IntStream.rangeClosed(2, n)
-                .filter(x -> isPrime(x)).boxed()
-                .collect(Collectors.toList());
+            .filter(x -> isPrime(x)).boxed()
+            .collect(Collectors.toList());
     }
 
     private static boolean isPrime(int n) {
         return IntStream.rangeClosed(2, (int) (Math.sqrt(n)))
-                .filter(i -> (i & 0X1) != 0)
-                .allMatch(i -> n % i != 0);
+            .filter(i -> (i & 0X1) != 0)
+            .allMatch(i -> n % i != 0);
     }
 
     public static int negate(int num) {
@@ -583,8 +583,8 @@ public class CNumericUtils {
 
     public List<Integer> noNegative(final List<Integer> nums) {
         return nums.stream()
-                .filter(n -> n >= 0)
-                .collect(Collectors.toList());
+            .filter(n -> n >= 0)
+            .collect(Collectors.toList());
     }
 
     public List<Integer> noNegative2(final List<Integer> nums) {
@@ -599,8 +599,8 @@ public class CNumericUtils {
 
     public List<Integer> doubling2(List<Integer> nums) {
         return nums.stream()
-                .map(n -> n * 2)
-                .collect(Collectors.toList());
+            .map(n -> n * 2)
+            .collect(Collectors.toList());
     }
 
     public static Double averageDouble(@NonNull final Stream<String> stream) {
@@ -703,13 +703,23 @@ public class CNumericUtils {
         return Double.compare(x, y);
     }
 
+    public static int getFactorsOf(int i, int factor) {
+        assert factor > 0 : "Should be greater than zero";
+        int count = 0;
+        while (i % factor == 0) {
+            count++;
+            i /= factor;
+        }
+        return count;
+    }
+
     @Data
     @EqualsAndHashCode
     @ToString
     public static class Averager implements IntConsumer {
 
-        private int total = 0;
-        private int count = 0;
+        private int total;
+        private int count;
 
         public double average() {
             return this.count > 0 ? ((double) this.total) / this.count : 0;
