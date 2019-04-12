@@ -21,10 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.math;
+package com.wildbeeslabs.jentle.algorithms.math.utils;
 
 import com.wildbeeslabs.jentle.collections.map.CHashMapList;
 import lombok.*;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -38,43 +39,40 @@ import java.util.stream.Stream;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CMath {
+@UtilityClass
+public class CMathUtils {
 
-    private CMath() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
-
-    public static interface MathOperation {
+    @FunctionalInterface
+    public interface MathOperation {
 
         int operation(int a, int b);
     }
 
-    final MathOperation addition = (int a, int b) -> a + b;
+    final MathOperation addition = (a, b) -> a + b;
 
     final MathOperation subtraction = (a, b) -> a - b;
 
-    final MathOperation multiplication = (int a, int b) -> a * b;
+    final MathOperation multiplication = (a, b) -> a * b;
 
-    final MathOperation division = (int a, int b) -> a / b;
+    final MathOperation division = (a, b) -> a / b;
 
-    // downward dynamic
-    public static int fibonacci1(int n) {
-        return fibonacci2(n, new int[n + 1]);
+    public static int fibonacci_1(int n) {
+        return fibonacci_2(n, new int[n + 1]);
     }
 
-    public static int fibonacci2(int i, int[] memo) {
+    public static int fibonacci_2(int i, int[] memo) {
         assert (i >= 0);
         if (0 == i || 1 == i) {
             return i;
         }
         if (0 == memo[i]) {
-            memo[i] = fibonacci2(i - 1, memo) + fibonacci2(i - 2, memo);
+            memo[i] = fibonacci_2(i - 1, memo) + fibonacci_2(i - 2, memo);
         }
         return memo[i];
     }
 
     //upward dynamic
-    public static int fibonacci3(int n) {
+    public static int fibonacci_3(int n) {
         assert (n >= 0);
         if (0 == n) {
             return 0;
@@ -91,7 +89,7 @@ public final class CMath {
         return memo[n - 1] + memo[n - 2];
     }
 
-    public static int fibonacci4(int n) {
+    public static int fibonacci_4(int n) {
         assert (n >= 0);
         if (0 == n) {
             return 1;
