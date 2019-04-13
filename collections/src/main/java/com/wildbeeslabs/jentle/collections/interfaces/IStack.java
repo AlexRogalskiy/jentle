@@ -27,13 +27,12 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 
 /**
- *
  * Custom stack interface declaration
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 public interface IStack<T> extends IBase<T> {
 
@@ -41,8 +40,7 @@ public interface IStack<T> extends IBase<T> {
      * Adds value to the top of the current stack
      *
      * @param value element value to push on the stack.
-     * @throws
-     * com.wildbeeslabs.jentle.collections.exception.OverflowStackException
+     * @throws com.wildbeeslabs.jentle.collections.exception.OverflowStackException
      */
     void push(final T value) throws OverflowStackException;
 

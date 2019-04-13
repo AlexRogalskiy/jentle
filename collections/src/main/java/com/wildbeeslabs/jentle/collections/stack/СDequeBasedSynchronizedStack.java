@@ -41,16 +41,16 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode
 @ToString
-public class DequeBasedSynchronizedStack<T> {
+public class СDequeBasedSynchronizedStack<T> {
 
     // Internal Deque which gets decorated for synchronization.
     private ArrayDeque<T> dequeStore;
 
-    public DequeBasedSynchronizedStack(int initialCapacity) {
+    public СDequeBasedSynchronizedStack(int initialCapacity) {
         this.dequeStore = new ArrayDeque<>(initialCapacity);
     }
 
-    public DequeBasedSynchronizedStack() {
+    public СDequeBasedSynchronizedStack() {
         dequeStore = new ArrayDeque<>();
     }
 
