@@ -35,7 +35,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * Custom stack with minimum implementation
+ * Custom stack with minimum implementation {@link CStack}
  *
  * @param <T>
  * @author Alex
@@ -48,13 +48,27 @@ import java.util.Objects;
 @ToString(callSuper = true)
 public class CStackMin<T> extends CStack<T> {
 
+    /**
+     * Default {@link CStack} instance
+     */
     protected CStack<T> minStack;
+    /**
+     * Default {@link Comparator} instance
+     */
     protected final Comparator<? super T> cmp;
 
+    /**
+     * Default min stack constructor
+     */
     public CStackMin() {
         this(CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
+    /**
+     * Default min stack constructor by input {@link Comparator} instance
+     *
+     * @param cmp - initial input {@link Comparator} instance
+     */
     public CStackMin(final Comparator<? super T> cmp) {
         this.cmp = cmp;
         this.minStack = new CStack<>();
@@ -62,7 +76,7 @@ public class CStackMin<T> extends CStack<T> {
 
     @Override
     public void push(final T value) throws OverflowStackException {
-        if (Objects.compare(value, this.min(), this.cmp) <= 0) {
+        if (Objects.compare(value, this.peek(), this.cmp) <= 0) {
             this.minStack.push(value);
         }
         super.push(value);
@@ -71,18 +85,14 @@ public class CStackMin<T> extends CStack<T> {
     @Override
     public T pop() throws EmptyStackException {
         final T value = super.pop();
-        if (Objects.compare(value, this.min(), this.cmp) == 0) {
+        if (Objects.compare(value, this.peek(), this.cmp) == 0) {
             this.minStack.pop();
         }
         return value;
     }
 
-    protected T min() {
-        try {
-            return this.minStack.peek();
-        } catch (EmptyStackException ex) {
-            log.error(String.format("ERROR: minimum stack is empty: message={%s}", ex.getMessage()));
-            return null;
-        }
+    @Override
+    public T peek() throws EmptyStackException {
+        return this.minStack.peek();
     }
 }

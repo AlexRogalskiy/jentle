@@ -69,9 +69,18 @@ public class CStack<T> extends ACStack<T> {
         }
     }
 
+    /**
+     * Default stack {@link CStackNode} node
+     */
     protected CStack.CStackNode<T> top;
+    /**
+     * Default stack size
+     */
     protected int size;
 
+    /**
+     * Default stack constructor
+     */
     public CStack() {
         this.top = null;
         this.size = 0;

@@ -45,7 +45,13 @@ import lombok.extern.slf4j.Slf4j;
 @ToString
 public abstract class ACStack<T> implements IStack<T> {
 
-    public void duplicate() throws EmptyStackException, OverflowStackException {
+    /**
+     * Swaps last elements on top of {@link ACStack}
+     *
+     * @throws EmptyStackException
+     * @throws OverflowStackException
+     */
+    public void swap() throws EmptyStackException, OverflowStackException {
         final T first = this.pop();
         final T second = this.pop();
         this.push(first);

@@ -25,24 +25,22 @@ package com.wildbeeslabs.jentle.collections.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
+ * Custom queue implementation {@link ACQueue}
  *
- * Custom queue implementation
- *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -70,10 +68,19 @@ public class CQueue<T> extends ACQueue<T> {
         }
     }
 
+    /**
+     * {@link CQueue} head {@link CQueueNode}
+     */
     protected CQueueNode<T> head;
+    /**
+     * {@link CQueue} tail {@link CQueueNode}
+     */
     protected CQueueNode<T> tail;
     protected int size;
 
+    /**
+     * Default {@link CQueue} constructor
+     */
     public CQueue() {
         this.head = this.tail = null;
         this.size = 0;
@@ -99,7 +106,7 @@ public class CQueue<T> extends ACQueue<T> {
     public boolean offer(final T value) {
         final CQueueNode<T> temp = new CQueueNode<>(value);
         if (Objects.nonNull(this.tail)) {
-            this.tail.next = temp;
+            this.tail.setNext(temp);
         }
         this.tail = temp;
         if (Objects.isNull(this.head)) {
@@ -109,12 +116,13 @@ public class CQueue<T> extends ACQueue<T> {
         return true;
     }
 
+    @Override
     public T poll() {
         if (this.isEmpty()) {
-            return null;//throw new EmptyQueueException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size()));
+            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%i)", this.getClass().getName(), this.size()));
         }
         final T data = this.head.getData();
-        this.head = this.head.next;
+        this.head = this.head.getNext();
         if (Objects.isNull(head)) {
             this.tail = null;
         }
@@ -126,7 +134,7 @@ public class CQueue<T> extends ACQueue<T> {
     public int size() {
         return this.size;
     }
-    
+
     @Override
     public void clear() {
         @SuppressWarnings("UnusedAssignment")
@@ -144,7 +152,7 @@ public class CQueue<T> extends ACQueue<T> {
     public T peek() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public boolean validate() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

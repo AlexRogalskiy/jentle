@@ -35,7 +35,7 @@ import java.util.Queue;
 import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
 
 /**
- * Custom bound queue implementation
+ * Custom bound queue implementation {@link ACQueue}
  *
  * @param <T>
  * @author Alex
@@ -47,11 +47,29 @@ import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
 @ToString(callSuper = true)
 public class CBoundQueue<T> extends ACQueue<T> {
 
+    /**
+     * Default array of queue elements
+     */
     protected T[] queue;
+    /**
+     * Default queue size
+     */
     private int size;
+    /**
+     * Default queue head index
+     */
     private int head;
+    /**
+     * Default queue tail index
+     */
     private int tail;
 
+    /**
+     * Default bound queue constructor by input max size and {@link Class} elements
+     *
+     * @param maxSize - initial input queue size
+     * @param clazz   - initial input element {@link Class}
+     */
     public CBoundQueue(int maxSize, final Class<? extends T[]> clazz) {
         assert (size > 0);
         this.queue = newArray(clazz, maxSize);

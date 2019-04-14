@@ -25,7 +25,10 @@ package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import lombok.*;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -45,15 +48,28 @@ import java.util.Stack;
 @ToString(callSuper = true)
 public class СLinkedStack<T> extends Stack<T> {
 
-    private Node<T> top;
+    private CQueueNode<T> top;
     private int size;
 
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Node<T> {
-        private T element;
-        private Node<T> next;
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
+    public static class CQueueNode<T> extends ACNode<T> {
+
+        private CQueueNode<T> next;
+
+        public CQueueNode() {
+            this(null);
+        }
+
+        public CQueueNode(final T data) {
+            this(data, null);
+        }
+
+        public CQueueNode(final T data, final CQueueNode<T> next) {
+            super(data);
+            this.next = next;
+        }
     }
 
     public СLinkedStack() {
@@ -73,8 +89,8 @@ public class СLinkedStack<T> extends Stack<T> {
 
     @Override
     public T push(final T value) throws OverflowStackException {
-        final Node node = new Node();
-        node.setElement(value);
+        final CQueueNode<T> node = new CQueueNode<>();
+        node.setData(value);
         node.setNext(this.top);
         this.top = node;
         this.size++;
@@ -86,7 +102,7 @@ public class СLinkedStack<T> extends Stack<T> {
         if (this.isEmpty()) {
             throw new EmptyStackException("ERROR: stack is empty");
         }
-        return this.top.getElement();
+        return this.top.getData();
     }
 
     @Override
@@ -94,7 +110,7 @@ public class СLinkedStack<T> extends Stack<T> {
         if (this.isEmpty()) {
             throw new EmptyStackException("ERROR: stack is empty");
         }
-        final T temp = this.top.getElement();
+        final T temp = this.top.getData();
         this.top = this.top.getNext();
         this.size--;
         return temp;

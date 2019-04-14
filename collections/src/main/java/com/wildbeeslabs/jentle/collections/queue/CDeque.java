@@ -36,7 +36,7 @@ import java.util.Objects;
 import java.util.Queue;
 
 /**
- * Custom deque implementation
+ * Custom deque implementation {@link ACQueue}
  *
  * @param <T>
  * @author Alex
