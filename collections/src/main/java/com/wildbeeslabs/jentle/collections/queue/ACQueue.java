@@ -31,7 +31,7 @@ import lombok.ToString;
 import java.util.AbstractQueue;
 
 /**
- * Custom abstract queue implementation
+ * Custom abstract queue implementation {@link AbstractQueue}
  *
  * @param <T>
  * @author Alex

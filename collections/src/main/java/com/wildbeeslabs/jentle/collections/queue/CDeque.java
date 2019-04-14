@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.queue;
 
-import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
+import com.wildbeeslabs.jentle.collections.exception.EmptyDequeException;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +36,7 @@ import java.util.Objects;
 import java.util.Queue;
 
 /**
- * Custom deque implementation {@link ACQueue}
+ * Custom deque implementation {@link ACDeque}
  *
  * @param <T>
  * @author Alex
@@ -47,7 +47,7 @@ import java.util.Queue;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CDeque<T> extends ACQueue<T> {
+public class CDeque<T> extends ACDeque<T> {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
@@ -71,10 +71,22 @@ public class CDeque<T> extends ACQueue<T> {
         }
     }
 
+    /**
+     * Default head {@link CDequeNode}
+     */
     protected CDequeNode<T> head;
+    /**
+     * Default tail {@link CDequeNode}
+     */
     protected CDequeNode<T> tail;
+    /**
+     * Default {@link CDeque} size
+     */
     protected int size;
 
+    /**
+     * Default deque constructor
+     */
     public CDeque() {
         this.head = this.tail = null;
         this.size = 0;
@@ -97,37 +109,62 @@ public class CDeque<T> extends ACQueue<T> {
     }
 
     @Override
-    public T poll() {
+    public T peekFirst() {
         try {
-            return this.removeFirst();
-        } catch (EmptyQueueException ex) {
-            log.error(ex.getMessage());
-            return null;
+            return this.getFirst();
+        } catch (EmptyDequeException ex) {
+            log.error(String.format("ERROR: message={%s}", ex.getMessage()));
         }
+        return null;
+    }
+
+    @Override
+    public T peekLast() {
+        try {
+            return this.getLast();
+        } catch (EmptyDequeException ex) {
+            log.error(String.format("ERROR: message={%s}", ex.getMessage()));
+        }
+        return null;
+    }
+
+    @Override
+    public T poll() {
+        return this.removeFirst();
     }
 
     @Override
     public T peek() {
         if (this.isEmpty()) {
-            return null;
+            throw new EmptyDequeException("ERROR: deque is empty");
         }
         return this.head.getData();
     }
 
     @Override
-    public T head() throws EmptyQueueException {
+    public T head() throws EmptyDequeException {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+            throw new EmptyDequeException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         return this.head.getData();
     }
 
     @Override
-    public T tail() throws EmptyQueueException {
+    public T tail() throws EmptyDequeException {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+            throw new EmptyDequeException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         return this.tail.getData();
+    }
+
+    @Override
+    public T getLast() {
+        return this.tail();
+    }
+
+    @Override
+    public T getFirst() {
+        return this.head();
     }
 
     @Override
@@ -145,6 +182,11 @@ public class CDeque<T> extends ACQueue<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Deque {@link Iterator} implementation
+     *
+     * @param <T> type {@link CDeque} element
+     */
     protected static class CDequeIterator<T> implements Iterator<T> {
 
         private CDeque.CDequeNode<? extends T> currentNode = null;
@@ -153,6 +195,7 @@ public class CDeque<T> extends ACQueue<T> {
             this.currentNode = source.head;
         }
 
+        @Override
         public T next() {
             if (!this.hasNext()) {
                 return null;
@@ -162,19 +205,23 @@ public class CDeque<T> extends ACQueue<T> {
             return node.getData();
         }
 
+        @Override
         public boolean hasNext() {
             return Objects.nonNull(this.currentNode);
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Remove operation is not supported");
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return (0 == this.size());
     }
 
+    @Override
     public void addFirst(final T data) {
         if (Objects.isNull(this.head)) {
             this.head = new CDequeNode<>(data);
@@ -189,6 +236,7 @@ public class CDeque<T> extends ACQueue<T> {
         this.size++;
     }
 
+    @Override
     public void addLast(final T data) {
         if (Objects.isNull(this.tail)) {
             this.tail = new CDequeNode<>(data);
@@ -203,9 +251,10 @@ public class CDeque<T> extends ACQueue<T> {
         this.size++;
     }
 
-    public T removeFirst() throws EmptyQueueException {
+    @Override
+    public T removeFirst() throws EmptyDequeException {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+            throw new EmptyDequeException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         final CDequeNode<T> oldFirst = this.head;
         this.head = oldFirst.getNext();
@@ -221,9 +270,10 @@ public class CDeque<T> extends ACQueue<T> {
         return oldFirst.getData();
     }
 
-    public T removeLast() throws EmptyQueueException {
+    @Override
+    public T removeLast() throws EmptyDequeException {
         if (this.isEmpty()) {
-            throw new EmptyQueueException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
+            throw new EmptyDequeException(String.format("ERROR: %s (empty size=%d)", this.getClass().getName(), this.size()));
         }
         final CDequeNode<T> oldLast = this.tail;
         this.tail = this.tail.getPrevious();
