@@ -21,41 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IBase;
+
+import java.util.Map;
 
 /**
  *
- * Custom sorted list interface declaration
+ * Custom base map interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
+ * @param <K>
+ * @param <V>
  */
-public interface ISortedList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
+public interface IBaseMap<K, V> extends IBase<Map.Entry<K, V>> {
 
     /**
-     * Add new node with value to list
+     * Gets the size of the list
      *
-     * @param value
+     * @return size of the list
      */
-    void insert(final T value);
+    int size();
 
     /**
-     * Returns node in list by node value
-     *
-     * @param value
-     * @return
+     * Removes all values from the list
      */
-    E find(final T value);
+    void clear();
 
     /**
-     * Validates the list according to the invariants
+     * Checks if the list contains values
      *
-     * @return true (true - if the list is valid, false - otherwise)
+     * @return boolean (true - if the list is empty, false - otherwise)
      */
-//    public boolean validate();
+    boolean isEmpty();
 }

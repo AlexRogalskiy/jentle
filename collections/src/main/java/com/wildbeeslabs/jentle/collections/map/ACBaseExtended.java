@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.map;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IBaseMapExtended;
+import com.wildbeeslabs.jentle.collections.interfaces.map.IBaseMapExtended;
 
 import java.util.Collection;
 import java.util.List;

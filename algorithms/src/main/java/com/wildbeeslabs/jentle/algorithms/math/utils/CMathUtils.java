@@ -28,7 +28,10 @@ import lombok.*;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 /**
@@ -680,5 +683,54 @@ public class CMathUtils {
         public static int min(int... numbers) {
             return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    @ToString
+    public static class Quote<T> {
+        private final LocalDate date;
+        private final double price;
+        private final QuoteType type;
+        private final QuotePeriod<T> period;
+
+        /**
+         * Default {@link Quote} period
+         */
+        @Data
+        @AllArgsConstructor
+        public static class QuotePeriod<T> {
+            private ChronoUnit unit;
+            private T prevPeriod;
+        }
+
+        /**
+         * Default {@link Quote} type
+         */
+        public enum QuoteType {
+            STANDARD,
+            PRIVATE,
+            PUBLIC
+        }
+    }
+
+    public static <T> void computeQuoteHighSpan(final Quote.QuotePeriod<T> period, final BiFunction<Integer, T, T> function, final Quote<T>... quotes) {
+        final Quote.QuotePeriod<T> EMPTY_QUOTE_PERIOD = new Quote.QuotePeriod<>(ChronoUnit.FOREVER, null);
+        final Stack<Quote<T>> stack = new Stack<>();
+        Arrays.stream(Optional.ofNullable(quotes).orElseGet(() -> new Quote[0])).forEach(quote -> {
+            int counter = -1;
+            while (!stack.isEmpty() && quote.getPrice() >= stack.peek().getPrice()) {
+                if (stack.isEmpty()) {
+                    period.setPrevPeriod((T) EMPTY_QUOTE_PERIOD);
+                } else {
+                    period.setPrevPeriod(stack.peek().getPeriod().getPrevPeriod());
+                }
+                quote.getPeriod().setPrevPeriod(function.apply(counter, period.getPrevPeriod()));//counter - period.getPrevPeriod()
+                stack.push(quote);
+                counter++;
+            }
+        });
+
     }
 }

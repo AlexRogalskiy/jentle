@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Custom EmptyListException implementation
+ * Custom empty list {@link RuntimeException} implementation
  *
  * @author Alex
  * @version 1.0.0

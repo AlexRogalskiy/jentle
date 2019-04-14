@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import java.util.Objects;

@@ -21,19 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.service;
+
+import java.io.Serializable;
 
 /**
  *
- * Custom graph interface declaration
+ * Custom base interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface IGraph<T> extends IBase<T> {
+public interface IBase<T> extends Serializable, Cloneable, Iterable<T> {//U extends ACNode<T>
 
-//    void add(int from, int to, final T data);
-//    Iterable<CGraphNode<T>> getNodes();
 }

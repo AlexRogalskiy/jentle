@@ -21,38 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
-import java.util.Map;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IBase;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
 
 /**
  *
- * Custom base map interface declaration
+ * Custom trie/retrieval interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <K>
- * @param <V>
+ * @param <T>
+ * @param <U>
  */
-public interface IBaseMap<K, V> extends IBase<Map.Entry<K, V>> {
+public interface ITrie<T, U extends ACBaseTrieNode<T, U>> extends IBase<T> {
 
     /**
-     * Gets the size of the list
+     * Returns the size of the tree.
      *
-     * @return size of the list
+     * @return size of the tree.
      */
     int size();
 
     /**
-     * Removes all values from the list
-     */
-    void clear();
-
-    /**
-     * Checks if the list contains values
+     * Checks if trie is empty
      *
-     * @return boolean (true - if the list is empty, false - otherwise)
+     * @return true - if tree is empty, false - otherwise
      */
     boolean isEmpty();
+
+    /**
+     * Returns current root node
+     *
+     * @return - current root node
+     */
+    U getRoot();
+
+    /**
+     * Checks if trie contains character sequence
+     *
+     * @param value - character sequence
+     * @return true - if trie contains character sequence, false - otherwise
+     */
+    boolean contains(final CharSequence value);
 }

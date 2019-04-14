@@ -21,20 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.list;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IBaseList;
+import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 /**
  *
- * Custom tree extended interface declaration
+ * Custom sorted list interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <U>
+ * @param <E>
  */
-public interface ITreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends IBaseTreeExtended<T, U>, ITree<T, U> {
+public interface ISortedList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
 
+    /**
+     * Add new node with value to list
+     *
+     * @param value
+     */
+    void insert(final T value);
+
+    /**
+     * Returns node in list by node value
+     *
+     * @param value
+     * @return
+     */
+    E find(final T value);
+
+    /**
+     * Validates the list according to the invariants
+     *
+     * @return true (true - if the list is valid, false - otherwise)
+     */
+//    public boolean validate();
 }

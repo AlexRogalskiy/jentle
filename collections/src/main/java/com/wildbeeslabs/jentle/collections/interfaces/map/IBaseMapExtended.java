@@ -21,24 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.map;
 
-import java.util.Iterator;
-import java.util.Map;
+import com.wildbeeslabs.jentle.collections.interfaces.tree.IBaseMap;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  *
- * Custom map interface declaration
+ * Custom base map extended interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <K>
  * @param <V>
+ * @param <T>
  */
-public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
+public interface IBaseMapExtended<K, V, T extends Collection<V>> extends IBaseMap<K, V> {
 
-    Iterator<? extends K> keysIterator();
+    void put(final K key, final V item);
 
-    Iterator<? extends V> valuesIterator();
+    void put(final K key, final T items);
+
+    T get(final K key);
+
+    boolean containsKey(final K key);
+
+    boolean containsKeyValue(final K key, final V value);
+
+    Set<K> keySet();
+
+    Collection<T> values();
 }

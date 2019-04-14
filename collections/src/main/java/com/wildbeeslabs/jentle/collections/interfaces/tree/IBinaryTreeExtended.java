@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 /**
  *
- * Custom binary tree interface declaration
+ * Custom binary tree extended interface declaration
  *
  * @author Alex
  * @version 1.0.0
@@ -35,20 +35,6 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
  * @param <T>
  * @param <U>
  */
-public interface IBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends IBaseTree<T, U> {
+public interface IBinaryTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends IBaseTreeExtended<T, U>, IBinaryTree<T, U> {
 
-    /**
-     * Inserts new node with the current value based on tree order sequence
-     *
-     * @param value - node value
-     */
-    void insert(final T value);
-
-    /**
-     * Returns node with the current value
-     *
-     * @param value - node value
-     * @return node with the current value
-     */
-    U find(final T value);
 }

@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.set;
 
-import com.wildbeeslabs.jentle.collections.interfaces.ISet;
+import com.wildbeeslabs.jentle.collections.interfaces.set.ISet;
 
 import java.util.Arrays;
 import java.util.Iterator;

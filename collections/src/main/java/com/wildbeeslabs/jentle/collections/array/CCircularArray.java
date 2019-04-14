@@ -26,13 +26,12 @@ package com.wildbeeslabs.jentle.collections.array;
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
 import lombok.AccessLevel;
 import lombok.Setter;
-import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -47,7 +46,7 @@ import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public class CCircularArray<T extends Serializable> extends ACArray<T> {
+public class CCircularArray<T> extends ACArray<T> {
 
     @Setter(AccessLevel.NONE)
     private int head;
@@ -89,7 +88,7 @@ public class CCircularArray<T extends Serializable> extends ACArray<T> {
         startIndex = this.convert(startIndex);
         endIndex = this.convert(endIndex);
         assert (startIndex <= endIndex);
-        Arrays.fill(this.array, startIndex, endIndex, SerializationUtils.clone(value));
+        Arrays.fill(this.array, startIndex, endIndex, ObjectUtils.clone(value));
     }
 
     @Override

@@ -21,38 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
-import java.util.Set;
+import com.wildbeeslabs.jentle.collections.interfaces.tree.IBaseTree;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
+import java.util.Optional;
 
 /**
  *
- * Custom set interface declaration
+ * Custom tree interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <U>
  */
-public interface ISet<T> extends IBase<T>, Set<T> {
+public interface ITree<T, U extends ACBaseTreeNode<T, U>> extends IBaseTree<T, U> {
 
     /**
-     * Checks if the current set contains the value
+     * Creates new node as a left child of the current node
      *
-     * @param item - the value to check
-     * @return true - if the current set contains value, false - otherwise
+     * @param node - current node
+     * @param value - node value (optional)
      */
-    public boolean has(final T item);
+    void insertLeft(final U node, final Optional<? extends T> value);
 
     /**
-     * Removes the value from the current set
+     * Creates new node as a right child of the current node
      *
-     * @param item - value to be removed
-     * @return the current set without remove value
+     * @param node - current node
+     * @param value - node value (optional)
      */
-    public ISet<T> disjunct(final T item);
+    void insertRight(final U node, final Optional<? extends T> value);
 
-    //public ISet<T> remove(final T item);
-    //public int size();
-    //public Iterator<? extends T> iterator();
+    /**
+     * Replaces current node with a new value
+     *
+     * @param node - current node
+     * @param newValue - new node value
+     * @return previous value of current node
+     */
+    T replaceElement(final U node, final T newValue);
+
+    /**
+     * Swaps elements of first and last nodes
+     *
+     * @param first - first node to replace
+     * @param last - last node to be replaced with
+     */
+    void swapElements(final U first, final U last);
 }

@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IBaseTree;
-import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
+import com.wildbeeslabs.jentle.collections.interfaces.tree.IBaseTree;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IVisitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode2;
 

@@ -24,20 +24,18 @@
 package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
-import com.wildbeeslabs.jentle.collections.interfaces.IList;
-import com.wildbeeslabs.jentle.collections.interfaces.IListLike;
-import com.wildbeeslabs.jentle.collections.interfaces.IResultVisitor;
-import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IList;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IListLike;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IResultVisitor;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Queue;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

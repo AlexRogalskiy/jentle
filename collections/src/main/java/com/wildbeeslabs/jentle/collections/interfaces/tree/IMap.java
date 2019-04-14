@@ -21,24 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
- * Custom result visitor interface declaration
+ * Custom map interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
+ * @param <K>
+ * @param <V>
  */
-public interface IResultVisitor<T, E> extends IVisitor<T> {
+public interface IMap<K, V> extends IBaseMap<K, V>, Map<K, V> {
 
-    /**
-     * Returns visitor result of a processed collection
-     *
-     * @return collection result set
-     */
-    E getResult();
+    Iterator<? extends K> keysIterator();
+
+    Iterator<? extends V> valuesIterator();
 }

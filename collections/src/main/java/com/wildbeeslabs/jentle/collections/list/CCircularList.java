@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
-import com.wildbeeslabs.jentle.collections.interfaces.IList;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IList;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
 import java.util.Comparator;

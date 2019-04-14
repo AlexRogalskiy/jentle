@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IListLike;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IListLike;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import lombok.Data;

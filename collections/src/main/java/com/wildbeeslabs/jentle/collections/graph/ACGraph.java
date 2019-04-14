@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.graph.node.ACBaseGraphNode;
-import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
+import com.wildbeeslabs.jentle.collections.interfaces.graph.IGraph;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

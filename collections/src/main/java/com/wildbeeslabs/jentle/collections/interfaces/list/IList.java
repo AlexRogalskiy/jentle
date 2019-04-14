@@ -21,20 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.list;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 /**
- *
  * Custom list interface declaration
  *
+ * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
 public interface IList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
 
@@ -51,6 +50,7 @@ public interface IList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
      * @return value - value to be removed from the list
      */
 //    T poll();
+
     /**
      * Adds new value to the tail of the list
      *
@@ -68,7 +68,7 @@ public interface IList<T, E extends ACListNode<T, E>> extends IBaseList<T, E> {
     /**
      * Adds new value to particular position of the list
      *
-     * @param item - value to be added to the list
+     * @param item  - value to be added to the list
      * @param index - position of new node
      */
     void insertAt(final T item, int index);

@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 /**
  *
- * Custom binary tree extended interface declaration
+ * Custom tree extended interface declaration
  *
  * @author Alex
  * @version 1.0.0
@@ -35,6 +35,6 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
  * @param <T>
  * @param <U>
  */
-public interface IBinaryTreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends IBaseTreeExtended<T, U>, IBinaryTree<T, U> {
+public interface ITreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends IBaseTreeExtended<T, U>, ITree<T, U> {
 
 }

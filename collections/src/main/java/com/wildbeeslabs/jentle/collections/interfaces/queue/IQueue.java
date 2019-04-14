@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.queue;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IBase;
 
 import java.util.Queue;
 

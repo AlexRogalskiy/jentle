@@ -23,17 +23,16 @@
  */
 package com.wildbeeslabs.jentle.collections.array;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IArray;
+import com.wildbeeslabs.jentle.collections.interfaces.array.IArray;
 import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.function.IntFunction;
 
@@ -46,14 +45,15 @@ import java.util.function.IntFunction;
  * @since 2017-08-07
  */
 @Slf4j
-public abstract class ACArray<T extends Serializable> extends AbstractList<T> implements IArray<T> {
+public abstract class ACArray<T> extends AbstractList<T> implements IArray<T> {
 
     @Setter(AccessLevel.NONE)
     protected T[] array;
     @Setter(AccessLevel.NONE)
     protected int size;
 
-    public int indexOf(final T item) {
+    @Override
+    public int indexOf(final Object item) {
         if (Objects.isNull(item)) {
             for (int i = 0; i < this.size(); i++) {
                 if (Objects.isNull(this.array[i])) {
@@ -83,10 +83,11 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
         this.checkRange(startIndex);
         this.checkRange(endIndex);
         assert (startIndex <= endIndex);
-        Arrays.fill(this.array, startIndex, endIndex, SerializationUtils.clone(value));
+        Arrays.fill(this.array, startIndex, endIndex, ObjectUtils.clone(value));
     }
 
-    public boolean contains(final T item) {
+    @Override
+    public boolean contains(final Object item) {
         return (this.indexOf(item) >= 0);
     }
 
@@ -107,6 +108,11 @@ public abstract class ACArray<T extends Serializable> extends AbstractList<T> im
     @Override
     public int size() {
         return this.size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
     }
 
     protected void checkRange(int index) throws IndexOutOfBoundsException {

@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.ITrie;
+import com.wildbeeslabs.jentle.collections.interfaces.tree.ITrie;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;

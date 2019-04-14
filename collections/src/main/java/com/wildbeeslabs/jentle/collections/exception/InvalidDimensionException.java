@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Custom InvalidDimensionException implementation
+ * Custom invalid dimension {@link RuntimeException} implementation
  *
  * @author Alex
  * @version 1.0.0

@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Custom EmptyDequeException implementation
+ * Custom empty deque {@link RuntimeException} implementation
  *
  * @author Alex
  * @version 1.0.0

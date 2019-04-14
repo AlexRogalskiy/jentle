@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2018 WildBees Labs.
+ * Copyright 2017 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,64 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.set;
 
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IBase;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 
 /**
  *
- * Custom list-like interface declaration
+ * Custom set interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <E>
  */
-public interface IListLike<T, E extends ACNode<T>> extends IBase<T>, List<T> {
+public interface ISet<T> extends IBase<T>, Set<T> {
 
     /**
-     * Get the size of the tree.
+     * Checks if the current set contains the value
      *
-     * @return size of the tree.
+     * @param item - the value to check
+     * @return true - if the current set contains value, false - otherwise
      */
-    int size();
+    public boolean has(final T item);
 
     /**
-     * Check if the list contains values.
+     * Removes the value from the current set
      *
-     * @return boolean (true - if the list is empty, false - otherwise)
+     * @param item - value to be removed
+     * @return the current set without remove value
      */
-    default boolean isEmpty() {
-        return (0 == this.size());
-    }
+    public ISet<T> disjunct(final T item);
 
-    /**
-     * Add new root node
-     *
-     * @param value - new root node
-     */
-    void setRoot(final Optional<? extends T> value);
-
-    /**
-     * Returns current root node
-     *
-     * @return - current root node
-     */
-    E getRoot();
-
-    /**
-     * Checks if current node is root
-     *
-     * @param node - current node
-     * @return true - if current node is root, false - otherwise
-     */
-    default boolean isRoot(final E node) {
-        Objects.requireNonNull(node);
-        return (this.getRoot() == node);
-    }
+    //public ISet<T> remove(final T item);
+    //public int size();
+    //public Iterator<? extends T> iterator();
 }

@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IBinaryTreeExtended;
+import com.wildbeeslabs.jentle.collections.interfaces.tree.IBinaryTreeExtended;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.queue;
 
 import java.util.Deque;
 

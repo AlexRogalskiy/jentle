@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Custom EmptyQueueException implementation
+ * Custom empty queue {@link RuntimeException} implementation
  *
  * @author Alex
  * @version 1.0.0

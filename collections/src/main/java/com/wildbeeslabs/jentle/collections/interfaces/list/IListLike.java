@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 WildBees Labs.
+ * Copyright 2018 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,48 +21,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.list;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IBase;
+import com.wildbeeslabs.jentle.collections.list.node.ACNode;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  *
- * Custom trie/retrieval interface declaration
+ * Custom list-like interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <U>
+ * @param <E>
  */
-public interface ITrie<T, U extends ACBaseTrieNode<T, U>> extends IBase<T> {
+public interface IListLike<T, E extends ACNode<T>> extends IBase<T>, List<T> {
 
     /**
-     * Returns the size of the tree.
+     * Get the size of the tree.
      *
      * @return size of the tree.
      */
     int size();
 
     /**
-     * Checks if trie is empty
+     * Check if the list contains values.
      *
-     * @return true - if tree is empty, false - otherwise
+     * @return boolean (true - if the list is empty, false - otherwise)
      */
-    boolean isEmpty();
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
+
+    /**
+     * Add new root node
+     *
+     * @param value - new root node
+     */
+    void setRoot(final Optional<? extends T> value);
 
     /**
      * Returns current root node
      *
      * @return - current root node
      */
-    U getRoot();
+    E getRoot();
 
     /**
-     * Checks if trie contains character sequence
+     * Checks if current node is root
      *
-     * @param value - character sequence
-     * @return true - if trie contains character sequence, false - otherwise
+     * @param node - current node
+     * @return true - if current node is root, false - otherwise
      */
-    boolean contains(final CharSequence value);
+    default boolean isRoot(final E node) {
+        Objects.requireNonNull(node);
+        return (this.getRoot() == node);
+    }
 }

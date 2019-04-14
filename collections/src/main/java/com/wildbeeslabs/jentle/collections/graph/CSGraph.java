@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.graph.CGraph.CGraphNode;
-import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
+import com.wildbeeslabs.jentle.collections.interfaces.graph.IGraph;
 
 import java.util.Arrays;
 import java.util.HashSet;

@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree;
 
-import com.wildbeeslabs.jentle.collections.interfaces.ITreeLike;
+import com.wildbeeslabs.jentle.collections.interfaces.tree.ITreeLike;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

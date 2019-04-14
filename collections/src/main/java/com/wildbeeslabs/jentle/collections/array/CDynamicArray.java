@@ -24,13 +24,15 @@
 package com.wildbeeslabs.jentle.collections.array;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidDimensionException;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -46,7 +48,10 @@ import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
  * @since 2017-08-07
  */
 @Slf4j
-public class CDynamicArray<T extends Serializable> extends ACArray<T> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class CDynamicArray<T> extends ACArray<T> {
 
     /**
      * Default array enlarge capacity coefficient
@@ -120,7 +125,8 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
         return true;
     }
 
-    public boolean remove(final T item) {
+    @Override
+    public boolean remove(final Object item) {
         int index = this.indexOf(item);
         if (index < 0) {
             return false;
@@ -181,7 +187,7 @@ public class CDynamicArray<T extends Serializable> extends ACArray<T> {
     }
 
     @Override
-    public boolean contains(final T item) {
+    public boolean contains(final Object item) {
         return (this.indexOf(item) >= 0);
     }
 

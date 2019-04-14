@@ -21,19 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.array;
 
-import java.io.Serializable;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IBase;
+
+import java.util.List;
+import java.util.RandomAccess;
 
 /**
  *
- * Custom base interface declaration
+ * Custom dynamic array interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface IBase<T> extends Serializable, Cloneable, Iterable<T> {//U extends ACNode<T>
+public interface IArray<T> extends List<T>, IBase<T>, RandomAccess {
 
+    T set(final T item, int index) throws IndexOutOfBoundsException;
 }

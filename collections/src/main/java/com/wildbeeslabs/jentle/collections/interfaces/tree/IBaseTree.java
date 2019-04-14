@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
+import com.wildbeeslabs.jentle.collections.interfaces.service.IVisitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 import java.util.Objects;
@@ -164,7 +165,7 @@ public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends ITreeLike<
      * Traverses children of the current node in order sequence
      *
      * @param node - current node
-     * @param visitor - traversable visitor instance
+     * @param visitor - traversable service instance
      */
     default void inOrderIterator(final U node, final IVisitor<T> visitor) {
         Objects.requireNonNull(node);
@@ -177,7 +178,7 @@ public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends ITreeLike<
      * Traverses children of the current node in pre order sequence
      *
      * @param node - current node
-     * @param visitor - traversable visitor instance
+     * @param visitor - traversable service instance
      */
     default void preOrderIterator(final U node, final IVisitor<T> visitor) {
         Objects.requireNonNull(node);
@@ -190,7 +191,7 @@ public interface IBaseTree<T, U extends ACBaseTreeNode<T, U>> extends ITreeLike<
      * Traverses children of the current node in post order sequence
      *
      * @param node - current node
-     * @param visitor - traversable visitor instance
+     * @param visitor - traversable service instance
      */
     default void postOrderIterator(final U node, final IVisitor<T> visitor) {
         Objects.requireNonNull(node);

@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.collections.queue;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IDeque;
+import com.wildbeeslabs.jentle.collections.interfaces.queue.IDeque;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

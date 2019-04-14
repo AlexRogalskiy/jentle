@@ -8,7 +8,16 @@ module jentle.collections {
     exports com.wildbeeslabs.jentle.collections.tree;
     exports com.wildbeeslabs.jentle.collections.tree.node;
     exports com.wildbeeslabs.jentle.collections.list.node;
-    exports com.wildbeeslabs.jentle.collections.interfaces;
+
+    exports com.wildbeeslabs.jentle.collections.interfaces.array;
+    exports com.wildbeeslabs.jentle.collections.interfaces.graph;
+    exports com.wildbeeslabs.jentle.collections.interfaces.list;
+    exports com.wildbeeslabs.jentle.collections.interfaces.map;
+    exports com.wildbeeslabs.jentle.collections.interfaces.queue;
+    exports com.wildbeeslabs.jentle.collections.interfaces.service;
+    exports com.wildbeeslabs.jentle.collections.interfaces.set;
+    exports com.wildbeeslabs.jentle.collections.interfaces.tree;
+
     exports com.wildbeeslabs.jentle.collections.exception;
     exports com.wildbeeslabs.jentle.collections.list;
     exports com.wildbeeslabs.jentle.collections.map;

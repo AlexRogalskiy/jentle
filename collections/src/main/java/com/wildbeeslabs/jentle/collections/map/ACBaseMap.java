@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.map;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IBaseMap;
+import com.wildbeeslabs.jentle.collections.interfaces.tree.IBaseMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -21,21 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.tree;
 
-import java.util.List;
-import java.util.RandomAccess;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 /**
  *
- * Custom dynamic array interface declaration
+ * Custom binary tree interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <U>
  */
-public interface IArray<T> extends List<T>, IBase<T>, RandomAccess {
+public interface IBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends IBaseTree<T, U> {
 
-    T set(final T item, int index) throws IndexOutOfBoundsException;
+    /**
+     * Inserts new node with the current value based on tree order sequence
+     *
+     * @param value - node value
+     */
+    void insert(final T value);
+
+    /**
+     * Returns node with the current value
+     *
+     * @param value - node value
+     * @return node with the current value
+     */
+    U find(final T value);
 }

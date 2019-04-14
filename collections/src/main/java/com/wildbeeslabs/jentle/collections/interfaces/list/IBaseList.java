@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.list;
 
+import com.wildbeeslabs.jentle.collections.interfaces.service.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 import java.util.Collection;
@@ -87,7 +88,7 @@ public interface IBaseList<T, E extends ACListNode<T, E>> extends IListLike<T, E
     /**
      * Creates internal iterator instance for the list values
      *
-     * @param visitor - visitor instance
+     * @param visitor - service instance
      */
     void iterator(final IVisitor<? extends T> visitor);
 

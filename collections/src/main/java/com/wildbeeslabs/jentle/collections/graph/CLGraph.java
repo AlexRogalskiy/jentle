@@ -25,8 +25,8 @@ package com.wildbeeslabs.jentle.collections.graph;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.graph.node.ACBaseGraphNode;
-import com.wildbeeslabs.jentle.collections.interfaces.IGraph;
-import com.wildbeeslabs.jentle.collections.interfaces.IList;
+import com.wildbeeslabs.jentle.collections.interfaces.graph.IGraph;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 

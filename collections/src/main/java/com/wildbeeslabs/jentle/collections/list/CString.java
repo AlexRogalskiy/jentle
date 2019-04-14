@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IList;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 import java.io.Serializable;

@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.queue;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IQueue;
+import com.wildbeeslabs.jentle.collections.interfaces.queue.IQueue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

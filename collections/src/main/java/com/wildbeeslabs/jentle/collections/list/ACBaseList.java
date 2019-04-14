@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.list;
 
-import com.wildbeeslabs.jentle.collections.interfaces.IBaseList;
-import com.wildbeeslabs.jentle.collections.interfaces.IVisitor;
+import com.wildbeeslabs.jentle.collections.interfaces.list.IBaseList;
+import com.wildbeeslabs.jentle.collections.interfaces.service.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 

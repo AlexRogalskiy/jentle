@@ -21,53 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
-
-import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
-import java.util.Optional;
+package com.wildbeeslabs.jentle.collections.interfaces.service;
 
 /**
  *
- * Custom tree interface declaration
+ * Custom visitor interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
- * @param <U>
  */
-public interface ITree<T, U extends ACBaseTreeNode<T, U>> extends IBaseTree<T, U> {
+public interface IVisitor<T> {
 
     /**
-     * Creates new node as a left child of the current node
+     * Processes each item of a collection
      *
-     * @param node - current node
-     * @param value - node value (optional)
+     * @param item - collection item
      */
-    void insertLeft(final U node, final Optional<? extends T> value);
-
-    /**
-     * Creates new node as a right child of the current node
-     *
-     * @param node - current node
-     * @param value - node value (optional)
-     */
-    void insertRight(final U node, final Optional<? extends T> value);
-
-    /**
-     * Replaces current node with a new value
-     *
-     * @param node - current node
-     * @param newValue - new node value
-     * @return previous value of current node
-     */
-    T replaceElement(final U node, final T newValue);
-
-    /**
-     * Swaps elements of first and last nodes
-     *
-     * @param first - first node to replace
-     * @param last - last node to be replaced with
-     */
-    void swapElements(final U first, final U last);
+    public void visit(final T item);
 }

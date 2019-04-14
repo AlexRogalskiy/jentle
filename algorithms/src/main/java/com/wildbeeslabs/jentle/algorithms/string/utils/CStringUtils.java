@@ -25,7 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.string.utils;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.interfaces.IStack;
+import com.wildbeeslabs.jentle.collections.interfaces.queue.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

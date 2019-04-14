@@ -28,19 +28,18 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * Custom abstract list extended node implementation
  *
+ * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ACListNodeExtended<T, E extends ACListNode<T, E>> extends ACListNode<T, E> {
+public class ACListNodeExtended<T, E extends ACListNodeExtended<T, E>> extends ACListNode<T, E> {
 
     protected E previous;
 

@@ -21,23 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.interfaces;
+package com.wildbeeslabs.jentle.collections.interfaces.service;
 
 /**
  *
- * Custom visitor interface declaration
+ * Custom result visitor interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
+ * @param <E>
  */
-public interface IVisitor<T> {
+public interface IResultVisitor<T, E> extends IVisitor<T> {
 
     /**
-     * Processes each item of a collection
+     * Returns service result of a processed collection
      *
-     * @param item - collection item
+     * @return collection result set
      */
-    public void visit(final T item);
+    E getResult();
 }
