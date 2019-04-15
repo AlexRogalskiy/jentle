@@ -4,10 +4,12 @@ import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
 import com.wildbeeslabs.jentle.collections.exception.EmptyContainerException;
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
 import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.list.iface.IPositionList;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.ListIterator;
@@ -39,6 +41,11 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
      * Default {@link CListNode} trailer
      */
     private CListNode<T> trailer;
+
+    @Override
+    public @NonNull <S extends IPosition<T>> PositionIterator<S> positionIterator() {
+        throw new UnsupportedOperationException("ERROR: operation is not supported");
+    }
 
     @Data
     @EqualsAndHashCode(callSuper = true)
