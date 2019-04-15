@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.graph.utils;
 
-import com.wildbeeslabs.jentle.collections.graph.CGraph;
+import com.wildbeeslabs.jentle.collections.graph.impl.CGraph;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;
 import com.wildbeeslabs.jentle.collections.list.node.ACListGraphNode;
 import com.wildbeeslabs.jentle.collections.list.node.CListGraphNode;

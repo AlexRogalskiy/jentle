@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.misc;
 
-import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+import com.wildbeeslabs.jentle.collections.map.impl.CHashMapList;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

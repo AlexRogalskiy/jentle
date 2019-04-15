@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.tictactoe;
 
-import com.wildbeeslabs.jentle.collections.tree.ACTreeLike;
+import com.wildbeeslabs.jentle.collections.tree.impl.ACTreeLike;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 

@@ -25,7 +25,7 @@ package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.interfaces.queue.IStack;
+import com.wildbeeslabs.jentle.collections.queue.iface.IStack;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

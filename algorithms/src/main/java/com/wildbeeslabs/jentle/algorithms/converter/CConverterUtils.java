@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.converter;
 
-import com.wildbeeslabs.jentle.collections.map.CCheckedMap;
-import com.wildbeeslabs.jentle.collections.set.CCheckedSet;
+import com.wildbeeslabs.jentle.collections.map.impl.CCheckedMap;
+import com.wildbeeslabs.jentle.collections.set.impl.CCheckedSet;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

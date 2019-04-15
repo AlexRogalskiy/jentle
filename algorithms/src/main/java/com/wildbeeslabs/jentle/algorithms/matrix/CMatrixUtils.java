@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.matrix;
 
 import com.wildbeeslabs.jentle.algorithms.random.CRandom;
-import com.wildbeeslabs.jentle.collections.tree.CTrie3;
+import com.wildbeeslabs.jentle.collections.tree.impl.CTrie3;
 import lombok.*;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

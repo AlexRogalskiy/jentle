@@ -24,9 +24,11 @@
 package com.wildbeeslabs.jentle.algorithms.sort;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CArrayUtils;
-import com.wildbeeslabs.jentle.collections.list.ACList;
+import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.list.impl.ACList;
+import com.wildbeeslabs.jentle.collections.list.impl.CSequenceList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
-import com.wildbeeslabs.jentle.collections.map.CHashMapList;
+import com.wildbeeslabs.jentle.collections.map.impl.CHashMapList;
 import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import org.apache.commons.lang3.SerializationUtils;
@@ -819,6 +821,32 @@ public final class CSort {
                 if (Objects.compare(array[j - 1], array[j], cmp) > 0) {
                     CArrayUtils.swap(array, j - 1, j);
                 }
+            }
+        }
+    }
+
+    /**
+     * @param array Input array.
+     * @param cmp   Function that defines an alternative sort order. The function
+     *              should return a negative, zero, or positive value, depending on the
+     *              arguments.
+     * @param <T>
+     * @public @module sort
+     * @see [best] time: O(n * n) average time: O(n * n) worst time: O(n * n)
+     * memory: in-place stable: true
+     */
+    public static <T> void bubbleSort(final CSequenceList<T> sequence, final Comparator<? super T> cmp) {
+        Objects.requireNonNull(sequence);
+        IPosition<T> prevPosition, nextPosition;
+        int n = sequence.size();
+        for (int i = 0; i < n; i++) {
+            prevPosition = sequence.first();
+            for (int j = i; j < n - i; j++) {
+                nextPosition = sequence.after(prevPosition);
+                if (Objects.compare(prevPosition.element(), nextPosition.element(), cmp) > 0) {
+                    sequence.swap(prevPosition, nextPosition);
+                }
+                prevPosition = nextPosition;
             }
         }
     }

@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.graph;
 
-import com.wildbeeslabs.jentle.collections.graph.CSGraph2;
+import com.wildbeeslabs.jentle.collections.graph.impl.CSGraph2;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNodeExtended;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
 import lombok.extern.slf4j.Slf4j;

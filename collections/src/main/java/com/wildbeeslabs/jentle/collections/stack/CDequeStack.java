@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.collections.stack;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyDequeException;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
-import com.wildbeeslabs.jentle.collections.queue.CDeque;
+import com.wildbeeslabs.jentle.collections.queue.impl.CDeque;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
