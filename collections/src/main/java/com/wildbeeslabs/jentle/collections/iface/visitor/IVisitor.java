@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.iface;
+package com.wildbeeslabs.jentle.collections.iface.visitor;
 
 /**
  * Custom visitor interface declaration
@@ -38,5 +38,5 @@ public interface IVisitor<T> {
      *
      * @param item - collection item
      */
-    public void visit(final T item);
+    void visit(final T item);
 }

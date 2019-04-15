@@ -4,6 +4,7 @@ import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
 import com.wildbeeslabs.jentle.collections.exception.EmptyContainerException;
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
 import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterable;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
 
 /**
@@ -15,7 +16,7 @@ import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPositionList<T, E extends ACPositionalListNode<T, E>> extends IListCollection<T, E> {
+public interface IPositionList<T, E extends ACPositionalListNode<T, E>> extends IListCollection<T, E>, PositionIterable<T> {
 
     T replace(final IPosition<T> position, final T value);
 

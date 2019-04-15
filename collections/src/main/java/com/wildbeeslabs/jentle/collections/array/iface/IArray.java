@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.array.iface;
 
 import com.wildbeeslabs.jentle.collections.iface.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.IContainer;
 
 import java.util.List;
 import java.util.RandomAccess;
@@ -36,7 +37,7 @@ import java.util.RandomAccess;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IArray<T> extends List<T>, ICollection<T>, RandomAccess {
+public interface IArray<T> extends List<T>, IContainer<T>, RandomAccess {
 
     T set(final T item, int index) throws IndexOutOfBoundsException;
 }

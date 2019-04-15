@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.list.impl;
 
 import com.wildbeeslabs.jentle.collections.list.iface.IListCollection;
-import com.wildbeeslabs.jentle.collections.iface.IVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.IVisitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 

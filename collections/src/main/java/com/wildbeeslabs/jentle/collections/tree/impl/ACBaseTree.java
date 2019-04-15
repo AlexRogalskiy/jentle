@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.tree.iface.ITreeCollection;
-import com.wildbeeslabs.jentle.collections.iface.IVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.IVisitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode2;
 
