@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.collections.iface.iterator;
 
-import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
 
 import java.util.Iterator;
 import java.util.Objects;

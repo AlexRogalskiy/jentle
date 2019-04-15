@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.collections.list.node;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.sort;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CArrayUtils;
-import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
 import com.wildbeeslabs.jentle.collections.list.impl.ACList;
 import com.wildbeeslabs.jentle.collections.list.impl.CSequenceList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;

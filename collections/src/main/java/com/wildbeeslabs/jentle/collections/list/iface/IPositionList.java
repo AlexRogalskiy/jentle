@@ -3,7 +3,7 @@ package com.wildbeeslabs.jentle.collections.list.iface;
 import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
 import com.wildbeeslabs.jentle.collections.exception.EmptyContainerException;
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterable;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
 

@@ -29,7 +29,10 @@ module jentle.collections {
     exports com.wildbeeslabs.jentle.collections.tree.node;
     exports com.wildbeeslabs.jentle.collections.tree.impl;
 
-    exports com.wildbeeslabs.jentle.collections.iface;
+    exports com.wildbeeslabs.jentle.collections.iface.position;
+    exports com.wildbeeslabs.jentle.collections.iface.visitor;
+    exports com.wildbeeslabs.jentle.collections.iface.collection;
+    exports com.wildbeeslabs.jentle.collections.iface.iterator;
 
     exports com.wildbeeslabs.jentle.collections.exception;
 

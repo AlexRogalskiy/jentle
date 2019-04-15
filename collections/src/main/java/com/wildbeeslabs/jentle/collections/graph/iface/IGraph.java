@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.graph.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
 
 /**
  * Custom graph {@link ICollection} interface declaration

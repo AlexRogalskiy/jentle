@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.array.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.ICollection;
-import com.wildbeeslabs.jentle.collections.iface.IContainer;
+import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.IContainer;
 
 import java.util.List;
 import java.util.RandomAccess;

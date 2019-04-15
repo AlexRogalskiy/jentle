@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.collections.list.impl;
 
 import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
 import com.wildbeeslabs.jentle.collections.list.iface.ISequenceList;
-import com.wildbeeslabs.jentle.collections.iface.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.queue.iface;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
-import com.wildbeeslabs.jentle.collections.iface.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
 
 import java.util.Queue;
 

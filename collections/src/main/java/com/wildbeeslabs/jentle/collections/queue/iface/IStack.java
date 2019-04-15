@@ -25,7 +25,7 @@ package com.wildbeeslabs.jentle.collections.queue.iface;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.iface.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
 
 /**
  * Custom stack {@link ICollection} interface declaration

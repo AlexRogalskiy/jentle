@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.list.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.List;

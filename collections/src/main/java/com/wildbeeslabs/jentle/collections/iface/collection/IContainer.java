@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.iface;
+package com.wildbeeslabs.jentle.collections.iface.collection;
 
 /**
  * Custom container {@link ICollection} interface declaration

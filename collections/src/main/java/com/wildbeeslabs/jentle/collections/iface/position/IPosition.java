@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.iface;
+package com.wildbeeslabs.jentle.collections.iface.position;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
 
