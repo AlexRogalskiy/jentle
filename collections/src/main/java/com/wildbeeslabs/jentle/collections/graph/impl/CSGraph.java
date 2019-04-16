@@ -23,21 +23,19 @@
  */
 package com.wildbeeslabs.jentle.collections.graph.impl;
 
-import com.wildbeeslabs.jentle.collections.graph.impl.CGraph.CGraphNode;
 import com.wildbeeslabs.jentle.collections.graph.iface.IGraph;
+import com.wildbeeslabs.jentle.collections.graph.impl.CGraph.CGraphNode;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
- *
  * Custom set graph implementation
  *
  * @author Alex
@@ -89,14 +87,20 @@ public class CSGraph extends ACGraph<Integer, CGraphNode<Integer>> {
         return this.graph[from - 1].size();
     }
 
+    @Override
     public int size() {
         return this.graph.length;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
     }
 
     public IGraph<Integer> toCMGraph() {
         final CMGraph<Integer> mGraph = new CMGraph<>((Class<? extends CGraphNode<Integer>>) this.graph.getClass().getComponentType(), this.size());
         for (int i = 0; i < this.size(); i++) {
-            for (Iterator<? extends CGraphNode<Integer>> it = this.graph[i].iterator(); it.hasNext();) {
+            for (Iterator<? extends CGraphNode<Integer>> it = this.graph[i].iterator(); it.hasNext(); ) {
                 mGraph.add(i, it.next().getData(), 1);
             }
         }
@@ -117,10 +121,10 @@ public class CSGraph extends ACGraph<Integer, CGraphNode<Integer>> {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .appendSuper(super.toString())
-                .append("class", this.getClass().getName())
-                .append("data", Arrays.deepToString(this.graph))
-                .toString();
+            .appendSuper(super.toString())
+            .append("class", this.getClass().getName())
+            .append("data", Arrays.deepToString(this.graph))
+            .toString();
     }
 
     @Override
@@ -130,16 +134,16 @@ public class CSGraph extends ACGraph<Integer, CGraphNode<Integer>> {
         }
         final CSGraph other = (CSGraph) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
-                .append(Arrays.deepEquals(this.graph, other.graph), true)
-                .isEquals();
+            .appendSuper(super.equals(obj))
+            .append(Arrays.deepEquals(this.graph, other.graph), true)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(51, 31)
-                .appendSuper(super.hashCode())
-                .append(Arrays.deepHashCode(this.graph))
-                .toHashCode();
+            .appendSuper(super.hashCode())
+            .append(Arrays.deepHashCode(this.graph))
+            .toHashCode();
     }
 }

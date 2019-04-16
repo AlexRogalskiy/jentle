@@ -25,29 +25,17 @@ package com.wildbeeslabs.jentle.collections.graph.impl;
 
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.*;
 
 /**
- *
  * Custom list based graph implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -141,5 +129,15 @@ public class CGraph<T> extends ACGraph<T, CGraph.CGraphNode<T>> {
     @Override
     public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int size() {
+        return this.nodes.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
     }
 }

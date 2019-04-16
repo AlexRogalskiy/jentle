@@ -10,7 +10,7 @@ import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPosition<T> {
+public interface Position<T> {
 
     T element() throws InvalidPositionException;
 }

@@ -25,26 +25,19 @@ package com.wildbeeslabs.jentle.collections.graph.impl;
 
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNodeExtended;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom set graph 2 implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -92,6 +85,16 @@ public class CSGraph2<T> extends ACGraph<T, CSGraph2.CGraphNodeExtended<T>> {
         if (Objects.nonNull(node)) {
             this.nodes.remove(node);
         }
+    }
+
+    @Override
+    public int size() {
+        return this.nodes.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
     }
 
     @Override

@@ -33,5 +33,9 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ICollection<T> extends Serializable, Cloneable, Iterable<T> {//U extends ACNode<T>
+public interface ICollection<T> extends Serializable, Cloneable, Iterable<T> {
+
+    int size();
+
+    boolean isEmpty();
 }

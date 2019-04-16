@@ -1,8 +1,9 @@
 package com.wildbeeslabs.jentle.collections.list.impl;
 
+import com.wildbeeslabs.jentle.collections.array.iface.IMutableVector;
 import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
-import com.wildbeeslabs.jentle.collections.list.iface.ISequenceList;
-import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.list.iface.ISequentialList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,7 +11,7 @@ import lombok.ToString;
 import java.util.Objects;
 
 /**
- * Custom {@link ISequenceList} implementation
+ * Custom mutable {@link ISequentialList} implementation
  *
  * @param <T>
  * @author Alex
@@ -20,7 +21,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CSequenceList<T> extends CPositionList<T> implements ISequenceList<T, CPositionList.CListNode<T>> {
+public class CMutableSequentialList<T> extends CMutablePositionalList<T> implements ISequentialList<T, CMutablePositionalList.CListNode<T>>, IMutableVector<T> {
 
     protected void checkRank(int rank) throws BoundaryViolationException {
         if (rank < 0 || rank >= this.size()) {
@@ -29,7 +30,7 @@ public class CSequenceList<T> extends CPositionList<T> implements ISequenceList<
     }
 
     @Override
-    public IPosition<T> atRank(int rank) {
+    public Position<T> atRank(int rank) {
         CListNode<T> node;
         checkRank(rank);
         if (rank <= this.size() / 2) {
@@ -53,7 +54,7 @@ public class CSequenceList<T> extends CPositionList<T> implements ISequenceList<
     }
 
     @Override
-    public int rankOf(final IPosition<T> position) {
+    public int rankOf(final Position<T> position) {
         final CListNode<T> node = checkPosition(position);
         CListNode<T> temp = this.getHeader().getNext();
         int rank = 0;

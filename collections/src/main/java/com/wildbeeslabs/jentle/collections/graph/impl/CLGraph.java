@@ -24,11 +24,18 @@
 package com.wildbeeslabs.jentle.collections.graph.impl;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
-import com.wildbeeslabs.jentle.collections.graph.node.ACBaseGraphNode;
 import com.wildbeeslabs.jentle.collections.graph.iface.IGraph;
+import com.wildbeeslabs.jentle.collections.graph.node.ACBaseGraphNode;
 import com.wildbeeslabs.jentle.collections.list.iface.IList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -36,23 +43,13 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
- *
  * Custom list graph implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
 
@@ -153,8 +150,14 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
         return type.cast(Array.newInstance(type.getComponentType(), size));
     }
 
+    @Override
     public int size() {
         return this.graph.length;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
     }
 
     public void clear() {
@@ -185,10 +188,10 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .appendSuper(super.toString())
-                .append("class", this.getClass().getName())
-                .append("data", Arrays.deepToString(this.graph))
-                .toString();
+            .appendSuper(super.toString())
+            .append("class", this.getClass().getName())
+            .append("data", Arrays.deepToString(this.graph))
+            .toString();
     }
 
     @Override
@@ -198,16 +201,16 @@ public class CLGraph<T> extends ACGraph<T, CLGraph.CLGraphArc<T>> {
         }
         final CLGraph<T> other = (CLGraph<T>) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
-                .append(Arrays.deepEquals(this.graph, other.graph), true)
-                .isEquals();
+            .appendSuper(super.equals(obj))
+            .append(Arrays.deepEquals(this.graph, other.graph), true)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(31, 61)
-                .appendSuper(super.hashCode())
-                .append(Arrays.deepHashCode(this.graph))
-                .toHashCode();
+            .appendSuper(super.hashCode())
+            .append(Arrays.deepHashCode(this.graph))
+            .toHashCode();
     }
 }

@@ -12,9 +12,8 @@ public interface IVector<T> extends IArray<T> {
 
     T elemAtRank(int rank);
 
-    T replaceAtRank(int rank, final T value);
-
-    T removeAtRank(int rank);
-
-    void insertAtRank(int rank, final T value);
+    @Override
+    default T get(int index) throws IndexOutOfBoundsException {
+        return this.elemAtRank(index);
+    }
 }

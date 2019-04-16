@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.collections.list.node;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -9,7 +9,7 @@ import lombok.ToString;
 import java.util.Objects;
 
 /**
- * Custom abstract {@link IPosition} list node implementation
+ * Custom abstract {@link Position} list node implementation
  *
  * @param <T>
  * @param <E>
@@ -20,7 +20,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ACPositionalListNode<T, E extends ACPositionalListNode<T, E>> extends ACListNodeExtended<T, E> implements IPosition<T> {
+public class ACPositionalListNode<T, E extends ACPositionalListNode<T, E>> extends ACListNodeExtended<T, E> implements Position<T> {
 
     public ACPositionalListNode() {
         this(null);

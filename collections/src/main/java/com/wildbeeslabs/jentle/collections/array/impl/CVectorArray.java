@@ -1,5 +1,6 @@
 package com.wildbeeslabs.jentle.collections.array.impl;
 
+import com.wildbeeslabs.jentle.collections.array.iface.IMutableVector;
 import com.wildbeeslabs.jentle.collections.array.iface.IVector;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import lombok.Data;
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CVectorArray<T> extends ACArray<T> implements IVector<T> {
+public abstract class CVectorArray<T> extends ACArray<T> implements IMutableVector<T> {
 
     /**
      * Default vector capacity
@@ -81,15 +82,5 @@ public class CVectorArray<T> extends ACArray<T> implements IVector<T> {
         }
         this.array[rank] = value;
         this.size++;
-    }
-
-    @Override
-    public T set(T item, int index) throws IndexOutOfBoundsException {
-        return null;
-    }
-
-    @Override
-    public T get(int index) {
-        return null;
     }
 }

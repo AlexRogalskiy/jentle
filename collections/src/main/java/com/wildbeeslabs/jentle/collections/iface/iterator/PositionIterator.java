@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.collections.iface.iterator;
 
-import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
+import com.wildbeeslabs.jentle.collections.iface.position.Position;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -18,13 +18,13 @@ public interface PositionIterator<T> {
 
     boolean hasNext();
 
-    <S extends IPosition<T>> S next();
+    <S extends Position<T>> S next();
 
     default void remove() {
         throw new UnsupportedOperationException("remove");
     }
 
-    default <S extends IPosition<T>> void forEachRemaining(final Consumer<? super S> action) {
+    default <S extends Position<T>> void forEachRemaining(final Consumer<? super S> action) {
         Objects.requireNonNull(action);
         while (this.hasNext()) {
             action.accept(this.next());

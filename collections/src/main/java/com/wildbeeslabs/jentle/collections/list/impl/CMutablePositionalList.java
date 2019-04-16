@@ -3,9 +3,10 @@ package com.wildbeeslabs.jentle.collections.list.impl;
 import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
 import com.wildbeeslabs.jentle.collections.exception.EmptyContainerException;
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.position.IPosition;
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
-import com.wildbeeslabs.jentle.collections.list.iface.IPositionList;
+import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.list.iface.IMutablePositionalList;
+import com.wildbeeslabs.jentle.collections.list.iface.IPositionalList;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Custom {@link IPositionList} implementation
+ * Custom {@link IPositionalList} implementation
  *
  * @param <T>
  * @author Alex
@@ -27,7 +28,7 @@ import java.util.Optional;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> implements IPositionList<T, CPositionList.CListNode<T>> {
+public class CMutablePositionalList<T> extends ACList<T, CMutablePositionalList.CListNode<T>> implements IMutablePositionalList<T, CMutablePositionalList.CListNode<T>> {
 
     /**
      * Default list size
@@ -43,7 +44,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     private CListNode<T> trailer;
 
     @Override
-    public @NonNull <S extends IPosition<T>> PositionIterator<S> positionIterator() {
+    public @NonNull <S extends Position<T>> PositionIterator<S> positionIterator() {
         throw new UnsupportedOperationException("ERROR: operation is not supported");
     }
 
@@ -65,14 +66,14 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
         }
     }
 
-    public CPositionList() {
+    public CMutablePositionalList() {
         this.size = 0;
         this.header = new CListNode<>();
         this.trailer = new CListNode<>();
         this.header.setNext(this.trailer);
     }
 
-    protected CListNode<T> checkPosition(final IPosition<T> node) throws InvalidPositionException {
+    protected CListNode<T> checkPosition(final Position<T> node) throws InvalidPositionException {
         if (Objects.isNull(node)) {
             throw new InvalidPositionException("ERROR: cannot process null position");
         }
@@ -104,7 +105,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public T replace(final IPosition<T> position, final T value) throws InvalidPositionException {
+    public T replace(final Position<T> position, final T value) throws InvalidPositionException {
         final CListNode<T> node = checkPosition(position);
         final T data = node.getData();
         node.setData(value);
@@ -112,7 +113,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public void swap(final IPosition<T> positionFirst, final IPosition<T> positionLast) throws InvalidPositionException {
+    public void swap(final Position<T> positionFirst, final Position<T> positionLast) throws InvalidPositionException {
         final CListNode<T> nodeFirst = checkPosition(positionFirst);
         final CListNode<T> nodeLast = checkPosition(positionLast);
         final T temp = nodeFirst.getData();
@@ -121,7 +122,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public T remove(final IPosition<T> position) throws InvalidPositionException {
+    public T remove(final Position<T> position) throws InvalidPositionException {
         final CListNode<T> node = checkPosition(position);
         final CListNode<T> nodePrev = node.getPrevious();
         final CListNode<T> nodeNext = node.getNext();
@@ -134,7 +135,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> insertLast(final T value) {
+    public Position<T> insertLast(final T value) {
         final CListNode<T> newNode = new CListNode<>(value, this.trailer.getPrevious(), this.trailer);
         this.trailer.getPrevious().setNext(newNode);
         this.trailer.setPrevious(newNode);
@@ -143,7 +144,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> insertFirst(final T value) {
+    public Position<T> insertFirst(final T value) {
         final CListNode<T> newNode = new CListNode<>(value, this.header, this.header.getNext());
         this.header.getNext().setPrevious(newNode);
         this.header.setNext(newNode);
@@ -152,7 +153,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> insertAfter(final IPosition<T> position, final T value) throws InvalidPositionException {
+    public Position<T> insertAfter(final Position<T> position, final T value) throws InvalidPositionException {
         final CListNode<T> node = checkPosition(position);
         final CListNode<T> newNode = new CListNode<T>(value, node, node.getNext());
         node.getNext().setPrevious(newNode);
@@ -162,7 +163,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> insertBefore(final IPosition<T> position, T value) throws InvalidPositionException {
+    public Position<T> insertBefore(final Position<T> position, T value) throws InvalidPositionException {
         final CListNode<T> node = checkPosition(position);
         final CListNode<T> newNode = new CListNode<T>(value, node.getPrevious(), node);
         node.getPrevious().setNext(newNode);
@@ -172,7 +173,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> after(final IPosition<T> position) throws InvalidPositionException, BoundaryViolationException {
+    public Position<T> after(final Position<T> position) throws InvalidPositionException, BoundaryViolationException {
         final CListNode<T> node = checkPosition(position);
         final CListNode<T> nextNode = node.getNext();
         if (nextNode == this.trailer) {
@@ -182,7 +183,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> before(final IPosition<T> position) throws InvalidPositionException, BoundaryViolationException {
+    public Position<T> before(final Position<T> position) throws InvalidPositionException, BoundaryViolationException {
         final CListNode<T> node = checkPosition(position);
         final CListNode<T> prevNode = node.getPrevious();
         if (prevNode == this.header) {
@@ -192,7 +193,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> last() throws EmptyContainerException {
+    public Position<T> last() throws EmptyContainerException {
         if (this.isEmpty()) {
             throw new EmptyContainerException("ERROR: empty container");
         }
@@ -200,7 +201,7 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public IPosition<T> first() throws EmptyContainerException {
+    public Position<T> first() throws EmptyContainerException {
         if (this.isEmpty()) {
             throw new EmptyContainerException("ERROR: empty container");
         }
@@ -208,13 +209,13 @@ public class CPositionList<T> extends ACList<T, CPositionList.CListNode<T>> impl
     }
 
     @Override
-    public boolean isLast(final IPosition<T> position) throws InvalidPositionException {
+    public boolean isLast(final Position<T> position) throws InvalidPositionException {
         final CListNode<T> node = checkPosition(position);
         return node.getNext() == this.trailer;
     }
 
     @Override
-    public boolean isFirst(final IPosition<T> position) throws InvalidPositionException {
+    public boolean isFirst(final Position<T> position) throws InvalidPositionException {
         final CListNode<T> node = checkPosition(position);
         return node.getPrevious() == this.header;
     }

@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.graph.impl;
 
-import com.wildbeeslabs.jentle.collections.graph.impl.CGraph.CGraphNode;
 import com.wildbeeslabs.jentle.collections.graph.iface.IGraph;
+import com.wildbeeslabs.jentle.collections.graph.impl.CGraph.CGraphNode;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -120,8 +120,14 @@ public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
         return s;
     }
 
+    @Override
     public int size() {
         return this.graph.length;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return (0 == this.size());
     }
 
     public IGraph<? extends T> toCLGraph() {
