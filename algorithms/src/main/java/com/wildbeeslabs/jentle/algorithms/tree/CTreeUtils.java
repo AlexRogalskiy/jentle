@@ -24,46 +24,37 @@
 package com.wildbeeslabs.jentle.algorithms.tree;
 
 import com.wildbeeslabs.jentle.algorithms.list.CListUtils;
+import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
+import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalTree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended2;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.function.Function;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.io.Serializable;
+import java.util.*;
+import java.util.function.Function;
+
 /**
- *
  * Custom tree algorithms implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CTree {
+public final class CTreeUtils {
 
-    private CTree() {
+    private CTreeUtils() {
         // PRIVATE EMPTY CONSTRUCTOR
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<LinkedList<U>> createLevelNodeList(final U root) {
         final List<LinkedList<U>> levelList = new ArrayList<>();
-        CTree.createLevelNodeList(root, levelList, 0);
+        CTreeUtils.createLevelNodeList(root, levelList, 0);
         return levelList;
     }
 
@@ -78,8 +69,8 @@ public final class CTree {
             list = levelList.get(level);
         }
         list.add(root);
-        CTree.createLevelNodeList(root.getLeft(), levelList, level + 1);
-        CTree.createLevelNodeList(root.getRight(), levelList, level + 1);
+        CTreeUtils.createLevelNodeList(root.getLeft(), levelList, level + 1);
+        CTreeUtils.createLevelNodeList(root.getRight(), levelList, level + 1);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<LinkedList<U>> createLevelNodeList2(final U root) {
@@ -152,13 +143,13 @@ public final class CTree {
             return root;
         }
         if (Objects.compare(root.getData(), data, cmp) > 0) {
-            final U left = CTree.ceilInBST(root.getLeft(), data, cmp);
+            final U left = CTreeUtils.ceilInBST(root.getLeft(), data, cmp);
             if (Objects.isNull(left)) {
                 return root;
             }
             return left;
         }
-        return CTree.ceilInBST(root.getRight(), data, cmp);
+        return CTreeUtils.ceilInBST(root.getRight(), data, cmp);
     }
 
     //depth first search recursive algorithm
@@ -193,8 +184,8 @@ public final class CTree {
                 node.getRight().setNextSibling(null);
             }
         }
-        CTree.nextSiblingPointer(node.getLeft());
-        CTree.nextSiblingPointer(node.getRight());
+        CTreeUtils.nextSiblingPointer(node.getLeft());
+        CTreeUtils.nextSiblingPointer(node.getRight());
     }
 
     public static <T, U extends ACTreeNodeExtended2<T, U>> List<T> nextSiblingTraversal(U root) {
@@ -214,14 +205,14 @@ public final class CTree {
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> U kSmallestElement(final U root, int k) {
-        return CTree.kSmallestElement(root, k, new int[]{0});
+        return CTreeUtils.kSmallestElement(root, k, new int[]{0});
     }
 
     private static <T, U extends ACBaseTreeNode<T, U>> U kSmallestElement(final U root, int k, int[] iElement) {
         if (Objects.isNull(root)) {
             return null;
         }
-        U left = CTree.kSmallestElement(root.getLeft(), k, iElement);
+        U left = CTreeUtils.kSmallestElement(root.getLeft(), k, iElement);
         if (Objects.nonNull(left)) {
             return left;
         }
@@ -229,7 +220,7 @@ public final class CTree {
         if (iElement[0] == k) {
             return root;
         }
-        return CTree.kSmallestElement(root.getRight(), k, iElement);
+        return CTreeUtils.kSmallestElement(root.getRight(), k, iElement);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> boolean quasiIsomorphicBinaryTree(final U node1, final U node2) {
@@ -239,10 +230,10 @@ public final class CTree {
         if (Objects.isNull(node1) || Objects.isNull(node2)) {
             return false;
         }
-        if (CTree.quasiIsomorphicBinaryTree(node1.getLeft(), node2.getLeft()) && CTree.quasiIsomorphicBinaryTree(node1.getRight(), node2.getRight())) {
+        if (CTreeUtils.quasiIsomorphicBinaryTree(node1.getLeft(), node2.getLeft()) && CTreeUtils.quasiIsomorphicBinaryTree(node1.getRight(), node2.getRight())) {
             return true;
         }
-        if (CTree.quasiIsomorphicBinaryTree(node1.getLeft(), node2.getRight()) && CTree.quasiIsomorphicBinaryTree(node1.getRight(), node2.getLeft())) {
+        if (CTreeUtils.quasiIsomorphicBinaryTree(node1.getLeft(), node2.getRight()) && CTreeUtils.quasiIsomorphicBinaryTree(node1.getRight(), node2.getLeft())) {
             return true;
         }
         return false;
@@ -255,11 +246,11 @@ public final class CTree {
         if (Objects.isNull(node1) || Objects.isNull(node2)) {
             return false;
         }
-        if (!CTree.isIsomorphicBinaryTree(node1.getLeft(), node2.getLeft())) {
+        if (!CTreeUtils.isIsomorphicBinaryTree(node1.getLeft(), node2.getLeft())) {
             return false;
         }
 
-        if (!CTree.isIsomorphicBinaryTree(node1.getRight(), node2.getRight())) {
+        if (!CTreeUtils.isIsomorphicBinaryTree(node1.getRight(), node2.getRight())) {
             return false;
         }
         return true;
@@ -345,15 +336,15 @@ public final class CTree {
         if (Objects.isNull(root.getLeft()) && Objects.isNull(root.getRight()) && (index - distance >= 0) && !isVisitedBefore.get(index - distance)) {
             isVisitedBefore.set(index - distance, Boolean.TRUE);
         } else if (distance > 0) {
-            CTree.getNodesKDistFromLeaf(root.getLeft(), distance, index + 1, data, isVisitedBefore);
-            CTree.getNodesKDistFromLeaf(root.getRight(), distance, index + 1, data, isVisitedBefore);
+            CTreeUtils.getNodesKDistFromLeaf(root.getLeft(), distance, index + 1, data, isVisitedBefore);
+            CTreeUtils.getNodesKDistFromLeaf(root.getRight(), distance, index + 1, data, isVisitedBefore);
         }
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<T> getNodesKDistFromLeaf(final U root, int distance) {
         final List<T> result = new ArrayList<>();
         final List<Boolean> visit = new ArrayList<>();
-        CTree.getNodesKDistFromLeaf(root, distance, 0, result, visit);
+        CTreeUtils.getNodesKDistFromLeaf(root, distance, 0, result, visit);
         return result;
     }
 
@@ -364,14 +355,14 @@ public final class CTree {
         if (distance == 0) {
             data.add(root.getData());
         } else if (distance > 0) {
-            CTree.getNodesKDistFromRoot(root.getLeft(), distance - 1, data);
-            CTree.getNodesKDistFromRoot(root.getRight(), distance - 1, data);
+            CTreeUtils.getNodesKDistFromRoot(root.getLeft(), distance - 1, data);
+            CTreeUtils.getNodesKDistFromRoot(root.getRight(), distance - 1, data);
         }
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<T> getNodesKDistFromRoot(final U root, int distance) {
         final List<T> result = new ArrayList<>();
-        CTree.getNodesKDistFromRoot(root, distance, result);
+        CTreeUtils.getNodesKDistFromRoot(root, distance, result);
         return result;
     }
 
@@ -383,16 +374,16 @@ public final class CTree {
             result.add(root.getData());
         }
         if (Objects.compare(root.getData(), data1, cmp) > 0) {
-            CTree.getNodesByRange(root.getLeft(), data1, data2, result, cmp);
+            CTreeUtils.getNodesByRange(root.getLeft(), data1, data2, result, cmp);
         }
         if (Objects.compare(root.getData(), data2, cmp) < 0) {
-            CTree.getNodesByRange(root.getRight(), data1, data2, result, cmp);
+            CTreeUtils.getNodesByRange(root.getRight(), data1, data2, result, cmp);
         }
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<T> getNodesByRange(final U root, final T data1, final T data2, final Comparator<? super T> cmp) {
         final List<T> result = new ArrayList<>();
-        CTree.getNodesByRange(root, data1, data2, result, cmp);
+        CTreeUtils.getNodesByRange(root, data1, data2, result, cmp);
         return result;
     }
 
@@ -400,14 +391,14 @@ public final class CTree {
         if (Objects.isNull(node.getLeft())) {
             return node;
         }
-        return CTree.min(node.getLeft());
+        return CTreeUtils.min(node.getLeft());
     }
 
     private static <T, U extends ACBaseTreeNode<T, U>> U max(final U root) {
         if (Objects.isNull(root.getRight())) {
             return root;
         }
-        return CTree.max(root.getRight());
+        return CTreeUtils.max(root.getRight());
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> U deleteNodeInBST(U root, final T data, final Comparator<? super T> cmp) {
@@ -477,10 +468,10 @@ public final class CTree {
             return null;
         }
         if (Objects.compare(root.getData(), node1.getData(), cmp) > 0 && Objects.compare(root.getData(), node2.getData(), cmp) > 0) {
-            return CTree.leastCommonAncestor(root.getLeft(), node1, node2, cmp);
+            return CTreeUtils.leastCommonAncestor(root.getLeft(), node1, node2, cmp);
         }
         if (Objects.compare(root.getData(), node1.getData(), cmp) < 0 && Objects.compare(root.getData(), node2.getData(), cmp) < 0) {
-            return CTree.leastCommonAncestor(root.getRight(), node1, node2, cmp);
+            return CTreeUtils.leastCommonAncestor(root.getRight(), node1, node2, cmp);
         }
         return root;
     }
@@ -492,11 +483,11 @@ public final class CTree {
         if (Objects.compare(node.getData(), min, cmp) < 0 || Objects.compare(node.getData(), max, cmp) > 0) {
             return false;
         }
-        boolean isLeft = CTree.isBST(node.getLeft(), min, node.getData(), cmp);
+        boolean isLeft = CTreeUtils.isBST(node.getLeft(), min, node.getData(), cmp);
         if (!isLeft) {
             return isLeft;
         }
-        boolean isRight = CTree.isBST(node.getRight(), node.getData(), max, cmp);
+        boolean isRight = CTreeUtils.isBST(node.getRight(), node.getData(), max, cmp);
         if (!isRight) {
             return isRight;
         }
@@ -510,9 +501,9 @@ public final class CTree {
         if (Objects.compare(node.getData(), value, cmp) == 0) {
             return node;
         } else if (Objects.compare(value, node.getData(), cmp) < 0) {
-            return CTree.findNodeInBST(node.getLeft(), value, cmp);
+            return CTreeUtils.findNodeInBST(node.getLeft(), value, cmp);
         }
-        return CTree.findNodeInBST(node.getRight(), value, cmp);
+        return CTreeUtils.findNodeInBST(node.getRight(), value, cmp);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> boolean isIdentical(final U node1, final U node2, final Comparator<? super T> cmp) {
@@ -525,10 +516,10 @@ public final class CTree {
         if (Objects.compare(node1.getData(), node2.getData(), cmp) != 0) {
             return false;
         }
-        if (!CTree.isIdentical(node1.getLeft(), node2.getLeft(), cmp)) {
+        if (!CTreeUtils.isIdentical(node1.getLeft(), node2.getLeft(), cmp)) {
             return false;
         }
-        if (!CTree.isIdentical(node1.getRight(), node2.getRight(), cmp)) {
+        if (!CTreeUtils.isIdentical(node1.getRight(), node2.getRight(), cmp)) {
             return false;
         }
         return true;
@@ -536,7 +527,7 @@ public final class CTree {
 
     public static <T extends Number, U extends ACBaseTreeNode<T, U>> List<T> sumInRoot2LeafPath(final U root, int sum) {
         final List<T> path = new ArrayList<>();
-        boolean sumExist = CTree.sumInRoot2LeafPath(root, path, sum);
+        boolean sumExist = CTreeUtils.sumInRoot2LeafPath(root, path, sum);
         if (sumExist) {
             return path;
         }
@@ -557,12 +548,12 @@ public final class CTree {
             }
             return false;
         }
-        return CTree.sumInRoot2LeafPath(root.getLeft(), path, sum) || CTree.sumInRoot2LeafPath(root.getRight(), path, sum);
+        return CTreeUtils.sumInRoot2LeafPath(root.getLeft(), path, sum) || CTreeUtils.sumInRoot2LeafPath(root.getRight(), path, sum);
     }
 
     public static <T extends Number, U extends ACBaseTreeNode<T, U>> List<T> maxSumPath(final U root) {
         final List<T> path = new ArrayList<>();
-        CTree.maxSumPathRoot2Leaf(root, path, 0, Integer.MIN_VALUE);
+        CTreeUtils.maxSumPathRoot2Leaf(root, path, 0, Integer.MIN_VALUE);
         return path;
     }
 
@@ -580,7 +571,7 @@ public final class CTree {
             }
             return maxSum;
         }
-        return Math.max(CTree.maxSumPathRoot2Leaf(root.getLeft(), path, sum, maxSum), CTree.maxSumPathRoot2Leaf(root.getRight(), path, sum, maxSum));
+        return Math.max(CTreeUtils.maxSumPathRoot2Leaf(root.getLeft(), path, sum, maxSum), CTreeUtils.maxSumPathRoot2Leaf(root.getRight(), path, sum, maxSum));
     }
 
     private static <T extends Number, U extends ACBaseTreeNode<T, U>> void verticalOrder(final U root, int distance, final Map<Integer, Integer> map) {
@@ -592,13 +583,13 @@ public final class CTree {
             existingValue = map.get(distance);
         }
         map.put(distance, root.getData().intValue() + existingValue);
-        CTree.verticalOrder(root.getLeft(), distance - 1, map);
-        CTree.verticalOrder(root.getRight(), distance + 1, map);
+        CTreeUtils.verticalOrder(root.getLeft(), distance - 1, map);
+        CTreeUtils.verticalOrder(root.getRight(), distance + 1, map);
     }
 
     public static <T extends Number, U extends ACBaseTreeNode<T, U>> Map<Integer, Integer> verticalOrderSumOfBTree(final U root) {
         final Map<Integer, Integer> map = new HashMap<>();
-        CTree.verticalOrder(root, 0, map);
+        CTreeUtils.verticalOrder(root, 0, map);
         return map;
     }
 
@@ -614,13 +605,13 @@ public final class CTree {
         }
         list.add(root.getData());
         map.put(distance, list);
-        CTree.verticalOrder2(root.getLeft(), distance - 1, map);
-        CTree.verticalOrder2(root.getRight(), distance + 1, map);
+        CTreeUtils.verticalOrder2(root.getLeft(), distance - 1, map);
+        CTreeUtils.verticalOrder2(root.getRight(), distance + 1, map);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> Map<Integer, List<T>> verticalOrderOfBTree(final U root) {
         final Map<Integer, List<T>> map = new HashMap<>();
-        CTree.verticalOrder2(root, 0, map);
+        CTreeUtils.verticalOrder2(root, 0, map);
         return map;
     }
 
@@ -628,15 +619,15 @@ public final class CTree {
         if (Objects.isNull(root)) {
             return 0;
         }
-        int left = CTree.diameterOfBTree(root.getLeft(), diameter);
-        int right = CTree.diameterOfBTree(root.getRight(), diameter);
+        int left = CTreeUtils.diameterOfBTree(root.getLeft(), diameter);
+        int right = CTreeUtils.diameterOfBTree(root.getRight(), diameter);
         diameter[0] = Math.max(diameter[0], left + right + 1);
         return Math.max(left, right) + 1;
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> int getDiameter(final U root) {
         int[] diameter = new int[]{0};
-        CTree.diameterOfBTree(root, diameter);
+        CTreeUtils.diameterOfBTree(root, diameter);
         return diameter[0];
     }
 
@@ -644,8 +635,8 @@ public final class CTree {
         if (Objects.isNull(root)) {
             return 0;
         }
-        int nLeftSubtree = CTree.nodesInBTree(root.getLeft());
-        int nRightSubtree = CTree.nodesInBTree(root.getRight());
+        int nLeftSubtree = CTreeUtils.nodesInBTree(root.getLeft());
+        int nRightSubtree = CTreeUtils.nodesInBTree(root.getRight());
         return nLeftSubtree + nRightSubtree + 1;
     }
 
@@ -654,8 +645,8 @@ public final class CTree {
             return null;
         }
         T data = root.getData();
-        final T left = CTree.minMaxElement(root.getLeft(), cmp);
-        final T right = CTree.minMaxElement(root.getRight(), cmp);
+        final T left = CTreeUtils.minMaxElement(root.getLeft(), cmp);
+        final T right = CTreeUtils.minMaxElement(root.getRight(), cmp);
         return Collections.max(Arrays.asList(left, right, data), cmp);
     }
 
@@ -663,8 +654,8 @@ public final class CTree {
         if (Objects.isNull(root)) {
             return 0;
         }
-        int left = CTree.heightOfTree(root.getLeft());
-        int right = CTree.heightOfTree(root.getRight());
+        int left = CTreeUtils.heightOfTree(root.getLeft());
+        int right = CTreeUtils.heightOfTree(root.getRight());
         return Math.max(left, right) + 1;
     }
 
@@ -672,11 +663,11 @@ public final class CTree {
         if (Objects.isNull(root)) {
             return true;
         }
-        int heightDiff = CTree.heightOfTree(root.getLeft()) - CTree.heightOfTree(root.getRight());
+        int heightDiff = CTreeUtils.heightOfTree(root.getLeft()) - CTreeUtils.heightOfTree(root.getRight());
         if (Math.abs(heightDiff) > 1) {
             return false;
         } else {
-            return CTree.isBalanced(root.getLeft()) && CTree.isBalanced(root.getRight());
+            return CTreeUtils.isBalanced(root.getLeft()) && CTreeUtils.isBalanced(root.getRight());
         }
     }
 
@@ -690,11 +681,11 @@ public final class CTree {
         if (Objects.compare(node1.getData(), node2.getData(), cmp) != 0) {
             return false;
         }
-        if (!CTree.isMirrorTree(node1.getLeft(), node2.getRight(), cmp)) {
+        if (!CTreeUtils.isMirrorTree(node1.getLeft(), node2.getRight(), cmp)) {
             return false;
         }
 
-        if (!CTree.isMirrorTree(node1.getRight(), node2.getLeft(), cmp)) {
+        if (!CTreeUtils.isMirrorTree(node1.getRight(), node2.getLeft(), cmp)) {
             return false;
         }
         return true;
@@ -759,7 +750,7 @@ public final class CTree {
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<T> getAncestorsOfNode(final U root, final T data, final Comparator<? super T> cmp) {
         final List<T> result = new ArrayList<>();
-        CTree.getAncestorsOfNode(root, data, result, cmp);
+        CTreeUtils.getAncestorsOfNode(root, data, result, cmp);
         return result;
     }
 
@@ -770,12 +761,12 @@ public final class CTree {
         if (Objects.compare(root.getData(), data, cmp) == 0) {
             return true;
         }
-        boolean bFoundOnLeft = CTree.getAncestorsOfNode(root.getLeft(), data, result, cmp);
+        boolean bFoundOnLeft = CTreeUtils.getAncestorsOfNode(root.getLeft(), data, result, cmp);
         if (bFoundOnLeft) {
             result.add(root.getData());
             return bFoundOnLeft;
         }
-        boolean bFoundOnRight = CTree.getAncestorsOfNode(root.getRight(), data, result, cmp);
+        boolean bFoundOnRight = CTreeUtils.getAncestorsOfNode(root.getRight(), data, result, cmp);
         if (bFoundOnRight) {
             result.add(root.getData());
             return bFoundOnRight;
@@ -785,7 +776,7 @@ public final class CTree {
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<T> root2LeafPath(final U root, int[] path) {
         final List<T> result = new ArrayList<>();
-        CTree.root2LeafPath(root, result);
+        CTreeUtils.root2LeafPath(root, result);
         return result;
     }
 
@@ -797,40 +788,40 @@ public final class CTree {
         if (Objects.isNull(root.getLeft()) && Objects.isNull(root.getRight())) {
             return;
         }
-        CTree.root2LeafPath(root.getLeft(), path);
-        CTree.root2LeafPath(root.getRight(), path);
+        CTreeUtils.root2LeafPath(root.getLeft(), path);
+        CTreeUtils.root2LeafPath(root.getRight(), path);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> void mirrorTree(final U root) {
         if (Objects.isNull(root)) {
             return;
         }
-        CTree.mirrorTree(root.getLeft());
-        CTree.mirrorTree(root.getRight());
+        CTreeUtils.mirrorTree(root.getLeft());
+        CTreeUtils.mirrorTree(root.getRight());
         U swapNode = root.getLeft();
         root.setLeft(root.getRight());
         root.setRight(swapNode);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> int countNodes(final U root) {
-        return CTree.countNodes(root, (node) -> Boolean.TRUE);
+        return CTreeUtils.countNodes(root, (node) -> Boolean.TRUE);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> int countFullNodes(final U root) {
-        return CTree.countNodes(root, (node) -> Objects.nonNull(node.getLeft()) && Objects.nonNull(node.getRight()));
+        return CTreeUtils.countNodes(root, (node) -> Objects.nonNull(node.getLeft()) && Objects.nonNull(node.getRight()));
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> int countNonLeafNodes(final U root) {
-        return CTree.countNodes(root, (node) -> Objects.nonNull(node.getLeft()) || Objects.nonNull(node.getRight()));
+        return CTreeUtils.countNodes(root, (node) -> Objects.nonNull(node.getLeft()) || Objects.nonNull(node.getRight()));
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> int countNonLeafOneChild(final U root) {
         final Function<U, Boolean> function = (node) -> (Objects.nonNull(node.getLeft()) && Objects.isNull(node.getRight())) || (Objects.isNull(node.getLeft()) && Objects.nonNull(node.getRight()));
-        return CTree.countNodes(root, function);
+        return CTreeUtils.countNodes(root, function);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> int countLeaves(final U root) {
-        return CTree.countNodes(root, (node) -> Objects.isNull(node.getLeft()) && Objects.isNull(node.getRight()));
+        return CTreeUtils.countNodes(root, (node) -> Objects.isNull(node.getLeft()) && Objects.isNull(node.getRight()));
     }
 
     private static <T, U extends ACBaseTreeNode<T, U>> int countNodes(final U root, final Function<U, Boolean> function) {
@@ -884,8 +875,8 @@ public final class CTree {
         if (root == node1 || root == node2) {
             return root;
         }
-        U left = CTree.lowestCommonAncestor(root.getLeft(), node1, node2);
-        U right = CTree.lowestCommonAncestor(root.getRight(), node1, node2);
+        U left = CTreeUtils.lowestCommonAncestor(root.getLeft(), node1, node2);
+        U right = CTreeUtils.lowestCommonAncestor(root.getRight(), node1, node2);
         if (Objects.nonNull(left) && Objects.nonNull(right)) {
             return root;
         }
@@ -1007,8 +998,8 @@ public final class CTree {
         if (Objects.isNull(root)) {
             return null;
         }
-        root.setLeft(CTree.deleteTree(root.getLeft()));
-        root.setRight(CTree.deleteTree(root.getRight()));
+        root.setLeft(CTreeUtils.deleteTree(root.getLeft()));
+        root.setRight(CTreeUtils.deleteTree(root.getRight()));
         root = null;
         return root;
     }
@@ -1017,7 +1008,7 @@ public final class CTree {
         int delta = depth(firstNode) - depth(secondNode);
         U first = delta > 0 ? secondNode : firstNode;
         U second = delta > 0 ? firstNode : secondNode;
-        second = CTree.goUpBy(second, Math.abs(delta));
+        second = CTreeUtils.goUpBy(second, Math.abs(delta));
         while (first != second && Objects.nonNull(first) && Objects.nonNull(second)) {
             first = first.getParent();
             second = second.getParent();
@@ -1045,15 +1036,15 @@ public final class CTree {
     public static <T, U extends ACTreeNodeExtended<T, U>> U commonAncestor2(final U root, final U firstNode, final U secondNode) {
         if (!covers(root, firstNode) || !covers(root, secondNode)) {
             return null;
-        } else if (CTree.covers(firstNode, secondNode)) {
+        } else if (CTreeUtils.covers(firstNode, secondNode)) {
             return firstNode;
-        } else if (CTree.covers(secondNode, firstNode)) {
+        } else if (CTreeUtils.covers(secondNode, firstNode)) {
             return secondNode;
         }
-        U sibling = CTree.getSibling(firstNode);
+        U sibling = CTreeUtils.getSibling(firstNode);
         U parent = firstNode.getParent();
-        while (!CTree.covers(sibling, secondNode)) {
-            sibling = CTree.getSibling(parent);
+        while (!CTreeUtils.covers(sibling, secondNode)) {
+            sibling = CTreeUtils.getSibling(parent);
             parent = parent.getParent();
         }
         return parent;
@@ -1066,7 +1057,7 @@ public final class CTree {
         if (root == node) {
             return true;
         }
-        return CTree.covers(root.getLeft(), node) || CTree.covers(root.getRight(), node);
+        return CTreeUtils.covers(root.getLeft(), node) || CTreeUtils.covers(root.getRight(), node);
     }
 
     private static <T, U extends ACTreeNodeExtended<T, U>> U getSibling(final U node) {
@@ -1078,27 +1069,27 @@ public final class CTree {
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> U commonAncestor3(final U root, final U firstNode, final U secondNode) {
-        if (!CTree.covers(root, firstNode) || !CTree.covers(root, secondNode)) {
+        if (!CTreeUtils.covers(root, firstNode) || !CTreeUtils.covers(root, secondNode)) {
             return null;
         }
-        return CTree.ancestorHelper(root, firstNode, secondNode);
+        return CTreeUtils.ancestorHelper(root, firstNode, secondNode);
     }
 
     private static <T, U extends ACBaseTreeNode<T, U>> U ancestorHelper(final U root, final U firstNode, final U secondNode) {
         if (Objects.isNull(root) || root == firstNode || root == secondNode) {
             return root;
         }
-        boolean firstIsOnLeft = CTree.covers(root.getLeft(), firstNode);
-        boolean secondIsOnLeft = CTree.covers(root.getLeft(), secondNode);
+        boolean firstIsOnLeft = CTreeUtils.covers(root.getLeft(), firstNode);
+        boolean secondIsOnLeft = CTreeUtils.covers(root.getLeft(), secondNode);
         if (!Objects.equals(firstIsOnLeft, secondIsOnLeft)) {
             return root;
         }
         final U childSide = firstIsOnLeft ? root.getLeft() : root.getRight();
-        return CTree.ancestorHelper(childSide, firstNode, secondNode);
+        return CTreeUtils.ancestorHelper(childSide, firstNode, secondNode);
     }
 
     public static <T, U extends ACBaseTreeNode<T, U>> U commonAncestor4(final U root, final U firstNode, final U secondNode) {
-        final Result<T, U> result = CTree.commonAncestorHelper(root, firstNode, secondNode);
+        final Result<T, U> result = CTreeUtils.commonAncestorHelper(root, firstNode, secondNode);
         if (result.isAncestor) {
             return result.node;
         }
@@ -1112,11 +1103,11 @@ public final class CTree {
         if (root == firstNode && root == secondNode) {
             return new Result(root, true);
         }
-        final Result<T, U> temp = CTree.commonAncestorHelper(root.getLeft(), firstNode, secondNode);
+        final Result<T, U> temp = CTreeUtils.commonAncestorHelper(root.getLeft(), firstNode, secondNode);
         if (temp.isAncestor) {
             return temp;
         }
-        final Result<T, U> temp2 = CTree.commonAncestorHelper(root.getRight(), firstNode, secondNode);
+        final Result<T, U> temp2 = CTreeUtils.commonAncestorHelper(root.getRight(), firstNode, secondNode);
         if (temp2.isAncestor) {
             return temp2;
         }
@@ -1175,13 +1166,13 @@ public final class CTree {
         }
         final T headFirst = first.removeFirst();
         prefix.addLast(headFirst);
-        CTree.weaveLists(first, second, results, prefix);
+        CTreeUtils.weaveLists(first, second, results, prefix);
         prefix.removeLast();
         first.addFirst(headFirst);
 
         final T headSecond = second.removeFirst();
         prefix.addLast(headSecond);
-        CTree.weaveLists(first, second, results, prefix);
+        CTreeUtils.weaveLists(first, second, results, prefix);
         prefix.removeLast();
         second.addFirst(headSecond);
     }
@@ -1189,9 +1180,28 @@ public final class CTree {
     public static <T, U extends ACBaseTreeNode<T, U>> boolean containsTree(final U firstNode, final U secondNode) {
         final StringBuffer firstStr = new StringBuffer();
         final StringBuffer secondStr = new StringBuffer();
-        CTree.getOrderString(firstNode, firstStr);
-        CTree.getOrderString(secondNode, secondStr);
+        CTreeUtils.getOrderString(firstNode, firstStr);
+        CTreeUtils.getOrderString(secondNode, secondStr);
         return firstStr.indexOf(secondStr.toString()) != -1;
+    }
+
+    public static <T, S extends Position<T>> int depth(final IPositionalTree<T> tree, final Position<T> position) {
+        if (tree.isRoot(position)) {
+            return 0;
+        }
+        return 1 + depth(tree, tree.parent(position));
+    }
+
+    public static <T, S extends Position<T>> int height(final IPositionalTree<T> tree, final S position) {
+        if (tree.isExternal(position)) {
+            return 0;
+        }
+        int h = 0;
+        final PositionIterator<S> children = tree.children(position);
+        while (children.hasNext()) {
+            h = Math.max(h, height(tree, (S) children.nextPosition()));
+        }
+        return 1 + h;
     }
 
     private static <T, U extends ACBaseTreeNode<T, U>> void getOrderString(final U node, final StringBuffer sBuffer) {
@@ -1200,8 +1210,8 @@ public final class CTree {
             return;
         }
         sBuffer.append(node.getData()).append(" ");
-        CTree.getOrderString(node.getLeft(), sBuffer);
-        CTree.getOrderString(node.getRight(), sBuffer);
+        CTreeUtils.getOrderString(node.getLeft(), sBuffer);
+        CTreeUtils.getOrderString(node.getRight(), sBuffer);
 
     }
 
@@ -1209,7 +1219,7 @@ public final class CTree {
         if (Objects.isNull(secondNode)) {
             return true;
         }
-        return CTree.subTree(firstNode, secondNode);
+        return CTreeUtils.subTree(firstNode, secondNode);
     }
 
     private static <T, U extends ACBaseTreeNode<T, U>> boolean subTree(final U firstNode, final U secondNode) {
@@ -1218,7 +1228,7 @@ public final class CTree {
         } else if (Objects.equals(firstNode.getData(), secondNode.getData()) && matchTree(firstNode, secondNode)) {
             return true;
         }
-        return CTree.subTree(firstNode.getLeft(), secondNode) || CTree.subTree(firstNode.getRight(), secondNode);
+        return CTreeUtils.subTree(firstNode.getLeft(), secondNode) || CTreeUtils.subTree(firstNode.getRight(), secondNode);
     }
 
     private static <T, U extends ACBaseTreeNode<T, U>> boolean matchTree(final U firstNode, final U secondNode) {
@@ -1229,16 +1239,16 @@ public final class CTree {
         } else if (!Objects.equals(firstNode.getData(), secondNode.getData())) {
             return false;
         }
-        return CTree.matchTree(firstNode.getLeft(), secondNode.getLeft()) && matchTree(firstNode.getRight(), secondNode.getRight());
+        return CTreeUtils.matchTree(firstNode.getLeft(), secondNode.getLeft()) && matchTree(firstNode.getRight(), secondNode.getRight());
     }
 
     public static <U extends ACBaseTreeNode<Double, U>> Integer countPathsWithSum(final U root, double targetSum) {
         if (Objects.isNull(root)) {
             return 0;
         }
-        int pathsFromRoot = CTree.countPathWithSumFromNode(root, targetSum, 0.0);
-        int pathsOnLeft = CTree.countPathsWithSum(root.getLeft(), targetSum);
-        int pathsOnRight = CTree.countPathsWithSum(root.getRight(), targetSum);
+        int pathsFromRoot = CTreeUtils.countPathWithSumFromNode(root, targetSum, 0.0);
+        int pathsOnLeft = CTreeUtils.countPathsWithSum(root.getLeft(), targetSum);
+        int pathsOnRight = CTreeUtils.countPathsWithSum(root.getRight(), targetSum);
         return (pathsFromRoot + pathsOnLeft + pathsOnRight);
     }
 
@@ -1251,13 +1261,13 @@ public final class CTree {
         if (Double.compare(currentSum, targetSum) == 0) {
             totalPaths++;
         }
-        totalPaths += CTree.countPathWithSumFromNode(node.getLeft(), targetSum, currentSum);
-        totalPaths += CTree.countPathWithSumFromNode(node.getRight(), targetSum, currentSum);
+        totalPaths += CTreeUtils.countPathWithSumFromNode(node.getLeft(), targetSum, currentSum);
+        totalPaths += CTreeUtils.countPathWithSumFromNode(node.getRight(), targetSum, currentSum);
         return totalPaths;
     }
 
     public static <U extends ACBaseTreeNode<Double, U>> int countPathsWithSum2(final U root, final double targetSum) {
-        return CTree.countPathsWithSum(root, targetSum, 0.0, new HashMap<>());
+        return CTreeUtils.countPathsWithSum(root, targetSum, 0.0, new HashMap<>());
     }
 
     private static <U extends ACBaseTreeNode<Double, U>> int countPathsWithSum(final U node, double targetSum, double currentSum, final Map<Double, Integer> pathCount) {
@@ -1270,10 +1280,10 @@ public final class CTree {
         if (Double.compare(currentSum, targetSum) == 0) {
             totalPaths++;
         }
-        CTree.incrementHashTable(pathCount, currentSum, 1);
-        totalPaths += CTree.countPathsWithSum(node.getLeft(), targetSum, currentSum, pathCount);
-        totalPaths += CTree.countPathsWithSum(node.getRight(), targetSum, currentSum, pathCount);
-        CTree.incrementHashTable(pathCount, currentSum, -1);
+        CTreeUtils.incrementHashTable(pathCount, currentSum, 1);
+        totalPaths += CTreeUtils.countPathsWithSum(node.getLeft(), targetSum, currentSum, pathCount);
+        totalPaths += CTreeUtils.countPathsWithSum(node.getRight(), targetSum, currentSum, pathCount);
+        CTreeUtils.incrementHashTable(pathCount, currentSum, -1);
         return totalPaths;
     }
 
@@ -1372,18 +1382,18 @@ public final class CTree {
         }
         final U tailRight = (Objects.isNull(right) ? null : right.getLeft());
         if (Objects.isNull(left)) {
-            CTree.concat(right.getLeft(), root);
+            CTreeUtils.concat(right.getLeft(), root);
         } else {
-            CTree.concat(left.getLeft(), root);
+            CTreeUtils.concat(left.getLeft(), root);
         }
         if (Objects.isNull(right)) {
-            CTree.concat(root, left);
+            CTreeUtils.concat(root, left);
         } else {
-            CTree.concat(root, right);
+            CTreeUtils.concat(root, right);
         }
 
         if (Objects.nonNull(left) && Objects.nonNull(right)) {
-            CTree.concat(tailRight, left);
+            CTreeUtils.concat(tailRight, left);
         }
         return Objects.isNull(left) ? root : left;
     }
@@ -1394,7 +1404,7 @@ public final class CTree {
     }
 
     public static <U extends ACBaseTreeNode<Double, U>> U convert(final U root) {
-        final U head = CTree.convertToCircular(root);
+        final U head = CTreeUtils.convertToCircular(root);
         head.getLeft().setRight(null);
         head.setLeft(null);
         return head;

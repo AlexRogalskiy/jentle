@@ -18,7 +18,7 @@ public interface PositionIterator<T> {
 
     boolean hasNext();
 
-    <S extends Position<T>> S next();
+    <S extends Position<T>> S nextPosition();
 
     default void remove() {
         throw new UnsupportedOperationException("remove");
@@ -27,7 +27,7 @@ public interface PositionIterator<T> {
     default <S extends Position<T>> void forEachRemaining(final Consumer<? super S> action) {
         Objects.requireNonNull(action);
         while (this.hasNext()) {
-            action.accept(this.next());
+            action.accept(this.nextPosition());
         }
     }
 }
