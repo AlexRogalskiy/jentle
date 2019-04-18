@@ -33,6 +33,7 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended2;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -1185,14 +1186,53 @@ public final class CTreeUtils {
         return firstStr.indexOf(secondStr.toString()) != -1;
     }
 
-    public static <T, S extends Position<T>> int depth(final IPositionalTree<T> tree, final Position<T> position) {
+    public static <T, S extends Position<T>> Iterable<T> postOrder(@NonNull final IPositionalTree<T> tree, final Position<T> position) {
+        return preOrder(tree, position, new ArrayList<>());
+    }
+
+    private static <T, S extends Position<T>> Iterable<T> postOrder(@NonNull final IPositionalTree<T> tree, final Position<T> position, final List<T> result) {
+        final PositionIterator<T> positionIterator = (PositionIterator<T>) tree.children(position);
+        while (positionIterator.hasNext()) {
+            postOrder(tree, positionIterator.nextPosition(), result);
+        }
+        result.add(position.element());
+        return result;
+    }
+
+    public static <T, S extends Position<T>> Iterable<T> preOrder(@NonNull final IPositionalTree<T> tree, final Position<T> position) {
+        return preOrder(tree, position, new ArrayList<>());
+    }
+
+    private static <T, S extends Position<T>> Iterable<T> preOrder(@NonNull final IPositionalTree<T> tree, final Position<T> position, final List<T> result) {
+        result.add(position.element());
+        final PositionIterator<T> positionIterator = (PositionIterator<T>) tree.children(position);
+        while (positionIterator.hasNext()) {
+            preOrder(tree, positionIterator.nextPosition(), result);
+        }
+        return result;
+    }
+
+    public static <T, S extends Position<T>> int depth(@NonNull final IPositionalTree<T> tree, final Position<T> position) {
         if (tree.isRoot(position)) {
             return 0;
         }
         return 1 + depth(tree, tree.parent(position));
     }
 
-    public static <T, S extends Position<T>> int height(final IPositionalTree<T> tree, final S position) {
+    public static <T, S extends Position<T>> String parenthetic(@NonNull final IPositionalTree<T> tree, final Position<T> position) {
+        final StringBuilder sb = new StringBuilder();
+        if (tree.isExternal(position)) {
+            final PositionIterator<T> positionIterator = (PositionIterator<T>) tree.children(position);
+            sb.append("(").append(parenthetic(tree, positionIterator.nextPosition()));
+            while (positionIterator.hasNext()) {
+                sb.append(",").append(parenthetic(tree, positionIterator.nextPosition()));
+            }
+            sb.append(")");
+        }
+        return sb.toString();
+    }
+
+    public static <T, S extends Position<T>> int height(@NonNull final IPositionalTree<T> tree, final S position) {
         if (tree.isExternal(position)) {
             return 0;
         }

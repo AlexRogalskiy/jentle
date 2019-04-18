@@ -19,7 +19,7 @@ public interface IPositionalTree<T> extends IPositionalContainer<T> {
 
     Position<T> parent(final Position<T> position);
 
-    @NonNull <S extends Position<T>> PositionIterator<S> children(final Position<T> position);
+    @NonNull <S extends Position<T>> PositionIterator<S> children(final S position);
 
     boolean isInternal(final Position<T> position);
 
