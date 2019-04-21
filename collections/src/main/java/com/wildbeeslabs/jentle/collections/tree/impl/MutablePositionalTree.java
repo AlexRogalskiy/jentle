@@ -25,33 +25,34 @@ import java.util.Iterator;
 @ToString
 public class MutablePositionalTree<T> implements IMutablePositionalTree<T> {
 
+
     @Override
     public Position<T> root() {
         return null;
     }
 
     @Override
-    public Position<T> parent(Position<T> position) {
+    public Position<T> parent(final Position<T> position) {
         return null;
     }
 
     @Override
-    public @NonNull <S extends Position<T>> PositionIterator<S> children(Position<T> position) {
+    public @NonNull <S extends Position<T>> PositionIterator<S> children(final S position) {
         return null;
     }
 
     @Override
-    public boolean isInternal(Position<T> position) {
+    public boolean isInternal(final Position<T> position) {
         return false;
     }
 
     @Override
-    public boolean isExternal(Position<T> position) {
+    public boolean isExternal(final Position<T> position) {
         return false;
     }
 
     @Override
-    public boolean isRoot(Position<T> position) {
+    public boolean isRoot(final Position<T> position) {
         return false;
     }
 

@@ -32,7 +32,7 @@ public interface PositionIterable<T> {
         }
         final List<S> list = new ArrayList<>(estimatedSize);
         while (iterator.hasNext()) {
-            list.add((S) iterator.next());
+            list.add((S) iterator.nextPosition());
         }
         return list;
     }
