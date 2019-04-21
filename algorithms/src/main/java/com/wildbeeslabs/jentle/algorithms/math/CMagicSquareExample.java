@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
  * Example of use of Matrix Class, featuring magic squares.
  **/
 
-public class MagicSquareExample {
+public class CMagicSquareExample {
 
     public static Matrix magic(int n) {
         double[][] M = new double[n][n];
