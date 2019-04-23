@@ -1,12 +1,12 @@
 package com.wildbeeslabs.jentle.collections.list.iface;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.position.IMutablePositionalContainer;
+import com.wildbeeslabs.jentle.collections.iface.position.IPositionalContainer;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
 
 /**
- * Custom {@link IPositionalList} {@link IMutablePositionalContainer} interface declaration
+ * Custom {@link IPositionalList} {@link IPositionalContainer} interface declaration
  *
  * @param <T>
  * @param <E>
@@ -14,7 +14,7 @@ import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IMutablePositionalList<T, E extends ACPositionalListNode<T, E>> extends IPositionalList<T, E>, IMutablePositionalContainer<T> {
+public interface IMutablePositionalList<T, E extends ACPositionalListNode<T, E>> extends IPositionalList<T, E>, IPositionalContainer<T> {
 
     T remove(final Position<T> position);
 

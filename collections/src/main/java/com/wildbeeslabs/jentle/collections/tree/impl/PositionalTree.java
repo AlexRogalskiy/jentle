@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.tree.iface.IMutablePositionalTree;
+import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalTreeContainer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Iterator;
 
 /**
- * Custom {@link IMutablePositionalTree} implementation
+ * Custom {@link IPositionalTreeContainer} implementation
  *
  * @param <T>
  * @author Alex
@@ -23,8 +23,17 @@ import java.util.Iterator;
 @Data
 @EqualsAndHashCode
 @ToString
-public class MutablePositionalTree<T> implements IMutablePositionalTree<T> {
+public class PositionalTree<T> implements IPositionalTreeContainer<T> {
 
+    @Override
+    public void swap(final Position<T> positionFirst, final Position<T> positionLast) {
+
+    }
+
+    @Override
+    public T replace(final Position<T> position, final T value) {
+        return null;
+    }
 
     @Override
     public Position<T> root() {

@@ -1,15 +1,16 @@
 package com.wildbeeslabs.jentle.collections.iface.position;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
-import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterable;
-
 /**
- * Custom positino {@link ICollection} interface declaration
+ * Custom mutable {@link IPositionalCollection} interface declaration
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPositionalContainer<T> extends ICollection<T>, PositionIterable<T> {
+public interface IPositionalContainer<T> extends IPositionalCollection<T> {
+
+    void swap(final Position<T> positionFirst, final Position<T> positionLast);
+
+    T replace(final Position<T> position, final T value);
 }

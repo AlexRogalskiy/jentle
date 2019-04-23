@@ -1,19 +1,19 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
-import com.wildbeeslabs.jentle.collections.iface.position.IPositionalContainer;
+import com.wildbeeslabs.jentle.collections.iface.position.IPositionalCollection;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import lombok.NonNull;
 
 /**
- * Custom tree {@link IPositionalContainer} interface declaration
+ * Custom tree {@link IPositionalCollection} interface declaration
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPositionalTree<T> extends IPositionalContainer<T> {
+public interface IPositionalTree<T> extends IPositionalCollection<T> {
 
     Position<T> root();
 
