@@ -30,7 +30,7 @@ import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
  * Custom {@link ITreeCollection} declaration
  *
  * @param <T>
- * @param <U>
+ * @param <R>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
