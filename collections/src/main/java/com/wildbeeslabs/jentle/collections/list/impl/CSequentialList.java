@@ -21,7 +21,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CMutableSequentialList<T> extends CMutablePositionalList<T> implements ISequentialList<T, CMutablePositionalList.CListNode<T>>, IMutableVector<T> {
+public class CSequentialList<T> extends CPositionalList<T> implements ISequentialList<T, CPositionalList.CListNode<T>>, IMutableVector<T> {
 
     protected void checkRank(int rank) throws BoundaryViolationException {
         if (rank < 0 || rank >= this.size()) {
@@ -88,5 +88,22 @@ public class CMutableSequentialList<T> extends CMutablePositionalList<T> impleme
     public T replaceAtRank(int rank, final T value) throws BoundaryViolationException {
         checkRank(rank);
         return this.replace(this.atRank(rank), value);
+    }
+
+    @Override
+    public <S extends Position<T>> void swap(S positionFirst, S positionLast) {
+        final CListNode<T> nodeFirst = checkPosition(positionFirst);
+        final CListNode<T> nodeLast = checkPosition(positionLast);
+        final T temp = nodeFirst.getData();
+        nodeFirst.setData(nodeLast.getData());
+        nodeLast.setData(temp);
+    }
+
+    @Override
+    public <S extends Position<T>> T replace(S position, T value) {
+        final CListNode<T> node = checkPosition(position);
+        final T data = node.getData();
+        node.setData(value);
+        return data;
     }
 }

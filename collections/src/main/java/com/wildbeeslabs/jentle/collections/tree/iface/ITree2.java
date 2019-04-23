@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
 import com.wildbeeslabs.jentle.collections.iface.position.IPositionalCollection;
+import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 
 /**
  * Custom {@link ITreeCollection} declaration
@@ -34,5 +35,5 @@ import com.wildbeeslabs.jentle.collections.iface.position.IPositionalCollection;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITree2<T> extends IPositionalTree<T>, IPositionalCollection<T> {
+public interface ITree2<T, R extends TreePosition<T, R>> extends IPositionalTree<T, R>, IPositionalCollection<T> {
 }

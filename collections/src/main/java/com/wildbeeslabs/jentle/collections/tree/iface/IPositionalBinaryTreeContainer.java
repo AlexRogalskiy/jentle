@@ -1,6 +1,7 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
 import com.wildbeeslabs.jentle.collections.iface.position.IPositionalContainer;
+import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 
 /**
  * Custom {@link IPositionalBinaryTree} container declaration
@@ -10,5 +11,5 @@ import com.wildbeeslabs.jentle.collections.iface.position.IPositionalContainer;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPositionalBinaryTreeContainer<T> extends IPositionalBinaryTree<T>, IPositionalContainer<T> {
+public interface IPositionalBinaryTreeContainer<T, R extends TreePosition<T, R>> extends IPositionalBinaryTree<T, R>, IPositionalContainer<T> {
 }

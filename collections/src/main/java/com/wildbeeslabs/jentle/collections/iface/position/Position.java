@@ -13,4 +13,6 @@ import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
 public interface Position<T> {
 
     T element() throws InvalidPositionException;
+
+    void setElement(final T value);
 }

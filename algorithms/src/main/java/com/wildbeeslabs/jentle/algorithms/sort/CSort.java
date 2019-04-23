@@ -26,7 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.sort;
 import com.wildbeeslabs.jentle.algorithms.utils.CArrayUtils;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.list.impl.ACList;
-import com.wildbeeslabs.jentle.collections.list.impl.CMutableSequentialList;
+import com.wildbeeslabs.jentle.collections.list.impl.CSequentialList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.map.impl.CHashMapList;
 import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
@@ -835,7 +835,7 @@ public final class CSort {
      * @see [best] time: O(n * n) average time: O(n * n) worst time: O(n * n)
      * memory: in-place stable: true
      */
-    public static <T> void bubbleSort(final CMutableSequentialList<T> sequence, final Comparator<? super T> cmp) {
+    public static <T> void bubbleSort(final CSequentialList<T> sequence, final Comparator<? super T> cmp) {
         Objects.requireNonNull(sequence);
         Position<T> prevPosition, nextPosition;
         int n = sequence.size();

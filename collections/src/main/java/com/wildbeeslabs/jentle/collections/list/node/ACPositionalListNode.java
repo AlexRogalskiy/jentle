@@ -45,4 +45,9 @@ public class ACPositionalListNode<T, E extends ACPositionalListNode<T, E>> exten
         }
         return this.data;
     }
+
+    @Override
+    public void setElement(final T value) {
+        this.setData(value);
+    }
 }

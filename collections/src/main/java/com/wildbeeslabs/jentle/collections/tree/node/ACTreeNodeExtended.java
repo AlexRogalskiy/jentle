@@ -28,14 +28,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * Custom abstract binary tree extended node implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

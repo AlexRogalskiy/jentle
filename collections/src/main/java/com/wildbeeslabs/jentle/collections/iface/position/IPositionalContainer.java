@@ -10,7 +10,7 @@ package com.wildbeeslabs.jentle.collections.iface.position;
  */
 public interface IPositionalContainer<T> extends IPositionalCollection<T> {
 
-    void swap(final Position<T> positionFirst, final Position<T> positionLast);
+    <S extends Position<T>> void swap(final S positionFirst, final S positionLast);
 
-    T replace(final Position<T> position, final T value);
+    <S extends Position<T>> T replace(final S position, final T value);
 }

@@ -2,7 +2,9 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalTreeContainer;
+import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -23,45 +25,45 @@ import java.util.Iterator;
 @Data
 @EqualsAndHashCode
 @ToString
-public class PositionalTree<T> implements IPositionalTreeContainer<T> {
+public class PositionalTree<T> implements IPositionalTreeContainer<T, CPositionalTreeNode<T>> {
 
     @Override
-    public void swap(final Position<T> positionFirst, final Position<T> positionLast) {
+    public <S extends Position<T>> void swap(S positionFirst, S positionLast) {
 
     }
 
     @Override
-    public T replace(final Position<T> position, final T value) {
+    public <S extends Position<T>> T replace(S position, T value) {
         return null;
     }
 
     @Override
-    public Position<T> root() {
+    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S root() {
         return null;
     }
 
     @Override
-    public Position<T> parent(final Position<T> position) {
+    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S getParent(S position) {
         return null;
     }
 
     @Override
-    public @NonNull <S extends Position<T>> PositionIterator<S> children(final S position) {
+    public @NonNull PositionIterator<CPositionalTreeNode<T>> children(CPositionalTreeNode<T> position) {
         return null;
     }
 
     @Override
-    public boolean isInternal(final Position<T> position) {
+    public boolean isInternal(CPositionalTreeNode<T> position) {
         return false;
     }
 
     @Override
-    public boolean isExternal(final Position<T> position) {
+    public boolean isExternal(CPositionalTreeNode<T> position) {
         return false;
     }
 
     @Override
-    public boolean isRoot(final Position<T> position) {
+    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isRoot(S position) {
         return false;
     }
 

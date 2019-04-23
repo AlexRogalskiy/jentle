@@ -23,51 +23,27 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
+import com.wildbeeslabs.jentle.collections.tree.node.CExtendedTreeNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Comparator;
-import java.util.Optional;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.Comparator;
+import java.util.Optional;
+
 /**
- *
  * Custom extended tree implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedTreeNode<T>> {
-
-    @Data
-    @EqualsAndHashCode(callSuper = true)
-    @ToString(callSuper = true)
-    public static class CExtendedTreeNode<T> extends ACTreeNodeExtended<T, CExtendedTreeNode<T>> {
-
-        public CExtendedTreeNode() {
-            this(null);
-        }
-
-        public CExtendedTreeNode(final T data) {
-            this(data, null, null);
-        }
-
-        public CExtendedTreeNode(final T data, final CExtendedTreeNode<T> left, final CExtendedTreeNode<T> right) {
-            this(data, left, right, null);
-        }
-
-        public CExtendedTreeNode(final T data, final CExtendedTreeNode<T> left, final CExtendedTreeNode<T> right, final CExtendedTreeNode<T> parent) {
-            super(data, left, right, parent);
-        }
-    }
+public class CTreeExtended<T> extends ACTreeExtended<T, CExtendedTreeNode<T>> {
 
     public CTreeExtended() {
         this(CUtils.DEFAULT_SORT_COMPARATOR);
@@ -77,29 +53,29 @@ public class CTreeExtended<T> extends ACTreeExtended<T, CTreeExtended.CExtendedT
         this(null, cmp);
     }
 
-    public CTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root) {
+    public CTreeExtended(final CExtendedTreeNode<T> root) {
         this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
+    public CTreeExtended(final CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
         super(root, cmp);
     }
 
     @Override
-    public void insertLeft(final CTreeExtended.CExtendedTreeNode<T> node, final Optional<? extends T> value) {
+    public void insertLeft(final CExtendedTreeNode<T> node, final Optional<? extends T> value) {
         this.insertLeft(node, value);
     }
 
     @Override
-    public void insertRight(final CTreeExtended.CExtendedTreeNode<T> node, final Optional<? extends T> value) {
+    public void insertRight(final CExtendedTreeNode<T> node, final Optional<? extends T> value) {
         this.insertToRight(node, value);
     }
 
     @Override
-    protected CTreeExtended.CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
+    protected CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
         if (value.isPresent()) {
-            return new CTreeExtended.CExtendedTreeNode<>(value.get());
+            return new CExtendedTreeNode<>(value.get());
         }
-        return new CTreeExtended.CExtendedTreeNode<>();
+        return new CExtendedTreeNode<>();
     }
 }

@@ -14,7 +14,7 @@ import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IMutablePositionalList<T, E extends ACPositionalListNode<T, E>> extends IPositionalList<T, E>, IPositionalContainer<T> {
+public interface IPositionalListCollection<T, E extends ACPositionalListNode<T, E>> extends IPositionalList<T, E>, IPositionalContainer<T> {
 
     T remove(final Position<T> position);
 

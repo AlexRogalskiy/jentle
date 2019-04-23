@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 
 /**
  * Custom binary {@link IPositionalTree} declaration
@@ -10,11 +10,11 @@ import com.wildbeeslabs.jentle.collections.iface.position.Position;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPositionalBinaryTree<T> extends IPositionalTree<T> {
+public interface IPositionalBinaryTree<T, R extends TreePosition<T, R>> extends IPositionalTree<T, R> {
 
-    Position<T> getLeft(final Position<T> value);
+    <S extends TreePosition<T, R>> S getLeft(final S value);
 
-    Position<T> getRight(final Position<T> value);
+    <S extends TreePosition<T, R>> S getRight(final S value);
 
-    Position<T> getSibling(final Position<T> value);
+    <S extends TreePosition<T, R>> S getSibling(final S value);
 }

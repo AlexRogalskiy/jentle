@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.collections.tree.iface;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.IPositionalCollection;
-import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 import lombok.NonNull;
 
 /**
@@ -13,17 +13,17 @@ import lombok.NonNull;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPositionalTree<T> extends IPositionalCollection<T> {
+public interface IPositionalTree<T, R extends TreePosition<T, R>> extends IPositionalCollection<T> {
 
-    Position<T> root();
+    <S extends TreePosition<T, R>> S root();
 
-    Position<T> parent(final Position<T> position);
+    <S extends TreePosition<T, R>> S getParent(final S position);
 
-    @NonNull <S extends Position<T>> PositionIterator<S> children(final S position);
+    @NonNull PositionIterator<R> children(final R position);
 
-    boolean isInternal(final Position<T> position);
+    boolean isInternal(final R position);
 
-    boolean isExternal(final Position<T> position);
+    boolean isExternal(final R position);
 
-    boolean isRoot(final Position<T> position);
+    <S extends TreePosition<T, R>> boolean isRoot(final S position);
 }

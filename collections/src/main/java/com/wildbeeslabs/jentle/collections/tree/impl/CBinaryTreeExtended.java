@@ -23,30 +23,29 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
+import com.wildbeeslabs.jentle.collections.tree.node.CExtendedTreeNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- *
  * Custom binary extended tree implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CBinaryTreeExtended<T> extends ACBinaryTreeExtended<T, CTreeExtended.CExtendedTreeNode<T>> {
+public class CBinaryTreeExtended<T> extends ACBinaryTreeExtended<T, CExtendedTreeNode<T>> {
 
     public CBinaryTreeExtended() {
         this(CUtils.DEFAULT_SORT_COMPARATOR);
@@ -56,11 +55,11 @@ public class CBinaryTreeExtended<T> extends ACBinaryTreeExtended<T, CTreeExtende
         this(null, cmp);
     }
 
-    public CBinaryTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root) {
+    public CBinaryTreeExtended(final CExtendedTreeNode<T> root) {
         this(root, CUtils.DEFAULT_SORT_COMPARATOR);
     }
 
-    public CBinaryTreeExtended(final CTreeExtended.CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
+    public CBinaryTreeExtended(final CExtendedTreeNode<T> root, final Comparator<? super T> cmp) {
         super(root, cmp);
     }
 
@@ -72,26 +71,26 @@ public class CBinaryTreeExtended<T> extends ACBinaryTreeExtended<T, CTreeExtende
     public static <T> CBinaryTreeExtended<T> createMinimalBST(final T[] array, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         Arrays.sort(array, cmp);
-        final CTreeExtended.CExtendedTreeNode<T> node = createMinimalBST(array, 0, array.length - 1);
+        final CExtendedTreeNode<T> node = createMinimalBST(array, 0, array.length - 1);
         return new CBinaryTreeExtended<>(node);
     }
 
-    protected static <T> CTreeExtended.CExtendedTreeNode<T> createMinimalBST(final T[] array, int start, int end) {
+    protected static <T> CExtendedTreeNode<T> createMinimalBST(final T[] array, int start, int end) {
         if (end < start) {
             return null;
         }
         int middle = (start + end) / 2;
-        final CTreeExtended.CExtendedTreeNode<T> node = new CTreeExtended.CExtendedTreeNode<>(array[middle]);
+        final CExtendedTreeNode<T> node = new CExtendedTreeNode<>(array[middle]);
         node.setLeft(createMinimalBST(array, start, middle - 1));
         node.setRight(createMinimalBST(array, middle + 1, end));
         return node;
     }
 
     @Override
-    protected CTreeExtended.CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
+    protected CExtendedTreeNode<T> createTreeNode(final Optional<? extends T> value) {
         if (value.isPresent()) {
-            return new CTreeExtended.CExtendedTreeNode<>(value.get());
+            return new CExtendedTreeNode<>(value.get());
         }
-        return new CTreeExtended.CExtendedTreeNode<>();
+        return new CExtendedTreeNode<>();
     }
 }

@@ -5,8 +5,8 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyContainerException;
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.list.iface.IMutablePositionalList;
 import com.wildbeeslabs.jentle.collections.list.iface.IPositionalList;
+import com.wildbeeslabs.jentle.collections.list.iface.IPositionalListCollection;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +28,7 @@ import java.util.Optional;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CMutablePositionalList<T> extends ACList<T, CMutablePositionalList.CListNode<T>> implements IMutablePositionalList<T, CMutablePositionalList.CListNode<T>> {
+public abstract class CPositionalList<T> extends ACList<T, CPositionalList.CListNode<T>> implements IPositionalListCollection<T, CPositionalList.CListNode<T>> {
 
     /**
      * Default list size
@@ -66,7 +66,7 @@ public class CMutablePositionalList<T> extends ACList<T, CMutablePositionalList.
         }
     }
 
-    public CMutablePositionalList() {
+    public CPositionalList() {
         this.size = 0;
         this.header = new CListNode<>();
         this.trailer = new CListNode<>();
@@ -102,23 +102,6 @@ public class CMutablePositionalList<T> extends ACList<T, CMutablePositionalList.
     @Override
     public boolean isEmpty() {
         return (0 == this.size());
-    }
-
-    @Override
-    public T replace(final Position<T> position, final T value) throws InvalidPositionException {
-        final CListNode<T> node = checkPosition(position);
-        final T data = node.getData();
-        node.setData(value);
-        return data;
-    }
-
-    @Override
-    public void swap(final Position<T> positionFirst, final Position<T> positionLast) throws InvalidPositionException {
-        final CListNode<T> nodeFirst = checkPosition(positionFirst);
-        final CListNode<T> nodeLast = checkPosition(positionLast);
-        final T temp = nodeFirst.getData();
-        nodeFirst.setData(nodeLast.getData());
-        nodeLast.setData(temp);
     }
 
     @Override

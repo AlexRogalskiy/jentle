@@ -45,8 +45,7 @@ public abstract class ACTreeNodeExtended3<T, U extends ACTreeNodeExtended3<T, U>
     protected ACTreeNodeExtended3.Color color;
     protected U node;
 
-    public static enum Color {
-
+    public enum Color {
         RED, BLACK;
     }
 
