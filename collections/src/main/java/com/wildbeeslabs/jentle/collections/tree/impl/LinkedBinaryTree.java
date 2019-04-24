@@ -58,12 +58,12 @@ public class LinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, CP
     }
 
     @Override
-    public boolean isInternal(final CPositionalTreeNode<T> position) {
+    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isInternal(final S position) {
         return Objects.nonNull(position) && Objects.nonNull(position.getRight());
     }
 
     @Override
-    public boolean isExternal(final CPositionalTreeNode<T> position) {
+    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isExternal(final S position) {
         return Objects.isNull(position.getLeft()) && Objects.isNull(position.getRight());
     }
 
@@ -138,17 +138,17 @@ public class LinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, CP
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S getLeft(final S value) {
+    public <S extends CPositionalTreeNode<T>> S getLeft(final S value) {
         return (S) value.getLeft();
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S getRight(final S value) {
+    public <S extends CPositionalTreeNode<T>> S getRight(final S value) {
         return (S) value.getRight();
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S getSibling(final S value) {
+    public <S extends CPositionalTreeNode<T>> S getSibling(final S value) {
         return (S) value.getParent();
     }
 }

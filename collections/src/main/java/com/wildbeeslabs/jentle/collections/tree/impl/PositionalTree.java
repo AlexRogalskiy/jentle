@@ -53,12 +53,12 @@ public class PositionalTree<T> implements IPositionalTreeContainer<T, CPositiona
     }
 
     @Override
-    public boolean isInternal(CPositionalTreeNode<T> position) {
+    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isInternal(S position) {
         return false;
     }
 
     @Override
-    public boolean isExternal(CPositionalTreeNode<T> position) {
+    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isExternal(S position) {
         return false;
     }
 

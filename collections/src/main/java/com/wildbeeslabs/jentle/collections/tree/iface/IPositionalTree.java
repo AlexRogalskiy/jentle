@@ -21,9 +21,9 @@ public interface IPositionalTree<T, R extends TreePosition<T, R>> extends IPosit
 
     @NonNull PositionIterator<R> children(final R position);
 
-    boolean isInternal(final R position);
+    <S extends TreePosition<T, R>> boolean isInternal(final S position);
 
-    boolean isExternal(final R position);
+    <S extends TreePosition<T, R>> boolean isExternal(final S position);
 
     <S extends TreePosition<T, R>> boolean isRoot(final S position);
 }

@@ -12,9 +12,9 @@ import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
  */
 public interface IPositionalBinaryTree<T, R extends TreePosition<T, R>> extends IPositionalTree<T, R> {
 
-    <S extends TreePosition<T, R>> S getLeft(final S value);
+    <S extends R> S getLeft(final S value);
 
-    <S extends TreePosition<T, R>> S getRight(final S value);
+    <S extends R> S getRight(final S value);
 
-    <S extends TreePosition<T, R>> S getSibling(final S value);
+    <S extends R> S getSibling(final S value);
 }

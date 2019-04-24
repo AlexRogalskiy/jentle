@@ -1,17 +1,17 @@
 package com.wildbeeslabs.jentle.algorithms.tree;
 
-import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalBinaryTree;
 
-public abstract class EulerTour<T, V> {
+public abstract class EulerTour<T, V, R extends TreePosition<T, R>> {
 
-    protected IPositionalBinaryTree<T> tree;
+    protected IPositionalBinaryTree<T, R> tree;
 
-    public T execute(final IPositionalBinaryTree<T> tree) {
+    public T execute(final IPositionalBinaryTree<T, R> tree) {
         return null;
     }
 
-    protected V eulerTour(final Position<T> position) {
+    protected V eulerTour(final R position) {
         final TraversalResult<V> result = this.initResult();
         if (this.tree.isExternal(position)) {
             this.visitExternal(position, result);
@@ -25,19 +25,19 @@ public abstract class EulerTour<T, V> {
         return this.buildResult(result);
     }
 
-    protected void visitExternal(final Position<T> position, final TraversalResult<V> result) {
+    protected void visitExternal(final R position, final TraversalResult<V> result) {
 
     }
 
-    protected void visitLeft(final Position<T> position, final TraversalResult<V> result) {
+    protected void visitLeft(final R position, final TraversalResult<V> result) {
 
     }
 
-    protected void visitBelow(final Position<T> position, final TraversalResult<V> result) {
+    protected void visitBelow(final R position, final TraversalResult<V> result) {
 
     }
 
-    protected void visitRight(final Position<T> position, final TraversalResult<V> result) {
+    protected void visitRight(final R position, final TraversalResult<V> result) {
 
     }
 
