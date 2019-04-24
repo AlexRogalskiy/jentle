@@ -9,36 +9,55 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class EvalExpressionTour extends EulerTour<Integer, Integer, EvalExpressionTour.TreeNode<Integer>> {
+public class EvalExpressionTour extends EulerTour<Integer, Integer, EvalExpressionTour.TreeNode<Integer, Integer>> {
 
-    public Integer execute(final IPositionalBinaryTree<Integer, EvalExpressionTour.TreeNode<Integer>> tree) {
+    public Integer execute(final IPositionalBinaryTree<Integer, EvalExpressionTour.TreeNode<Integer, Integer>> tree) {
         super.execute(tree);
         log.info("Result: {}", this.eulerTour(tree.root()));
         return null;
     }
 
-    protected void visitExternal(final Position<EvalExpressionTour.TreeNode<Integer>> position, final TraversalResult<Integer> result) {
+    /**
+     * Visits external {@link Position} by evaluating {@link TraversalResult}
+     *
+     * @param position - initial input external {@link Position} to start visiting
+     * @param result   - initial input {@link TraversalResult} as result set
+     */
+    protected void visitExternal(final Position<EvalExpressionTour.TreeNode<Integer, Integer>> position, final TraversalResult<Integer> result) {
         result.setFinalResult(position.element().getValue());
     }
 
-    protected void visitRight(final Position<EvalExpressionTour.TreeNode<Integer>> position, final TraversalResult<Integer> result) {
-        final OperatorInfo<Integer> op = position.element();
+    /**
+     * Visits right {@link Position} by evaluating {@link TraversalResult}
+     *
+     * @param position - initial input right {@link Position} to start visiting
+     * @param result   - initial input {@link TraversalResult} as result set
+     */
+    protected void visitRight(final Position<EvalExpressionTour.TreeNode<Integer, Integer>> position, final TraversalResult<Integer> result) {
+        final OperatorInfo<Integer, Integer> op = position.element();
         result.setFinalResult(op.apply(result.getLeftResult(), result.getRightResult()));
     }
 
     @FunctionalInterface
-    public interface OperatorInfo<T> {
+    public interface OperatorInfo<T, R> {
 
-        T apply(final T first, final T last);
+        /**
+         * Returns operation result {@code R} by input parameters {@code T}
+         *
+         * @param first - initial input first argument {@code T} to calculate by
+         * @param last  - initial input second argument {@code T} to calculate with
+         * @return operation result {@code R}
+         */
+        R apply(final T first, final T last);
     }
 
     @Data
-    public static class TreeNode<T> extends ACTreeNodeExtended<Integer, TreeNode<T>> implements OperatorInfo<T>, TreePosition<T, TreeNode<T>> {
+    public static class TreeNode<T, R> extends ACTreeNodeExtended<Integer, TreeNode<T, R>> implements OperatorInfo<T, R>, TreePosition<T, TreeNode<T, R>> {
 
         private T value;
 
         @Override
-        public T apply(final T first, final T last) {
+        public R apply(final T first, final T last) {
             return null;
         }
 
