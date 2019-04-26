@@ -62,6 +62,10 @@ import java.util.stream.Stream;
 public class CStringUtils {
 
     /**
+     * Default hex digits array
+     */
+    private static final char[] HEXDIGITS = "0123456789abcdef" .toCharArray();
+    /**
      * Default replace prefix
      */
     private static final String DEFAULT_REPLACE_PREFIX = "$";
@@ -91,10 +95,7 @@ public class CStringUtils {
         if (Objects.isNull(first) || Objects.isNull(last)) {
             return false;
         }
-        if (first.indexOf(last) >= 0) {
-            return true;
-        }
-        return false;
+        return first.indexOf(last) >= 0;
     }
 
     public static boolean permutation(final String first, final String last) {
@@ -204,6 +205,17 @@ public class CStringUtils {
 
     public static String[] splitByRegex(final String value, final String regex) {
         return split(value, Pattern.quote(regex));
+    }
+
+    private static String toHexString(final byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 3);
+        for (int b : bytes) {
+            b &= 0xff;
+            sb.append(HEXDIGITS[b >> 4]);
+            sb.append(HEXDIGITS[b & 15]);
+            sb.append(' ');
+        }
+        return sb.toString();
     }
 
     public static String[] split(final String value, final String delimeter) {
@@ -325,7 +337,7 @@ public class CStringUtils {
     }
 
     private static boolean stringToBool(final String value) {
-        return "1".equals(value);
+        return "1" .equals(value);
     }
 
     public static boolean isEqual(final String s1, int offset1, int offset2, int size) {
