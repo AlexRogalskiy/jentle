@@ -25,9 +25,9 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Custom locale utilities implementation
@@ -44,6 +44,80 @@ public class CLocaleUtils {
      * Default locale source
      */
     public static final String DEFAULT_LOCALE_SOURCE = "resources/words";
+
+    private static final Map<String, Locale> LANG_LOCALES;
+    private static final Map<String, java.util.Locale> LANG_JAVA_LOCALES;
+    private static final Map<Locale, java.util.Locale> LOCALES;
+
+    static {
+        String[] isoLanguages = java.util.Locale.getISOLanguages();
+
+        Map<String, Locale> langLocales = new HashMap<String, Locale>();
+        Map<String, java.util.Locale> langJavaLocales = new HashMap<String, java.util.Locale>();
+        Map<Locale, java.util.Locale> locales = new HashMap<Locale, java.util.Locale>();
+
+        for (String isoLanguage : isoLanguages) {
+            Locale locale = valueOf(isoLanguage);
+            if (locale != null) {
+                langLocales.put(isoLanguage, locale);
+                java.util.Locale javaLocale = new java.util.Locale(isoLanguage);
+                langJavaLocales.put(isoLanguage, javaLocale);
+                locales.put(locale, javaLocale);
+            }
+        }
+        LANG_LOCALES = Collections.unmodifiableMap(langLocales);
+        LANG_JAVA_LOCALES = Collections.unmodifiableMap(langJavaLocales);
+        LOCALES = Collections.unmodifiableMap(locales);
+    }
+
+    public static List<Long> parseAvailableLocaleIds(final String localeIdsValue) {
+        if (StringUtils.isNotBlank(localeIdsValue)) {
+            final String[] localeValues = localeIdsValue.split("[,]");
+            if (localeValues.length > 0) {
+                final List<Long> availableLocaleIds = new ArrayList<Long>(localeValues.length);
+                for (final String localeValue : localeValues) {
+                    availableLocaleIds.add(Long.valueOf(localeValue));
+                }
+                return availableLocaleIds;
+            }
+        }
+        return null;
+    }
+
+    public static Locale parseLocale(final String language) {
+        return StringUtils.isNotBlank(language) ? LANG_LOCALES.get(language) : null;
+    }
+
+    public static java.util.Locale parseJavaLocale(final String language) {
+        return StringUtils.isNotBlank(language) ? LANG_JAVA_LOCALES.get(language) : null;
+    }
+
+    public static java.util.Locale parseJavaLocale(final Locale locale) {
+        return locale != null ? LOCALES.get(locale) : null;
+    }
+
+    public static Map<String, Locale> getLangLocales() {
+        return LANG_LOCALES;
+    }
+
+    public static Map<String, java.util.Locale> getLangJavaLocales() {
+        return LANG_JAVA_LOCALES;
+    }
+
+    public static Map<Locale, java.util.Locale> getLocales() {
+        return LOCALES;
+    }
+
+    public static Locale valueOf(final String code) {
+        if (StringUtils.isNotBlank(code)) {
+            for (final Locale value : Locale.getAvailableLocales()) {
+                if (code.equalsIgnoreCase(value.getDisplayName())) {
+                    return value;
+                }
+            }
+        }
+        return null;
+    }
 
     public static String getWord(final Locale currentLocale, final String key) {
         final ResourceBundle words = ResourceBundle.getBundle(DEFAULT_LOCALE_SOURCE, currentLocale);

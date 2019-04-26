@@ -735,4 +735,12 @@ public class CNumericUtils {
             this.count += other.count;
         }
     }
+
+    public static String bytesToHex(final byte[] in) {
+        final StringBuilder builder = new StringBuilder();
+        for (final byte b : in) {
+            builder.append(String.format("%02x", b));
+        }
+        return builder.toString();
+    }
 }

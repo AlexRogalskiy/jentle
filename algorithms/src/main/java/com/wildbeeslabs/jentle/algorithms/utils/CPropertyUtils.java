@@ -9,9 +9,9 @@ import java.util.Objects;
 import java.util.Properties;
 
 @Slf4j
-public class PropertyHolder {
+public class CPropertyUtils {
 
-    private static PropertyHolder ourInstance = new PropertyHolder();
+    private static CPropertyUtils ourInstance = new CPropertyUtils();
     private static final String DEFAULT_PROPERTIES_PATH = "/default.properties";
 
     private Properties properties;
@@ -19,7 +19,7 @@ public class PropertyHolder {
     /**
      * Default private constructor
      */
-    private PropertyHolder() {
+    private CPropertyUtils() {
         properties = new Properties();
     }
 
@@ -30,7 +30,7 @@ public class PropertyHolder {
      */
     public void init(final String path) {
         final String propertiesPath = Objects.isNull(System.getProperty(path)) ? DEFAULT_PROPERTIES_PATH : System.getProperty(path);
-        final InputStream input = PropertyHolder.class.getResourceAsStream(propertiesPath);
+        final InputStream input = CPropertyUtils.class.getResourceAsStream(propertiesPath);
         try {
             this.properties.load(input);
         } catch (IOException e) {
@@ -38,7 +38,7 @@ public class PropertyHolder {
         }
     }
 
-    public static PropertyHolder getInstance() {
+    public static CPropertyUtils getInstance() {
         return ourInstance;
     }
 

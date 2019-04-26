@@ -29,4 +29,6 @@ module jentle.algorithms {
     requires jgrapht.core;
     requires java.rmi;
     requires jama;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
 }
