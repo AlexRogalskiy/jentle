@@ -6,6 +6,7 @@ import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
  * Custom binary {@link IPositionalTree} declaration
  *
  * @param <T>
+ * @param <R>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07

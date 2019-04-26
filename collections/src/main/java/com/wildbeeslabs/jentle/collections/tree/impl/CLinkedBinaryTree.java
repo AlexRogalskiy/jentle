@@ -22,12 +22,12 @@ import java.util.Objects;
  */
 @EqualsAndHashCode
 @ToString
-public class LinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, CPositionalTreeNode<T>> {
+public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, CPositionalTreeNode<T>> {
 
     private TreePosition<T, CPositionalTreeNode<T>> root;
     private int size;
 
-    public LinkedBinaryTree() {
+    public CLinkedBinaryTree() {
         this.root = new CPositionalTreeNode<>();
         this.size = 1;
     }

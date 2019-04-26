@@ -25,7 +25,7 @@ import java.util.Iterator;
 @Data
 @EqualsAndHashCode
 @ToString
-public class PositionalTree<T> implements IPositionalTreeContainer<T, CPositionalTreeNode<T>> {
+public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPositionalTreeNode<T>> {
 
     @Override
     public <S extends Position<T>> void swap(S positionFirst, S positionLast) {
