@@ -15,15 +15,15 @@ import lombok.NonNull;
  */
 public interface IPositionalTree<T, R extends TreePosition<T, R>> extends IPositionalCollection<T> {
 
-    <S extends TreePosition<T, R>> S root();
+    <S extends R> S root();
 
-    <S extends TreePosition<T, R>> S getParent(final S position);
+    <S extends R> S getParent(final S position);
 
-    @NonNull PositionIterator<R> children(final R position);
+    <S extends R> @NonNull PositionIterator<R> children(final S position);
 
-    <S extends TreePosition<T, R>> boolean isInternal(final S position);
+    <S extends R> boolean isInternal(final S position);
 
-    <S extends TreePosition<T, R>> boolean isExternal(final S position);
+    <S extends R> boolean isExternal(final S position);
 
-    <S extends TreePosition<T, R>> boolean isRoot(final S position);
+    <S extends R> boolean isRoot(final S position);
 }

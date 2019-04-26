@@ -2,7 +2,6 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 import com.wildbeeslabs.jentle.collections.tree.iface.IHeapTree;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.EqualsAndHashCode;
@@ -59,36 +58,6 @@ public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> 
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S root() {
-        return null;
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S getParent(S position) {
-        return null;
-    }
-
-    @Override
-    public @NonNull PositionIterator<CPositionalTreeNode<T>> children(CPositionalTreeNode<T> position) {
-        return null;
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isInternal(S position) {
-        return false;
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isExternal(S position) {
-        return false;
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isRoot(S position) {
-        return false;
-    }
-
-    @Override
     public int size() {
         return 0;
     }
@@ -106,5 +75,35 @@ public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> 
     @Override
     public Iterator<T> iterator() {
         return null;
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> S root() {
+        return null;
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> S getParent(S position) {
+        return null;
+    }
+
+    @Override
+    public @NonNull <S extends CPositionalTreeNode<T>> PositionIterator<CPositionalTreeNode<T>> children(S position) {
+        return null;
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> boolean isInternal(S position) {
+        return false;
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> boolean isExternal(S position) {
+        return false;
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> boolean isRoot(S position) {
+        return false;
     }
 }

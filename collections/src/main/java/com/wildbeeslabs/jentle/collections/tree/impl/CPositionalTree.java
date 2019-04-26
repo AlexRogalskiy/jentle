@@ -2,7 +2,6 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalTreeContainer;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.Data;
@@ -38,32 +37,32 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S root() {
+    public <S extends CPositionalTreeNode<T>> S root() {
         return null;
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S getParent(S position) {
+    public <S extends CPositionalTreeNode<T>> S getParent(S position) {
         return null;
     }
 
     @Override
-    public @NonNull PositionIterator<CPositionalTreeNode<T>> children(CPositionalTreeNode<T> position) {
+    public @NonNull <S extends CPositionalTreeNode<T>> PositionIterator<CPositionalTreeNode<T>> children(final S position) {
         return null;
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isInternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isInternal(S position) {
         return false;
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isExternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isExternal(S position) {
         return false;
     }
 
     @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isRoot(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isRoot(S position) {
         return false;
     }
 

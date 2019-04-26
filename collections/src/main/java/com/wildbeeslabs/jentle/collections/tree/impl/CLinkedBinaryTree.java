@@ -43,36 +43,6 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
 //    }
 
     @Override
-    public TreePosition<T, CPositionalTreeNode<T>> root() {
-        return this.root;
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> S getParent(final S position) {
-        return (S) position.getParent();
-    }
-
-    @Override
-    public @NonNull PositionIterator<CPositionalTreeNode<T>> children(final CPositionalTreeNode<T> position) {
-        return null;
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isInternal(final S position) {
-        return Objects.nonNull(position) && Objects.nonNull(position.getRight());
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isExternal(final S position) {
-        return Objects.isNull(position.getLeft()) && Objects.isNull(position.getRight());
-    }
-
-    @Override
-    public <S extends TreePosition<T, CPositionalTreeNode<T>>> boolean isRoot(final S position) {
-        return Objects.equals(position, this.root());
-    }
-
-    @Override
     public int size() {
         return this.size;
     }
@@ -85,7 +55,7 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     @Override
     public @NonNull PositionIterator<TreePosition<T, CPositionalTreeNode<T>>> positionIterator() {
         final Position<T>[] positions = new Position[this.size()];
-//        inOrderPositions(this.root(), positions, 0);
+//        this.inOrderPositions(this.root(), positions, 0);
 //        return new ArrayPositionIterator(positions);
         return null;
     }
@@ -150,5 +120,35 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     @Override
     public <S extends CPositionalTreeNode<T>> S getSibling(final S value) {
         return (S) value.getParent();
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> S root() {
+        return (S) this.root;
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> S getParent(S position) {
+        return (S) position.getParent();
+    }
+
+    @Override
+    public @NonNull <S extends CPositionalTreeNode<T>> PositionIterator<CPositionalTreeNode<T>> children(final S position) {
+        return null;
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> boolean isInternal(S position) {
+        return Objects.nonNull(position) && Objects.nonNull(position.getRight());
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> boolean isExternal(S position) {
+        return Objects.isNull(position.getLeft()) && Objects.isNull(position.getRight());
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> boolean isRoot(S position) {
+        return Objects.equals(position, this.root());
     }
 }

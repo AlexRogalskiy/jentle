@@ -6,6 +6,8 @@ import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
 import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalBinaryTree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -52,6 +54,8 @@ public class EvalExpressionTour extends EulerTour<Integer, Integer, EvalExpressi
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
     public static class TreeNode<T, R> extends ACTreeNodeExtended<Integer, TreeNode<T, R>> implements OperatorInfo<T, R>, TreePosition<T, TreeNode<T, R>> {
 
         private T value;
