@@ -23,13 +23,13 @@
  */
 package com.wildbeeslabs.jentle.collections.list.node;
 
-import com.wildbeeslabs.jentle.collections.tree.node.CKeyValueNode;
+import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Custom {@link ACPositionalListNode} implementation
+ * Custom {@link ACPositionalListNodeExtended} implementation
  *
  * @param <T>
  * @author Alex
@@ -39,7 +39,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CPositionalListNodeExtended<K, V> extends ACPositionalListNode<CKeyValueNode<K, V>, CPositionalListNodeExtended<K, V>> {
+public class CPositionalListNodeExtended<K, V> extends ACPositionalListNodeExtended<K, V, CKeyValueNode<K, V>> {
 
     public CPositionalListNodeExtended() {
         this(null);

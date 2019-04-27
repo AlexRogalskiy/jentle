@@ -24,7 +24,9 @@
 package com.wildbeeslabs.jentle.collections.queue.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNodeExtended;
 import com.wildbeeslabs.jentle.collections.list.node.CPositionalListNodeExtended;
+import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
 import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,17 +46,17 @@ import java.util.*;
 @Data
 @EqualsAndHashCode
 @ToString
-public class CSortedSequencePriorityQueue<K, V> implements IPriorityQueue<CPositionalListNodeExtended<K, V>> {
+public class CSortedSequencePriorityQueue<K, V, S extends CKeyValueNode<K, V>, T extends ACPositionalListNodeExtended<K, V, S>> implements IPriorityQueue<T> {
 
     private CPositionalListNodeExtended<K, V> root = new CPositionalListNodeExtended<>();
 
     private final Comparator<? super K> comparator;
 
-    protected CPositionalListNodeExtended<K, V> element(final Position<CPositionalListNodeExtended<K, V>> position) {
+    protected T element(final Position<T> position) {
         return position.element();
     }
 
-    protected K key(final Position<CPositionalListNodeExtended<K, V>> position) {
+    protected K key(final Position<T> position) {
         return Optional.ofNullable(element(position))
             .map(elem -> element().getData())
             .filter(Objects::nonNull)
@@ -62,7 +64,7 @@ public class CSortedSequencePriorityQueue<K, V> implements IPriorityQueue<CPosit
             .orElseGet(null);
     }
 
-    protected V value(final Position<CPositionalListNodeExtended<K, V>> position) {
+    protected V value(final Position<T> position) {
         return Optional.ofNullable(element(position))
             .map(elem -> element().getData())
             .filter(Objects::nonNull)
@@ -85,16 +87,16 @@ public class CSortedSequencePriorityQueue<K, V> implements IPriorityQueue<CPosit
     }
 
     @Override
-    public void insertItem(final CPositionalListNodeExtended<K, V> value) {
+    public void insertItem(final T value) {
     }
 
     @Override
-    public CPositionalListNodeExtended<K, V> minElement() {
+    public T minElement() {
         return null;
     }
 
     @Override
-    public CPositionalListNodeExtended<K, V> removeMin() {
+    public T removeMin() {
         return null;
     }
 
@@ -114,7 +116,7 @@ public class CSortedSequencePriorityQueue<K, V> implements IPriorityQueue<CPosit
     }
 
     @Override
-    public boolean add(final CPositionalListNodeExtended<K, V> kvcListNodeExtended) {
+    public boolean add(final T kvcListNodeExtended) {
         return false;
     }
 
@@ -129,7 +131,7 @@ public class CSortedSequencePriorityQueue<K, V> implements IPriorityQueue<CPosit
     }
 
     @Override
-    public boolean addAll(final Collection<? extends CPositionalListNodeExtended<K, V>> c) {
+    public boolean addAll(final Collection<? extends T> c) {
         return false;
     }
 
@@ -145,36 +147,35 @@ public class CSortedSequencePriorityQueue<K, V> implements IPriorityQueue<CPosit
 
     @Override
     public void clear() {
-
     }
 
     @Override
-    public boolean offer(final CPositionalListNodeExtended<K, V> kvcListNodeExtended) {
+    public boolean offer(final T node) {
         return false;
     }
 
     @Override
-    public CPositionalListNodeExtended<K, V> remove() {
+    public T remove() {
         return null;
     }
 
     @Override
-    public CPositionalListNodeExtended<K, V> poll() {
+    public T poll() {
         return null;
     }
 
     @Override
-    public CPositionalListNodeExtended<K, V> element() {
+    public T element() {
         return null;
     }
 
     @Override
-    public CPositionalListNodeExtended<K, V> peek() {
+    public T peek() {
         return null;
     }
 
     @Override
-    public Iterator<CPositionalListNodeExtended<K, V>> iterator() {
+    public Iterator<T> iterator() {
         return null;
     }
 }

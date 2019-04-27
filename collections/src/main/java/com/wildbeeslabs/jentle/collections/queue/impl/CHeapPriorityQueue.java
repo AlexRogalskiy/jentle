@@ -4,7 +4,7 @@ import com.wildbeeslabs.jentle.collections.exception.PriorityQueueEmptyException
 import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
 import com.wildbeeslabs.jentle.collections.tree.iface.IHeapTree;
 import com.wildbeeslabs.jentle.collections.tree.impl.CVectorHeapTree;
-import com.wildbeeslabs.jentle.collections.tree.node.CKeyValueNode;
+import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalKeyValueTreeNode;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

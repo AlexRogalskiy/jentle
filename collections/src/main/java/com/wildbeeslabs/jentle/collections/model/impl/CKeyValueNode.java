@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.tree.node;
+package com.wildbeeslabs.jentle.collections.model.impl;
 
 import lombok.*;
 

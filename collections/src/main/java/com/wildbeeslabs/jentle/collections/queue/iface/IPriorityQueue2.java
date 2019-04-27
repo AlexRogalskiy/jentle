@@ -25,25 +25,13 @@ package com.wildbeeslabs.jentle.collections.queue.iface;
 
 import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
 
-import java.util.Queue;
-
 /**
- * Custom priority {@link Queue} {@link ICollection} interface declaration
+ * Custom priority {@link Queue} {@link ICollection} interface declaration (version 2)
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPriorityQueue<T> extends ICollection<T>, Queue<T> {
-
-    int size();
-
-    boolean isEmpty();
-
-    void insertItem(final T value);
-
-    T minElement();
-
-    T removeMin();
+public interface IPriorityQueue2<T> extends IPriorityQueue<T> {
 }
