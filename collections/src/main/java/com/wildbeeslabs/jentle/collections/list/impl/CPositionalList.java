@@ -28,7 +28,7 @@ import java.util.Optional;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class CPositionalList<T> extends ACList<T, CPositionalList.CListNode<T>> implements IPositionalListCollection<T, CPositionalList.CListNode<T>> {
+public class CPositionalList<T> extends ACList<T, CPositionalList.CListNode<T>> implements IPositionalListCollection<T, CPositionalList.CListNode<T>> {
 
     /**
      * Default list size
@@ -46,6 +46,16 @@ public abstract class CPositionalList<T> extends ACList<T, CPositionalList.CList
     @Override
     public @NonNull <S extends Position<T>> PositionIterator<S> positionIterator() {
         throw new UnsupportedOperationException("ERROR: operation is not supported");
+    }
+
+    @Override
+    public <S extends Position<T>> void swap(final S positionFirst, final S positionLast) {
+
+    }
+
+    @Override
+    public <S extends Position<T>> T replace(final S position, final T value) {
+        return null;
     }
 
     @Data

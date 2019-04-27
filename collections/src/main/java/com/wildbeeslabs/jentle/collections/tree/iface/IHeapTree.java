@@ -13,7 +13,7 @@ import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
  */
 public interface IHeapTree<T, R extends TreePosition<T, R>> extends IPositionalBinaryTree<T, R>, IPositionalContainer<T> {
 
-    <S extends R> S add(final T value);
+    R add(final T value);
 
     T remove();
 }

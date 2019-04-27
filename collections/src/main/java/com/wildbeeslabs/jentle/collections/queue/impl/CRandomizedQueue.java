@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Queue;
 
 /**
- * Custom randomized queue implementation
+ * Custom random {@link ACQueue}e implementation
  *
  * @param <T>
  * @author Alex
@@ -42,8 +42,8 @@ import java.util.Queue;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode
+@ToString
 public class CRandomizedQueue<T> extends ACQueue<T> {
 
     private T[] queue;

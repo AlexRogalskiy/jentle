@@ -23,7 +23,7 @@ import java.util.Iterator;
 public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> {
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S add(T value) {
+    public CPositionalTreeNode<T> add(final T value) {
         return null;
     }
 
@@ -33,27 +33,26 @@ public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> 
     }
 
     @Override
-    public <S extends Position<T>> void swap(S positionFirst, S positionLast) {
-
+    public <S extends Position<T>> void swap(final S positionFirst, final S positionLast) {
     }
 
     @Override
-    public <S extends Position<T>> T replace(S position, T value) {
+    public <S extends Position<T>> T replace(final S position, final T value) {
         return null;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S getLeft(S value) {
+    public <S extends CPositionalTreeNode<T>> S getLeft(final S value) {
         return null;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S getRight(S value) {
+    public <S extends CPositionalTreeNode<T>> S getRight(final S value) {
         return null;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S getSibling(S value) {
+    public <S extends CPositionalTreeNode<T>> S getSibling(final S value) {
         return null;
     }
 
@@ -83,27 +82,27 @@ public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> 
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S getParent(S position) {
+    public <S extends CPositionalTreeNode<T>> S getParent(final S position) {
         return null;
     }
 
     @Override
-    public @NonNull <S extends CPositionalTreeNode<T>> PositionIterator<CPositionalTreeNode<T>> children(S position) {
+    public @NonNull <S extends CPositionalTreeNode<T>> PositionIterator<CPositionalTreeNode<T>> children(final S position) {
         return null;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isInternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isInternal(final S position) {
         return false;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isExternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isExternal(final S position) {
         return false;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isRoot(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isRoot(final S position) {
         return false;
     }
 }

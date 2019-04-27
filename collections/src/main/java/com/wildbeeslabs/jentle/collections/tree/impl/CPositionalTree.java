@@ -27,12 +27,11 @@ import java.util.Iterator;
 public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPositionalTreeNode<T>> {
 
     @Override
-    public <S extends Position<T>> void swap(S positionFirst, S positionLast) {
-
+    public <S extends Position<T>> void swap(final S positionFirst, final S positionLast) {
     }
 
     @Override
-    public <S extends Position<T>> T replace(S position, T value) {
+    public <S extends Position<T>> T replace(final S position, final T value) {
         return null;
     }
 
@@ -42,7 +41,7 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S getParent(S position) {
+    public <S extends CPositionalTreeNode<T>> S getParent(final S position) {
         return null;
     }
 
@@ -52,17 +51,17 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isInternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isInternal(final S position) {
         return false;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isExternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isExternal(final S position) {
         return false;
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isRoot(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isRoot(final S position) {
         return false;
     }
 

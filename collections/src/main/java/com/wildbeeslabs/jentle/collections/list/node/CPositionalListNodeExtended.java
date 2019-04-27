@@ -23,19 +23,15 @@
  */
 package com.wildbeeslabs.jentle.collections.list.node;
 
-import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.tree.node.CKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.Objects;
-
 /**
- * Custom {@link ACListNodeExtended} implementation
+ * Custom {@link ACPositionalListNode} implementation
  *
  * @param <T>
- * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
@@ -43,35 +39,17 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ACPositionalListNode<T, E extends ACPositionalListNode<T, E>> extends ACListNodeExtended<T, E> implements Position<T> {
+public class CPositionalListNodeExtended<K, V> extends ACPositionalListNode<CKeyValueNode<K, V>, CPositionalListNodeExtended<K, V>> {
 
-    public ACPositionalListNode() {
+    public CPositionalListNodeExtended() {
         this(null);
     }
 
-    public ACPositionalListNode(final T data) {
+    public CPositionalListNodeExtended(final CKeyValueNode<K, V> data) {
         this(data, null, null);
     }
 
-    public ACPositionalListNode(final T data, final E next, final E previous) {
+    public CPositionalListNodeExtended(final CKeyValueNode<K, V> data, final CPositionalListNodeExtended<K, V> next, final CPositionalListNodeExtended<K, V> previous) {
         super(data, next, previous);
-    }
-
-    @Override
-    public T getData() {
-        return this.element();
-    }
-
-    @Override
-    public T element() throws InvalidPositionException {
-        if (Objects.isNull(this.getPrevious()) && Objects.isNull(this.getNext())) {
-            throw new InvalidPositionException("ERROR: position is not valid");
-        }
-        return this.data;
-    }
-
-    @Override
-    public void setElement(final T value) {
-        this.setData(value);
     }
 }
