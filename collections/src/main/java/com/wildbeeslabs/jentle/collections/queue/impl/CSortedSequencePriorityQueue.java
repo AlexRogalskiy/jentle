@@ -24,13 +24,11 @@
 package com.wildbeeslabs.jentle.collections.queue.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
+import com.wildbeeslabs.jentle.collections.list.impl.CPositionalList;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNodeExtended;
-import com.wildbeeslabs.jentle.collections.list.node.CPositionalListNodeExtended;
 import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
 import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.*;
 
@@ -44,13 +42,13 @@ import java.util.*;
  * @since 2017-08-07
  */
 @Data
+@Getter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @ToString
 public class CSortedSequencePriorityQueue<K, V, S extends CKeyValueNode<K, V>, T extends ACPositionalListNodeExtended<K, V, S>> implements IPriorityQueue<T> {
 
-    private CPositionalListNodeExtended<K, V> root = new CPositionalListNodeExtended<>();
-
-    private final Comparator<? super K> comparator;
+    private final CPositionalList<S> list;
+    private final Comparator<S> comparator;
 
     protected T element(final Position<T> position) {
         return position.element();
@@ -72,7 +70,8 @@ public class CSortedSequencePriorityQueue<K, V, S extends CKeyValueNode<K, V>, T
             .orElseGet(null);
     }
 
-    public CSortedSequencePriorityQueue(final Comparator<? super K> comparator) {
+    public CSortedSequencePriorityQueue(final Comparator<S> comparator) {
+        this.list = new CPositionalList<>();
         this.comparator = comparator;
     }
 
@@ -83,7 +82,7 @@ public class CSortedSequencePriorityQueue<K, V, S extends CKeyValueNode<K, V>, T
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return (0 == this.getList().size());
     }
 
     @Override
@@ -177,5 +176,9 @@ public class CSortedSequencePriorityQueue<K, V, S extends CKeyValueNode<K, V>, T
     @Override
     public Iterator<T> iterator() {
         return null;
+    }
+
+    protected CPositionalList<S> getList() {
+        return this.list;
     }
 }

@@ -4,7 +4,7 @@ import com.wildbeeslabs.jentle.collections.iface.position.Position;
 
 public interface Locator<T> {
 
-    Position<T> getPosition();
+    Position<T> position();
 
     void setPosition(final Position<T> position);
 }

@@ -1,10 +1,10 @@
 package com.wildbeeslabs.jentle.collections.queue.impl;
 
 import com.wildbeeslabs.jentle.collections.exception.PriorityQueueEmptyException;
+import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
 import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
 import com.wildbeeslabs.jentle.collections.tree.iface.IHeapTree;
 import com.wildbeeslabs.jentle.collections.tree.impl.CVectorHeapTree;
-import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalKeyValueTreeNode;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -21,13 +21,13 @@ import java.util.*;
  */
 @EqualsAndHashCode
 @ToString
-public class CHeapPriorityQueue<K, V> implements IPriorityQueue<CKeyValueNode<K, V>> {
+public class CHeapPriorityQueue<K, V, T extends CKeyValueNode<K, V>> implements IPriorityQueue<T> {
 
-    private IHeapTree<CKeyValueNode<K, V>, CPositionalKeyValueTreeNode<K, V>> heapTree;
+    private IHeapTree<T, CPositionalKeyValueTreeNode<K, V, T>> heapTree;
 
-    private Comparator<? super CPositionalKeyValueTreeNode<K, V>> comparator;
+    private Comparator<? super T> comparator;
 
-    public CHeapPriorityQueue(final Comparator<? super CPositionalKeyValueTreeNode<K, V>> comparator) {
+    public CHeapPriorityQueue(final Comparator<? super T> comparator) {
         this.comparator = Objects.requireNonNull(comparator);
         this.heapTree = new CVectorHeapTree();
     }
@@ -42,12 +42,12 @@ public class CHeapPriorityQueue<K, V> implements IPriorityQueue<CKeyValueNode<K,
     }
 
     @Override
-    public void insertItem(final CKeyValueNode<K, V> value) {
-        CPositionalKeyValueTreeNode<K, V> node = this.heapTree.add(value);
-        CPositionalKeyValueTreeNode<K, V> position;
+    public void insertItem(final T value) {
+        CPositionalKeyValueTreeNode<K, V, T> node = this.heapTree.add(value);
+        CPositionalKeyValueTreeNode<K, V, T> position;
         while (!this.heapTree.isRoot(node)) {
             position = this.heapTree.getParent(node);
-            if (Objects.compare(position, node, this.comparator) <= 0) {
+            if (Objects.compare(position.element(), node.element(), this.comparator) <= 0) {
                 break;
             }
             this.heapTree.swap(position, node);
@@ -56,28 +56,28 @@ public class CHeapPriorityQueue<K, V> implements IPriorityQueue<CKeyValueNode<K,
     }
 
     @Override
-    public CKeyValueNode<K, V> minElement() {
+    public T minElement() {
         return null;
     }
 
     @Override
-    public CKeyValueNode<K, V> removeMin() {
+    public T removeMin() {
         if (this.isEmpty()) {
             throw new PriorityQueueEmptyException("ERROR: empty priority queue");
         }
-        final CPositionalKeyValueTreeNode<K, V> min = this.heapTree.root();
+        final CPositionalKeyValueTreeNode<K, V, T> min = this.heapTree.root();
         if (this.size() == 1) {
             this.heapTree.remove();
         } else {
             this.heapTree.replace(this.heapTree.root(), this.heapTree.remove());
-            CPositionalKeyValueTreeNode<K, V> position = this.heapTree.root(), temp;
+            CPositionalKeyValueTreeNode<K, V, T> position = this.heapTree.root(), temp;
             while (this.heapTree.isInternal(this.heapTree.getLeft(position))) {
-                if (this.heapTree.isExternal(this.heapTree.getRight(position)) || Objects.compare(this.heapTree.getLeft(position), this.heapTree.getRight(position), this.comparator) <= 0) {
+                if (this.heapTree.isExternal(this.heapTree.getRight(position)) || Objects.compare(this.heapTree.getLeft(position).element(), this.heapTree.getRight(position).element(), this.comparator) <= 0) {
                     temp = this.heapTree.getLeft(position);
                 } else {
                     temp = this.heapTree.getRight(position);
                 }
-                if (Objects.compare(temp, position, this.comparator) < 0) {
+                if (Objects.compare(temp.element(), position.element(), this.comparator) < 0) {
                     this.heapTree.swap(position, temp);
                     position = temp;
                 } else {
@@ -113,7 +113,7 @@ public class CHeapPriorityQueue<K, V> implements IPriorityQueue<CKeyValueNode<K,
     }
 
     @Override
-    public <T> T[] toArray(final T[] a) {
+    public <T> T[] toArray(final T[] array) {
         return null;
     }
 
@@ -128,7 +128,7 @@ public class CHeapPriorityQueue<K, V> implements IPriorityQueue<CKeyValueNode<K,
     }
 
     @Override
-    public boolean addAll(final Collection<? extends CKeyValueNode<K, V>> c) {
+    public boolean addAll(final Collection<? extends T> collection) {
         return false;
     }
 
@@ -148,37 +148,37 @@ public class CHeapPriorityQueue<K, V> implements IPriorityQueue<CKeyValueNode<K,
     }
 
     @Override
-    public boolean add(final CKeyValueNode<K, V> kvcKeyValueNode) {
+    public boolean add(final T kvcKeyValueNode) {
         return false;
     }
 
     @Override
-    public boolean offer(final CKeyValueNode<K, V> kvcKeyValueNode) {
+    public boolean offer(final T kvcKeyValueNode) {
         return false;
     }
 
     @Override
-    public CKeyValueNode<K, V> remove() {
+    public T remove() {
         return null;
     }
 
     @Override
-    public CKeyValueNode<K, V> poll() {
+    public T poll() {
         return null;
     }
 
     @Override
-    public CKeyValueNode<K, V> element() {
+    public T element() {
         return null;
     }
 
     @Override
-    public CKeyValueNode<K, V> peek() {
+    public T peek() {
         return null;
     }
 
     @Override
-    public Iterator<CKeyValueNode<K, V>> iterator() {
+    public Iterator<T> iterator() {
         return null;
     }
 }

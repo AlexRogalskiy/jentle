@@ -18,21 +18,21 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CPositionalKeyValueTreeNode<K, V> extends ACTreeNodeExtended<CKeyValueNode<K, V>, CPositionalKeyValueTreeNode<K, V>> implements TreePosition<CKeyValueNode<K, V>, CPositionalKeyValueTreeNode<K, V>> {
+public class CPositionalKeyValueTreeNode<K, V, T extends CKeyValueNode<K, V>> extends ACTreeNodeExtended<T, CPositionalKeyValueTreeNode<K, V, T>> implements TreePosition<T, CPositionalKeyValueTreeNode<K, V, T>> {
 
     public CPositionalKeyValueTreeNode() {
         this(null);
     }
 
-    public CPositionalKeyValueTreeNode(final CKeyValueNode<K, V> data) {
+    public CPositionalKeyValueTreeNode(final T data) {
         this(data, null, null);
     }
 
-    public CPositionalKeyValueTreeNode(final CKeyValueNode<K, V> data, final CPositionalKeyValueTreeNode<K, V> left, final CPositionalKeyValueTreeNode<K, V> right) {
+    public CPositionalKeyValueTreeNode(final T data, final CPositionalKeyValueTreeNode<K, V, T> left, final CPositionalKeyValueTreeNode<K, V, T> right) {
         this(data, left, right, null);
     }
 
-    public CPositionalKeyValueTreeNode(final CKeyValueNode<K, V> data, final CPositionalKeyValueTreeNode<K, V> left, final CPositionalKeyValueTreeNode<K, V> right, final CPositionalKeyValueTreeNode<K, V> parent) {
+    public CPositionalKeyValueTreeNode(final T data, final CPositionalKeyValueTreeNode<K, V, T> left, final CPositionalKeyValueTreeNode<K, V, T> right, final CPositionalKeyValueTreeNode<K, V, T> parent) {
         super(data, left, right, parent);
     }
 
@@ -51,12 +51,12 @@ public class CPositionalKeyValueTreeNode<K, V> extends ACTreeNodeExtended<CKeyVa
     }
 
     @Override
-    public CKeyValueNode<K, V> element() throws InvalidPositionException {
+    public T element() throws InvalidPositionException {
         return this.getData();
     }
 
     @Override
-    public void setElement(final CKeyValueNode<K, V> value) {
+    public void setElement(final T value) {
         this.setData(value);
     }
 }

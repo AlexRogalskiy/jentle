@@ -31,4 +31,9 @@ public class CPositionalKeyValueNode<K, V> extends CKeyValueNode<K, V> implement
         super(key, value);
         this.position = position;
     }
+
+    @Override
+    public Position<CPositionalKeyValueNode<K, V>> position() {
+        return this.position();
+    }
 }
