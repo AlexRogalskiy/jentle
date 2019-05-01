@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Custom invalid dimension {@link RuntimeException} implementation
+ * Custom hash table full {@link RuntimeException} implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -39,17 +39,17 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class InvalidDimensionException extends RuntimeException {
+public class HashTableFullException extends RuntimeException {
 
-    public InvalidDimensionException(final String message) {
+    public HashTableFullException(final String message) {
         super(message);
     }
 
-    public InvalidDimensionException(final Throwable cause) {
+    public HashTableFullException(final Throwable cause) {
         super(cause);
     }
 
-    public InvalidDimensionException(final String message, final Throwable cause) {
+    public HashTableFullException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

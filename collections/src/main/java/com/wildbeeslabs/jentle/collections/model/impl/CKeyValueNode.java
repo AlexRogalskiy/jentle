@@ -9,6 +9,12 @@ import lombok.*;
 @AllArgsConstructor
 public class CKeyValueNode<K, V> {
 
+    /**
+     * Default key
+     */
     private K key;
+    /**
+     * Default value
+     */
     private V value;
 }
