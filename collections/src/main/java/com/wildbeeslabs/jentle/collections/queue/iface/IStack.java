@@ -25,17 +25,17 @@ package com.wildbeeslabs.jentle.collections.queue.iface;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
 
 /**
- * Custom stack {@link ICollection} interface declaration
+ * Custom stack {@link Collection} interface declaration
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IStack<T> extends ICollection<T> {
+public interface IStack<T> extends Collection<T> {
 
     /**
      * Adds value to the top of the current stack

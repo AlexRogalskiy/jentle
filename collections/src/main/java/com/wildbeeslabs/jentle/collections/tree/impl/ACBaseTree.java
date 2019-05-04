@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.tree.iface.ITreeCollection;
-import com.wildbeeslabs.jentle.collections.iface.visitor.IVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.Visitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNode2;
 
@@ -115,7 +115,7 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> extends ACTr
         return true;
     }
 
-    protected void traverseUpDown(final U node, final IVisitor<T> visitor) {
+    protected void traverseUpDown(final U node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
         final Stack<U> stack = new Stack<>();
         U current = node;
@@ -132,7 +132,7 @@ public abstract class ACBaseTree<T, U extends ACBaseTreeNode<T, U>> extends ACTr
         }
     }
 
-    protected void traverseInfix(final U node, final IVisitor<T> visitor) {
+    protected void traverseInfix(final U node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
         final Stack<U> stack = new Stack<>();
         U current = node;

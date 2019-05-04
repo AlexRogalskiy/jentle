@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.model.interfaces;
+package com.wildbeeslabs.jentle.collections.iface.locator;
 
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 

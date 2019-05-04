@@ -1,7 +1,5 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
-
 /**
  * Custom binary {@link IPositionalTree} declaration
  *

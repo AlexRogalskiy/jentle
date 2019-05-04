@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.list.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.visitor.IVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.Visitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 
 import java.util.Collection;
@@ -90,7 +90,7 @@ public interface IListCollection<T, E extends ACListNode<T, E>> extends IListLik
      *
      * @param visitor - service instance
      */
-    void iterator(final IVisitor<? extends T> visitor);
+    void iterator(final Visitor<? extends T> visitor);
 
     /**
      * Returns the list as a Java compatible Queue {@link java.util.Queue}

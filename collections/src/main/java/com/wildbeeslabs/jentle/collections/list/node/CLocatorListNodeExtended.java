@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.collections.list.node;
 
-import com.wildbeeslabs.jentle.collections.model.impl.CPositionalKeyValueNode;
+import com.wildbeeslabs.jentle.collections.model.CPositionalKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

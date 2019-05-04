@@ -1,8 +1,8 @@
 package com.wildbeeslabs.jentle.collections.tree.node;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
-import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
+import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
+import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.collections.map.impl;
 
 import com.wildbeeslabs.jentle.collections.exception.HashTableFullException;
-import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
+import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

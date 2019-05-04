@@ -26,8 +26,8 @@ package com.wildbeeslabs.jentle.collections.list.impl;
 import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.list.iface.IList;
 import com.wildbeeslabs.jentle.collections.list.iface.IListLike;
-import com.wildbeeslabs.jentle.collections.iface.visitor.IResultVisitor;
-import com.wildbeeslabs.jentle.collections.iface.visitor.IVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.ResultVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.Visitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
@@ -325,7 +325,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends ACBaseList<T
         return second;
     }
 
-    public void addLists(final E first, final E last, final ACList<T, E> result, final IResultVisitor<T, T> visitor) {
+    public void addLists(final E first, final E last, final ACList<T, E> result, final ResultVisitor<T, T> visitor) {
         if (Objects.isNull(first) && Objects.isNull(last) || Objects.isNull(visitor)) {
             return;
         }
@@ -341,7 +341,7 @@ public abstract class ACList<T, E extends ACListNode<T, E>> extends ACBaseList<T
         }
     }
 
-    public void each(final IVisitor visitor) {
+    public void each(final Visitor visitor) {
         for (final Iterator<? extends T> current = this.iterator(); current.hasNext();) {
             visitor.visit(current.next());
         }

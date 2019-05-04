@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.list.impl;
 
 import com.wildbeeslabs.jentle.collections.list.iface.IListCollection;
-import com.wildbeeslabs.jentle.collections.iface.visitor.IVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.Visitor;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 
@@ -104,7 +104,7 @@ public abstract class ACBaseList<T, E extends ACListNode<T, E>> extends ACListLi
     }
 
     @Override
-    public void iterator(final IVisitor<? extends T> visitor) {
+    public void iterator(final Visitor<? extends T> visitor) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

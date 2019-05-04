@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.list.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Custom list {@link ICollection} interface declaration
+ * Custom list {@link Collection} interface declaration
  *
  * @param <T>
  * @param <E>
@@ -39,7 +39,7 @@ import java.util.Optional;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IListLike<T, E extends ACNode<T>> extends ICollection<T>, List<T> {
+public interface IListLike<T, E extends ACNode<T>> extends Collection<T>, List<T> {
 
     /**
      * Get the size of the tree.

@@ -23,17 +23,17 @@
  */
 package com.wildbeeslabs.jentle.collections.graph.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
 
 /**
- * Custom graph {@link ICollection} interface declaration
+ * Custom graph {@link Collection} interface declaration
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IGraph<T> extends ICollection<T> {
+public interface IGraph<T> extends Collection<T> {
 
 //    void add(int from, int to, final T data);
 //    Iterable<CGraphNode<T>> getNodes();

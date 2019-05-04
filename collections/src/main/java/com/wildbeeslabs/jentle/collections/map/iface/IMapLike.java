@@ -23,12 +23,12 @@
  */
 package com.wildbeeslabs.jentle.collections.map.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
 
 import java.util.Map;
 
 /**
- * Custom map {@link ICollection} interface declaration
+ * Custom map {@link Collection} interface declaration
  *
  * @param <K>
  * @param <V>
@@ -36,7 +36,7 @@ import java.util.Map;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IMapLike<K, V> extends ICollection<Map.Entry<K, V>> {
+public interface IMapLike<K, V> extends Collection<Map.Entry<K, V>> {
 
     /**
      * Gets the size of the list

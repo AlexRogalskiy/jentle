@@ -25,7 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.tree;
 
 import com.wildbeeslabs.jentle.algorithms.list.CListUtils;
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
-import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
+import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
 import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalTree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;

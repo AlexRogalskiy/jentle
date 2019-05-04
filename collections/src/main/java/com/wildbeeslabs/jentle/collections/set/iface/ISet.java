@@ -23,20 +23,20 @@
  */
 package com.wildbeeslabs.jentle.collections.set.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.ICollection;
+import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
 
 import java.util.Set;
 
 /**
  *
- * Custom set {@link ICollection} interface declaration
+ * Custom set {@link Collection} interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface ISet<T> extends ICollection<T>, Set<T> {
+public interface ISet<T> extends Collection<T>, Set<T> {
 
     /**
      * Checks if the current set contains the value

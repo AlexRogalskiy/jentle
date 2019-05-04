@@ -31,7 +31,7 @@ package com.wildbeeslabs.jentle.collections.iface.visitor;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IVisitor<T> {
+public interface Visitor<T> {
 
     /**
      * Processes each item of a collection

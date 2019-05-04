@@ -1,4 +1,6 @@
-package com.wildbeeslabs.jentle.collections.iface.position;
+package com.wildbeeslabs.jentle.collections.tree.iface;
+
+import com.wildbeeslabs.jentle.collections.iface.position.Position;
 
 /**
  * Custom tree {@link Position} interface declaration

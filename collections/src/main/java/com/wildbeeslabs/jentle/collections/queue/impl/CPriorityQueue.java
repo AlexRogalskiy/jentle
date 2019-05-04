@@ -4,7 +4,7 @@ import com.wildbeeslabs.jentle.collections.exception.EmptyContainerException;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.list.impl.CPositionalList;
 import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
-import com.wildbeeslabs.jentle.collections.model.impl.CKeyValueNode;
+import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

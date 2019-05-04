@@ -21,21 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.iface.collection;
-
-import java.io.Serializable;
+package com.wildbeeslabs.jentle.collections.iface.visitor;
 
 /**
- * Custom base collection interface declaration
+ * Custom result {@link Visitor} interface declaration
  *
  * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ICollection<T> extends Serializable, Cloneable, Iterable<T> {
+public interface ResultVisitor<T, E> extends Visitor<T> {
 
-    int size();
-
-    boolean isEmpty();
+    /**
+     * Returns service result of a processed collection
+     *
+     * @return collection result set
+     */
+    E getResult();
 }

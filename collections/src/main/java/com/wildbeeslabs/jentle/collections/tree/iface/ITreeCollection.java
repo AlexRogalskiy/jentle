@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.visitor.IVisitor;
+import com.wildbeeslabs.jentle.collections.iface.visitor.Visitor;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 import java.util.Objects;
@@ -166,7 +166,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node    - current node
      * @param visitor - traversable service instance
      */
-    default void inOrderIterator(final U node, final IVisitor<T> visitor) {
+    default void inOrderIterator(final U node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
         inOrderIterator(node.getLeft(), visitor);
         visitor.visit(node.getData());
@@ -179,7 +179,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node    - current node
      * @param visitor - traversable service instance
      */
-    default void preOrderIterator(final U node, final IVisitor<T> visitor) {
+    default void preOrderIterator(final U node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
         visitor.visit(node.getData());
         preOrderIterator(node.getLeft(), visitor);
@@ -192,7 +192,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node    - current node
      * @param visitor - traversable service instance
      */
-    default void postOrderIterator(final U node, final IVisitor<T> visitor) {
+    default void postOrderIterator(final U node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
         postOrderIterator(node.getLeft(), visitor);
         postOrderIterator(node.getRight(), visitor);

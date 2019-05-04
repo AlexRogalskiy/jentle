@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.algorithms.tree;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.iface.position.TreePosition;
+import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
 import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalBinaryTree;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import lombok.Data;

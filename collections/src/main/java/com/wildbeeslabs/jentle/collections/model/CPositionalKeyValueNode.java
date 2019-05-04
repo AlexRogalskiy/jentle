@@ -1,7 +1,7 @@
-package com.wildbeeslabs.jentle.collections.model.impl;
+package com.wildbeeslabs.jentle.collections.model;
 
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.model.interfaces.Locator;
+import com.wildbeeslabs.jentle.collections.iface.locator.Locator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
