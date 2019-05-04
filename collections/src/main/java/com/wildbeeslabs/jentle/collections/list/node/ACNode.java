@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.list.node;
 
-import com.wildbeeslabs.jentle.collections.tree.iface.Node;
+import com.wildbeeslabs.jentle.collections.iface.node.Node;
 import lombok.*;
 
 /**

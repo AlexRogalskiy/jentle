@@ -1,5 +1,6 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
+import com.wildbeeslabs.jentle.collections.iface.node.TreeNode;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 
 /**

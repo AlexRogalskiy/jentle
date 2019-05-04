@@ -1,5 +1,7 @@
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
+import com.wildbeeslabs.jentle.collections.iface.dictionary.Dictionary;
+import com.wildbeeslabs.jentle.collections.iface.node.KeyValueNode;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
@@ -8,8 +10,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.Comparator;
-import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -22,9 +24,9 @@ import java.util.Objects;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CBinarySearchTree<K, V> extends Dictionary {
+@EqualsAndHashCode
+@ToString
+public class CBinarySearchTree<K, V> implements Dictionary<K, V> {
 
     private final CPositionalTree<CKeyValueNode<K, V>> binaryTree;
     private int size;
@@ -72,8 +74,9 @@ public class CBinarySearchTree<K, V> extends Dictionary {
         return (1 == this.size());
     }
 
-    public <S extends CPositionalTreeNode<CKeyValueNode<K, V>>> V findElement(final K key) {
-        final S currentPosition = this.findPosition(key, this.binaryTree.root());
+    @Override
+    public V findElement(final K key) {
+        final CPositionalTreeNode<CKeyValueNode<K, V>> currentPosition = this.findPosition(key, this.binaryTree.root());
         this.actionPosition = currentPosition;
         if (this.binaryTree.isInternal(currentPosition)) {
             return this.element(currentPosition);
@@ -81,8 +84,19 @@ public class CBinarySearchTree<K, V> extends Dictionary {
         return null;
     }
 
-    public <S extends CPositionalTreeNode<CKeyValueNode<K, V>>> void insertItem(final K key, final V value) {
-        S currentPosition = this.binaryTree.root();
+    @Override
+    public Enumeration<K> keys() {
+        return null;
+    }
+
+    @Override
+    public Enumeration<V> elements() {
+        return null;
+    }
+
+    @Override
+    public void insertElement(final K key, final V value) {
+        CPositionalTreeNode<CKeyValueNode<K, V>> currentPosition = this.binaryTree.root();
         do {
             currentPosition = this.findPosition(key, currentPosition);
             if (this.binaryTree.isExternal(currentPosition)) {
@@ -99,8 +113,9 @@ public class CBinarySearchTree<K, V> extends Dictionary {
         this.actionPosition = currentPosition;
     }
 
-    public <S extends CPositionalTreeNode<CKeyValueNode<K, V>>> V removeElement(final K key) {
-        S currentPosition = this.findPosition(key, this.binaryTree.root());
+    @Override
+    public V removeElement(final K key) {
+        CPositionalTreeNode<CKeyValueNode<K, V>> currentPosition = this.findPosition(key, this.binaryTree.root());
         if (this.binaryTree.isExternal(currentPosition)) {
             this.actionPosition = currentPosition;
             return null;
@@ -124,27 +139,7 @@ public class CBinarySearchTree<K, V> extends Dictionary {
     }
 
     @Override
-    public Enumeration keys() {
-        return null;
-    }
-
-    @Override
-    public Enumeration elements() {
-        return null;
-    }
-
-    @Override
-    public Object get(final Object key) {
-        return null;
-    }
-
-    @Override
-    public Object put(final Object key, final Object value) {
-        return null;
-    }
-
-    @Override
-    public Object remove(final Object key) {
+    public Iterator<KeyValueNode<K, V>> iterator() {
         return null;
     }
 }

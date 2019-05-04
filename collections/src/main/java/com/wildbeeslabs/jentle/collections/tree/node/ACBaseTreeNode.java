@@ -24,7 +24,7 @@
 package com.wildbeeslabs.jentle.collections.tree.node;
 
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
-import com.wildbeeslabs.jentle.collections.tree.iface.TreeNode;
+import com.wildbeeslabs.jentle.collections.iface.node.TreeNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

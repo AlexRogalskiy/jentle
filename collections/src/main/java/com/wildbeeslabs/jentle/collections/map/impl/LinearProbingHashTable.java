@@ -1,14 +1,16 @@
 package com.wildbeeslabs.jentle.collections.map.impl;
 
 import com.wildbeeslabs.jentle.collections.exception.HashTableFullException;
+import com.wildbeeslabs.jentle.collections.iface.dictionary.Dictionary;
+import com.wildbeeslabs.jentle.collections.iface.node.KeyValueNode;
 import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.Comparator;
-import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -21,9 +23,9 @@ import java.util.Objects;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class LinearProbingHashTable<K, V> extends Dictionary {
+@EqualsAndHashCode
+@ToString
+public class LinearProbingHashTable<K, V> implements Dictionary<K, V> {
 
     private final CKeyValueNode<K, V> AVAILABLE = new CKeyValueNode(null, null);
     private int size = 0;
@@ -79,7 +81,8 @@ public class LinearProbingHashTable<K, V> extends Dictionary {
         return -1;
     }
 
-    public Object findElement(final K key) {
+    @Override
+    public V findElement(final K key) {
         final int i = this.findItem(key);
         if (i < 0) {
             return null;
@@ -87,7 +90,18 @@ public class LinearProbingHashTable<K, V> extends Dictionary {
         return this.element(i);
     }
 
-    public void insertItem(final K key, final V value) {
+    @Override
+    public Enumeration<K> keys() {
+        return null;
+    }
+
+    @Override
+    public Enumeration<V> elements() {
+        return null;
+    }
+
+    @Override
+    public void insertElement(final K key, final V value) {
         int i = Objects.hash(key) % this.capacity;
         int j = i;
         do {
@@ -101,6 +115,7 @@ public class LinearProbingHashTable<K, V> extends Dictionary {
         throw new HashTableFullException("ERROR: hashtable is full");
     }
 
+    @Override
     public V removeElement(final K key) {
         final int i = this.findItem(key);
         if (i < 0) return null;
@@ -120,34 +135,14 @@ public class LinearProbingHashTable<K, V> extends Dictionary {
         return (0 == this.size());
     }
 
-    @Override
-    public Enumeration keys() {
-        return null;
-    }
-
-    @Override
-    public Enumeration elements() {
-        return null;
-    }
-
-    @Override
-    public Object get(final Object key) {
-        return null;
-    }
-
-    @Override
-    public Object put(final Object key, final Object value) {
-        return null;
-    }
-
-    @Override
-    public Object remove(final Object key) {
-        return null;
-    }
-
     protected void checkRange(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= this.size()) {
             throw new IndexOutOfBoundsException(String.format("ERROR: %s (index=%d is out of bounds [0, %d])", this.getClass().getName(), index, this.size() - 1));
         }
+    }
+
+    @Override
+    public Iterator<KeyValueNode<K, V>> iterator() {
+        return null;
     }
 }

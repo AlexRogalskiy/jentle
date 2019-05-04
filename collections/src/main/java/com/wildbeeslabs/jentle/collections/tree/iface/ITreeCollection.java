@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
+import com.wildbeeslabs.jentle.collections.iface.node.TreeNode;
 import com.wildbeeslabs.jentle.collections.iface.visitor.Visitor;
-import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
 
 import java.util.Objects;
 

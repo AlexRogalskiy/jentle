@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2018 WildBees Labs.
+ * Copyright 2017 WildBees Labs.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,63 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.tree.iface;
+package com.wildbeeslabs.jentle.collections.iface.dictionary;
 
 import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
-import com.wildbeeslabs.jentle.collections.iface.node.Node;
+import com.wildbeeslabs.jentle.collections.iface.node.KeyValueNode;
 
-import java.util.Objects;
-import java.util.Optional;
+import java.util.Enumeration;
 
 /**
- * Custom tree {@link Collection} interface declaration
+ * Custom base dictionary interface declaration
  *
  * @param <T>
- * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITreeLike<T, U extends Node<T>> extends Collection<T> {
-
-//    /**
-//     * Get the size of the tree.
-//     *
-//     * @return size of the tree.
-//     */
-//    int size();
-
-//    /**
-//     * Check if the list contains values.
-//     *
-//     * @return boolean (true - if the list is empty, false - otherwise)
-//     */
-//    default boolean isEmpty() {
-//        return (0 == this.size());
-//    }
+public interface Dictionary<K, V> extends Collection<KeyValueNode<K, V>> {
 
     /**
-     * Add new root node
+     * Removes element {@code V} by input key {@code K}
      *
-     * @param value - new root node
+     * @param key - initial input key {@code K}
+     * @return value {@code V} of element to remove
      */
-    void setRoot(final Optional<? extends T> value);
+    V removeElement(final K key);
 
     /**
-     * Returns current root node
+     * Inserts element by input key {@code K} and value {@code V}
      *
-     * @return - current root node
+     * @param key   - initial input key {@code K}
+     * @param value - initial input value {@code V}
      */
-    <S extends U> S getRoot();
+    void insertElement(final K key, final V value);
 
     /**
-     * Checks if current node is root
+     * Finds element value {@code V} by input key {@code K}
      *
-     * @param node - current node
-     * @return true - if current node is root, false - otherwise
+     * @param key - initial input key {@code K}
+     * @return value {@code V} of element to find
      */
-    default <S extends U> boolean isRoot(final S node) {
-        Objects.requireNonNull(node);
-        return (this.getRoot() == node);
-    }
+    V findElement(final K key);
+
+    /**
+     * Returns {@link Enumeration} of keys
+     *
+     * @return {@link Enumeration} of keys
+     */
+    Enumeration<K> keys();
+
+    /**
+     * Returns {@link Enumeration} of values
+     *
+     * @return {@link Enumeration} of values
+     */
+    Enumeration<V> elements();
 }
