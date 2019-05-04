@@ -3,6 +3,12 @@ package com.wildbeeslabs.jentle.collections.model;
 import com.wildbeeslabs.jentle.collections.iface.node.KeyValueNode;
 import lombok.*;
 
+/**
+ * Default {@link KeyValueNode} implementation
+ *
+ * @param <K>
+ * @param <V>
+ */
 @Data
 @EqualsAndHashCode
 @ToString
@@ -11,11 +17,11 @@ import lombok.*;
 public class CKeyValueNode<K, V> implements KeyValueNode<K, V> {
 
     /**
-     * Default key
+     * Default node key
      */
     private K key;
     /**
-     * Default value
+     * Default node value
      */
     private V value;
 }

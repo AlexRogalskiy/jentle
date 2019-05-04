@@ -26,62 +26,67 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode
 @ToString
-public class CBinarySearchTree<K, V> implements Dictionary<K, V> {
+public class CBinarySearchTree<K, V, T extends CKeyValueNode<K, V>> implements Dictionary<K, V> {
 
-    private final CPositionalTree<CKeyValueNode<K, V>> binaryTree;
-    private int size;
-    private Comparator<? super K> comparator;
-    private Position<CKeyValueNode<K, V>> actionPosition;
+    /**
+     * Default empty node {@code V}
+     */
+    public final V DEFAULT_EMPTY_VALUE = (V) new Object();
+
+    protected final CPositionalTree<T> binaryTree;
+    protected int size;
+    protected Comparator<? super K> comparator;
+    protected Position<T> actionPosition;
 
     public CBinarySearchTree(final Comparator<? super K> comparator) {
         this.comparator = comparator;
         this.binaryTree = new CPositionalTree<>();
     }
 
-    protected K key(final Position<CKeyValueNode<K, V>> position) {
+    protected K key(final Position<T> position) {
         return position.element().getKey();
     }
 
-    protected V element(final Position<CKeyValueNode<K, V>> position) {
+    protected V element(final Position<T> position) {
         return position.element().getValue();
     }
 
-    protected void swap(final Position<CKeyValueNode<K, V>> first, final Position<CKeyValueNode<K, V>> last) {
-        this.binaryTree.replace(first, last.element());
+    protected void swap(final Position<T> first, final Position<T> last) {
+        this.getBinaryTree().replace(first, last.element());
     }
 
-    protected <S extends CPositionalTreeNode<CKeyValueNode<K, V>>> S findPosition(final K key, final S position) {
-        if (this.binaryTree.isExternal(position)) {
+    protected <S extends CPositionalTreeNode<T>> S findPosition(final K key, final S position) {
+        if (this.getBinaryTree().isExternal(position)) {
             return position;
         }
-        K currentKey = this.key(position);
-        final int c = Objects.compare(key, currentKey, this.comparator);
+        final K currentKey = this.key(position);
+        final int c = Objects.compare(key, currentKey, this.getComparator());
         if (c < 0) {
-            return findPosition(key, this.binaryTree.getLeftChild(position));
+            return findPosition(key, this.getBinaryTree().getLeftChild(position));
         } else if (c > 0) {
-            return findPosition(key, this.binaryTree.getRightChild(position));
+            return findPosition(key, this.getBinaryTree().getRightChild(position));
         }
         return position;
     }
 
     @Override
     public int size() {
-        return (this.binaryTree.size() - 1) / 2;
+        return ((this.binaryTree.size() - 1) / 2);
     }
 
     @Override
     public boolean isEmpty() {
-        return (1 == this.size());
+        return (this.size() == 1);
     }
 
     @Override
     public V findElement(final K key) {
-        final CPositionalTreeNode<CKeyValueNode<K, V>> currentPosition = this.findPosition(key, this.binaryTree.root());
-        this.actionPosition = currentPosition;
-        if (this.binaryTree.isInternal(currentPosition)) {
+        final CPositionalTreeNode<T> currentPosition = this.findPosition(key, this.getBinaryTree().root());
+        this.setActionPosition(currentPosition);
+        if (this.getBinaryTree().isInternal(currentPosition)) {
             return this.element(currentPosition);
         }
-        return null;
+        return DEFAULT_EMPTY_VALUE;
     }
 
     @Override
@@ -96,50 +101,52 @@ public class CBinarySearchTree<K, V> implements Dictionary<K, V> {
 
     @Override
     public void insertElement(final K key, final V value) {
-        CPositionalTreeNode<CKeyValueNode<K, V>> currentPosition = this.binaryTree.root();
+        CPositionalTreeNode<T> currentPosition = this.getBinaryTree().root();
         do {
             currentPosition = this.findPosition(key, currentPosition);
-            if (this.binaryTree.isExternal(currentPosition)) {
+            if (this.getBinaryTree().isExternal(currentPosition)) {
                 break;
             } else {
-                currentPosition = this.binaryTree.getRightChild(currentPosition);
+                currentPosition = this.getBinaryTree().getRightChild(currentPosition);
             }
         } while (true);
-//        this.binaryTree.expandExternal(currentPosition);
-        final CKeyValueNode<K, V> item = new CKeyValueNode<>();
-        item.setKey(key);
-        item.setValue(value);
-        this.binaryTree.replace(currentPosition, item);
-        this.actionPosition = currentPosition;
+//        this.getBinaryTree().expandExternal(currentPosition);
+        final T item = this.createNewNode(key, value);
+        this.getBinaryTree().replace(currentPosition, item);
+        this.setActionPosition(currentPosition);
     }
 
     @Override
     public V removeElement(final K key) {
-        CPositionalTreeNode<CKeyValueNode<K, V>> currentPosition = this.findPosition(key, this.binaryTree.root());
-        if (this.binaryTree.isExternal(currentPosition)) {
-            this.actionPosition = currentPosition;
-            return null;
+        CPositionalTreeNode<T> currentPosition = this.findPosition(key, this.getBinaryTree().root());
+        if (this.getBinaryTree().isExternal(currentPosition)) {
+            this.setActionPosition(currentPosition);
+            return DEFAULT_EMPTY_VALUE;
         }
         final V value = this.element(currentPosition);
-        if (this.binaryTree.isExternal(this.binaryTree.getLeftChild(currentPosition))) {
-            currentPosition = this.binaryTree.getLeftChild(currentPosition);
-        } else if (this.binaryTree.isExternal(this.binaryTree.getRightChild(currentPosition))) {
-            currentPosition = this.binaryTree.getRightChild(currentPosition);
+        if (this.getBinaryTree().isExternal(this.getBinaryTree().getLeftChild(currentPosition))) {
+            currentPosition = this.getBinaryTree().getLeftChild(currentPosition);
+        } else if (this.getBinaryTree().isExternal(this.getBinaryTree().getRightChild(currentPosition))) {
+            currentPosition = this.getBinaryTree().getRightChild(currentPosition);
         } else {
-            Position<CKeyValueNode<K, V>> swapPosition = currentPosition;
-            currentPosition = this.binaryTree.getRightChild(currentPosition);
+            Position<T> swapPosition = currentPosition;
+            currentPosition = this.getBinaryTree().getRightChild(currentPosition);
             do {
-                currentPosition = this.binaryTree.getLeftChild(currentPosition);
-            } while (this.binaryTree.isInternal(currentPosition));
-            this.swap(swapPosition, this.binaryTree.getParent(currentPosition));
+                currentPosition = this.getBinaryTree().getLeftChild(currentPosition);
+            } while (this.getBinaryTree().isInternal(currentPosition));
+            this.swap(swapPosition, this.getBinaryTree().getParent(currentPosition));
         }
-//        this.actionPosition = this.binaryTree.sibling(currentPosition);
-//        this.binaryTree.removeAboveExternal(currentPosition);
+//        this.setActionPosition(this.binaryTree.sibling(currentPosition));
+//        this.getBinaryTree().removeAboveExternal(currentPosition);
         return value;
     }
 
     @Override
     public Iterator<KeyValueNode<K, V>> iterator() {
         return null;
+    }
+
+    protected T createNewNode(final K key, final V value) {
+        return (T) new CKeyValueNode<>(key, value);
     }
 }
