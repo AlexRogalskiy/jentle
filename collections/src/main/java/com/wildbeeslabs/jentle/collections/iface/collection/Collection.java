@@ -47,7 +47,5 @@ public interface Collection<T> extends Serializable, Cloneable, Iterable<T> {
      *
      * @return boolean (true - if the list is empty, false - otherwise)
      */
-    default boolean isEmpty() {
-        return (0 == this.size());
-    }
+    boolean isEmpty();
 }

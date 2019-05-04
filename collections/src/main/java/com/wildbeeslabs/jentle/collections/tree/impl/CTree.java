@@ -50,6 +50,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class CTree<T> extends ACTree<T, CTree.CTreeNode<T>> {
 
+    @Override
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
+
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(callSuper = true)

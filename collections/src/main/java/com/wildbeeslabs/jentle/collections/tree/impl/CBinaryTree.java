@@ -93,4 +93,9 @@ public class CBinaryTree<T> extends ACBinaryTree<T, CTree.CTreeNode<T>> {
         }
         return new CTree.CTreeNode<>();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
 }

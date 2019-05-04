@@ -53,6 +53,11 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
     }
 
     @Override
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
+
+    @Override
     public void setRoot(final Optional<? extends T> value) {
     }
 

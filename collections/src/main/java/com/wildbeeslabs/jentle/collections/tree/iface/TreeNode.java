@@ -1,7 +1,5 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
-
 /**
  * Custom tree {@link Node} interface declaration
  *
@@ -21,7 +19,10 @@ public interface TreeNode<T, R> extends Node<T> {
 
     void setRight(final R position);
 
-    R getParent();
+    default R getParent() {
+        return null;
+    }
 
-    void setParent(final R position);
+    default void setParent(final R position) {
+    }
 }

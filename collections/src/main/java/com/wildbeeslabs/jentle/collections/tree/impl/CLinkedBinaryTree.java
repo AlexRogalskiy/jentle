@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Custom {@link IPositionalBinaryTreeContainer} implementation
@@ -145,6 +146,16 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     @Override
     public <S extends CPositionalTreeNode<T>> boolean isExternal(S position) {
         return Objects.isNull(position.getLeft()) && Objects.isNull(position.getRight());
+    }
+
+    @Override
+    public void setRoot(final Optional<? extends T> value) {
+
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> S getRoot() {
+        return null;
     }
 
     @Override

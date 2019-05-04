@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * Custom {@link IHeapTree} implementation
@@ -99,6 +100,16 @@ public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> 
     @Override
     public <S extends CPositionalTreeNode<T>> boolean isExternal(final S position) {
         return false;
+    }
+
+    @Override
+    public void setRoot(final Optional<? extends T> value) {
+
+    }
+
+    @Override
+    public <S extends CPositionalTreeNode<T>> S getRoot() {
+        return null;
     }
 
     @Override

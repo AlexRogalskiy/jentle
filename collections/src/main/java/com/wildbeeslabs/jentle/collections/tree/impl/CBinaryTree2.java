@@ -51,6 +51,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class CBinaryTree2<T> extends ACBinaryTree<T, CBinaryTree2.CTreeNode2<T>> {
 
+    @Override
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
+
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(callSuper = true)
