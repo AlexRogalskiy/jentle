@@ -11,7 +11,6 @@ branches:
     - master
     - stable
 jdk:
-  - oraclejdk8
   - oraclejdk11
   - openjdk11
 services:
