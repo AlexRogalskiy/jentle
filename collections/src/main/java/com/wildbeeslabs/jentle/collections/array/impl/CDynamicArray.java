@@ -28,10 +28,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -237,33 +233,5 @@ public class CDynamicArray<T> extends ACArray<T> {
             this.source.checkRange(--this.cursor);
             this.source.removeAt(this.cursor);
         }
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-            .appendSuper(super.toString())
-            .append("capacity", this.capacity)
-            .toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof CDynamicArray)) {
-            return false;
-        }
-        final CDynamicArray<T> other = (CDynamicArray<T>) obj;
-        return new EqualsBuilder()
-            .appendSuper(super.equals(obj))
-            .append(this.capacity, other.capacity)
-            .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(19, 51)
-            .appendSuper(super.hashCode())
-            .append(this.capacity)
-            .toHashCode();
     }
 }

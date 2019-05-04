@@ -42,8 +42,8 @@ import java.util.Queue;
  * @since 2017-08-07
  */
 @Data
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class CRandomizedQueue<T> extends ACQueue<T> {
 
     private T[] queue;
