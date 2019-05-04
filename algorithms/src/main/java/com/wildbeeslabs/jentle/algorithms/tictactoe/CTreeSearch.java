@@ -114,6 +114,11 @@ public class CTreeSearch<T extends CState> extends ACTreeLike<T, CTreeSearch.CTr
     }
 
     @Override
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
+
+    @Override
     public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
