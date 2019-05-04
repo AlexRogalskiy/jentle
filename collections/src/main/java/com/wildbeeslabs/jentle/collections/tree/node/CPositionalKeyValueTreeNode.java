@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.collections.tree.node;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
 import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CPositionalKeyValueTreeNode<K, V, T extends CKeyValueNode<K, V>> extends ACTreeNodeExtended<T, CPositionalKeyValueTreeNode<K, V, T>> implements TreePosition<T, CPositionalKeyValueTreeNode<K, V, T>> {
+public class CPositionalKeyValueTreeNode<K, V, T extends CKeyValueNode<K, V>> extends ACTreeNodeExtended<T, CPositionalKeyValueTreeNode<K, V, T>> implements PositionTreeNode<T, CPositionalKeyValueTreeNode<K, V, T>> {
 
     public CPositionalKeyValueTreeNode() {
         this(null);

@@ -1,10 +1,10 @@
 package com.wildbeeslabs.jentle.algorithms.tree;
 
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
-import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalBinaryTree;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.binary.position.IPositionalBinaryTree;
 
-public abstract class EulerTour<T, V, R extends TreePosition<T, R>> {
+public abstract class EulerTour<T, V, R extends PositionTreeNode<T, R>> {
 
     /**
      * Default {@link IPositionalBinaryTree} instance

@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.iface.position;
+package com.wildbeeslabs.jentle.collections.iface.collection;
 
 import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterable;

@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.collections.list.iface;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.iface.position.PositionalContainer;
+import com.wildbeeslabs.jentle.collections.iface.collection.PositionalContainer;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.list.node.ACPositionalListNode;
 

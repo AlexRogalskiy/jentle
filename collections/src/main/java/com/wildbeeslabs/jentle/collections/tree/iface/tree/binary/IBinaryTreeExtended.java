@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.tree.iface;
+package com.wildbeeslabs.jentle.collections.tree.iface.tree.binary;
 
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.ITreeCollectionExtended;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 
 /**

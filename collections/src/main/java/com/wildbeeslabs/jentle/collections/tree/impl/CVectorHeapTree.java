@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.tree.iface.IHeapTree;
+import com.wildbeeslabs.jentle.collections.tree.iface.heap.IHeapTree;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;

@@ -1,7 +1,9 @@
-package com.wildbeeslabs.jentle.collections.tree.iface;
+package com.wildbeeslabs.jentle.collections.tree.iface.tree.position;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
-import com.wildbeeslabs.jentle.collections.iface.position.PositionalCollection;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
+import com.wildbeeslabs.jentle.collections.iface.collection.PositionalCollection;
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.ITreeCollection;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -14,7 +16,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPositionalTree<T, R extends TreePosition<T, R>> extends PositionalCollection<T>, ITreeCollection<T, R> {
+public interface IPositionalTree<T, R extends PositionTreeNode<T, R>> extends PositionalCollection<T>, ITreeCollection<T, R> {
 
     /**
      * Returns root position node {@code S}

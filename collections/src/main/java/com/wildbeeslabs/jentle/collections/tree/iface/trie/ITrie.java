@@ -21,12 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.tree.iface;
+package com.wildbeeslabs.jentle.collections.tree.iface.trie;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
+import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
 
 /**
- * Custom {@link ITreeCollectionExtended} interface declaration
+ * Custom trie {@link Collection} interface declaration
  *
  * @param <T>
  * @param <U>
@@ -34,6 +35,34 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITreeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ITreeCollectionExtended<T, U>, ITree<T, U> {
+public interface ITrie<T, U extends ACBaseTrieNode<T, U>> extends Collection<T> {
 
+    /**
+     * Returns the size of the tree.
+     *
+     * @return size of the tree.
+     */
+    int size();
+
+    /**
+     * Checks if trie is empty
+     *
+     * @return true - if tree is empty, false - otherwise
+     */
+    boolean isEmpty();
+
+    /**
+     * Returns current root node
+     *
+     * @return - current root node
+     */
+    U getRoot();
+
+    /**
+     * Checks if trie contains character sequence
+     *
+     * @param value - character sequence
+     * @return true - if trie contains character sequence, false - otherwise
+     */
+    boolean contains(final CharSequence value);
 }

@@ -21,7 +21,7 @@ public interface PositionIterator<T> {
     <S extends Position<T>> S nextPosition();
 
     default void remove() {
-        throw new UnsupportedOperationException("remove");
+        throw new UnsupportedOperationException("ERROR: unsupported operation remove");
     }
 
     default <S extends Position<T>> void forEachRemaining(final Consumer<? super S> action) {

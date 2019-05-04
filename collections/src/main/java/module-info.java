@@ -25,7 +25,12 @@ module jentle.collections {
     exports com.wildbeeslabs.jentle.collections.set.iface;
     exports com.wildbeeslabs.jentle.collections.set.impl;
 
-    exports com.wildbeeslabs.jentle.collections.tree.iface;
+    exports com.wildbeeslabs.jentle.collections.tree.iface.heap;
+    exports com.wildbeeslabs.jentle.collections.tree.iface.trie;
+    exports com.wildbeeslabs.jentle.collections.tree.iface.tree;
+    exports com.wildbeeslabs.jentle.collections.tree.iface.tree.binary;
+    exports com.wildbeeslabs.jentle.collections.tree.iface.tree.binary.position;
+    exports com.wildbeeslabs.jentle.collections.tree.iface.tree.position;
     exports com.wildbeeslabs.jentle.collections.tree.node;
     exports com.wildbeeslabs.jentle.collections.tree.impl;
 
@@ -35,6 +40,7 @@ module jentle.collections {
     exports com.wildbeeslabs.jentle.collections.iface.iterator;
 
     exports com.wildbeeslabs.jentle.collections.exception;
+    exports com.wildbeeslabs.jentle.collections.iface.node;
 
     requires static lombok;
     requires slf4j.api;

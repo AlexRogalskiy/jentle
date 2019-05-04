@@ -3,7 +3,7 @@ package com.wildbeeslabs.jentle.collections.queue.impl;
 import com.wildbeeslabs.jentle.collections.exception.PriorityQueueEmptyException;
 import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
 import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
-import com.wildbeeslabs.jentle.collections.tree.iface.IHeapTree;
+import com.wildbeeslabs.jentle.collections.tree.iface.heap.IHeapTree;
 import com.wildbeeslabs.jentle.collections.tree.impl.CVectorHeapTree;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalKeyValueTreeNode;
 import lombok.EqualsAndHashCode;

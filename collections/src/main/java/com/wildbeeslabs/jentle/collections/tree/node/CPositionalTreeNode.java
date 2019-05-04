@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.collections.tree.node;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
-import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CPositionalTreeNode<T> extends ACTreeNodeExtended<T, CPositionalTreeNode<T>> implements TreePosition<T, CPositionalTreeNode<T>> {
+public class CPositionalTreeNode<T> extends ACTreeNodeExtended<T, CPositionalTreeNode<T>> implements PositionTreeNode<T, CPositionalTreeNode<T>> {
 
     public CPositionalTreeNode() {
         this(null);

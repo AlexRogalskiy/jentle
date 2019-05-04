@@ -2,8 +2,8 @@ package com.wildbeeslabs.jentle.algorithms.tree;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalBinaryTree;
-import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.binary.position.IPositionalBinaryTree;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -56,7 +56,7 @@ public class EvalExpressionTour extends EulerTour<Integer, Integer, EvalExpressi
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(callSuper = true)
-    public static class TreeNode<T, R> extends ACTreeNodeExtended<T, TreeNode<T, R>> implements OperatorInfo<T, R>, TreePosition<T, TreeNode<T, R>> {
+    public static class TreeNode<T, R> extends ACTreeNodeExtended<T, TreeNode<T, R>> implements OperatorInfo<T, R>, PositionTreeNode<T, TreeNode<T, R>> {
 
         private T value;
 

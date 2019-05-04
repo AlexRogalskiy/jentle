@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.tree.iface;
+package com.wildbeeslabs.jentle.collections.iface.node;
 
 import com.wildbeeslabs.jentle.collections.iface.node.TreeNode;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
@@ -11,5 +11,5 @@ import com.wildbeeslabs.jentle.collections.iface.position.Position;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface TreePosition<T, R> extends Position<T>, TreeNode<T, R> {
+public interface PositionTreeNode<T, R> extends Position<T>, TreeNode<T, R> {
 }

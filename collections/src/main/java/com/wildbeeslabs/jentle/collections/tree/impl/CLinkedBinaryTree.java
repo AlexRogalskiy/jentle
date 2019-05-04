@@ -2,8 +2,8 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.tree.iface.TreePosition;
-import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalBinaryTreeContainer;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.binary.position.IPositionalBinaryTreeContainer;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @ToString
 public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, CPositionalTreeNode<T>> {
 
-    private TreePosition<T, CPositionalTreeNode<T>> root;
+    private PositionTreeNode<T, CPositionalTreeNode<T>> root;
     private int size;
 
     public CLinkedBinaryTree() {
@@ -34,9 +34,9 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     }
 
 //    @Override
-//    public TreePosition<T> getSibling(final TreePosition<T> position) {
-//        final TreePosition<T> parent = this.parent(position);
-//        final TreePosition<T> leftChild = this.getLeft(parent);
+//    public PositionTreeNode<T> getSibling(final PositionTreeNode<T> position) {
+//        final PositionTreeNode<T> parent = this.parent(position);
+//        final PositionTreeNode<T> leftChild = this.getLeft(parent);
 //        if (Objects.equals(position, leftChild)) {
 //            return this.getRight(parent);
 //        }
@@ -54,7 +54,7 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     }
 
     @Override
-    public @NonNull PositionIterator<TreePosition<T, CPositionalTreeNode<T>>> positionIterator() {
+    public @NonNull PositionIterator<PositionTreeNode<T, CPositionalTreeNode<T>>> positionIterator() {
         final Position<T>[] positions = new Position[this.size()];
 //        this.inOrderPositions(this.root(), positions, 0);
 //        return new ArrayPositionIterator(positions);

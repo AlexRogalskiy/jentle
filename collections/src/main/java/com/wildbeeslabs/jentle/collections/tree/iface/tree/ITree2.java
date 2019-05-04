@@ -21,33 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.collections.tree.iface;
+package com.wildbeeslabs.jentle.collections.tree.iface.tree;
 
-import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTreeNode;
+import com.wildbeeslabs.jentle.collections.iface.collection.PositionalCollection;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.position.IPositionalTree;
 
 /**
- * Custom binary {@link ITreeCollection} interface declaration
+ * Custom {@link ITreeCollection} declaration
  *
  * @param <T>
- * @param <U>
+ * @param <R>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IBinaryTree<T, U extends ACBaseTreeNode<T, U>> extends ITreeCollection<T, U> {
-
-    /**
-     * Inserts new node with the current value based on tree order sequence
-     *
-     * @param value - node value
-     */
-    void insert(final T value);
-
-    /**
-     * Returns node with the current value
-     *
-     * @param value - node value
-     * @return node with the current value
-     */
-    U find(final T value);
+public interface ITree2<T, R extends PositionTreeNode<T, R>> extends IPositionalTree<T, R>, PositionalCollection<T> {
 }
