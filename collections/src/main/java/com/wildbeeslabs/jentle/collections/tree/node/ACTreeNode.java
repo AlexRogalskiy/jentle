@@ -55,7 +55,7 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
     protected U parent;
     protected ACTreeNode.State state;
     protected Comparator<? super T> comparator;
-    protected final List<U> childs = new ArrayList<>();
+    protected final List<U> children = new ArrayList<>();
 
     public static enum State {
 
@@ -90,48 +90,48 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
         this.comparator = node.getComparator();
         this.parent = node.getParent();
         this.state = node.getState();
-        this.setChilds(node.getChilds());
+        this.setChildren(node.getChildren());
     }
 
-    public Collection<U> getChilds() {
-        return this.childs;
+    public Collection<U> getChildren() {
+        return this.children;
     }
 
-    public void setChilds(final Collection<U> childs) {
-        this.childs.clear();
+    public void setChildren(final Collection<U> childs) {
+        this.children.clear();
         if (Objects.nonNull(childs)) {
-            this.childs.addAll(childs);
+            this.children.addAll(childs);
         }
     }
 
     public void addChild(final U child) {
         if (Objects.nonNull(child)) {
-            this.childs.add(child);
+            this.children.add(child);
         }
     }
 
     public void addChild(final U parent, final U child) {
         if (Objects.nonNull(parent)) {
-            parent.getChilds().add(child);
+            parent.getChildren().add(child);
         }
     }
 
     public void removeChild(final U child) {
         if (Objects.nonNull(child)) {
-            this.childs.remove(child);
+            this.children.remove(child);
         }
     }
 
     public U getRandomChild() {
-        int selectRandom = (int) (Math.random() * ((this.childs.size() - 1) + 1));
-        return this.childs.get(selectRandom);
+        int selectRandom = (int) (Math.random() * ((this.children.size() - 1) + 1));
+        return this.children.get(selectRandom);
     }
 
     public U getMaxChild() {
-        return Collections.max(this.childs, Comparator.comparing(node -> node.data, this.comparator));
+        return Collections.max(this.children, Comparator.comparing(node -> node.data, this.comparator));
     }
 
     public U getMinChild() {
-        return Collections.min(this.childs, Comparator.comparing(node -> node.data, this.comparator));
+        return Collections.min(this.children, Comparator.comparing(node -> node.data, this.comparator));
     }
 }

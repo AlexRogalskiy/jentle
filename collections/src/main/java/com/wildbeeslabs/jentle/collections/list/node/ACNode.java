@@ -23,29 +23,23 @@
  */
 package com.wildbeeslabs.jentle.collections.list.node;
 
-import java.io.Serializable;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.wildbeeslabs.jentle.collections.tree.iface.Node;
+import lombok.*;
 
 /**
- *
  * Custom abstract node implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public abstract class ACNode<T> implements Serializable, Cloneable {
+public abstract class ACNode<T> implements Node<T> {
 
     protected T data;
 }

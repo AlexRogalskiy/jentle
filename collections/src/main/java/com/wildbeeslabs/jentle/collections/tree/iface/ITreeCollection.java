@@ -37,7 +37,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITreeLike<T, U> {
+public interface ITreeCollection<T, U extends TreeNode<T, U>> extends ITreeLike<T, U> {
 
     /**
      * Checks if current node has left child
@@ -45,7 +45,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return true - if current node has left child node, false - otherwise
      */
-    default boolean hasLeftChild(final U node) {
+    default <S extends U> boolean hasLeftChild(final S node) {
         Objects.requireNonNull(node);
         return (Objects.nonNull(node.getLeft()));
     }
@@ -56,7 +56,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return true - if current node has right child node, false - otherwise
      */
-    default boolean hasRightChild(final U node) {
+    default <S extends U> boolean hasRightChild(final S node) {
         Objects.requireNonNull(node);
         return (Objects.nonNull(node.getRight()));
     }
@@ -67,7 +67,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return true - if current node is external node, false - otherwise
      */
-    default boolean isExternal(final U node) {
+    default <S extends U> boolean isExternal(final S node) {
         Objects.requireNonNull(node);
         return (Objects.isNull(node.getLeft()) && Objects.isNull(node.getRight()));
     }
@@ -78,7 +78,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return true - if current node is internal node, false - otherwise
      */
-    default boolean isInternal(final U node) {
+    default <S extends U> boolean isInternal(final S node) {
         Objects.requireNonNull(node);
         return (Objects.nonNull(node.getLeft()) || Objects.nonNull(node.getRight()));
     }
@@ -89,7 +89,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return left child node
      */
-    default U getLeftChild(final U node) {
+    default <S extends U> U getLeftChild(final S node) {
         if (this.hasLeftChild(node)) {
             return node.getLeft();
         }
@@ -102,7 +102,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return right child node
      */
-    default U getRightChild(final U node) {
+    default <S extends U> U getRightChild(final S node) {
         if (this.hasRightChild(node)) {
             return node.getRight();
         }
@@ -115,7 +115,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return total number of nodes in the child hierarchy
      */
-    default int nodeSize(final U node) {
+    default <S extends U> int nodeSize(final S node) {
         if (Objects.isNull(node)) {
             return 0;
         }
@@ -135,7 +135,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node - current node
      * @return max number of nodes in the left / right child hierarchy
      */
-    default int height(final U node) {
+    default <S extends U> int height(final S node) {
         if (Objects.isNull(node)) {
             return -1;
         }
@@ -150,7 +150,7 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param level - level of hierarchy
      * @return number of nodes on level hierarchy
      */
-    default int nodesOnLevel(final U node, int level) {
+    default <S extends U> int nodesOnLevel(final S node, int level) {
         if (Objects.isNull(node)) {
             return 0;
         }
@@ -166,11 +166,11 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node    - current node
      * @param visitor - traversable service instance
      */
-    default void inOrderIterator(final U node, final Visitor<T> visitor) {
+    default <S extends U> void inOrderIterator(final S node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
-        inOrderIterator(node.getLeft(), visitor);
+        this.inOrderIterator(node.getLeft(), visitor);
         visitor.visit(node.getData());
-        inOrderIterator(node.getRight(), visitor);
+        this.inOrderIterator(node.getRight(), visitor);
     }
 
     /**
@@ -179,11 +179,11 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node    - current node
      * @param visitor - traversable service instance
      */
-    default void preOrderIterator(final U node, final Visitor<T> visitor) {
+    default <S extends U> void preOrderIterator(final S node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
         visitor.visit(node.getData());
-        preOrderIterator(node.getLeft(), visitor);
-        preOrderIterator(node.getRight(), visitor);
+        this.preOrderIterator(node.getLeft(), visitor);
+        this.preOrderIterator(node.getRight(), visitor);
     }
 
     /**
@@ -192,10 +192,10 @@ public interface ITreeCollection<T, U extends ACBaseTreeNode<T, U>> extends ITre
      * @param node    - current node
      * @param visitor - traversable service instance
      */
-    default void postOrderIterator(final U node, final Visitor<T> visitor) {
+    default <S extends U> void postOrderIterator(final S node, final Visitor<T> visitor) {
         Objects.requireNonNull(node);
-        postOrderIterator(node.getLeft(), visitor);
-        postOrderIterator(node.getRight(), visitor);
+        this.postOrderIterator(node.getLeft(), visitor);
+        this.postOrderIterator(node.getRight(), visitor);
         visitor.visit(node.getData());
     }
 }

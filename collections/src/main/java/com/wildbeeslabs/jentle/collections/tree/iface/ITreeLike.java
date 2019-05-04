@@ -24,7 +24,6 @@
 package com.wildbeeslabs.jentle.collections.tree.iface;
 
 import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
-import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -38,23 +37,23 @@ import java.util.Optional;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITreeLike<T, U extends ACNode<T>> extends Collection<T> {
+public interface ITreeLike<T, U extends Node<T>> extends Collection<T> {
 
-    /**
-     * Get the size of the tree.
-     *
-     * @return size of the tree.
-     */
-    int size();
+//    /**
+//     * Get the size of the tree.
+//     *
+//     * @return size of the tree.
+//     */
+//    int size();
 
-    /**
-     * Check if the list contains values.
-     *
-     * @return boolean (true - if the list is empty, false - otherwise)
-     */
-    default boolean isEmpty() {
-        return (0 == this.size());
-    }
+//    /**
+//     * Check if the list contains values.
+//     *
+//     * @return boolean (true - if the list is empty, false - otherwise)
+//     */
+//    default boolean isEmpty() {
+//        return (0 == this.size());
+//    }
 
     /**
      * Add new root node
@@ -68,7 +67,7 @@ public interface ITreeLike<T, U extends ACNode<T>> extends Collection<T> {
      *
      * @return - current root node
      */
-    U getRoot();
+    <S extends U> S getRoot();
 
     /**
      * Checks if current node is root
@@ -76,7 +75,7 @@ public interface ITreeLike<T, U extends ACNode<T>> extends Collection<T> {
      * @param node - current node
      * @return true - if current node is root, false - otherwise
      */
-    default boolean isRoot(final U node) {
+    default <S extends U> boolean isRoot(final S node) {
         Objects.requireNonNull(node);
         return (this.getRoot() == node);
     }

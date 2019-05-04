@@ -47,6 +47,6 @@ public class CUct {
 
     public static <T extends CState, U extends ACTreeNode<T, U>> U findBestNodeWithUCT(final U node) {
         int parentVisit = node.getData().getVisitCount();
-        return Collections.max(node.getChilds(), Comparator.comparing(c -> uctValue(parentVisit, c.getData().getWinScore(), c.getData().getVisitCount())));
+        return Collections.max(node.getChildren(), Comparator.comparing(c -> uctValue(parentVisit, c.getData().getWinScore(), c.getData().getVisitCount())));
     }
 }

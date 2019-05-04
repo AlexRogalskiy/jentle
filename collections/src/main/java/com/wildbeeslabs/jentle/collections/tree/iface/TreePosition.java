@@ -10,17 +10,5 @@ import com.wildbeeslabs.jentle.collections.iface.position.Position;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface TreePosition<T, R> extends Position<T> {
-
-    R getLeft();
-
-    void setLeft(final R position);
-
-    R getRight();
-
-    void setRight(final R position);
-
-    R getParent();
-
-    void setParent(final R position);
+public interface TreePosition<T, R> extends Position<T>, TreeNode<T, R> {
 }

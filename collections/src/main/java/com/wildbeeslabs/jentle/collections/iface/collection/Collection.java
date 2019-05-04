@@ -35,7 +35,19 @@ import java.io.Serializable;
  */
 public interface Collection<T> extends Serializable, Cloneable, Iterable<T> {
 
+    /**
+     * Get the size of the tree.
+     *
+     * @return size of the tree.
+     */
     int size();
 
-    boolean isEmpty();
+    /**
+     * Check if the list contains values.
+     *
+     * @return boolean (true - if the list is empty, false - otherwise)
+     */
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 }

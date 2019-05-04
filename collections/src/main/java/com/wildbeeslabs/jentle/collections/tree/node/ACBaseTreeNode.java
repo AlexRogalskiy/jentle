@@ -24,27 +24,32 @@
 package com.wildbeeslabs.jentle.collections.tree.node;
 
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
-
+import com.wildbeeslabs.jentle.collections.tree.iface.TreeNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * Custom abstract base tree node implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class ACBaseTreeNode<T, U extends ACBaseTreeNode<T, U>> extends ACNode<T> {
+public abstract class ACBaseTreeNode<T, U extends ACBaseTreeNode<T, U>> extends ACNode<T> implements TreeNode<T, U> {
 
+    /**
+     * Left node {@code U}
+     */
     protected U left;
+    /**
+     * Right node {@code U}
+     */
     protected U right;
 
     public ACBaseTreeNode() {

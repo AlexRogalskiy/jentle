@@ -79,7 +79,7 @@ public class CMonteCarloAlgorithm {
             }
             // Phase 3 - Simulation
             U nodeToExplore = promisingNode;
-            if (promisingNode.getChilds().size() > 0) {
+            if (promisingNode.getChildren().size() > 0) {
                 nodeToExplore = promisingNode.getRandomChild();
             }
             int playoutResult = simulateRandomPlayout(nodeToExplore);
@@ -93,7 +93,7 @@ public class CMonteCarloAlgorithm {
 
     private <T extends CState, U extends ACTreeNode<T, U>> U selectPromisingNode(final U rootNode) {
         U node = rootNode;
-        while (!node.getChilds().isEmpty()) {
+        while (!node.getChildren().isEmpty()) {
             node = CUct.findBestNodeWithUCT(node);
         }
         return node;
@@ -105,7 +105,7 @@ public class CMonteCarloAlgorithm {
             U newNode = (U) new CTreeSearch.CTreeSearchNode<>(state);
             newNode.setParent(node);
             newNode.getData().setPlayerNo(node.getData().getOpponent());
-            node.getChilds().add(newNode);
+            node.getChildren().add(newNode);
         });
     }
 

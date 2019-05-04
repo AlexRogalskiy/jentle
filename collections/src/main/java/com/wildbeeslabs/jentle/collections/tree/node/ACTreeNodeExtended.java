@@ -41,6 +41,9 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public abstract class ACTreeNodeExtended<T, U extends ACTreeNodeExtended<T, U>> extends ACBaseTreeNode<T, U> {
 
+    /**
+     * Parent node {@code U}
+     */
     protected U parent;
 
     public void setLeft(final U left) {

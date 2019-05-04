@@ -3,6 +3,7 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.tree.iface.IPositionalTreeContainer;
+import com.wildbeeslabs.jentle.collections.tree.iface.ITreeCollection;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +12,7 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * Custom {@link IPositionalTreeContainer} implementation
@@ -24,7 +26,7 @@ import java.util.Iterator;
 @Data
 @EqualsAndHashCode
 @ToString
-public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPositionalTreeNode<T>> {
+public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPositionalTreeNode<T>>, ITreeCollection<T, CPositionalTreeNode<T>> {
 
     @Override
     public <S extends Position<T>> void swap(final S positionFirst, final S positionLast) {
@@ -41,28 +43,8 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S getParent(final S position) {
-        return null;
-    }
-
-    @Override
     public @NonNull <S extends CPositionalTreeNode<T>> PositionIterator<CPositionalTreeNode<T>> children(final S position) {
         return null;
-    }
-
-    @Override
-    public <S extends CPositionalTreeNode<T>> boolean isInternal(final S position) {
-        return false;
-    }
-
-    @Override
-    public <S extends CPositionalTreeNode<T>> boolean isExternal(final S position) {
-        return false;
-    }
-
-    @Override
-    public <S extends CPositionalTreeNode<T>> boolean isRoot(final S position) {
-        return false;
     }
 
     @Override
@@ -71,8 +53,12 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
     }
 
     @Override
-    public boolean isEmpty() {
-        return false;
+    public void setRoot(final Optional<? extends T> value) {
+    }
+
+    @Override
+    public CPositionalTreeNode<T> getRoot() {
+        return null;
     }
 
     @Override
