@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public final class TransitEdge implements Serializable {
+public class TransitEdge implements Serializable {
 
     private final String voyageNumber;
     private final String fromUnLocode;

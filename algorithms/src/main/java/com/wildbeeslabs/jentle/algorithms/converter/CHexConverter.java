@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.converter;
 
 import com.google.common.io.BaseEncoding;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -38,7 +39,8 @@ import java.math.BigInteger;
  * @since 2017-12-12
  */
 @Slf4j
-public final class CHexConverter {
+@UtilityClass
+public class CHexConverter {
 
     /**
      * Create a byte Array from String of hexadecimal digits using Character

@@ -23,17 +23,13 @@
  */
 package com.wildbeeslabs.jentle.algorithms.hillclimbing;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Stack;
-
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.*;
+
 /**
- *
  * Custom hill-climbing algorithm implementation
  *
  * @author Alex
@@ -41,7 +37,8 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CHillClimbingAlgorithm {
+@UtilityClass
+public class CHillClimbingAlgorithm {
 
     public static void main(String[] args) {
         final CHillClimbingAlgorithm hillClimbing = new CHillClimbingAlgorithm();
@@ -96,8 +93,8 @@ public final class CHillClimbingAlgorithm {
         CState currentState = initState;
         boolean noStateFound = false;
         while (!currentState.getState()
-                .get(0)
-                .equals(goalStateStack) || noStateFound) {
+            .get(0)
+            .equals(goalStateStack) || noStateFound) {
             noStateFound = true;
             CState nextState = findNextState(currentState, goalStateStack);
             if (nextState != null) {
@@ -122,12 +119,12 @@ public final class CHillClimbingAlgorithm {
         int currentStateHeuristics = currentState.getHeuristics();
 
         return listOfStacks.stream()
-                .map(stack -> {
-                    return applyOperationsOnState(listOfStacks, stack, currentStateHeuristics, goalStateStack);
-                })
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
+            .map(stack -> {
+                return applyOperationsOnState(listOfStacks, stack, currentStateHeuristics, goalStateStack);
+            })
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
     }
 
     /**
@@ -181,12 +178,12 @@ public final class CHillClimbingAlgorithm {
      */
     private CState pushElementToExistingStacks(final Stack currentStack, final List<Stack<String>> currentStackList, final String block, int currentStateHeuristics, final Stack<String> goalStateStack) {
         Optional<CState> newState = currentStackList.stream()
-                .filter(stack -> stack != currentStack)
-                .map(stack -> {
-                    return pushElementToStack(stack, block, currentStackList, currentStateHeuristics, goalStateStack);
-                })
-                .filter(Objects::nonNull)
-                .findFirst();
+            .filter(stack -> stack != currentStack)
+            .map(stack -> {
+                return pushElementToStack(stack, block, currentStackList, currentStateHeuristics, goalStateStack);
+            })
+            .filter(Objects::nonNull)
+            .findFirst();
 
         return newState.orElse(null);
     }
@@ -215,10 +212,10 @@ public final class CHillClimbingAlgorithm {
      */
     public int getHeuristicsValue(final List<Stack<String>> currentState, final Stack<String> goalStateStack) {
         Integer heuristicValue = currentState.stream()
-                .mapToInt(stack -> {
-                    return getHeuristicsValueForStack(stack, currentState, goalStateStack);
-                })
-                .sum();
+            .mapToInt(stack -> {
+                return getHeuristicsValueForStack(stack, currentState, goalStateStack);
+            })
+            .sum();
         return heuristicValue;
     }
 

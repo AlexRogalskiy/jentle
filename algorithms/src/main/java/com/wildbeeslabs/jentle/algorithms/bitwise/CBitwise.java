@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.bitwise;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigInteger;
@@ -54,11 +55,8 @@ import java.util.List;
  * 
  */
 @Slf4j
-public final class CBitwise {
-
-    private CBitwise() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CBitwise {
 
     public static boolean getBit(int num, int index) {
         assert (index >= 0);

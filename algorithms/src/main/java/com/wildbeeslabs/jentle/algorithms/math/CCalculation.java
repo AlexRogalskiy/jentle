@@ -23,25 +23,22 @@
  */
 package com.wildbeeslabs.jentle.algorithms.math;
 
-import java.util.LinkedList;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.UtilityClass;
+
+import java.util.LinkedList;
 
 /**
- *
  * Custom calculation implementations
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CCalculation {
-
-    private CCalculation() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CCalculation {
 
     /**
      * Simple Moving Average algorithm implementation
@@ -58,7 +55,6 @@ public final class CCalculation {
         private double average = 0;
 
         /**
-         *
          * @param length the maximum length
          */
         public CSimpleMovingAverage(int length) {

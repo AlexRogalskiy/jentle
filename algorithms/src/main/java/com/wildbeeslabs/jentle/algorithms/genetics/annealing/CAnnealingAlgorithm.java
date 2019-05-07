@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CAnnealingAlgorithm {
+public class CAnnealingAlgorithm {
 
     public static double simulate(double startingTemperature, int numberOfIterations, double coolingRate, int numberOfCities) {
         log.debug("Starting SA with temperature: " + startingTemperature + ", # of iterations: " + numberOfIterations + " and colling rate: " + coolingRate);

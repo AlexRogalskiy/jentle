@@ -44,7 +44,7 @@ import static com.wildbeeslabs.jentle.algorithms.date.time.ResourcesTimeUnit.DEF
  * @since 2017-08-07
  */
 @Slf4j
-public final class DateTimeFormatter {
+public class DateTimeFormatter {
 
     private volatile Date reference;
     private volatile Locale locale = Locale.getDefault();

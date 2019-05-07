@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CSimpleGeneticAlgorithm {
+public class CSimpleGeneticAlgorithm {
 
     private final double uniformRate = 0.5;
     private final double mutationRate = 0.025;

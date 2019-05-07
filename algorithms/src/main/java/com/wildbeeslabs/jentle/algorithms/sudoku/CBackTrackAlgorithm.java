@@ -36,7 +36,7 @@ import java.util.stream.IntStream;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CBackTrackAlgorithm {
+public class CBackTrackAlgorithm {
 
     private static final int BOARD_SIZE = 9;
     private static final int SUBSECTION_SIZE = 3;

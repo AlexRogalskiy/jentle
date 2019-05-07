@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.format;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,7 +46,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @since 2017-12-12
  */
 @Slf4j
-public final class CStringFormatter {
+@UtilityClass
+public class CStringFormatter {
 
     /**
      * Default UTF8 byte masks
@@ -71,10 +73,6 @@ public final class CStringFormatter {
     private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
     private static final int CHAR_FIVE_BYTES_MASK = 0xFC000000;
     private static final int CHAR_SIX_BYTES_MASK = 0x80000000;
-
-    private CStringFormatter() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     /**
      * UnGzips compressed string to raw format string output

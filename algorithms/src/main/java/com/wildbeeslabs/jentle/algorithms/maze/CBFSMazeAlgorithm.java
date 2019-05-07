@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.maze;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -35,15 +36,12 @@ import java.util.*;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CBFSMazeAlgorithm {
+@UtilityClass
+public class CBFSMazeAlgorithm {
 
     private static final int[][] DIRECTIONS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-    private CBFSMazeAlgorithm() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
-
-    public List<CCoordinate> solve(final CMaze maze) {
+    public static List<CCoordinate> solve(final CMaze maze) {
         final LinkedList<CCoordinate> nextToVisit = new LinkedList<>();
         final CCoordinate start = maze.getEntry();
         nextToVisit.add(start);
@@ -69,7 +67,7 @@ public final class CBFSMazeAlgorithm {
         return Collections.EMPTY_LIST;
     }
 
-    private List<CCoordinate> backtrackPath(final CCoordinate cur) {
+    private static List<CCoordinate> backtrackPath(final CCoordinate cur) {
         final List<CCoordinate> path = new ArrayList<>();
         CCoordinate iter = cur;
 

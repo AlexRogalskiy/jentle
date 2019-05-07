@@ -44,7 +44,7 @@ import java.util.Objects;
  */
 @Slf4j
 @UtilityClass
-public final class CDigestUtils {
+public class CDigestUtils {
 
     /**
      * Default md5 hash algorithm

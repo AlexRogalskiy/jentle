@@ -36,7 +36,7 @@ import java.io.ByteArrayOutputStream;
  * The ByteArrayInputStream can be retrieved using
  * <code>getInputStream()</code>.
  */
-public final class CByteArrayInOutStream extends ByteArrayOutputStream {
+public class CByteArrayInOutStream extends ByteArrayOutputStream {
 
     /*
      CByteArrayInOutStream baios = new CByteArrayInOutStream();
@@ -61,6 +61,7 @@ public final class CByteArrayInOutStream extends ByteArrayOutputStream {
      e.printStackTrace();
      }
      */
+
     /**
      * Creates a new CByteArrayInOutStream. The buffer capacity is initially 32
      * bytes, though its size increases if necessary.
@@ -74,7 +75,7 @@ public final class CByteArrayInOutStream extends ByteArrayOutputStream {
      * specified size, in bytes.
      *
      * @param size the initial size.
-     * @exception IllegalArgumentException if size is negative.
+     * @throws IllegalArgumentException if size is negative.
      */
     public CByteArrayInOutStream(int size) {
         super(size);

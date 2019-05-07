@@ -23,19 +23,17 @@
  */
 package com.wildbeeslabs.jentle.algorithms.string;
 
+import lombok.experimental.UtilityClass;
+
 /**
- *
  * Custom anagram validator implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CAnagramValidator {
-
-    private CAnagramValidator() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CAnagramValidator {
 
     public static boolean isValid(final String text, final String anagram) {
         String sortedText = sort(text);
@@ -45,14 +43,14 @@ public final class CAnagramValidator {
 
     private static String sort(final String text) {
         return sanitize(text).chars()
-                .sorted()
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+            .sorted()
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
     }
 
     private static String sanitize(final String text) {
         return text.toLowerCase()
-                .trim()
-                .replaceAll("\\s+", "");
+            .trim()
+            .replaceAll("\\s+", "");
     }
 }

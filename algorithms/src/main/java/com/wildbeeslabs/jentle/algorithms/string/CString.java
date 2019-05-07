@@ -45,6 +45,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -55,11 +56,8 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CString {
-
-    private CString() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CString {
 
     public static List<String> transform(final String start, final String stop, final String[] words) {
         final CHashMapList<String, String> wordList = createWordMap(words);

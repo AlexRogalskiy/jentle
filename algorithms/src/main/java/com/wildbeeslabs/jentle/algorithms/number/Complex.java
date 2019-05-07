@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @EqualsAndHashCode
 @ToString
-public final class Complex {
+public class Complex {
     /**
      * Default {@link Complex} constants
      */

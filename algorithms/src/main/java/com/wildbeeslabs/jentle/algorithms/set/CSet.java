@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.set;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.BitSet;
@@ -36,11 +37,8 @@ import java.util.Objects;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CSet {
-
-    private CSet() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CSet {
 
     public static byte[] toByteArray(final BitSet bits) {
         Objects.requireNonNull(bits);

@@ -31,6 +31,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -45,11 +46,8 @@ import java.util.stream.Collectors;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CList {
-
-    private CList() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CList {
 
     @SuppressWarnings("UnusedAssignment")
     public static <T, U extends ACListNode<T, U>> U merge(final U first, final U last, final Comparator<? super T> cmp) {

@@ -35,6 +35,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import lombok.experimental.UtilityClass;
 
 import java.io.Serializable;
 import java.util.*;
@@ -47,11 +48,8 @@ import java.util.function.Function;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CTreeUtils {
-
-    private CTreeUtils() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CTreeUtils {
 
     public static <T, U extends ACBaseTreeNode<T, U>> List<LinkedList<U>> createLevelNodeList(final U root) {
         final List<LinkedList<U>> levelList = new ArrayList<>();

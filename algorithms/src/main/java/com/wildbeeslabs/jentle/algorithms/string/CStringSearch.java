@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.string;
 
 import com.wildbeeslabs.jentle.algorithms.number.CNumericUtils;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -34,11 +35,8 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2017-12-12
  */
 @Slf4j
-public final class CStringSearch {
-
-    private CStringSearch() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CStringSearch {
 
     public static int simpleTextSearch(char[] pattern, char[] text) {
         int patternSize = pattern.length;

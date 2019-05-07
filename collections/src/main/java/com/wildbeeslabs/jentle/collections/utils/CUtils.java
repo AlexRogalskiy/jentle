@@ -51,7 +51,7 @@ import static org.apache.commons.lang3.ArrayUtils.toArray;
  */
 @Slf4j
 @UtilityClass
-public final class CUtils {
+public class CUtils {
 
     /**
      * Default sort comparator

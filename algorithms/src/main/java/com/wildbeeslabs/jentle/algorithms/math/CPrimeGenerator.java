@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.math;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,7 +34,8 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CPrimeGenerator {
+@UtilityClass
+public class CPrimeGenerator {
 
     private static boolean[] crossOut;
     private static int[] result;

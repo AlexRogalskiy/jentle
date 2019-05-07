@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.jentle.algorithms.genetics.knapsack;
 
-import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.algorithms.matrix.CMatrixUtils;
+import com.wildbeeslabs.jentle.algorithms.random.CRandom;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import io.jenetics.*;
 import io.jenetics.engine.Codecs;
@@ -36,6 +36,7 @@ import io.jenetics.util.ISeq;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -58,11 +59,8 @@ import static io.jenetics.engine.Limits.bySteadyFitness;
  */
 @Slf4j
 @Data
-public final class CGenetics {
-
-    private CGenetics() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CGenetics {
 
     @Data
     @EqualsAndHashCode

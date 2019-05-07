@@ -12,7 +12,7 @@ import java.util.Date;
 @Getter
 @EqualsAndHashCode
 @ToString
-public final class Period {
+public class Period {
 
     private final Date start;
     private final Date end;

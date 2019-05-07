@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.converter;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,7 +34,8 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2017-12-12
  */
 @Slf4j
-public final class CBase64Converter {
+@UtilityClass
+public class CBase64Converter {
 
     // The line separator string of the operating system.
     private static final String DEFAULT_LINE_SEPARATOR = System.getProperty("line.separator");
@@ -66,9 +68,6 @@ public final class CBase64Converter {
         for (int i = 0; i < 64; i++) {
             map2[map1[i]] = (byte) i;
         }
-    }
-
-    private CBase64Converter() {
     }
 
     /**

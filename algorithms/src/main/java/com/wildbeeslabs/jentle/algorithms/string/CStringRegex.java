@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.string;
 
 import com.vdurmont.emoji.EmojiParser;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,15 +39,12 @@ import java.util.regex.Pattern;
  * @since 2017-12-12
  */
 @Slf4j
-public final class CStringRegex {
+@UtilityClass
+public class CStringRegex {
 
     private static final String DEFAULT_EMOJI_PATTERN = "[^\\p{L}\\p{N}\\p{P}\\p{Z}]";
     private static final String DEFAULT_MULTI_STRING_PATTERN = "^(?=.*?\\p{Lu})(?=.*?\\p{Ll})(?=.*?\\d)(?=.*?[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?]).*$";
     private static final String DEFAULT_SPECIAL_CHARS_PATTERN = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
-
-    private CStringRegex() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     /**
      * Builds a regular expression to search for the terms
@@ -490,7 +488,7 @@ public final class CStringRegex {
 //            }
 //        }
 //        if (length == newLength) {
-//            // nothing to escape in the string
+//            // nothing to DEFAULT_ESCAPE_FORMAT in the string
 //            return s;
 //        }
 //        final StringBuffer sb = new StringBuffer(newLength);

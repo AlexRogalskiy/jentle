@@ -20,7 +20,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode
 @ToString
-public final class CStringList implements Serializable {
+public class CStringList implements Serializable {
 
     /**
      * Default serialVersionUID

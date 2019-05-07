@@ -39,7 +39,7 @@ import java.util.*;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem> {
+public class CSlopeOneAlgorithm<T extends CDataItem, E extends CActorItem> {
 
     private final List<T> items = new ArrayList<>();
     private final Map<T, Map<T, Double>> diff = new HashMap<>();

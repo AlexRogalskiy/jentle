@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.map;
 
 import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -39,11 +40,8 @@ import java.util.stream.Collectors;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CMap {
-
-    private CMap() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CMap {
 
     public static <T, K> Map<K, List<T>> getSortedMapByKey(@NonNull final Map<K, List<T>> map, final Comparator<? super K> comparator) {
         return map.entrySet().stream()

@@ -36,7 +36,7 @@ import java.util.stream.IntStream;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CAntColonyAlgorithm {
+public class CAntColonyAlgorithm {
 
     private final double c = 1.0;
     private final double alpha = 1;

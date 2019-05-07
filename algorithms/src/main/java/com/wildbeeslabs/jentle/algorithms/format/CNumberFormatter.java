@@ -23,7 +23,9 @@
  */
 package com.wildbeeslabs.jentle.algorithms.format;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,6 +33,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Helper class to handle number format operations
@@ -40,7 +44,8 @@ import java.util.Locale;
  * @since 2017-12-12
  */
 @Slf4j
-public final class CNumberFormatter {
+@UtilityClass
+public class CNumberFormatter {
 
     /**
      * Default number format pattern
@@ -53,14 +58,34 @@ public final class CNumberFormatter {
     /**
      * Default number format instance
      */
-    private static final ThreadLocal<DecimalFormat> numberFormat = ThreadLocal.withInitial(() -> new DecimalFormat(DEFAULT_NUMBER_FORMAT_PATTERN, DecimalFormatSymbols.getInstance(DEFAULT_LOCALE)));
+    private static final ThreadLocal<DecimalFormat> DEFAULT_NUMBER_FORMAT = ThreadLocal.withInitial(() -> new DecimalFormat(DEFAULT_NUMBER_FORMAT_PATTERN, DecimalFormatSymbols.getInstance(DEFAULT_LOCALE)));
+    /**
+     * Default java escape format operator
+     */
+    public static final UnaryOperator<String> DEFAULT_JAVA_ESCAPE_FORMAT = input -> "'" + escape(input, StringEscapeUtils::escapeJava) + "'";
+    /**
+     * Default html4 escape format operator
+     */
+    public static final UnaryOperator<String> DEFAULT_HTML_ESCAPE_FORMAT = input -> "'" + escape(input, StringEscapeUtils::escapeHtml4) + "'";
+    /**
+     * Default json escape format operator
+     */
+    public static final UnaryOperator<String> DEFAULT_JSON_ESCAPE_FORMAT = input -> "'" + escape(input, StringEscapeUtils::escapeJson) + "'";
+    /**
+     * Default csv escape format operator
+     */
+    public static final UnaryOperator<String> DEFAULT_CSV_ESCAPE_FORMAT = input -> "'" + escape(input, StringEscapeUtils::escapeCsv) + "'";
+    /**
+     * Default xml escape format operator
+     */
+    public static final UnaryOperator<String> DEFAULT_XML_ESCAPE_FORMAT = input -> "'" + escape(input, StringEscapeUtils::escapeXml11) + "'";
 
-    private CNumberFormatter() {
-        // PRIVATE EMPTY CONSTRUCTOR
+    private static String escape(final String input, final Function<String, String> function) {
+        return function.apply(input);
     }
 
     public static <T> String format(final Comparable<? super T> value) {
-        return CNumberFormatter.numberFormat.get().format(value);
+        return CNumberFormatter.DEFAULT_NUMBER_FORMAT.get().format(value);
     }
 
     public static <T> String formatByPattern(final Comparable<? super T> value, final String pattern) {
@@ -108,10 +133,10 @@ public final class CNumberFormatter {
      * value is rounded using the given method which is any method defined in
      * {@link BigDecimal}.
      *
-     * @param x              the value to round.
-     * @param scale          the number of digits to the right of the decimal point.
-     * @param roundingMethod the rounding method as defined in
-     *                       {@link BigDecimal}.
+     * @param x            the value to round.
+     * @param scale        the number of digits to the right of the decimal point.
+     * @param roundingMode the rounding method as defined in
+     *                     {@link BigDecimal}.
      * @return the rounded value.
      * @since 1.1
      */
@@ -138,5 +163,18 @@ public final class CNumberFormatter {
     public static String formatCurrency(final Locale locale, final Object object) {
         final NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
         return nf.format(locale);
+    }
+
+    public static String prependZeroesToSize(final String string, final int size) {
+        if (string.length() < size) {
+            int difference = size - string.length();
+            final StringBuilder buff = new StringBuilder();
+            for (int i = 0; i < difference; i++) {
+                buff.append("0");
+            }
+            buff.append(string);
+            return buff.toString();
+        }
+        return string;
     }
 }

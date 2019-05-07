@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode
 @ToString
-public final class TransitPath implements Serializable {
+public class TransitPath implements Serializable {
 
     /**
      * Default {@link List} collection of {@link TransitEdge}

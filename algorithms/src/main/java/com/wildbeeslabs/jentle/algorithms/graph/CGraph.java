@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.graph;
 import com.wildbeeslabs.jentle.collections.graph.impl.CSGraph2;
 import com.wildbeeslabs.jentle.collections.graph.node.ACGraphNodeExtended;
 import com.wildbeeslabs.jentle.collections.graph.node.CGraphNode;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
@@ -52,11 +53,8 @@ import java.util.Map.Entry;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CGraph {
-
-    private CGraph() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CGraph {
 
     public static <T> boolean search(final CGraphNode<T> start, final CGraphNode<T> end) {
         if (start == end) {

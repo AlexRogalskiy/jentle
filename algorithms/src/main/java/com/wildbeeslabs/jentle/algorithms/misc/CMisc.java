@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.misc;
 
 import com.wildbeeslabs.jentle.collections.map.impl.CHashMapList;
 import lombok.*;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,11 +42,8 @@ import java.util.*;
  * @since 2017-08-07
  */
 @Slf4j
-public final class CMisc {
-
-    private CMisc() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
+@UtilityClass
+public class CMisc {
 
     public static int findOpenNumber(final String fileName) throws FileNotFoundException {
         int rangeSize = (1 << 20);

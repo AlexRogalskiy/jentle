@@ -31,6 +31,7 @@ import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.map.impl.CHashMapList;
 import com.wildbeeslabs.jentle.collections.utils.CComparatorUtils;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.lang.reflect.Method;
@@ -45,16 +46,13 @@ import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray2;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public final class CSort {
+@UtilityClass
+public class CSort {
 
     /**
      * Default shell sort steps
      */
     private static final int[] DEFAULT_SHELL_SORT_STEPS = new int[]{701, 301, 132, 57, 23, 10, 4, 1};
-
-    private CSort() {
-        // PRIVATE EMPTY CONSTRUCTOR
-    }
 
     private static <T> void swap(final T[] array, int left, int right) {
         final T temp = array[left];
