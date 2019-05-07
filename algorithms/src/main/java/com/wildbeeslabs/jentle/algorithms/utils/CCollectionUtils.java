@@ -455,4 +455,21 @@ public class CCollectionUtils {
     private static <E> void swapHelper(final List<E> list, int i, int j) {
         list.set(i, list.set(j, list.get(i)));
     }
+
+    /**
+     * Returns binary flag by input {@link Collection} comparison
+     *
+     * @param set1 - initial input first {@link Collection}
+     * @param set2 - initial input last {@link Collection}
+     * @return true - if collections are equal, false - otherwise
+     */
+    public static boolean isEqualSet(final Collection<?> set1, final Collection<?> set2) {
+        if (set1 == set2) {
+            return true;
+        }
+        if (Objects.isNull(set1) || Objects.isNull(set2) || set1.size() != set2.size()) {
+            return false;
+        }
+        return set1.containsAll(set2);
+    }
 }
