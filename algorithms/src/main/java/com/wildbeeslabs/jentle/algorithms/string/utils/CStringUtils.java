@@ -64,7 +64,7 @@ public class CStringUtils {
     /**
      * Default hex digits array
      */
-    private static final char[] HEXDIGITS = "0123456789abcdef" .toCharArray();
+    private static final char[] HEXDIGITS = "0123456789abcdef".toCharArray();
     /**
      * Default replace prefix
      */
@@ -337,7 +337,7 @@ public class CStringUtils {
     }
 
     private static boolean stringToBool(final String value) {
-        return "1" .equals(value);
+        return "1".equals(value);
     }
 
     public static boolean isEqual(final String s1, int offset1, int offset2, int size) {
@@ -800,5 +800,33 @@ public class CStringUtils {
      */
     public static String sanitize(final String initialValue) {
         return replaceAll(initialValue, DEFAULT_ALPHANUMERIC_PATTERN, org.apache.commons.lang3.StringUtils.EMPTY).trim();
+    }
+
+    /**
+     * Returns {@link UUID} instance by input {@link String}
+     *
+     * @param name - initial input {@link String}
+     * @return {@link UUID} instance
+     */
+    public static UUID fromString(final String name) {
+        final String[] components = name.split("-");
+        if (components.length != 5) {
+            throw new IllegalArgumentException("Invalid UUID string: " + name);
+        }
+        for (int i = 0; i < 5; i++) {
+            components[i] = "0x" + components[i];
+        }
+
+        long mostSigBits = Long.decode(components[0]).longValue();
+        mostSigBits <<= 16;
+        mostSigBits |= Long.decode(components[1]).longValue();
+        mostSigBits <<= 16;
+        mostSigBits |= Long.decode(components[2]).longValue();
+
+        long leastSigBits = Long.decode(components[3]).longValue();
+        leastSigBits <<= 48;
+        leastSigBits |= Long.decode(components[4]).longValue();
+
+        return new UUID(mostSigBits, leastSigBits);
     }
 }
