@@ -2,8 +2,8 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
-import com.wildbeeslabs.jentle.collections.tree.iface.tree.position.IPositionalTreeContainer;
 import com.wildbeeslabs.jentle.collections.tree.iface.tree.ITreeCollection;
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.position.IPositionalTreeContainer;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -73,6 +73,10 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
 
     @Override
     public Iterator<T> iterator() {
+        return null;
+    }
+
+    public <S extends CPositionalTreeNode<T>> S getSibling(final S position) {
         return null;
     }
 }
