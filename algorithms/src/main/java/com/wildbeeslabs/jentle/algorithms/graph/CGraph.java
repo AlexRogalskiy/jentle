@@ -140,7 +140,7 @@ public class CGraph {
         return stronglyConnectedSubgraphs;
     }
 
-    public static <V, E> GraphPath<V, E> getEluerianCycle(final Graph<V, E> graph) {
+    public static <V, E> GraphPath<V, E> getEulerianCycle(final Graph<V, E> graph) {
         final HierholzerEulerianCycle eulerianCycle = new HierholzerEulerianCycle<>();
         if (eulerianCycle.isEulerian(graph)) {
             return eulerianCycle.getEulerianCycle(graph);
