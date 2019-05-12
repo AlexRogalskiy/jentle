@@ -59,7 +59,7 @@ public class CConverterUtils {
         return Optional.ofNullable(collection).map(Collection::stream).orElseGet(Stream::empty);
     }
 
-//    public static <T> Stream<T> streamOf(@NonNull final Collection<String> collection) {
+//    public static <T> Stream<T> streamOf(@NonNull final CollectionLike<String> collection) {
 //        return collection.stream().flatMap(s -> Stream.ofNullable(s));
 //    }
 
