@@ -25,17 +25,17 @@ package com.wildbeeslabs.jentle.collections.queue.iface;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 
 /**
- * Custom stack {@link Collection} interface declaration
+ * Custom stack {@link CollectionLike} interface declaration
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IStack<T> extends Collection<T> {
+public interface IStack<T> extends CollectionLike<T> {
 
     /**
      * Adds value to the top of the current stack
@@ -68,7 +68,7 @@ public interface IStack<T> extends Collection<T> {
      * @param value to remove from the current stack.
      * @return true if the value was removed, false - otherwise
      */
-    boolean remove(final T value);
+//    boolean remove(final T value);
 
     /**
      * Clears the current stack.
@@ -81,14 +81,7 @@ public interface IStack<T> extends Collection<T> {
      * @param value object to find in stack.
      * @return true if the current stack contains the value, false - otherwise.
      */
-    boolean contains(final T value);
-
-    /**
-     * Returns the size of the current stack.
-     *
-     * @return size of the current stack.
-     */
-    int size();
+//    boolean contains(final T value);
 
     /**
      * Validate the current stack according to the invariants.
@@ -105,16 +98,9 @@ public interface IStack<T> extends Collection<T> {
     java.util.Queue<? extends T> toLifoQueue();
 
     /**
-     * Converts the current stack to Java compatible Collection
+     * Converts the current stack to Java compatible CollectionLike
      *
-     * @return Java compatible Collection
+     * @return Java compatible CollectionLike
      */
     java.util.Collection<? extends T> toCollection();
-
-    /**
-     * Checks if the current stack is empty
-     *
-     * @return true - if the current stack is empty, false - otherwise
-     */
-    boolean isEmpty();
 }

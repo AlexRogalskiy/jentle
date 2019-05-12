@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.jentle.collections.iface.dictionary;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 import com.wildbeeslabs.jentle.collections.iface.node.KeyValueNode;
 
 import java.util.Enumeration;
@@ -36,7 +36,7 @@ import java.util.Enumeration;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface Dictionary<K, V> extends Collection<KeyValueNode<K, V>> {
+public interface Dictionary<K, V> extends CollectionLike<KeyValueNode<K, V>> {
 
     /**
      * Removes element {@code V} by input key {@code K}

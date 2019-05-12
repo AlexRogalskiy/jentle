@@ -135,9 +135,4 @@ public class CGraph<T> extends ACGraph<T, CGraph.CGraphNode<T>> {
     public int size() {
         return this.nodes.size();
     }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
 }

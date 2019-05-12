@@ -24,20 +24,20 @@
 package com.wildbeeslabs.jentle.collections.queue.iface;
 
 import com.wildbeeslabs.jentle.collections.exception.EmptyQueueException;
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 
 import java.util.Queue;
 
 /**
  *
- * Custom queue {@link Collection} interface declaration
+ * Custom queue {@link CollectionLike} interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface IQueue<T> extends Collection<T>, Queue<T> {
+public interface IQueue<T> extends CollectionLike<T>, Queue<T> {
 
 //    /**
 //     * Add a value to the beginning of the queue.
@@ -123,9 +123,9 @@ public interface IQueue<T> extends Collection<T>, Queue<T> {
     java.util.Queue<? extends T> toQueue();
 
     /**
-     * Converts the current queue to Java compatible Collection
+     * Converts the current queue to Java compatible CollectionLike
      *
-     * @return Java compatible Collection
+     * @return Java compatible CollectionLike
      */
     java.util.Collection<? extends T> toCollection();
 
@@ -134,5 +134,7 @@ public interface IQueue<T> extends Collection<T>, Queue<T> {
      *
      * @return true - if the current queue is empty, false - otherwise
      */
-    //boolean isEmpty();
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 }

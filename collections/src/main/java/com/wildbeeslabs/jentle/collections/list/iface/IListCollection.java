@@ -100,10 +100,10 @@ public interface IListCollection<T, E extends ACListNode<T, E>> extends IListLik
     Queue<? extends T> toQueue();
 
     /**
-     * Returns the list as a Java compatible Collection
+     * Returns the list as a Java compatible CollectionLike
      * {@link java.util.Collection}
      *
-     * @return Java compatible Collection {@link java.util.Collection}
+     * @return Java compatible CollectionLike {@link java.util.Collection}
      */
     Collection<? extends T> toCollection();
 }

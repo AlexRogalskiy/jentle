@@ -129,7 +129,7 @@ public class CDualStack<T> extends ACStack<T> {
     }
 
     @Override
-    public void push(T value) throws OverflowStackException {
+    public void push(final T value) throws OverflowStackException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -144,22 +144,12 @@ public class CDualStack<T> extends ACStack<T> {
     }
 
     @Override
-    public boolean remove(T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void clear() {
         for (int i = 0; i < this.size; i++) {
             this.array[i] = null;
         }
         this.index1 = -1;
         this.index2 = this.size;
-    }
-
-    @Override
-    public boolean contains(T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -175,11 +165,6 @@ public class CDualStack<T> extends ACStack<T> {
     @Override
     public Collection<? extends T> toCollection() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.isEmpty1() && this.isEmpty2();
     }
 
     @Override

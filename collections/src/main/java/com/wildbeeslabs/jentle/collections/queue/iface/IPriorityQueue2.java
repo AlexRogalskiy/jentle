@@ -23,10 +23,10 @@
  */
 package com.wildbeeslabs.jentle.collections.queue.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 
 /**
- * Custom priority {@link Queue} {@link Collection} interface declaration (version 2)
+ * Custom priority {@link Queue} {@link CollectionLike} interface declaration (version 2)
  *
  * @param <T>
  * @author Alex

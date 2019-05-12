@@ -25,19 +25,13 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom trie implementation
  *
  * @author Alex
@@ -106,7 +100,7 @@ public class CTrie extends ACTrie<Integer, CTrie.CTrieNode<Integer>> {
     }
 
     @Override
-    public boolean contains(final CharSequence value, final CTrie.CTrieNode<Integer> node,  boolean isExact) {
+    public boolean contains(final CharSequence value, final CTrie.CTrieNode<Integer> node, final boolean isExact) {
         CTrie.CTrieNode<Integer> current = node;
         for (final Integer charCode : value.codePoints().toArray()) {
             current = current.getChild(charCode);

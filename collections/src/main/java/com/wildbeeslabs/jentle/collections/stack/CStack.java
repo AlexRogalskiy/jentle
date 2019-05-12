@@ -118,11 +118,6 @@ public class CStack<T> extends ACStack<T> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
-    @Override
     public void clear() {
         @SuppressWarnings("UnusedAssignment")
         CStack.CStackNode<T> temp = null;
@@ -132,16 +127,6 @@ public class CStack<T> extends ACStack<T> {
             this.top = temp;
         }
         this.size = 0;
-    }
-
-    @Override
-    public boolean remove(final T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean contains(final T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

@@ -24,25 +24,20 @@
 package com.wildbeeslabs.jentle.collections.map.impl;
 
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom hash map implementation
  *
+ * @param <K>
+ * @param <V>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <K>
- * @param <V>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -106,6 +101,11 @@ public class CHashMap<K, V> extends ACMap<K, V> {
     @Override
     public V remove(final Object key) {
         return this.removeBy((K) key);
+    }
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        return null;
     }
 
     protected V removeBy(final K key) {

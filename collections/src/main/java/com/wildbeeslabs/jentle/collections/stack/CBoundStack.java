@@ -84,21 +84,11 @@ public class CBoundStack<T> extends ACStack<T> {
     }
 
     @Override
-    public boolean remove(final T value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public void clear() {
         for (int i = 0; i < this.size(); i++) {
             this.stack[i] = null;
         }
         this.size = 0;
-    }
-
-    @Override
-    public boolean contains(final T value) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -119,11 +109,6 @@ public class CBoundStack<T> extends ACStack<T> {
     @Override
     public Collection<? extends T> toCollection() {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
     }
 
     public boolean isFull() {

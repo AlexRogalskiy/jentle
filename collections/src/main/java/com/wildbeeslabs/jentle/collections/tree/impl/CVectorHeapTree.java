@@ -63,11 +63,6 @@ public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> 
     }
 
     @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
     public @NonNull <S extends Position<T>> PositionIterator<S> positionIterator() {
         return null;
     }
@@ -104,7 +99,6 @@ public class CVectorHeapTree<T> implements IHeapTree<T, CPositionalTreeNode<T>> 
 
     @Override
     public void setRoot(final Optional<? extends T> value) {
-
     }
 
     @Override

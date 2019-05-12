@@ -93,11 +93,6 @@ public class CSGraph2<T> extends ACGraph<T, CSGraph2.CGraphNodeExtended<T>> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
-    @Override
     public Iterator<T> iterator() {
         return new CSGraph2.CSGraph2Iterator<>(this);
     }

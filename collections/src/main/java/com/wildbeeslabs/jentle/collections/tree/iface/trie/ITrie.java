@@ -23,11 +23,11 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.iface.trie;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
 
 /**
- * Custom trie {@link Collection} interface declaration
+ * Custom trie {@link CollectionLike} interface declaration
  *
  * @param <T>
  * @param <U>
@@ -35,7 +35,7 @@ import com.wildbeeslabs.jentle.collections.tree.node.ACBaseTrieNode;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITrie<T, U extends ACBaseTrieNode<T, U>> extends Collection<T> {
+public interface ITrie<T, U extends ACBaseTrieNode<T, U>> extends CollectionLike<T> {
 
     /**
      * Returns the size of the tree.

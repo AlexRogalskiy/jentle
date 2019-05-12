@@ -33,19 +33,21 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface Collection<T> extends java.util.Collection<T>, Serializable, Cloneable, Iterable<T> {
+public interface CollectionLike<T> extends Serializable, Cloneable, Iterable<T> {
 
-//    /**
-//     * Get the size of the tree.
-//     *
-//     * @return size of the tree.
-//     */
-//    int size();
-//
-//    /**
-//     * Check if the list contains values.
-//     *
-//     * @return boolean (true - if the list is empty, false - otherwise)
-//     */
-//    boolean isEmpty();
+    /**
+     * Get the size of the tree.
+     *
+     * @return size of the tree.
+     */
+    int size();
+
+    /**
+     * Check if the list contains values.
+     *
+     * @return boolean (true - if the list is empty, false - otherwise)
+     */
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 }

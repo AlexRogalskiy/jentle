@@ -23,12 +23,12 @@
  */
 package com.wildbeeslabs.jentle.collections.map.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 
 import java.util.Map;
 
 /**
- * Custom map {@link Collection} interface declaration
+ * Custom map {@link CollectionLike} interface declaration
  *
  * @param <K>
  * @param <V>
@@ -36,24 +36,10 @@ import java.util.Map;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IMapLike<K, V> extends Collection<Map.Entry<K, V>> {
-
-    /**
-     * Gets the size of the list
-     *
-     * @return size of the list
-     */
-    int size();
+public interface IMapLike<K, V> extends CollectionLike<Map.Entry<K, V>> {
 
     /**
      * Removes all values from the list
      */
     void clear();
-
-    /**
-     * Checks if the list contains values
-     *
-     * @return boolean (true - if the list is empty, false - otherwise)
-     */
-    boolean isEmpty();
 }

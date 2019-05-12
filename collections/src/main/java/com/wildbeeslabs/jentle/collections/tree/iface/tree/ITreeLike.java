@@ -23,14 +23,14 @@
  */
 package com.wildbeeslabs.jentle.collections.tree.iface.tree;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 import com.wildbeeslabs.jentle.collections.iface.node.Node;
 
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Custom tree {@link Collection} interface declaration
+ * Custom tree {@link CollectionLike} interface declaration
  *
  * @param <T>
  * @param <U>
@@ -38,7 +38,7 @@ import java.util.Optional;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface ITreeLike<T, U extends Node<T>> extends Collection<T> {
+public interface ITreeLike<T, U extends Node<T>> extends CollectionLike<T> {//extends CollectionLike<T> {
 
 //    /**
 //     * Get the size of the tree.
@@ -46,7 +46,7 @@ public interface ITreeLike<T, U extends Node<T>> extends Collection<T> {
 //     * @return size of the tree.
 //     */
 //    int size();
-
+//
 //    /**
 //     * Check if the list contains values.
 //     *

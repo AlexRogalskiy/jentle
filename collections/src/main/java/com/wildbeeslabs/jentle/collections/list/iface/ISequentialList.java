@@ -18,4 +18,13 @@ public interface ISequentialList<T, E extends ACPositionalListNode<T, E>> extend
     Position<T> atRank(int rank);
 
     int rankOf(final Position<T> position);
+
+    /**
+     * Check if the list contains values.
+     *
+     * @return boolean (true - if the list is empty, false - otherwise)
+     */
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 }

@@ -43,7 +43,7 @@ import java.util.Objects;
 import static org.apache.commons.lang3.ArrayUtils.toArray;
 
 /**
- * Collection utilities implementation
+ * CollectionLike utilities implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -99,7 +99,7 @@ public class CUtils {
     public static <T> Collection<? extends T> union(final Iterable<? extends T> first, final Iterable<? extends T> second) {
         return CollectionUtils.union(first, second);
         //IterableUtils.chainedIterable(collectionA, collectionB);
-        //Stream<? extends T> combinedStream = Stream.of(first, second).flatMap(Collection::stream).collect(Collectors.toList());
+        //Stream<? extends T> combinedStream = Stream.of(first, second).flatMap(CollectionLike::stream).collect(Collectors.toList());
     }
 
     public static <T> IStack<T> sort(final IStack<T> stack, final Comparator<? super T> cmp) throws EmptyStackException, OverflowStackException {

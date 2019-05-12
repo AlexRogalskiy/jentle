@@ -92,11 +92,6 @@ public class CSGraph extends ACGraph<Integer, CGraphNode<Integer>> {
         return this.graph.length;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
     public IGraph<Integer> toCMGraph() {
         final CMGraph<Integer> mGraph = new CMGraph<>((Class<? extends CGraphNode<Integer>>) this.graph.getClass().getComponentType(), this.size());
         for (int i = 0; i < this.size(); i++) {

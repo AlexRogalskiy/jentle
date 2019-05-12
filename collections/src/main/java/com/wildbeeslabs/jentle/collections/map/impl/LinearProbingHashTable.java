@@ -130,11 +130,6 @@ public class LinearProbingHashTable<K, V> implements Dictionary<K, V> {
         return this.size;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
     protected void checkRange(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= this.size()) {
             throw new IndexOutOfBoundsException(String.format("ERROR: %s (index=%d is out of bounds [0, %d])", this.getClass().getName(), index, this.size() - 1));

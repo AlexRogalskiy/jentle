@@ -23,19 +23,19 @@
  */
 package com.wildbeeslabs.jentle.collections.queue.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 
 import java.util.Queue;
 
 /**
- * Custom priority {@link Queue} {@link Collection} interface declaration
+ * Custom priority {@link Queue} {@link CollectionLike} interface declaration
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IPriorityQueue<T> extends Collection<T>, Queue<T> {
+public interface IPriorityQueue<T> extends CollectionLike<T>, Queue<T> {
 
     int size();
 

@@ -48,16 +48,6 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
     }
 
     @Override
-    public int size() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.size() == 0;
-    }
-
-    @Override
     public void setRoot(final Optional<? extends T> value) {
     }
 
@@ -78,5 +68,10 @@ public class CPositionalTree<T> implements IPositionalTreeContainer<T, CPosition
 
     public <S extends CPositionalTreeNode<T>> S getSibling(final S position) {
         return null;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 }

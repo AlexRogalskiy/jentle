@@ -23,23 +23,27 @@
  */
 package com.wildbeeslabs.jentle.collections.array.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 
 import java.util.List;
 import java.util.RandomAccess;
 
 /**
- * Custom array {@link Collection} interface declaration
+ * Custom array {@link CollectionLike} interface declaration
  *
  * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface IArray<T> extends List<T>, Collection<T>, RandomAccess {
+public interface IArray<T> extends List<T>, CollectionLike<T>, RandomAccess {
 
     T set(final T item, int index) throws IndexOutOfBoundsException;
 
     @Override
     T get(int index) throws IndexOutOfBoundsException;
+
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 }

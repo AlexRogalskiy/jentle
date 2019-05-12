@@ -125,11 +125,6 @@ public class CMGraph<T> extends ACGraph<T, CGraphNode<T>> {
         return this.graph.length;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size());
-    }
-
     public IGraph<? extends T> toCLGraph() {
         final CLGraph<T> lGraph = new CLGraph<>(this.size());
         for (int i = 0; i < this.size(); i++) {

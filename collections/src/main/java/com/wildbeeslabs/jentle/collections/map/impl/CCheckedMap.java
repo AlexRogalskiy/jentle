@@ -24,28 +24,20 @@
 package com.wildbeeslabs.jentle.collections.map.impl;
 
 import com.wildbeeslabs.jentle.collections.map.iface.IMapCollection;
-
-import java.util.AbstractSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom checked map implementation
  *
+ * @param <K>
+ * @param <V>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <K>
- * @param <V>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

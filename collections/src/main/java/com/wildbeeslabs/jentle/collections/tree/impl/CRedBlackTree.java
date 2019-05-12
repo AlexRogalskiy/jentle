@@ -47,11 +47,6 @@ import java.util.Optional;
 @ToString(callSuper = true)
 public class CRedBlackTree<T> extends ACBaseTree<T, CRedBlackTree.CTreeNode<T>> {
 
-    @Override
-    public boolean isEmpty() {
-        return this.size() == 0;
-    }
-
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(callSuper = true)
@@ -249,98 +244,100 @@ public class CRedBlackTree<T> extends ACBaseTree<T, CRedBlackTree.CTreeNode<T>> 
         }
     }
 
-    protected void insertNodeInOrder(CRedBlackTree.CTreeNode<T> node) {
-        while (Objects.equals(node.getNode().getColor(), ACTreeNodeExtended3.Color.RED)) {
-            if (node.getNode() == node.getNode().getNode().getLeft()) {
-                final CRedBlackTree.CTreeNode<T> temp = node.getNode().getNode().getRight();
+    protected void insertNodeInOrder(final CRedBlackTree.CTreeNode<T> node) {
+        CRedBlackTree.CTreeNode<T> currentNode = node;
+        while (Objects.equals(currentNode.getNode().getColor(), ACTreeNodeExtended3.Color.RED)) {
+            if (currentNode.getNode() == currentNode.getNode().getNode().getLeft()) {
+                final CRedBlackTree.CTreeNode<T> temp = currentNode.getNode().getNode().getRight();
                 if (Objects.equals(temp.getColor(), ACTreeNodeExtended3.Color.RED)) {
-                    node.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
+                    currentNode.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
                     temp.setColor(ACTreeNodeExtended3.Color.BLACK);
-                    node.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
-                    node = node.getNode().getNode();
+                    currentNode.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
+                    currentNode = currentNode.getNode().getNode();
                 } else {
-                    if (node == node.getNode().getRight()) {
-                        node = node.getNode();
-                        this.rotateLeft(node);
+                    if (currentNode == currentNode.getNode().getRight()) {
+                        currentNode = currentNode.getNode();
+                        this.rotateLeft(currentNode);
                     }
-                    node.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
-                    node.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
-                    this.rotateRight(node.getNode().getNode());
+                    currentNode.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
+                    currentNode.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
+                    this.rotateRight(currentNode.getNode().getNode());
                 }
             } else {
-                final CRedBlackTree.CTreeNode<T> temp = node.getNode().getNode().getLeft();
+                final CRedBlackTree.CTreeNode<T> temp = currentNode.getNode().getNode().getLeft();
                 if (Objects.equals(temp.getColor(), ACTreeNodeExtended3.Color.RED)) {
-                    node.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
+                    currentNode.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
                     temp.setColor(ACTreeNodeExtended3.Color.BLACK);
-                    node.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
-                    node = node.getNode().getNode();
+                    currentNode.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
+                    currentNode = currentNode.getNode().getNode();
                 } else {
-                    if (node == node.getNode().getLeft()) {
-                        node = node.getNode();
-                        this.rotateRight(node);
+                    if (currentNode == currentNode.getNode().getLeft()) {
+                        currentNode = currentNode.getNode();
+                        this.rotateRight(currentNode);
                     }
-                    node.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
-                    node.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
-                    this.rotateLeft(node.getNode().getNode());
+                    currentNode.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
+                    currentNode.getNode().getNode().setColor(ACTreeNodeExtended3.Color.RED);
+                    this.rotateLeft(currentNode.getNode().getNode());
                 }
             }
         }
         root.setColor(ACTreeNodeExtended3.Color.BLACK);
     }
 
-    protected void deleteNodeInOrder(CRedBlackTree.CTreeNode<T> node) {
-        while (!this.isRoot(node) && Objects.equals(node.getColor(), ACTreeNodeExtended3.Color.BLACK)) {
-            if (node == node.getNode().getLeft()) {
-                CRedBlackTree.CTreeNode<T> temp = node.getNode().getRight();
+    protected void deleteNodeInOrder(final CRedBlackTree.CTreeNode<T> node) {
+        CRedBlackTree.CTreeNode<T> currentNode = node;
+        while (!this.isRoot(currentNode) && Objects.equals(currentNode.getColor(), ACTreeNodeExtended3.Color.BLACK)) {
+            if (currentNode == currentNode.getNode().getLeft()) {
+                CRedBlackTree.CTreeNode<T> temp = currentNode.getNode().getRight();
                 if (Objects.equals(temp.getColor(), ACTreeNodeExtended3.Color.RED)) {
                     temp.setColor(ACTreeNodeExtended3.Color.BLACK);
                     temp.getNode().setColor(ACTreeNodeExtended3.Color.RED);
-                    this.rotateLeft(node.getNode());
-                    temp = node.getNode().getRight();
+                    this.rotateLeft(currentNode.getNode());
+                    temp = currentNode.getNode().getRight();
                 }
                 if (Objects.equals(temp.getLeft().getColor(), ACTreeNodeExtended3.Color.BLACK) && Objects.equals(temp.getRight().getColor(), ACTreeNodeExtended3.Color.BLACK)) {
                     temp.setColor(ACTreeNodeExtended3.Color.RED);
-                    node = node.getNode();
+                    currentNode = currentNode.getNode();
                 } else {
                     if (Objects.equals(temp.getRight().getColor(), ACTreeNodeExtended3.Color.BLACK)) {
                         temp.getLeft().setColor(ACTreeNodeExtended3.Color.BLACK);
                         temp.setColor(ACTreeNodeExtended3.Color.RED);
                         this.rotateRight(temp);
-                        temp = node.getNode().getRight();
+                        temp = currentNode.getNode().getRight();
                     }
-                    temp.setColor(node.getNode().getColor());
-                    node.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
+                    temp.setColor(currentNode.getNode().getColor());
+                    currentNode.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
                     temp.getRight().setColor(ACTreeNodeExtended3.Color.BLACK);
-                    this.rotateLeft(node.getNode());
-                    node = this.getRoot();
+                    this.rotateLeft(currentNode.getNode());
+                    currentNode = this.getRoot();
                 }
             } else {
-                CRedBlackTree.CTreeNode<T> temp = node.getNode().getLeft();
+                CRedBlackTree.CTreeNode<T> temp = currentNode.getNode().getLeft();
                 if (Objects.equals(temp.getColor(), ACTreeNodeExtended3.Color.RED)) {
                     temp.setColor(ACTreeNodeExtended3.Color.BLACK);
-                    node.getNode().setColor(ACTreeNodeExtended3.Color.RED);
-                    this.rotateRight(node.getNode());
-                    temp = node.getNode().getLeft();
+                    currentNode.getNode().setColor(ACTreeNodeExtended3.Color.RED);
+                    this.rotateRight(currentNode.getNode());
+                    temp = currentNode.getNode().getLeft();
                 }
                 if (Objects.equals(temp.getRight().getColor(), ACTreeNodeExtended3.Color.BLACK) && Objects.equals(temp.getLeft().getColor(), ACTreeNodeExtended3.Color.BLACK)) {
                     temp.setColor(ACTreeNodeExtended3.Color.RED);
-                    node = node.getNode();
+                    currentNode = currentNode.getNode();
                 } else {
                     if (Objects.equals(temp.getLeft().getColor(), ACTreeNodeExtended3.Color.BLACK)) {
                         temp.getRight().setColor(ACTreeNodeExtended3.Color.BLACK);
                         temp.setColor(ACTreeNodeExtended3.Color.RED);
                         this.rotateLeft(temp);
-                        temp = node.getNode().getLeft();
+                        temp = currentNode.getNode().getLeft();
                     }
-                    temp.setColor(node.getNode().getColor());
-                    node.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
+                    temp.setColor(currentNode.getNode().getColor());
+                    currentNode.getNode().setColor(ACTreeNodeExtended3.Color.BLACK);
                     temp.getLeft().setColor(ACTreeNodeExtended3.Color.BLACK);
-                    this.rotateRight(node.getNode());
-                    node = this.getRoot();
+                    this.rotateRight(currentNode.getNode());
+                    currentNode = this.getRoot();
                 }
             }
         }
-        node.setColor(ACTreeNodeExtended3.Color.BLACK);
+        currentNode.setColor(ACTreeNodeExtended3.Color.BLACK);
     }
 
     public CRedBlackTree.CTreeNode<T> search(final T value) {
@@ -365,14 +362,15 @@ public class CRedBlackTree<T> extends ACBaseTree<T, CRedBlackTree.CTreeNode<T>> 
         return node;
     }
 
-    public CRedBlackTree.CTreeNode<T> max(CRedBlackTree.CTreeNode<T> node) {
-        if (Objects.isNull(node)) {
+    public CRedBlackTree.CTreeNode<T> max(final CRedBlackTree.CTreeNode<T> node) {
+        CRedBlackTree.CTreeNode<T> currentNode = node;
+        if (Objects.isNull(currentNode)) {
             return null;
         }
-        while (Objects.nonNull(node.getRight())) {
-            node = node.getRight();
+        while (Objects.nonNull(currentNode.getRight())) {
+            currentNode = currentNode.getRight();
         }
-        return node;
+        return currentNode;
     }
 
     protected void transplant(final CRedBlackTree.CTreeNode<T> node1, final CRedBlackTree.CTreeNode<T> node2) {

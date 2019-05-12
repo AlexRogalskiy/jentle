@@ -1,8 +1,8 @@
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.iface.iterator.PositionIterator;
-import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
+import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.tree.iface.tree.binary.position.IPositionalBinaryTreeContainer;
 import com.wildbeeslabs.jentle.collections.tree.node.CPositionalTreeNode;
 import lombok.EqualsAndHashCode;
@@ -46,11 +46,6 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     @Override
     public int size() {
         return this.size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return (0 == this.size);
     }
 
     @Override
@@ -129,7 +124,7 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> S getParent(S position) {
+    public <S extends CPositionalTreeNode<T>> S getParent(final S position) {
         return (S) position.getParent();
     }
 
@@ -139,18 +134,17 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isInternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isInternal(final S position) {
         return Objects.nonNull(position) && Objects.nonNull(position.getRight());
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isExternal(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isExternal(final S position) {
         return Objects.isNull(position.getLeft()) && Objects.isNull(position.getRight());
     }
 
     @Override
     public void setRoot(final Optional<? extends T> value) {
-
     }
 
     @Override
@@ -159,7 +153,7 @@ public class CLinkedBinaryTree<T> implements IPositionalBinaryTreeContainer<T, C
     }
 
     @Override
-    public <S extends CPositionalTreeNode<T>> boolean isRoot(S position) {
+    public <S extends CPositionalTreeNode<T>> boolean isRoot(final S position) {
         return Objects.equals(position, this.root());
     }
 }

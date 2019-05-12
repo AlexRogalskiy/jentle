@@ -23,20 +23,20 @@
  */
 package com.wildbeeslabs.jentle.collections.set.iface;
 
-import com.wildbeeslabs.jentle.collections.iface.collection.Collection;
+import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 
 import java.util.Set;
 
 /**
  *
- * Custom set {@link Collection} interface declaration
+ * Custom set {@link CollectionLike} interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
  * @param <T>
  */
-public interface ISet<T> extends Collection<T>, Set<T> {
+public interface ISet<T> extends CollectionLike<T>, Set<T> {
 
     /**
      * Checks if the current set contains the value
@@ -57,4 +57,8 @@ public interface ISet<T> extends Collection<T>, Set<T> {
     //public ISet<T> remove(final T item);
     //public int size();
     //public Iterator<? extends T> iterator();
+
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 }

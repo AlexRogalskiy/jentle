@@ -30,7 +30,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.AbstractMap;
-import java.util.Set;
 
 /**
  * Custom abstract map implementation
@@ -46,11 +45,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class ACMap<K, V> extends AbstractMap<K, V> implements IMapCollection<K, V> {//IMapLike<K, V>
-
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     protected <T> T convert(final Object obj, final Class<? extends T> clazz) {
         try {

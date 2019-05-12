@@ -24,27 +24,21 @@
 package com.wildbeeslabs.jentle.collections.map.impl;
 
 import com.wildbeeslabs.jentle.collections.list.node.ACListNodeExtended;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 /**
- *
  * Custom hash map list cache implementation
  *
+ * @param <K>
+ * @param <V>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <K>
- * @param <V>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -187,7 +181,7 @@ public class CCache<K, V> extends ACBaseMap<K, V> {
 
     @Override
     public boolean isEmpty() {
-        return this.head == null;//return (0 == this.size());
+        return Objects.isNull(this.head);//return (0 == this.size());
     }
 
     @Override
@@ -197,6 +191,6 @@ public class CCache<K, V> extends ACBaseMap<K, V> {
 
     @Override
     public Iterator<Map.Entry<K, V>> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }

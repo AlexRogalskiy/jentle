@@ -24,23 +24,22 @@
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- *
  * Custom binary tree implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -92,10 +91,5 @@ public class CBinaryTree<T> extends ACBinaryTree<T, CTree.CTreeNode<T>> {
             return new CTree.CTreeNode<>(value.get());
         }
         return new CTree.CTreeNode<>();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.size() == 0;
     }
 }

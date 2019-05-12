@@ -78,9 +78,4 @@ public class CTreeExtended<T> extends ACTreeExtended<T, CExtendedTreeNode<T>> {
         }
         return new CExtendedTreeNode<>();
     }
-
-    @Override
-    public boolean isEmpty() {
-        return this.size() == 0;
-    }
 }

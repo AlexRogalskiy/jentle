@@ -37,7 +37,26 @@ import java.util.Map;
  */
 public interface IMapCollection<K, V> extends IMapLike<K, V>, Map<K, V> {
 
+    /**
+     * Returns keys {@link Iterator}
+     *
+     * @return keys {@link Iterator}
+     */
     Iterator<? extends K> keysIterator();
 
+    /**
+     * Returns values {@link Iterator}
+     *
+     * @return values {@link Iterator}
+     */
     Iterator<? extends V> valuesIterator();
+
+    /**
+     * Checks if the current queue is empty
+     *
+     * @return true - if the current queue is empty, false - otherwise
+     */
+    default boolean isEmpty() {
+        return (0 == this.size());
+    }
 }

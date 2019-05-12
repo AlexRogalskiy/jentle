@@ -23,27 +23,20 @@
  */
 package com.wildbeeslabs.jentle.collections.map.impl;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom hash map set implementation
  *
+ * @param <K>
+ * @param <V>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <K>
- * @param <V>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -125,6 +118,6 @@ public class CHashMapSet<K, V> extends ACBaseExtended<K, V, Set<V>> {
 
     @Override
     public Iterator<Map.Entry<K, V>> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }

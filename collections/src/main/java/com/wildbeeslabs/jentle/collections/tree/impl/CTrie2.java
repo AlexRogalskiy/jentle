@@ -25,20 +25,13 @@ package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.tree.node.ACTrieNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom trie2 implementation
  *
  * @author Alex
@@ -115,7 +108,7 @@ public class CTrie2 extends ACTrie<Integer, CTrie2.CTrieNode<Integer>> {
         }
     }
 
-    protected void insert(int[] array, int arrayIndex, int index, final CTrie2.CTrieNode<Integer> node) {
+    protected void insert(final int[] array, final int arrayIndex, final int index, final CTrie2.CTrieNode<Integer> node) {
         node.indexes.add(index);
         if (arrayIndex < array.length) {
             node.setData(array[arrayIndex]);
@@ -140,7 +133,7 @@ public class CTrie2 extends ACTrie<Integer, CTrie2.CTrieNode<Integer>> {
         return this.search(value.codePoints().toArray(), 0, node);
     }
 
-    protected List<Integer> search(int[] array, int arrayIndex, final CTrie2.CTrieNode<Integer> node) {
+    protected List<Integer> search(final int[] array, int arrayIndex, final CTrie2.CTrieNode<Integer> node) {
         if (arrayIndex == array.length) {
             return node.getIndexes();
         }
@@ -152,7 +145,7 @@ public class CTrie2 extends ACTrie<Integer, CTrie2.CTrieNode<Integer>> {
     }
 
     @Override
-    protected boolean contains(final CharSequence value, final CTrie2.CTrieNode<Integer> node,  boolean isExact) {
+    protected boolean contains(final CharSequence value, final CTrie2.CTrieNode<Integer> node, boolean isExact) {
         CTrie2.CTrieNode<Integer> current = node;
         for (final Integer charCode : value.codePoints().toArray()) {
             current = current.getChild(charCode);
