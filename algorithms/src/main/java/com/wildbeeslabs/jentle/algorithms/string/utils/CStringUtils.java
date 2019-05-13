@@ -23,13 +23,17 @@
  */
 package com.wildbeeslabs.jentle.algorithms.string.utils;
 
+import com.google.common.base.Joiner;
+import com.wildbeeslabs.jentle.algorithms.utils.CDigestUtils;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
 import com.wildbeeslabs.jentle.collections.queue.iface.IStack;
 import com.wildbeeslabs.jentle.collections.stack.CBoundStack;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -42,6 +46,9 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -77,6 +84,23 @@ public class CStringUtils {
      * Default regular expression (only alpha-numeric characters)
      */
     public static final String DEFAULT_ALPHANUMERIC_PATTERN = "[^a-zA-Z0-9]";
+    /**
+     * Default numeric pattern format
+     */
+    public static final String DEFAULT_FORMAT_PATTERN = "#.##";
+    /**
+     * Default locale delimiter
+     */
+    public static final String DEFAULT_LOCALE_DELIMITER = "_";
+
+    /**
+     * Default decimal format instance {@link DecimalFormat}
+     */
+    public static final ThreadLocal<DecimalFormat> DEFAULT_DECIMAL_FORMATTER = ThreadLocal.withInitial(() -> {
+        final DecimalFormatSymbols decimalSymbols = DecimalFormatSymbols.getInstance();
+        decimalSymbols.setDecimalSeparator('.');
+        return new DecimalFormat(DEFAULT_FORMAT_PATTERN, decimalSymbols);
+    });
 
     /**
      * Check whether string consists of unique set of characters
@@ -828,5 +852,65 @@ public class CStringUtils {
         leastSigBits |= Long.decode(components[4]).longValue();
 
         return new UUID(mostSigBits, leastSigBits);
+    }
+
+    public static String getBinaryToken(final String path, final String secret, final Long expire) throws NoSuchAlgorithmException {
+        final byte[] messageDigest = CDigestUtils.md5(getString(path, secret, expire.toString()));
+        return Base64.getEncoder().encodeToString(messageDigest);
+    }
+
+    /**
+     * Returns string formatted decimal number by default formatter instance {@link DecimalFormat}
+     *
+     * @param num - initial input decimal number
+     * @return string formatted decimal number
+     */
+    public static String format(double num) {
+        return DEFAULT_DECIMAL_FORMATTER.get().format(num);
+    }
+
+    public static String getString(final String... values) {
+        return getStringByDelimiter(org.apache.commons.lang3.StringUtils.EMPTY, values);
+    }
+
+    public static String getStringByDelimiter(final String delimiter, final String... values) {
+        return org.apache.commons.lang3.StringUtils.join(values, delimiter);
+    }
+
+    /**
+     * Returns {@link String} by input {@link Locale} instance
+     *
+     * @param locale - input {@link Locale} instance
+     * @return locale string representation
+     */
+    public static String localeToString(@NonNull final Locale locale) {
+        return Joiner.on(DEFAULT_LOCALE_DELIMITER).join(locale.getLanguage(), locale.getCountry());
+    }
+
+    /**
+     * Returns {@link Locale} by input locale string representation
+     *
+     * @param locale - input locale string representation
+     * @return {@link Locale}
+     */
+    public static Locale stringToLocale(@NonNull final String locale) {
+        return LocaleUtils.toLocale(locale);
+    }
+
+    /**
+     * Returns {@link List} collection of tokens {@link String} by delimiter {@link String}
+     *
+     * @param str   - input string to tokenize
+     * @param delim - input token delimiter
+     * @return {@link List} collection of tokens {@link String}
+     */
+    public List<String> getTokensWithCollection(@NonNull final String str, @NonNull final String delim) {
+        return Collections.list(new StringTokenizer(str, delim)).stream()
+            .map(token -> (String) token)
+            .collect(Collectors.toList());
+    }
+
+    public static <K, V> String convertToStr(@NonNull final Map<K, V> map) {
+        return Joiner.on(",").withKeyValueSeparator("=").join(map);
     }
 }
