@@ -21,11 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.predicate;
+package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -39,12 +41,39 @@ import java.util.function.Predicate;
 @UtilityClass
 public class CPredicateUtils {
 
+    /**
+     * Default {@link Predicate} operators
+     */
     public final static Predicate<Object> randBoolean = predicate -> new Random().nextBoolean();
+    public static final Predicate<CharSequence> notEmpty = sequence -> StringUtils.isNotEmpty(sequence);
+    public static final Predicate<CharSequence> notBlank = sequence -> StringUtils.isNotBlank(sequence);
 
-    public static final Predicate<String> notEmpty = (String it) -> StringUtils.isNotEmpty(it);
-    public static final Predicate<String> notBlank = (String it) -> StringUtils.isNotBlank(it);
-
+    /**
+     * Negates a {@link Predicate}.  Exists primarily to enable negation of method references that are {@link Predicate}s.
+     *
+     * @param t   the predicate to negate
+     * @param <T> the type of element being tested
+     * @return a negated predicate
+     * @throws NullPointerException if {@code t} is {@code null}
+     * @see Predicate#negate()
+     */
     public static <T> Predicate<T> not(final Predicate<T> t) {
+        Objects.requireNonNull(t, "t must not be null");
         return t.negate();
+    }
+
+    /**
+     * Logical OR a collection of {@link Predicate}s.  Exists primarily to enable the logical OR of method references that are {@link Predicate}s.
+     *
+     * @param ts  the predicates to logical OR
+     * @param <T> the type of element being tested
+     * @return a local ORd collection of predicates
+     * @throws NullPointerException if {@code ts} is {@code null}
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static <T> Predicate<T> or(Predicate<T>... ts) {
+        Objects.requireNonNull(ts, "ts must not be null");
+        return Arrays.stream(ts).reduce(Predicate::or).orElseThrow(() -> new IllegalStateException("Unable to combine predicates together via logical OR"));
     }
 }
