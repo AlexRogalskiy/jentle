@@ -10,6 +10,7 @@ import java.util.Set;
  * @since 2017-12-12
  */
 public class Text {
+
     public enum Style {
         BOLD,
         ITALIC,

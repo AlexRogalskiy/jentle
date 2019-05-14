@@ -23,28 +23,15 @@
  */
 package com.wildbeeslabs.jentle.algorithms.random;
 
+import lombok.NonNull;
+
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.DoubleFunction;
-import java.util.function.DoubleSupplier;
-import java.util.function.DoubleUnaryOperator;
-import java.util.function.IntSupplier;
-import java.util.function.IntUnaryOperator;
-import java.util.function.LongUnaryOperator;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
-
-import lombok.NonNull;
+import java.util.function.*;
+import java.util.stream.*;
 
 /**
- *
  * Custom random utilities implementations
  *
  * @author Alex
@@ -195,5 +182,21 @@ public class CRandom {
 
     public static int generate(int min, int max) {
         return new Random().ints(min, (max + 1)).findFirst().getAsInt();
+    }
+
+    public static int[] generateIntArray(int bound, long maxSize) {
+        assert bound > 0 : "Bound should be greater than zero";
+        assert maxSize > 0 : "Max size should be greater than zero";
+        return IntStream.generate(() -> new Random().nextInt(bound)).limit(maxSize).toArray();
+    }
+
+    public static long[] generateLongArray(long maxSize) {
+        assert maxSize > 0 : "Max size should be greater than zero";
+        return LongStream.generate(() -> new Random().nextLong()).limit(maxSize).toArray();
+    }
+
+    public static double[] generateDoubleArray(long maxSize) {
+        assert maxSize > 0 : "Max size should be greater than zero";
+        return DoubleStream.generate(() -> new Random().nextDouble()).limit(maxSize).toArray();
     }
 }

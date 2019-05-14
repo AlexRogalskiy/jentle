@@ -1,6 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @since 2017-12-12
  */
 @Getter
+@RequiredArgsConstructor
 public enum Operation {
 
     PLUS("+") {
@@ -42,16 +44,12 @@ public enum Operation {
 
     private final String symbol;
 
-    Operation(final String symbol) {
-        this.symbol = symbol;
-    }
-
     @Override
     public String toString() {
         return this.symbol;
     }
 
-    abstract double apply(double x, double y);
+    public abstract double apply(double x, double y);
 
     private static final Map<String, Operation> stringToEnum = new HashMap<>();
 

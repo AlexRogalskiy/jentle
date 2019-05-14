@@ -28,13 +28,12 @@ import com.wildbeeslabs.jentle.collections.iface.collection.CollectionLike;
 import java.util.Set;
 
 /**
- *
  * Custom set {@link CollectionLike} interface declaration
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 public interface ISet<T> extends CollectionLike<T>, Set<T> {
 
@@ -44,7 +43,7 @@ public interface ISet<T> extends CollectionLike<T>, Set<T> {
      * @param item - the value to check
      * @return true - if the current set contains value, false - otherwise
      */
-    public boolean has(final T item);
+    boolean has(final T item);
 
     /**
      * Removes the value from the current set
@@ -52,12 +51,13 @@ public interface ISet<T> extends CollectionLike<T>, Set<T> {
      * @param item - value to be removed
      * @return the current set without remove value
      */
-    public ISet<T> disjunct(final T item);
+    ISet<T> disjunct(final T item);
 
-    //public ISet<T> remove(final T item);
-    //public int size();
-    //public Iterator<? extends T> iterator();
-
+    /**
+     * Checks if the current set is empty
+     *
+     * @return true - if the current queue is empty, false - otherwise
+     */
     default boolean isEmpty() {
         return (0 == this.size());
     }

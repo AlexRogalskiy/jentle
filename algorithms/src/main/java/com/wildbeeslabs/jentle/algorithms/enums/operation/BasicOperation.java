@@ -1,5 +1,10 @@
 package com.wildbeeslabs.jentle.algorithms.enums.operation;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum BasicOperation implements Operation {
     PLUS("+") {
         @Override
@@ -26,10 +31,6 @@ public enum BasicOperation implements Operation {
         }
     };
     private final String symbol;
-
-    BasicOperation(final String symbol) {
-        this.symbol = symbol;
-    }
 
     @Override
     public String toString() {

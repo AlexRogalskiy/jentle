@@ -1,9 +1,14 @@
 package com.wildbeeslabs.jentle.algorithms.enums.operation;
 
-import java.util.Arrays;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Collection;
 
+@Getter
+@RequiredArgsConstructor
 public enum ExtendedOperation implements Operation {
+
     EXP("^") {
         @Override
         public double apply(double x, double y) {
@@ -19,21 +24,17 @@ public enum ExtendedOperation implements Operation {
 
     private final String symbol;
 
-    ExtendedOperation(final String symbol) {
-        this.symbol = symbol;
-    }
-
     @Override
     public String toString() {
         return this.symbol;
     }
 
-    public static void main(String[] args) {
-        double x = Double.parseDouble(args[0]);
-        double y = Double.parseDouble(args[1]);
-        test(ExtendedOperation.class, x, y);
-        test2(Arrays.asList(ExtendedOperation.values()), x, y);
-    }
+//    public static void main(final String[] args) {
+//        double x = Double.parseDouble(args[0]);
+//        double y = Double.parseDouble(args[1]);
+//        test(ExtendedOperation.class, x, y);
+//        test2(Arrays.asList(ExtendedOperation.values()), x, y);
+//    }
 
     private static <T extends Enum<T> & Operation> void test(final Class<T> opSet, double x, double y) {
         for (final Operation op : opSet.getEnumConstants())

@@ -1,5 +1,8 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Helper enumeration class to process Cards
  *
@@ -7,6 +10,8 @@ package com.wildbeeslabs.jentle.algorithms.enums;
  * @version 1.0
  * @since 2017-12-12
  */
+@Getter
+@RequiredArgsConstructor
 public class Card {
 
     public enum Suit {CLUB, DIAMOND, HEART, SPADE}
@@ -16,11 +21,6 @@ public class Card {
         NINE, TEN, JACK, QUEEN, KING
     }
 
-    final Suit suit;
-    final Rank rank;
-
-    public Card(final Suit suit, final Rank rank) {
-        this.suit = suit;
-        this.rank = rank;
-    }
+    private final Suit suit;
+    private final Rank rank;
 }

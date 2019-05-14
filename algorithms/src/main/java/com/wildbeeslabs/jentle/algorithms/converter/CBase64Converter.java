@@ -107,7 +107,7 @@ public class CBase64Converter {
      *                      lines.
      * @return A String containing the Base64 encoded data, broken into lines.
      */
-    public static String encodeLines(byte[] in, int iOff, int iLen, int lineLen, String lineSeparator) {
+    public static String encodeLines(final byte[] in, int iOff, int iLen, int lineLen, String lineSeparator) {
         int blockLen = (lineLen * 3) / 4;
         if (blockLen <= 0) {
             throw new IllegalArgumentException();
@@ -132,7 +132,7 @@ public class CBase64Converter {
      * @param in An array containing the data bytes to be encoded.
      * @return A character array containing the Base64 encoded data.
      */
-    public static char[] encode(byte[] in) {
+    public static char[] encode(final byte[] in) {
         return encode(in, 0, in.length);
     }
 
@@ -144,7 +144,7 @@ public class CBase64Converter {
      * @param iLen Number of bytes to process in <code>in</code>.
      * @return A character array containing the Base64 encoded data.
      */
-    public static char[] encode(byte[] in, int iLen) {
+    public static char[] encode(final byte[] in, int iLen) {
         return encode(in, 0, iLen);
     }
 
@@ -158,7 +158,7 @@ public class CBase64Converter {
      *             <code>iOff</code>.
      * @return A character array containing the Base64 encoded data.
      */
-    public static char[] encode(byte[] in, int iOff, int iLen) {
+    public static char[] encode(final byte[] in, int iOff, int iLen) {
         int oDataLen = (iLen * 4 + 2) / 3;       // output length without padding
         int oLen = ((iLen + 2) / 3) * 4;         // output length including padding
         char[] out = new char[oLen];
@@ -192,7 +192,7 @@ public class CBase64Converter {
      * @throws IllegalArgumentException If the input is not valid Base64 encoded
      *                                  data.
      */
-    public static String decodeString(String s) {
+    public static String decodeString(final String s) {
         return new String(decode(s));
     }
 
@@ -207,7 +207,7 @@ public class CBase64Converter {
      * @throws IllegalArgumentException If the input is not valid Base64 encoded
      *                                  data.
      */
-    public static byte[] decodeLines(String s) {
+    public static byte[] decodeLines(final String s) {
         char[] buf = new char[s.length()];
         int p = 0;
         for (int ip = 0; ip < s.length(); ip++) {
@@ -228,7 +228,7 @@ public class CBase64Converter {
      * @throws IllegalArgumentException If the input is not valid Base64 encoded
      *                                  data.
      */
-    public static byte[] decode(String s) {
+    public static byte[] decode(final String s) {
         return decode(s.toCharArray());
     }
 
@@ -241,7 +241,7 @@ public class CBase64Converter {
      * @throws IllegalArgumentException If the input is not valid Base64 encoded
      *                                  data.
      */
-    public static byte[] decode(char[] in) {
+    public static byte[] decode(final char[] in) {
         return decode(in, 0, in.length);
     }
 
@@ -258,7 +258,7 @@ public class CBase64Converter {
      * @throws IllegalArgumentException If the input is not valid Base64 encoded
      *                                  data.
      */
-    public static byte[] decode(char[] in, int iOff, int iLen) {
+    public static byte[] decode(final char[] in, int iOff, int iLen) {
         if (iLen % 4 != 0) {
             throw new IllegalArgumentException("Length of Base64 encoded input string is not a multiple of 4.");
         }

@@ -1,5 +1,8 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Helper enumeration class to process Plants
  *
@@ -7,16 +10,13 @@ package com.wildbeeslabs.jentle.algorithms.enums;
  * @version 1.0
  * @since 2017-12-12
  */
+@Getter
+@RequiredArgsConstructor
 public class Plant {
     public enum LifeCycle {ANNUAL, PERENNIAL, BIENNIAL}
 
     private final String name;
     private final LifeCycle lifeCycle;
-
-    Plant(final String name, final LifeCycle lifeCycle) {
-        this.name = name;
-        this.lifeCycle = lifeCycle;
-    }
 
     @Override
     public String toString() {
