@@ -3,8 +3,8 @@ package com.wildbeeslabs.jentle.collections.queue.impl;
 import com.wildbeeslabs.jentle.collections.exception.EmptyContainerException;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.list.impl.CPositionalList;
-import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
 import com.wildbeeslabs.jentle.collections.model.CKeyValueNode;
+import com.wildbeeslabs.jentle.collections.queue.iface.IPriorityQueue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -89,7 +89,7 @@ public class CPriorityQueue<K, V> extends AbstractQueue<CKeyValueNode<K, V>> imp
     }
 
     @Override
-    public boolean offer(final CKeyValueNode<K, V> kvcKeyValueNode) {
+    public boolean offer(final CKeyValueNode<K, V> node) {
         return false;
     }
 

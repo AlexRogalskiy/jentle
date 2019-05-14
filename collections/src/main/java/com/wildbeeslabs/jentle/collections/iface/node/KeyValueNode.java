@@ -3,8 +3,8 @@ package com.wildbeeslabs.jentle.collections.iface.node;
 /**
  * Custom key-value {@link Node} interface declaration
  *
- * @param <T>
- * @param <R>
+ * @param <K> type of node key
+ * @param <V> type of node value
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07

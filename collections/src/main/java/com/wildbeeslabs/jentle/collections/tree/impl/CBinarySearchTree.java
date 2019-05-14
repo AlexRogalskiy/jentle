@@ -147,6 +147,6 @@ public class CBinarySearchTree<K, V, T extends CKeyValueNode<K, V>> implements D
     }
 
     protected T createNewNode(final K key, final V value) {
-        return (T) new CKeyValueNode<>(key, value);
+        return (T) CKeyValueNode.of(key, value);
     }
 }

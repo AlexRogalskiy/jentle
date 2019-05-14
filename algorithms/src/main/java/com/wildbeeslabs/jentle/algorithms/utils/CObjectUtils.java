@@ -50,4 +50,9 @@ public class CObjectUtils {
     public static <T> List<T> wrapWithList(final Supplier<T> supplier) {
         return Lists.newArrayList(supplier.get());
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(final Object object) {
+        return (T) object;
+    }
 }

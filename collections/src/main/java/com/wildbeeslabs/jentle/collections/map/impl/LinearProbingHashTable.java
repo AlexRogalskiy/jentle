@@ -27,7 +27,7 @@ import java.util.Objects;
 @ToString
 public class LinearProbingHashTable<K, V> implements Dictionary<K, V> {
 
-    private final CKeyValueNode<K, V> AVAILABLE = new CKeyValueNode(null, null);
+    private final CKeyValueNode<K, V> AVAILABLE = CKeyValueNode.of(null, null);
     private int size = 0;
     private int capacity;
     private CKeyValueNode<K, V>[] array;
@@ -106,7 +106,7 @@ public class LinearProbingHashTable<K, V> implements Dictionary<K, V> {
         int j = i;
         do {
             if (empty(i) | available(i)) {
-                this.array[i] = new CKeyValueNode(key, value);
+                this.array[i] = CKeyValueNode.of(key, value);
                 this.size++;
                 return;
             }
