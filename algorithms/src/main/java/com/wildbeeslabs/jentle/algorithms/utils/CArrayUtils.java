@@ -30,6 +30,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.util.Pair;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -1313,5 +1314,25 @@ public class CArrayUtils {
                 return a.length;
             }
         };
+    }
+
+    /**
+     * Determine whether the given object is an array:
+     * either an Object array or a primitive array.
+     *
+     * @param obj the object to check
+     */
+    public static boolean isArray(final Object obj) {
+        return (Objects.nonNull(obj) && obj.getClass().isArray());
+    }
+
+    /**
+     * Determine whether the given array is empty:
+     * i.e. {@code null} or of zero length.
+     *
+     * @param array the array to check
+     */
+    public static boolean isEmpty(final Object array) {
+        return (Objects.isNull(array) || Array.getLength(array) == 0);
     }
 }
