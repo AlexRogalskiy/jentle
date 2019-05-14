@@ -3,11 +3,6 @@ package com.wildbeeslabs.jentle.collections.model;
 import com.wildbeeslabs.jentle.collections.iface.node.KeyValueNode;
 import lombok.*;
 
-import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * Default {@link KeyValueNode} implementation
  *
@@ -41,14 +36,5 @@ public class CKeyValueNode<K, V> implements KeyValueNode<K, V> {
      */
     public static <K, V> CKeyValueNode<K, V> of(final K first, final V second) {
         return new CKeyValueNode<>(first, second);
-    }
-
-    /**
-     * A collector to create a {@link Map} from a {@link Stream} of {@link CKeyValueNode}s.
-     *
-     * @return
-     */
-    public static <S, T> Collector<CKeyValueNode<S, T>, ?, Map<S, T>> toMap() {
-        return Collectors.toMap(CKeyValueNode::getKey, CKeyValueNode::getValue);
     }
 }
