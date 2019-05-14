@@ -163,7 +163,7 @@ public class COptionalUtils {
      * @param left     - initial input left {@link Optional} value
      * @param right    - initial input right {@link Optional} value
      * @param function - initial input {@link BiFunction} operator
-     * @return {@link Optional} of both items
+     * @return {@link Optional} of {@link BiFunction} result {@code R}
      */
     public static <T, S, R> Optional<R> mapIfAllPresent(final Optional<T> left, final Optional<S> right, final BiFunction<T, S, R> function) {
         Objects.requireNonNull(left, "Optional left must not be null!");
