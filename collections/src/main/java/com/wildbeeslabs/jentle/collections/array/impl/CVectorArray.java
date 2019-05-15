@@ -2,11 +2,14 @@ package com.wildbeeslabs.jentle.collections.array.impl;
 
 import com.wildbeeslabs.jentle.collections.array.iface.IMutableVector;
 import com.wildbeeslabs.jentle.collections.array.iface.IVector;
+import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Enumeration;
 
 /**
  * Custom {@link IVector} implementation
@@ -82,5 +85,36 @@ public abstract class CVectorArray<T> extends ACArray<T> implements IMutableVect
         }
         this.array[rank] = value;
         this.size++;
+    }
+
+    public Enumeration<T> enumerator() {
+        return new CVectorArray.VectorEnumeration<>(this);
+    }
+
+    public static class VectorEnumeration<T> implements Enumeration<T> {
+
+        private final CVectorArray<T> vector;
+        private int i;
+
+        public VectorEnumeration(final CVectorArray<T> vector) {
+            this.vector = vector;
+            this.i = 0;
+        }
+
+        public boolean hasMoreElements() {
+            synchronized (this.vector) {
+                return this.i <= this.vector.size();
+            }
+        }
+
+        public T nextElement() {
+            synchronized (this.vector) {
+                if (this.i <= this.vector.size()) {
+                    return this.vector.elemAtRank(this.i++);
+                } else {
+                    throw new BoundaryViolationException(String.format("ERROR: vector index: {%s} is out of bounds", this.i));
+                }
+            }
+        }
     }
 }

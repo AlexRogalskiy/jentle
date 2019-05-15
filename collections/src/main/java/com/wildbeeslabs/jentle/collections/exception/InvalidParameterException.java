@@ -16,17 +16,17 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class InvalidParamaterException extends RuntimeException {
+public class InvalidParameterException extends RuntimeException {
 
-    public InvalidParamaterException(final String message) {
+    public InvalidParameterException(final String message) {
         super(message);
     }
 
-    public InvalidParamaterException(final Throwable cause) {
+    public InvalidParameterException(final Throwable cause) {
         super(cause);
     }
 
-    public InvalidParamaterException(final String message, final Throwable cause) {
+    public InvalidParameterException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
