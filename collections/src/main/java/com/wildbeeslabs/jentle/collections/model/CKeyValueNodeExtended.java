@@ -28,4 +28,18 @@ public class CKeyValueNodeExtended<K, V> extends CKeyValueNode<K, V> {
         super(key, value);
         this.height = height;
     }
+
+    /**
+     * Returns {@link CKeyValueNodeExtended} by input parameters
+     *
+     * @param <K>    type of node key
+     * @param <V>    type of node value
+     * @param key    - initial input node key {@code K}
+     * @param value  - initial input node value {@code V}
+     * @param height - initial input height value
+     * @return {@link CKeyValueNodeExtended}
+     */
+    public static <K, V> CKeyValueNodeExtended<K, V> of(final K key, final V value, final int height) {
+        return new CKeyValueNodeExtended<>(key, value, height);
+    }
 }

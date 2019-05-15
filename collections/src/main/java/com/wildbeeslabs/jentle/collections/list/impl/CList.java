@@ -23,28 +23,23 @@
  */
 package com.wildbeeslabs.jentle.collections.list.impl;
 
+import com.wildbeeslabs.jentle.collections.exception.EmptyListException;
 import com.wildbeeslabs.jentle.collections.list.iface.IList;
 import com.wildbeeslabs.jentle.collections.list.node.ACListNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.Optional;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom list implementation
  *
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -92,7 +87,7 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T, 
 
     protected static class CListIterator<T> implements Iterator<T> {
 
-        private CList.CListNode<? extends T> cursor = null;
+        private CList.CListNode<? extends T> cursor;
 
         public CListIterator(final CList<? extends T> source) {
             this.cursor = source.first;
@@ -116,6 +111,32 @@ public class CList<T> extends ACList<T, CList.CListNode<T>> implements IList<T, 
         @Override
         public void remove() {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+
+    public Enumeration<T> enumerator() {
+        return new CList.ListEnumeration<>(this);
+    }
+
+    protected static class ListEnumeration<T> implements Enumeration<T> {
+
+        private CList.CListNode<T> cursor;
+
+        public ListEnumeration(final CList<T> source) {
+            this.cursor = source.getRoot();
+        }
+
+        public boolean hasMoreElements() {
+            return Objects.nonNull(this.cursor);
+        }
+
+        public T nextElement() {
+            if (!this.hasMoreElements()) {
+                throw new EmptyListException("ERROR: list is empty");
+            }
+            final CList.CListNode<T> var1 = this.cursor;
+            this.cursor = this.cursor.getNext();
+            return var1.getData();
         }
     }
 

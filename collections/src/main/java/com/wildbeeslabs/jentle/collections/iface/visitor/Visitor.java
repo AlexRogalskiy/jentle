@@ -26,7 +26,7 @@ package com.wildbeeslabs.jentle.collections.iface.visitor;
 /**
  * Custom visitor interface declaration
  *
- * @param <T>
+ * @param <T> type of visit element
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
@@ -36,7 +36,7 @@ public interface Visitor<T> {
     /**
      * Processes each item of a collection
      *
-     * @param item - collection item
+     * @param item - initial input collection item {@code T}
      */
     void visit(final T item);
 }

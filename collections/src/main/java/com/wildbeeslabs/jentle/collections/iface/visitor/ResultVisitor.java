@@ -26,8 +26,8 @@ package com.wildbeeslabs.jentle.collections.iface.visitor;
 /**
  * Custom result {@link Visitor} interface declaration
  *
- * @param <T>
- * @param <E>
+ * @param <T> type of visit element
+ * @param <E> type of visit result
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07

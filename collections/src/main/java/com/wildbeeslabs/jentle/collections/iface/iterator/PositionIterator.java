@@ -2,14 +2,13 @@ package com.wildbeeslabs.jentle.collections.iface.iterator;
 
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Custom position {@link Iterator} interface declaration
+ * Position iterator interface declaration
  *
- * @param <T>
+ * @param <T> type of element
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07

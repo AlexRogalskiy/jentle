@@ -1,7 +1,6 @@
 package com.wildbeeslabs.jentle.collections.array.impl;
 
 import com.wildbeeslabs.jentle.collections.array.iface.IMutableVector;
-import com.wildbeeslabs.jentle.collections.array.iface.IVector;
 import com.wildbeeslabs.jentle.collections.exception.BoundaryViolationException;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
 import lombok.Data;
@@ -12,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Enumeration;
 
 /**
- * Custom {@link IVector} implementation
+ * Custom {@link ACArray} implementation
  *
  * @param <T>
  * @author Alex
@@ -46,13 +45,13 @@ public abstract class CVectorArray<T> extends ACArray<T> implements IMutableVect
 
     @Override
     public T elemAtRank(int rank) {
-        checkRange(rank);
+        this.checkRange(rank);
         return this.array[rank];
     }
 
     @Override
     public T replaceAtRank(int rank, final T value) {
-        checkRange(rank);
+        this.checkRange(rank);
         final T temp = this.array[rank];
         this.array[rank] = value;
         return temp;
@@ -60,7 +59,7 @@ public abstract class CVectorArray<T> extends ACArray<T> implements IMutableVect
 
     @Override
     public T removeAtRank(int rank) {
-        checkRange(rank);
+        this.checkRange(rank);
         final T temp = this.array[rank];
         for (int i = rank; i < this.size() - 1; i++) {
             this.array[i] = this.array[i + 1];
@@ -71,7 +70,7 @@ public abstract class CVectorArray<T> extends ACArray<T> implements IMutableVect
 
     @Override
     public void insertAtRank(int rank, final T value) {
-        checkRange(rank);
+        this.checkRange(rank);
         if (this.size() == this.capacity) {
             this.capacity *= 2;
             final T[] temp = CUtils.newArray2(this.clazz, this.capacity);
@@ -91,7 +90,7 @@ public abstract class CVectorArray<T> extends ACArray<T> implements IMutableVect
         return new CVectorArray.VectorEnumeration<>(this);
     }
 
-    public static class VectorEnumeration<T> implements Enumeration<T> {
+    protected static class VectorEnumeration<T> implements Enumeration<T> {
 
         private final CVectorArray<T> vector;
         private int i;
@@ -111,9 +110,8 @@ public abstract class CVectorArray<T> extends ACArray<T> implements IMutableVect
             synchronized (this.vector) {
                 if (this.i <= this.vector.size()) {
                     return this.vector.elemAtRank(this.i++);
-                } else {
-                    throw new BoundaryViolationException(String.format("ERROR: vector index: {%s} is out of bounds", this.i));
                 }
+                throw new BoundaryViolationException(String.format("ERROR: vector index: {%s} is out of bounds", this.i));
             }
         }
     }

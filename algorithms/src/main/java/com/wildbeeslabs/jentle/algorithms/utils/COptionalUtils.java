@@ -64,6 +64,7 @@ public class COptionalUtils {
     public static <S, T> Optional<T> firstNonEmpty(final Iterable<S> source, final Function<S, Optional<T>> function) {
         Objects.requireNonNull(source, "Source must not be null!");
         Objects.requireNonNull(function, "Function must not be null!");
+
         return Streamable.of(source).stream()
             .map(function::apply)
             .filter(Optional::isPresent)
@@ -82,6 +83,7 @@ public class COptionalUtils {
     public static <S, T> T firstNonEmpty(final Iterable<S> source, final Function<S, T> function, final T defaultValue) {
         Objects.requireNonNull(source, "Source must not be null!");
         Objects.requireNonNull(function, "Function must not be null!");
+
         return Streamable.of(source).stream()
             .map(function::apply)
             .filter(it -> !it.equals(defaultValue))
@@ -109,6 +111,7 @@ public class COptionalUtils {
      */
     public static <T> Optional<T> firstNonEmpty(final Iterable<Supplier<Optional<T>>> suppliers) {
         Objects.requireNonNull(suppliers, "Suppliers must not be null!");
+
         return Streamable.of(suppliers).stream()
             .map(Supplier::get)
             .filter(Optional::isPresent)
@@ -151,6 +154,7 @@ public class COptionalUtils {
         Objects.requireNonNull(left, "Optional left must not be null!");
         Objects.requireNonNull(right, "Optional right must not be null!");
         Objects.requireNonNull(consumer, "Consumer must not be null!");
+
         mapIfAllPresent(left, right, (l, r) -> {
             consumer.accept(l, r);
             return null;
@@ -169,6 +173,7 @@ public class COptionalUtils {
         Objects.requireNonNull(left, "Optional left must not be null!");
         Objects.requireNonNull(right, "Optional right must not be null!");
         Objects.requireNonNull(function, "BiFunction must not be null!");
+
         return left.flatMap(l -> right.map(r -> function.apply(l, r)));
     }
 

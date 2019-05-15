@@ -31,7 +31,8 @@ import java.util.Enumeration;
 /**
  * Custom base dictionary interface declaration
  *
- * @param <T>
+ * @param <K> type of node key
+ * @param <V> type of node value
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07

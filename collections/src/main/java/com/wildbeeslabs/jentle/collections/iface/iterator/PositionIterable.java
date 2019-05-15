@@ -1,5 +1,6 @@
 package com.wildbeeslabs.jentle.collections.iface.iterator;
 
+import com.wildbeeslabs.jentle.collections.exception.InvalidParameterException;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import lombok.NonNull;
 
@@ -8,9 +9,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Custom position {@link Iterable} interface declaration
+ * Position iterable interface declaration
  *
- * @param <T>
+ * @param <T> type of element
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
@@ -28,7 +29,7 @@ public interface PositionIterable<T> {
 
     default <S extends Position<T>> List<S> toList(@NonNull final PositionIterator<S> iterator, final int estimatedSize) {
         if (estimatedSize < 1) {
-            throw new IllegalArgumentException("Estimated size must be greater than 0");
+            throw new InvalidParameterException("ERROR: Estimated size must be greater than 0");
         }
         final List<S> list = new ArrayList<>(estimatedSize);
         while (iterator.hasNext()) {
