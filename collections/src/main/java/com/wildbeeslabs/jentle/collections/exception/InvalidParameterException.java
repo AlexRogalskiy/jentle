@@ -18,6 +18,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class InvalidParameterException extends RuntimeException {
 
+    public static final long serialVersionUID = -7191894726440302646L;
+
     public InvalidParameterException(final String message) {
         super(message);
     }

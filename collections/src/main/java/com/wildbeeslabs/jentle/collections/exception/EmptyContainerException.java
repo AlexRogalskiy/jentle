@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class EmptyContainerException extends RuntimeException {
 
+    public static final long serialVersionUID = 2876720581122901437L;
+
     public EmptyContainerException(final String message) {
         super(message);
     }

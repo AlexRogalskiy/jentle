@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PriorityQueueEmptyException extends RuntimeException {
 
+    public static final long serialVersionUID = -4186019071629814658L;
+
     public PriorityQueueEmptyException(final String message) {
         super(message);
     }

@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class NoSpaceAvailableException extends RuntimeException {
 
+    public static final long serialVersionUID = 5607992646672475492L;
+
     public NoSpaceAvailableException(final String message) {
         super(message);
     }

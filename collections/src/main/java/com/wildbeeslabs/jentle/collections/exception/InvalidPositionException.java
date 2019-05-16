@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class InvalidPositionException extends RuntimeException {
 
+    public static final long serialVersionUID = -4473962184875336531L;
+
     public InvalidPositionException(final String message) {
         super(message);
     }

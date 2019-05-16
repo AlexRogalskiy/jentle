@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class InvalidDimensionException extends RuntimeException {
 
+    public static final long serialVersionUID = -622856019280465770L;
+
     public InvalidDimensionException(final String message) {
         super(message);
     }

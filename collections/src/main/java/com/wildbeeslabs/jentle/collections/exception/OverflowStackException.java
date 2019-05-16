@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class OverflowStackException extends RuntimeException {
 
+    public static final long serialVersionUID = 7259396580413539836L;
+
     public OverflowStackException(final String message) {
         super(message);
     }

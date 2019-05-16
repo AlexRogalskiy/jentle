@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class HashTableFullException extends RuntimeException {
 
+    public static final long serialVersionUID = 2846252032767389748L;
+
     public HashTableFullException(final String message) {
         super(message);
     }

@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class EmptyDequeException extends RuntimeException {
 
+    public static final long serialVersionUID = 1214162668923930544L;
+
     public EmptyDequeException(final String message) {
         super(message);
     }

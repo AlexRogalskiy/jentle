@@ -41,6 +41,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BoundaryViolationException extends RuntimeException {
 
+    public static final long serialVersionUID = -2261592983623632749L;
+
     public BoundaryViolationException(final String message) {
         super(message);
     }
