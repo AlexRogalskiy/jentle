@@ -58,7 +58,7 @@ public enum Operation {
             stringToEnum.put(op.toString(), op);
     }
 
-    public static Operation fromString(final String symbol) {
+    public static Operation fromSymbol(final String symbol) {
         return stringToEnum.get(symbol);
     }
 }

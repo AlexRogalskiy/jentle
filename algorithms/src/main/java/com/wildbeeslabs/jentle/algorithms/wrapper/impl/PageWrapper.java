@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.algorithms.wrapper;
+package com.wildbeeslabs.jentle.algorithms.wrapper.impl;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,6 +7,11 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Page wrapper implementation
+ *
+ * @param <T> type of page content item
+ */
 @Data
 @EqualsAndHashCode
 @ToString

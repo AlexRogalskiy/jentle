@@ -16,11 +16,15 @@ import java.util.stream.Stream;
  * @since 2017-12-12
  */
 public enum Phase {
-    SOLID, LIQUID, GAS;
+
+    SOLID,
+    LIQUID,
+    GAS;
 
     @Getter
     @RequiredArgsConstructor
     public enum Transition {
+
         MELT(SOLID, LIQUID),
         FREEZE(LIQUID, SOLID),
         BOIL(LIQUID, GAS),
@@ -31,10 +35,10 @@ public enum Phase {
         private final Phase from;
         private final Phase to;
 
-        private static final Map<Phase, Map<Phase, Transition>> m = Stream.of(values()).collect(Collectors.groupingBy(t -> t.from, () -> new EnumMap<>(Phase.class), Collectors.toMap(t -> t.to, t -> t, (x, y) -> y, () -> new EnumMap<>(Phase.class))));
+        private static final Map<Phase, Map<Phase, Transition>> enumMap = Stream.of(values()).collect(Collectors.groupingBy(t -> t.from, () -> new EnumMap<>(Phase.class), Collectors.toMap(t -> t.to, t -> t, (x, y) -> y, () -> new EnumMap<>(Phase.class))));
 
-        public static Transition from(Phase from, Phase to) {
-            return m.get(from).get(to);
+        public static Transition from(final Phase from, final Phase to) {
+            return enumMap.get(from).get(to);
         }
     }
 }

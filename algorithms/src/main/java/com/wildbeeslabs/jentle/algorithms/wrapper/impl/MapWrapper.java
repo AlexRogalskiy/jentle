@@ -21,44 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.jentle.algorithms.wrapper;
+package com.wildbeeslabs.jentle.algorithms.wrapper.impl;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Map wrapper implementation
+ *
+ * @param <K> type of map key
+ * @param <V> type of map value
+ * @param <T> type of map
+ */
 @Data
 @EqualsAndHashCode
 @ToString
-public class ListWrapper<V, T extends List<V> & Serializable> implements Serializable {
+@RequiredArgsConstructor
+public class MapWrapper<K, V, T extends Map<K, V> & Serializable> implements Serializable {
 
     /**
      * Default explicit serialVersionUID for interoperability
      */
-    private static final long serialVersionUID = -5001564153325429130L;
+    private static final long serialVersionUID = -1216562372938767290L;
 
     /**
-     * Wrapped {@link List} instance
+     * Wrapped {@link Map} instance
      */
-    private final T list;
+    private final T map;
 
-    public ListWrapper(final T list) {
-        this.list = list;
-    }
-
-    public static <V, T extends List<V> & Serializable> Map<String, Serializable> putMap(final Map<String, Serializable> intent, final String name, final T list) {
-        intent.put(name, new ListWrapper<>(list));
+    public static <K, V, T extends Map<K, V> & Serializable> Map<String, Serializable> putMap(final Map<String, Serializable> intent, final String name, final T map) {
+        intent.put(name, new MapWrapper<>(map));
         return intent;
     }
 
-    public static <V, T extends List<V> & Serializable> T getMap(final Map<String, Serializable> intent, final String name) {
+    public static <K, V, T extends Map<K, V> & Serializable> T getMap(final Map<String, Serializable> intent, final String name) {
         final Serializable elem = intent.get(name);
-        return Objects.isNull(elem) ? (T) Collections.emptyList() : ((ListWrapper<V, T>) elem).getList();
+        return Objects.isNull(elem) ? (T) Collections.emptyMap() : ((MapWrapper<K, V, T>) elem).getMap();
     }
 }
