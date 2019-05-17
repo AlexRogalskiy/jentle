@@ -99,7 +99,7 @@ public class CryptographyUtils {
     }
 
     /**
-     * Java implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
+     * JvmUtils implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
      * version of a <a href="http://en.wikipedia.org/wiki/Feistel_cipher">Feinstel cipher</a>.
      * <p>
      * This implementation is converted from the plpgsql code: <a href="https://wiki.postgresql.org/wiki/XTEA">
@@ -127,7 +127,7 @@ public class CryptographyUtils {
     }
 
     /**
-     * Java implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
+     * JvmUtils implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
      * version of a <a href="http://en.wikipedia.org/wiki/Feistel_cipher">Feinstel cipher</a>.
      * <p>
      * This implementation is converted from the plpgsql code: <a href="https://wiki.postgresql.org/wiki/XTEA">
