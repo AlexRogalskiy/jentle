@@ -6,6 +6,8 @@ import lombok.experimental.UtilityClass;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -60,12 +62,38 @@ public class CParsingUtils {
     public static String reconcatenateCamelCase(final String source, final String delimiter) {
         Objects.requireNonNull(source, "Source string must not be null!");
         Objects.requireNonNull(delimiter, "Delimiter must not be null!");
+
         return Joiner.on(delimiter).join(splitCamelCaseToLower(source));
     }
 
+    /**
+     * Returns {@link List} of {@link String} by input source {@link String} and lower case flag
+     *
+     * @param source  - initial input source {@link String}
+     * @param toLower - initial input lower case flag
+     * @return {@link List} of {@link String}
+     */
     private static List<String> split(final String source, final boolean toLower) {
         Objects.requireNonNull(source, "Source string must not be null!");
+
         final List<String> result = CAMEL_CASE.splitAsStream(source).map(i -> toLower ? i.toLowerCase() : i).collect(Collectors.toList());
         return Collections.unmodifiableList(result);
+    }
+
+    /**
+     * Returns {@link Optional} by input content {@link String} and {@link List} collection of regexes {@link String}
+     *
+     * @param content   - initial input content {@link String}
+     * @param regexList - initial input {@link List} collection of regexes {@link String}
+     * @return {@link Optional}
+     */
+    public static Optional<String> getIfAnyMatch(final String content, final List<String> regexList) {
+        return Optional.ofNullable(regexList).orElseGet(Collections::emptyList)
+            .stream()
+            .map(Pattern::compile)
+            .map(pattern -> pattern.matcher(content))
+            .filter(Matcher::find)
+            .map(Matcher::group)
+            .findFirst();
     }
 }
