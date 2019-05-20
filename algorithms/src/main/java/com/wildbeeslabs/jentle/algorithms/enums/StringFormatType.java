@@ -9,7 +9,6 @@ import java.util.function.Function;
 @Getter
 @RequiredArgsConstructor
 public enum StringFormatType {
-
     UPPER_CASE(StringUtils::upperCase),
     LOWER_CASE(StringUtils::lowerCase),
     CAPITALIZED(StringUtils::capitalize),
@@ -24,7 +23,13 @@ public enum StringFormatType {
     TRIM_TO_EMPTY(StringUtils::trimToEmpty),
     TRIM_TO_NULL(StringUtils::trimToNull),
     TRIM(StringUtils::trim),
-    CHOP(StringUtils::chop);
+    CHOP(StringUtils::chop),
+    SORT(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::sort),
+    COMPRESS(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::compress),
+    REVERSE(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::reverse),
+    NATIVE_2_ASCII(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::native2Ascii),
+    CAPITALIZE_FULLY(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::convertToTitleCaseWordFull),
+    CAPITALIZE_TITLE(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::convertToTitleCaseWord);
 
     private final Function<String, String> format;
 }

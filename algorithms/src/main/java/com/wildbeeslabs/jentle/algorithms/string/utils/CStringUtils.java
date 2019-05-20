@@ -242,15 +242,15 @@ public class CStringUtils {
         return sb.toString();
     }
 
-    public static String[] split(final String value, final String delimeter) {
-        if (Objects.isNull(value) || Objects.isNull(delimeter)) {
+    public static String[] split(final String value, final String delimiter) {
+        if (Objects.isNull(value) || Objects.isNull(delimiter)) {
             return null;
         }
-        return Optional.ofNullable(value).filter(StringUtils::isNotEmpty).map(str -> str.trim().split(delimeter)).orElse(null);//"\\s+|,\\s*|\\.\\s*"
-        //StringUtils.split(value, delimeter);
+        return Optional.ofNullable(value).filter(StringUtils::isNotEmpty).map(str -> str.trim().split(delimiter)).orElse(null);//"\\s+|,\\s*|\\.\\s*"
+        //StringUtils.split(value, delimiter);
     }
 
-    public static String removeLastCharacter(final String value) {
+    public static String chop(final String value) {
         return Optional.ofNullable(value).filter(str -> str.length() != 0).map(str -> str.substring(0, str.length() - 1)).orElse(value);
         //return StringUtils.chop(value);
     }
@@ -383,9 +383,9 @@ public class CStringUtils {
         return count;
     }
 
-    public static boolean brackets(final String value, int maxdeep) {
+    public static boolean brackets(final String value, int maxDeep) {
         try {
-            final IStack<Character> stack = new CBoundStack<>(maxdeep, Character[].class);
+            final IStack<Character> stack = new CBoundStack<>(maxDeep, Character[].class);
             for (int i = 0; i < value.length(); i++) {
                 char c = value.charAt(i);
                 switch (c) {
@@ -733,16 +733,15 @@ public class CStringUtils {
     public static final String cleanupWithspacesBevorAndAfterNewlines(final String p_text) {
         if (Objects.isNull(p_text)) {
             return null;
-        } else {
-            final String[] elements = p_text.split(System.lineSeparator());
-            final StringBuilder result = new StringBuilder();
-            int size = elements.length;
-            for (int i = 0; i < size; ++i) {
-                result.append(System.lineSeparator()).append(elements[i].trim());
-            }
-            result.delete(0, 1);
-            return result.toString();
         }
+        final String[] elements = p_text.split(System.lineSeparator());
+        final StringBuilder result = new StringBuilder();
+        int size = elements.length;
+        for (int i = 0; i < size; ++i) {
+            result.append(System.lineSeparator()).append(elements[i].trim());
+        }
+        result.delete(0, 1);
+        return result.toString();
     }
 
     public static final String replaceInString(final String p_rawString, final String p_replaceString, final String p_ignoreReplaceString, final List<String> p_insertStrings) {
