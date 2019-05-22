@@ -16,7 +16,6 @@ import java.util.stream.Stream;
  * @since 2017-12-12
  */
 public enum Phase {
-
     SOLID,
     LIQUID,
     GAS;

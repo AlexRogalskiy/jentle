@@ -16,7 +16,6 @@ import java.util.Map;
 @Getter
 @RequiredArgsConstructor
 public enum Operation {
-
     PLUS("+") {
         @Override
         public double apply(double x, double y) {
@@ -51,14 +50,14 @@ public enum Operation {
 
     public abstract double apply(double x, double y);
 
-    private static final Map<String, Operation> stringToEnum = new HashMap<>();
+    private static final Map<String, Operation> OPERATION_MAP = new HashMap<>();
 
     static {
         for (final Operation op : values())
-            stringToEnum.put(op.toString(), op);
+            OPERATION_MAP.put(op.toString(), op);
     }
 
     public static Operation fromSymbol(final String symbol) {
-        return stringToEnum.get(symbol);
+        return OPERATION_MAP.get(symbol);
     }
 }
