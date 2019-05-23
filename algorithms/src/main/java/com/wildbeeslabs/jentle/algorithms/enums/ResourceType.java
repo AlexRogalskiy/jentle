@@ -85,6 +85,6 @@ public enum ResourceType {
      * Return whether this resource type is UNKNOWN.
      */
     public boolean isUnknown() {
-        return this == UNKNOWN;
+        return Objects.equals(this, UNKNOWN);
     }
 }
