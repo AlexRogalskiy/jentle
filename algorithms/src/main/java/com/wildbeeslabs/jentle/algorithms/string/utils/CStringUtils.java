@@ -24,6 +24,7 @@
 package com.wildbeeslabs.jentle.algorithms.string.utils;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.wildbeeslabs.jentle.algorithms.utils.CDigestUtils;
 import com.wildbeeslabs.jentle.collections.exception.EmptyStackException;
 import com.wildbeeslabs.jentle.collections.exception.OverflowStackException;
@@ -920,5 +921,9 @@ public class CStringUtils {
             sb.append(stackTrace[i]).append(System.lineSeparator());
         }
         return sb.toString();
+    }
+
+    private Iterable<String> splitBy(final String compValue, final String separator) {
+        return Splitter.on(separator).omitEmptyStrings().split(compValue);
     }
 }

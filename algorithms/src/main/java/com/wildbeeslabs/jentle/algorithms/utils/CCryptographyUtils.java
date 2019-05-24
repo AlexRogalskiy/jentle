@@ -25,9 +25,14 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Objects;
 
 /**
  * Custom cryptography utilities implementation
@@ -229,5 +234,18 @@ public class CCryptographyUtils {
             r1 = r2;
         }
         return (int) ((r1 << 16) + l1);
+    }
+
+    //SHA1PRNG
+    public static String generateRandomPassword(final String algorithm) {
+        Objects.requireNonNull(algorithm, "Algorithm should be null!");
+        try {
+            final SecureRandom random = SecureRandom.getInstance(algorithm);
+            byte[] passwordBytes = new byte[16];
+            random.nextBytes(passwordBytes);
+            return new String(Base64.encodeBase64(passwordBytes), StandardCharsets.UTF_8).replace("=", "");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Unable to load SHA1PRNG", e);
+        }
     }
 }
