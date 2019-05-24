@@ -12,10 +12,11 @@ import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * Utility methods to work with {@link Optional}s.
+ * Custom optional utilities implementation
  *
- * @author Oliver Gierke
- * @author Christoph Strobl
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
 @UtilityClass
 public class COptionalUtils {

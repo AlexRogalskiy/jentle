@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.decode;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CharsetUtils;
-import com.wildbeeslabs.jentle.algorithms.utils.ContentUtils;
+import com.wildbeeslabs.jentle.algorithms.utils.CCharsetUtils;
+import com.wildbeeslabs.jentle.algorithms.utils.CContentUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -374,7 +374,7 @@ public class EncoderUtil {
      */
     public static void encodeQBinary(final InputStream in, final OutputStream out) throws IOException {
         QuotedPrintableOutputStream qpOut = new QuotedPrintableOutputStream(out, true);
-        ContentUtils.copy(in, qpOut);
+        CContentUtils.copy(in, qpOut);
         qpOut.close();
     }
 
@@ -389,7 +389,7 @@ public class EncoderUtil {
      */
     public static void encodeQ(final InputStream in, final OutputStream out) throws IOException {
         QuotedPrintableOutputStream qpOut = new QuotedPrintableOutputStream(out, false);
-        ContentUtils.copy(in, qpOut);
+        CContentUtils.copy(in, qpOut);
         qpOut.close();
     }
 
@@ -402,7 +402,7 @@ public class EncoderUtil {
      */
     public static void encodeB(final InputStream in, final OutputStream out) throws IOException {
         Base64OutputStream b64Out = new Base64OutputStream(out);
-        ContentUtils.copy(in, b64Out);
+        CContentUtils.copy(in, b64Out);
         b64Out.close();
     }
 
@@ -443,7 +443,7 @@ public class EncoderUtil {
             char ch = str.charAt(idx);
             if (ATEXT_CHARS.get(ch)) {
                 containsAText = true;
-            } else if (!CharsetUtils.isWhitespace(ch)) {
+            } else if (!CCharsetUtils.isWhitespace(ch)) {
                 return false;
             }
         }

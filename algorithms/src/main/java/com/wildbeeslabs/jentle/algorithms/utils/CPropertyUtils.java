@@ -8,6 +8,13 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * Custom property utilities implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
+ */
 @Slf4j
 public class CPropertyUtils {
 
@@ -20,7 +27,7 @@ public class CPropertyUtils {
      * Default private constructor
      */
     private CPropertyUtils() {
-        properties = new Properties();
+        this.properties = new Properties();
     }
 
     /**

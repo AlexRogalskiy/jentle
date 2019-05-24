@@ -9,7 +9,11 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
- * Utilities for working with {@link Objects}s.
+ * Custom object utilities implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
 @Slf4j
 @UtilityClass

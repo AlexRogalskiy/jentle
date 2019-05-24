@@ -12,10 +12,14 @@ import java.nio.charset.Charset;
 import java.util.Objects;
 
 /**
- * Utility methods for converting textual content of a message.
+ * Custom content utilities implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
 @UtilityClass
-public class ContentUtils {
+public class CContentUtils {
 
     public static final int DEFAULT_COPY_BUFFER_SIZE = 1024;
 

@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
- * Custom comparators for order with null-safe implementation
+ * Custom comparators utilities implementation
  *
  * @param <T>
  * @author Alex

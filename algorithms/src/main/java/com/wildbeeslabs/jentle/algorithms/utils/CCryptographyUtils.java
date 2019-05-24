@@ -6,9 +6,16 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
 
+/**
+ * Custom cryptography utilities implementation
+ *
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
+ */
 @Slf4j
 @UtilityClass
-public class CryptographyUtils {
+public class CCryptographyUtils {
 
     public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -99,7 +106,7 @@ public class CryptographyUtils {
     }
 
     /**
-     * JvmUtils implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
+     * CJvmUtils implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
      * version of a <a href="http://en.wikipedia.org/wiki/Feistel_cipher">Feinstel cipher</a>.
      * <p>
      * This implementation is converted from the plpgsql code: <a href="https://wiki.postgresql.org/wiki/XTEA">
@@ -127,7 +134,7 @@ public class CryptographyUtils {
     }
 
     /**
-     * JvmUtils implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
+     * CJvmUtils implementation of <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a> block cipher, which is a 64-bit
      * version of a <a href="http://en.wikipedia.org/wiki/Feistel_cipher">Feinstel cipher</a>.
      * <p>
      * This implementation is converted from the plpgsql code: <a href="https://wiki.postgresql.org/wiki/XTEA">

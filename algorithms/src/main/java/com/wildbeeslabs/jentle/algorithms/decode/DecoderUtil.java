@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.algorithms.decode;
 
-import com.wildbeeslabs.jentle.algorithms.utils.CharsetUtils;
+import com.wildbeeslabs.jentle.algorithms.utils.CCharsetUtils;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.IOException;
@@ -163,7 +163,7 @@ public class DecoderUtil {
             if (decoded == null) {
                 sb.append(matcher.group(0));
             } else {
-                if (!lastMatchValid || !CharsetUtils.isWhitespace(separator)) {
+                if (!lastMatchValid || !CCharsetUtils.isWhitespace(separator)) {
                     sb.append(separator);
                 }
                 sb.append(decoded);
@@ -184,7 +184,7 @@ public class DecoderUtil {
     // return null on error
     private static String tryDecodeEncodedWord(final String mimeCharset,
                                                final String encoding, final String encodedText, final DecodeMonitor monitor, final Charset fallback) {
-        Charset charset = CharsetUtils.lookup(mimeCharset);
+        Charset charset = CCharsetUtils.lookup(mimeCharset);
         if (charset == null) {
             if (fallback == null) {
                 monitor(monitor, mimeCharset, encoding, encodedText, "leaving word encoded",

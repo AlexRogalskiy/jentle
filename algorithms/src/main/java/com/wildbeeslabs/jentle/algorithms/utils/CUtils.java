@@ -20,6 +20,13 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Custom utilities implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
+ */
 @UtilityClass
 public class CUtils {
 

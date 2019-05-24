@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Custom HTTP utilities implementation
+ * Custom http utilities implementation
  *
  * @author alexander.rogalskiy
  * @version 1.0

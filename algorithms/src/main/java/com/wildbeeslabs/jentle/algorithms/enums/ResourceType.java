@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -73,10 +73,7 @@ public enum ResourceType {
      */
     public static ResourceType fromCode(final byte code) {
         final ResourceType resourceType = CODE_TO_VALUE.get(code);
-        if (Objects.isNull(resourceType)) {
-            return UNKNOWN;
-        }
-        return resourceType;
+        return Optional.ofNullable(resourceType).orElse(UNKNOWN);
     }
 
     private final byte code;
@@ -85,6 +82,6 @@ public enum ResourceType {
      * Return whether this resource type is UNKNOWN.
      */
     public boolean isUnknown() {
-        return Objects.equals(this, UNKNOWN);
+        return this.equals(UNKNOWN);
     }
 }

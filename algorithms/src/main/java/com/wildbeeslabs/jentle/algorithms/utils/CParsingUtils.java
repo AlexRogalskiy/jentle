@@ -12,10 +12,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Utility methods for {@link String} parsing.
+ * Custom parsing utilities implementation
  *
- * @author Oliver Gierke
- * @since 1.5
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
 @UtilityClass
 public class CParsingUtils {

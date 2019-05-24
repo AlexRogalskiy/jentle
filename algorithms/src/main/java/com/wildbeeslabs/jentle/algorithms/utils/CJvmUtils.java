@@ -6,8 +6,15 @@ import lombok.experimental.UtilityClass;
 
 import java.util.StringTokenizer;
 
+/**
+ * Custom jvm utilities implementation
+ *
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
+ */
 @UtilityClass
-public class JvmUtils {
+public class CJvmUtils {
 
     private static final Version VERSION = parseVersion(System.getProperty("java.specification.version"));
     public static final boolean IS_JAVA9_COMPATIBLE = VERSION.isJava9Compatible();

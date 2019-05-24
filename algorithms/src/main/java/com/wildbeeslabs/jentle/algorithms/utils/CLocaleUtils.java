@@ -24,7 +24,6 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -36,7 +35,6 @@ import java.util.*;
  * @version 1.0.0
  * @since 2017-08-07
  */
-@Slf4j
 @UtilityClass
 public class CLocaleUtils {
 
@@ -110,11 +108,10 @@ public class CLocaleUtils {
 
     public static Locale valueOf(final String code) {
         if (StringUtils.isNotBlank(code)) {
-            for (final Locale value : Locale.getAvailableLocales()) {
-                if (code.equalsIgnoreCase(value.getDisplayName())) {
-                    return value;
-                }
-            }
+            return Arrays.stream(Locale.getAvailableLocales())
+                .filter(value -> value.getDisplayName().equalsIgnoreCase(code))
+                .findFirst()
+                .orElse(null);
         }
         return null;
     }

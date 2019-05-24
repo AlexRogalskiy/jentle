@@ -25,7 +25,6 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -37,7 +36,6 @@ import java.util.stream.Stream;
  * @version 1.0
  * @since 2017-12-12
  */
-@Slf4j
 @UtilityClass
 public class CFilterUtils {
 

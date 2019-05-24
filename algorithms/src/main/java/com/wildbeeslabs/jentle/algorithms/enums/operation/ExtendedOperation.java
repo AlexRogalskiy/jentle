@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ExtendedOperation implements Operation {
-
     EXP("^") {
         @Override
         public double apply(double x, double y) {

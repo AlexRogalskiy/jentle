@@ -31,7 +31,7 @@ public enum StringFormatType {
     COMPRESS(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::compress),
     REVERSE(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::reverse),
     NATIVE_TO_ASCII(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::native2Ascii),
-    CAPITALIZE_FULLY(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::convertToTitleCaseWordFull),
+    CAPITALIZE_WORD_FULLY(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::convertToTitleCaseWordFull),
     CAPITALIZE_TITLE(com.wildbeeslabs.jentle.algorithms.string.utils.CStringUtils::convertToTitleCaseWord),
 
     ESCAPE_JAVA(StringEscapeUtils::escapeJava),

@@ -43,7 +43,7 @@ import java.util.Objects;
 import static org.apache.commons.lang3.ArrayUtils.toArray;
 
 /**
- * CollectionLike utilities implementation
+ * Custom utilities implementation
  *
  * @author Alex
  * @version 1.0.0

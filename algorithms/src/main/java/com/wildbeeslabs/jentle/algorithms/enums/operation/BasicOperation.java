@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum BasicOperation implements Operation {
-
     PLUS("+") {
         @Override
         public double apply(double x, double y) {

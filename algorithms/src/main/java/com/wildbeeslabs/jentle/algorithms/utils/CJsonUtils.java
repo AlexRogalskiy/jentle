@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Custom JSON utilities implementation
+ * Custom json utilities implementation
  *
  * @author alexander.rogalskiy
  * @version 1.0
@@ -51,7 +51,6 @@ import java.util.Map;
 @Slf4j
 @UtilityClass
 public class CJsonUtils {
-
     /**
      * Default file character encoding
      */
@@ -86,11 +85,11 @@ public class CJsonUtils {
     public static <V> void toJson(final OutputStream out, final V entity) {
         try (final PrintStream prs = new PrintStream(out, true, DEFAULT_FILE_CHARACTER_ENCODING.name())) {
             final Gson gson = new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .serializeNulls()
-                    .setPrettyPrinting()
-                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                    .create();
+                .excludeFieldsWithoutExposeAnnotation()
+                .serializeNulls()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
             gson.toJson(entity, prs);
         } catch (IOException ex) {
             log.error(String.format("ERROR: cannot process read operations on output stream, message=%s", ex.getMessage()));

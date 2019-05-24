@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
-public enum CharsType {
+public enum CharacterType {
     DIGITS,
     LOWER_LETTERS,
     UPPER_LETTERS,

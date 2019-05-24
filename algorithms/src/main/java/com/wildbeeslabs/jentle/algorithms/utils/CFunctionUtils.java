@@ -2,6 +2,13 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * Custom function utilities implementation
+ *
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
+ */
 @UtilityClass
 public class CFunctionUtils {
 

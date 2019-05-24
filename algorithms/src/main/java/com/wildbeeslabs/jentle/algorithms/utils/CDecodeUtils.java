@@ -5,6 +5,13 @@ import lombok.experimental.UtilityClass;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Custom decode utilities implementation
+ *
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
+ */
 @UtilityClass
 public class CDecodeUtils {
 

@@ -7,8 +7,15 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Objects;
 
+/**
+ * Custom charset utilities implementation
+ *
+ * @author alexander.rogalskiy
+ * @version 1.0
+ * @since 2017-12-12
+ */
 @UtilityClass
-public class CharsetUtils {
+public class CCharsetUtils {
 
     /**
      * carriage return - line feed sequence

@@ -36,7 +36,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
- * Custom hash utilities implementation
+ * Custom digest utilities implementation
  *
  * @author Alex
  * @version 1.0.0

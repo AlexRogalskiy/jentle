@@ -81,7 +81,7 @@ public class CPermutationUtils {
 
     public static <T> Stream<Stream<? extends T>> of(final T... items) {
         Objects.requireNonNull(items);
-        List<? extends T> itemList = Arrays.asList(items);
+        final List<? extends T> itemList = Arrays.asList(items);
         return LongStream.range(0, factorial(items.length)).mapToObj(no -> permutation(no, itemList).stream());
     }
 
@@ -115,7 +115,7 @@ public class CPermutationUtils {
 
     private static Map<Integer, Integer> buildFrequencyTable(final String value) {
         final Map<Integer, Integer> map = new HashMap<>();
-        for (Integer c : value.codePoints().toArray()) {
+        for (final Integer c : value.codePoints().toArray()) {
             if (!map.containsKey(c)) {
                 map.put(c, 0);
             }
@@ -129,7 +129,7 @@ public class CPermutationUtils {
             result.add(prefix);
             return;
         }
-        for (Integer c : map.keySet()) {
+        for (final Integer c : map.keySet()) {
             int count = map.get(c);
             if (count > 0) {
                 map.put(c, count - 1);
@@ -140,8 +140,8 @@ public class CPermutationUtils {
     }
 
     public static int makeChange(int num) {
-        int[] denoms = {25, 10, 5, 1};
-        int[][] map = new int[num + 1][denoms.length];
+        final int[] denoms = {25, 10, 5, 1};
+        final int[][] map = new int[num + 1][denoms.length];
         return makeChange(num, denoms, 0, map);
     }
 
@@ -221,7 +221,7 @@ public class CPermutationUtils {
 
     public static <T> int createStack2(final List<T> list, final Comparator<? super T> cmp) {
         Collections.sort(list, cmp);
-        int[] stackMap = new int[list.size()];
+        final int[] stackMap = new int[list.size()];
         return createStack(list, null, 0, stackMap);
     }
 

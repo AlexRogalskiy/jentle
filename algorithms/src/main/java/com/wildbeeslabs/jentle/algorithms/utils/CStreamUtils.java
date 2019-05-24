@@ -13,11 +13,11 @@ import java.util.stream.StreamSupport;
 import static java.util.stream.Collectors.*;
 
 /**
- * String utils implementation
+ * Custom stream utilities implementation
  *
- * @author Alexander Rogalskiy
- * @author Alexander Rogalskiy
- * @since 1.10
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-07
  */
 @UtilityClass
 public class CStreamUtils {
@@ -29,7 +29,7 @@ public class CStreamUtils {
      * @return
      */
     public static <T> Stream<T> from(final Iterator<T> iterator) {
-        Spliterator<T> spliterator = Spliterators.spliteratorUnknownSize(iterator, Spliterator.NONNULL);
+        final Spliterator<T> spliterator = Spliterators.spliteratorUnknownSize(iterator, Spliterator.NONNULL);
         return StreamSupport.stream(spliterator, false);
     }
 

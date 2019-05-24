@@ -32,7 +32,7 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 /**
- * Custom predicates implementations
+ * Custom predicate utilities implementations
  *
  * @author Alex
  * @version 1.0.0
@@ -72,7 +72,7 @@ public class CPredicateUtils {
      */
     @SafeVarargs
     @SuppressWarnings("varargs")
-    public static <T> Predicate<T> or(Predicate<T>... ts) {
+    public static <T> Predicate<T> or(final Predicate<T>... ts) {
         Objects.requireNonNull(ts, "ts must not be null");
         return Arrays.stream(ts).reduce(Predicate::or).orElseThrow(() -> new IllegalStateException("Unable to combine predicates together via logical OR"));
     }

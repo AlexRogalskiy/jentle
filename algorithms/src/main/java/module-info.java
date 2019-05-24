@@ -31,4 +31,5 @@ module jentle.algorithms {
     requires jama;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.core;
+    requires jackson.annotations;
 }
