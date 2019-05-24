@@ -25,22 +25,20 @@ package com.wildbeeslabs.jentle.collections.graph.node;
 
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.Comparator;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.Comparator;
+
 /**
- *
  * Custom abstract base graph node implementation
  *
+ * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -50,8 +48,7 @@ public abstract class ACBaseGraphNode<T, E extends ACBaseGraphNode<T, E>> extend
     protected ACBaseGraphNode.State state;
     protected final Comparator<? super T> comparator;
 
-    public static enum State {
-
+    public enum State {
         UNVISITED, VISITED, VISITING;
     }
 

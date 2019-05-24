@@ -37,14 +37,14 @@ public class CPositionalKeyValueTreeNode<K, V, T extends CKeyValueNode<K, V>> ex
     }
 
     public K key() {
-        if (Objects.isNull(this.getData())) {
+        if (Objects.nonNull(this.getData())) {
             return this.getData().getKey();
         }
         return null;
     }
 
     public V value() {
-        if (Objects.isNull(this.getData())) {
+        if (Objects.nonNull(this.getData())) {
             return this.getData().getValue();
         }
         return null;

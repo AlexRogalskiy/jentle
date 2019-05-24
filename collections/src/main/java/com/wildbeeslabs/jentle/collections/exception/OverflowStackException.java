@@ -41,20 +41,44 @@ import lombok.ToString;
 @NoArgsConstructor
 public class OverflowStackException extends RuntimeException {
 
+    /**
+     * Default explicit serialVersionUID for interoperability
+     */
     public static final long serialVersionUID = 7259396580413539836L;
 
+    /**
+     * Overflow stack exception constructor with initial input message
+     *
+     * @param message - initial input message {@link String}
+     */
     public OverflowStackException(final String message) {
         super(message);
     }
 
+    /**
+     * Overflow stack exception constructor with initial input target {@link Throwable}
+     *
+     * @param cause - initial input target {@link Throwable}
+     */
     public OverflowStackException(final Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Overflow stack exception constructor with initial input message and target {@link Throwable}
+     *
+     * @param message - initial input message {@link String}
+     * @param cause   - initial input target {@link Throwable}
+     */
     public OverflowStackException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Returns description message {@link String}
+     *
+     * @return description message {@link String}
+     */
     @Override
     public String getMessage() {
         return super.getMessage();

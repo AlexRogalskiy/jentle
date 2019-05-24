@@ -41,20 +41,44 @@ import lombok.ToString;
 @NoArgsConstructor
 public class OverflowQueueException extends RuntimeException {
 
+    /**
+     * Default explicit serialVersionUID for interoperability
+     */
     public static final long serialVersionUID = -4195418593977064425L;
 
+    /**
+     * Overflow queue exception constructor with initial input message
+     *
+     * @param message - initial input message {@link String}
+     */
     public OverflowQueueException(final String message) {
         super(message);
     }
 
+    /**
+     * Overflow queue exception constructor with initial input target {@link Throwable}
+     *
+     * @param cause - initial input target {@link Throwable}
+     */
     public OverflowQueueException(final Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Overflow queue exception constructor with initial input message and target {@link Throwable}
+     *
+     * @param message - initial input message {@link String}
+     * @param cause   - initial input target {@link Throwable}
+     */
     public OverflowQueueException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Returns description message {@link String}
+     *
+     * @return description message {@link String}
+     */
     @Override
     public String getMessage() {
         return super.getMessage();

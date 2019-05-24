@@ -32,4 +32,7 @@ module jentle.algorithms {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.core;
     requires jackson.annotations;
+    requires dom4j;
+    requires org.apache.commons.compress;
+    requires java.desktop;
 }

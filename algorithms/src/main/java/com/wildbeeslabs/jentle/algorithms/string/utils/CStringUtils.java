@@ -912,4 +912,13 @@ public class CStringUtils {
     public static <K, V> String convertToStr(@NonNull final Map<K, V> map) {
         return Joiner.on(",").withKeyValueSeparator("=").join(map);
     }
+
+    public static String asString() {
+        final StringBuilder sb = new StringBuilder();
+        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        for (int i = 1; i < stackTrace.length; i++) {
+            sb.append(stackTrace[i]).append(System.lineSeparator());
+        }
+        return sb.toString();
+    }
 }

@@ -713,6 +713,14 @@ public class CNumericUtils {
         return count;
     }
 
+    public static int nullToZero(final Integer value) {
+        return Optional.ofNullable(value).orElse(0);
+    }
+
+    public static long nullToZero(final Long value) {
+        return Optional.ofNullable(value).orElse(0L);
+    }
+
     @Data
     @EqualsAndHashCode
     @ToString

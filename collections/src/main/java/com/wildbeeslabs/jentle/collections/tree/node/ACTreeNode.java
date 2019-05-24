@@ -25,27 +25,20 @@ package com.wildbeeslabs.jentle.collections.tree.node;
 
 import com.wildbeeslabs.jentle.collections.list.node.ACNode;
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom abstract tree node implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -57,8 +50,7 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
     protected Comparator<? super T> comparator;
     protected final List<U> children = new ArrayList<>();
 
-    public static enum State {
-
+    public enum State {
         UNVISITED, VISITED, VISITING;
     }
 
@@ -97,11 +89,9 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
         return this.children;
     }
 
-    public void setChildren(final Collection<U> childs) {
+    public void setChildren(final Collection<U> children) {
         this.children.clear();
-        if (Objects.nonNull(childs)) {
-            this.children.addAll(childs);
-        }
+        Optional.ofNullable(children).orElseGet(Collections::emptyList).forEach(this::addChild);
     }
 
     public void addChild(final U child) {
@@ -125,6 +115,10 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
     public U getRandomChild() {
         int selectRandom = (int) (Math.random() * ((this.children.size() - 1) + 1));
         return this.children.get(selectRandom);
+    }
+
+    public int getNumOfChildren() {
+        return this.children.size();
     }
 
     public U getMaxChild() {

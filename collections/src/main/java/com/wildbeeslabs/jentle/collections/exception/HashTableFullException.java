@@ -41,20 +41,44 @@ import lombok.ToString;
 @NoArgsConstructor
 public class HashTableFullException extends RuntimeException {
 
+    /**
+     * Default explicit serialVersionUID for interoperability
+     */
     public static final long serialVersionUID = 2846252032767389748L;
 
+    /**
+     * Hashtable full exception constructor with initial input message
+     *
+     * @param message - initial input message {@link String}
+     */
     public HashTableFullException(final String message) {
         super(message);
     }
 
+    /**
+     * Hashtable full exception constructor with initial input target {@link Throwable}
+     *
+     * @param cause - initial input target {@link Throwable}
+     */
     public HashTableFullException(final Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Hashtable full exception constructor with initial input message and target {@link Throwable}
+     *
+     * @param message - initial input message {@link String}
+     * @param cause   - initial input target {@link Throwable}
+     */
     public HashTableFullException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Returns description message {@link String}
+     *
+     * @return description message {@link String}
+     */
     @Override
     public String getMessage() {
         return super.getMessage();

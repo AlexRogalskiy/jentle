@@ -28,10 +28,10 @@ public class CRedBlackTreeNode<K, V> extends CKeyValueNode<K, V> {
     }
 
     public void makeRed() {
-        this.isRed = true;
+        this.setRed(true);
     }
 
     public void makeBlack() {
-        this.isRed = false;
+        this.setRed(false);
     }
 }

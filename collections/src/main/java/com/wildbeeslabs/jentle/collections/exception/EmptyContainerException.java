@@ -41,20 +41,44 @@ import lombok.ToString;
 @NoArgsConstructor
 public class EmptyContainerException extends RuntimeException {
 
+    /**
+     * Default explicit serialVersionUID for interoperability
+     */
     public static final long serialVersionUID = 2876720581122901437L;
 
+    /**
+     * Empty container exception constructor with initial input message
+     *
+     * @param message - initial input message {@link String}
+     */
     public EmptyContainerException(final String message) {
         super(message);
     }
 
+    /**
+     * Empty container exception constructor with initial input target {@link Throwable}
+     *
+     * @param cause - initial input target {@link Throwable}
+     */
     public EmptyContainerException(final Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Empty container exception constructor with initial input message and target {@link Throwable}
+     *
+     * @param message - initial input message {@link String}
+     * @param cause   - initial input target {@link Throwable}
+     */
     public EmptyContainerException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Returns description message {@link String}
+     *
+     * @return description message {@link String}
+     */
     @Override
     public String getMessage() {
         return super.getMessage();

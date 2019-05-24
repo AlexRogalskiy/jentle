@@ -24,29 +24,23 @@
 package com.wildbeeslabs.jentle.collections.graph.node;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 /**
- *
  * Custom abstract graph extended node implementation
  *
+ * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -80,9 +74,7 @@ public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>
 
     public void setAdjacents(final Map<E, BigDecimal> adjacents) {
         this.adjacents.clear();
-        if (Objects.nonNull(adjacents)) {
-            this.adjacents.putAll(adjacents);
-        }
+        Optional.ofNullable(adjacents).orElseGet(Collections::emptyMap).forEach(this::addAjacent);
     }
 
     public void addAjacent(final E adjacent, final BigDecimal distance) {
@@ -97,15 +89,17 @@ public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>
         }
     }
 
+    public int getNumOfAdjacents() {
+        return this.adjacents.size();
+    }
+
     public Collection<E> getPathNodes() {
         return this.pathNodes;
     }
 
     public void setPathNodes(final Collection<E> pathNodes) {
         this.pathNodes.clear();
-        if (Objects.nonNull(pathNodes)) {
-            this.pathNodes.addAll(pathNodes);
-        }
+        Optional.ofNullable(pathNodes).orElseGet(Collections::emptyList).forEach(this::addPathNode);
     }
 
     public void addPathNode(final E pathNode) {
@@ -118,5 +112,30 @@ public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>
         if (Objects.nonNull(pathNode)) {
             this.pathNodes.remove(pathNode);
         }
+    }
+
+    public int getNumOfPathNodes() {
+        return this.pathNodes.size();
+    }
+
+    public void insertPathNodeAt(int index, final E pathNode) throws IndexOutOfBoundsException {
+        if (index == this.getNumOfPathNodes()) {
+            this.addPathNode(pathNode);
+        } else {
+            if (index < 0 || index >= this.getNumOfPathNodes()) {
+                throw new ArrayIndexOutOfBoundsException("Unable to insert child at " + index);
+            }
+            this.pathNodes.add(index, pathNode);
+        }
+    }
+
+    /**
+     * Remove the {@code Node<T>} element at index index of the {@code List<Node<T>>}.
+     *
+     * @param index the index of the element to delete.
+     * @throws IndexOutOfBoundsException if thrown.
+     */
+    public void removePathNodeAt(int index) throws IndexOutOfBoundsException {
+        this.pathNodes.remove(index);
     }
 }

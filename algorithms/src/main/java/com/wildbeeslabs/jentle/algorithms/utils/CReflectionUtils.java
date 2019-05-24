@@ -26,6 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -293,5 +294,78 @@ public class CReflectionUtils {
             throw new IllegalArgumentException(ex);
         }
         return element.getAnnotation(annotationType.asSubclass(Annotation.class));
+    }
+
+    public static <T> T newInstance(final Class<T> cls, final Object... params) throws NoSuchMethodException {
+        final Class[] paramTypes = getParamTypes(params);
+        final Constructor<T> constructor = ConstructorUtils.getMatchingAccessibleConstructor(cls, paramTypes);
+        if (Objects.isNull(constructor)) {
+            throw new NoSuchMethodException(String.format("Cannot find a matching constructor for %s and given parameters", cls.getName()));
+        }
+        try {
+            return constructor.newInstance(params);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Cannot create instance of " + cls, e);
+        }
+    }
+
+    public static <T> Method findMethod(final Class<T> c, final String name, final Object... params) {
+        final Class[] paramTypes = getParamTypes(params);
+
+        Method method = null;
+        try {
+            method = c.getDeclaredMethod(name, paramTypes);
+        } catch (NoSuchMethodException e) {
+            try {
+                method = c.getMethod(name, paramTypes);
+            } catch (NoSuchMethodException e1) {
+                Class superclass = c.getSuperclass();
+                if (Objects.nonNull(superclass)) {
+                    method = findMethod(superclass, name, params);
+                }
+            }
+        }
+        if (method != null) {
+            method.setAccessible(true);
+        }
+        return method;
+    }
+
+    public static <T> T invokeMethod(final Object obj, final String name, final Object... params) throws NoSuchMethodException {
+        final Class[] paramTypes = getParamTypes(params);
+        final Class<?> aClass = obj.getClass();
+        Method method;
+        try {
+            method = aClass.getDeclaredMethod(name, paramTypes);
+        } catch (NoSuchMethodException e) {
+            method = aClass.getMethod(name, paramTypes);
+        }
+        method.setAccessible(true);
+        try {
+            //noinspection unchecked
+            return (T) method.invoke(obj, params);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Unable to invoke method " + name, e);
+        }
+    }
+
+    public static Class[] getParamTypes(final Object... params) {
+        final List<Class> paramClasses = new ArrayList<>();
+        for (final Object param : params) {
+            if (Objects.isNull(param)) {
+                throw new IllegalStateException("Null parameter");
+            }
+            final Class aClass = param.getClass();
+            if (List.class.isAssignableFrom(aClass)) {
+                paramClasses.add(List.class);
+            } else if (Set.class.isAssignableFrom(aClass)) {
+                paramClasses.add(Set.class);
+            } else if (Map.class.isAssignableFrom(aClass)) {
+                paramClasses.add(Map.class);
+            } else {
+                paramClasses.add(aClass);
+            }
+        }
+        return paramClasses.toArray(new Class<?>[0]);
     }
 }

@@ -24,25 +24,20 @@
 package com.wildbeeslabs.jentle.collections.tree.node;
 
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom abstract trie node implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -73,9 +68,7 @@ public abstract class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACBaseTr
 
     public void setChilds(final List<U> childs) {
         this.childs.clear();
-        if (Objects.nonNull(childs)) {
-            this.childs.putAll(childs.stream().collect(Collectors.toMap(key -> key.getData(), value -> value)));
-        }
+        Optional.ofNullable(childs).orElseGet(Collections::emptyList).forEach(this::addChild);
     }
 
     public void addChild(final U child) {
@@ -88,5 +81,9 @@ public abstract class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACBaseTr
         if (Objects.nonNull(child)) {
             this.childs.remove(child.getData());
         }
+    }
+
+    public int getNumOfChilds() {
+        return this.childs.size();
     }
 }

@@ -41,20 +41,44 @@ import lombok.ToString;
 @NoArgsConstructor
 public class EmptyQueueException extends RuntimeException {
 
+    /**
+     * Default explicit serialVersionUID for interoperability
+     */
     public static final long serialVersionUID = 5722301894734530924L;
 
+    /**
+     * Empty queue exception constructor with initial input message
+     *
+     * @param message - initial input message {@link String}
+     */
     public EmptyQueueException(final String message) {
         super(message);
     }
 
+    /**
+     * Empty queue exception constructor with initial input target {@link Throwable}
+     *
+     * @param cause - initial input target {@link Throwable}
+     */
     public EmptyQueueException(final Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Empty queue exception constructor with initial input message and target {@link Throwable}
+     *
+     * @param message - initial input message {@link String}
+     * @param cause   - initial input target {@link Throwable}
+     */
     public EmptyQueueException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Returns description message {@link String}
+     *
+     * @return description message {@link String}
+     */
     @Override
     public String getMessage() {
         return super.getMessage();

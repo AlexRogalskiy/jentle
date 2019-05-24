@@ -24,25 +24,20 @@
 package com.wildbeeslabs.jentle.collections.graph.node;
 
 import com.wildbeeslabs.jentle.collections.utils.CUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Objects;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.*;
+
 /**
- *
  * Custom abstract graph node implementation
  *
+ * @param <T>
+ * @param <E>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <E>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -69,9 +64,7 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACBase
 
     public void setAdjacents(final Collection<E> adjacents) {
         this.adjacents.clear();
-        if (Objects.nonNull(adjacents)) {
-            this.adjacents.addAll(adjacents);
-        }
+        Optional.ofNullable(adjacents).orElseGet(Collections::emptyList).forEach(this::addAdjacent);
     }
 
     public void addAdjacent(final E adjacent) {
@@ -84,5 +77,9 @@ public abstract class ACGraphNode<T, E extends ACGraphNode<T, E>> extends ACBase
         if (Objects.nonNull(adjacent)) {
             this.adjacents.remove(adjacent);
         }
+    }
+
+    public int getNumOfAdjacents() {
+        return this.adjacents.size();
     }
 }
