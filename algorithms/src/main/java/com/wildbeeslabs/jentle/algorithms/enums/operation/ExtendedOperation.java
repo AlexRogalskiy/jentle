@@ -1,5 +1,6 @@
 package com.wildbeeslabs.jentle.algorithms.enums.operation;
 
+import com.wildbeeslabs.jentle.algorithms.toolset.iface.Operation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
