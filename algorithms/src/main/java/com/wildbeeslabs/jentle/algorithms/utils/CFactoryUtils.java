@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.algorithms.toolset;
+package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
 @UtilityClass
-public class Factory {
+public class CFactoryUtils {
 
     public static <T> T createInstance(final String typeName) {
         try {

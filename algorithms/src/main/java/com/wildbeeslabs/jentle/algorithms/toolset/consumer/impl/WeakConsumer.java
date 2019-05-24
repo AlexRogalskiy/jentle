@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.algorithms.toolset.iface;
+package com.wildbeeslabs.jentle.algorithms.toolset.consumer.impl;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;

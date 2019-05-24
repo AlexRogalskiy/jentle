@@ -201,7 +201,7 @@ public class QueryRunner {
     }
 
     /**
-     * Factory method that creates and initializes a
+     * CFactoryUtils method that creates and initializes a
      * {@code PreparedStatement} object for the given SQL.
      * {@code QueryRunner} methods always call this method to prepare
      * statements for them.  Subclasses can override this method to provide
@@ -221,7 +221,7 @@ public class QueryRunner {
     }
 
     /**
-     * Factory method that creates and initializes a
+     * CFactoryUtils method that creates and initializes a
      * {@code Connection} object.  {@code QueryRunner} methods
      * always call this method to retrieve connections from its DataSource.
      * Subclasses can override this method to provide

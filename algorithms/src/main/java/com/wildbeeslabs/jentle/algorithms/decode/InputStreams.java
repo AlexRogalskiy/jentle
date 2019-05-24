@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 /**
- * Factory methods for {@link InputStream} instances backed by binary or textual data that attempt
+ * CFactoryUtils methods for {@link InputStream} instances backed by binary or textual data that attempt
  * to minimize intermediate copying while streaming data.
  */
 @UtilityClass

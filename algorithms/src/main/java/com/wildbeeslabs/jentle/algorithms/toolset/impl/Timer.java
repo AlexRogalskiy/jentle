@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.algorithms.toolset;
+package com.wildbeeslabs.jentle.algorithms.toolset.impl;
 
 public class Timer {
 

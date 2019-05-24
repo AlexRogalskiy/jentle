@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
-import com.wildbeeslabs.jentle.algorithms.toolset.iface.TriConsumer;
+import com.wildbeeslabs.jentle.algorithms.toolset.consumer.iface.TriConsumer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
