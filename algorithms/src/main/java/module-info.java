@@ -35,4 +35,5 @@ module jentle.algorithms {
     requires dom4j;
     requires org.apache.commons.compress;
     requires java.desktop;
+    requires logback.classic;
 }

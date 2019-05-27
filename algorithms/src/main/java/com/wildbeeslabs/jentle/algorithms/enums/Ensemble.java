@@ -3,6 +3,8 @@ package com.wildbeeslabs.jentle.algorithms.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+
 /**
  * Helper enumeration class to process Ensembles
  *
@@ -27,4 +29,11 @@ public enum Ensemble {
     TRIPLE_QUARTET(12);
 
     private final int numberOfMusicians;
+
+    public static Ensemble fromNumber(final int number) {
+        return Arrays.stream(values())
+            .filter(type -> type.getNumberOfMusicians() == number)
+            .findFirst()
+            .orElse(null);
+    }
 }
