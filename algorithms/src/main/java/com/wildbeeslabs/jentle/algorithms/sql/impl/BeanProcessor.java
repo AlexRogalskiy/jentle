@@ -308,15 +308,20 @@ public class BeanProcessor {
      * @return A newly created object of the Class.
      * @throws SQLException if creation failed.
      */
-    protected Object newInstance(Class c) throws SQLException {
+    protected Object newInstance(final Class<Object> c) throws SQLException {
         try {
-            return c.newInstance();
+            return c.getDeclaredConstructor().newInstance();
 
         } catch (InstantiationException | IllegalAccessException e) {
             throw new SQLException(
                 "Cannot create " + c.getName() + ": " + e.getMessage());
 
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**

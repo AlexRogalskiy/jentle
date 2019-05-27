@@ -24,7 +24,7 @@ public enum OptBoolean {
     DEFAULT;
 
     public Boolean asBoolean() {
-        if (this.equals(DEFAULT) return null;
+        if (this.equals(DEFAULT)) return null;
         return this.equals(TRUE) ? Boolean.TRUE : Boolean.FALSE;
     }
 

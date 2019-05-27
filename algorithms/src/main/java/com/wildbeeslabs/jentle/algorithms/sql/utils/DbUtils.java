@@ -155,21 +155,16 @@ public class DbUtils {
      * @param driverClassName of driver to load
      * @return boolean <code>true</code> if the driver was found, otherwise <code>false</code>
      */
-    public static boolean loadDriver(String driverClassName) {
+    public static boolean loadDriver(final String driverClassName) {
         try {
-            Class.forName(driverClassName).newInstance();
+            Class.forName(driverClassName).getDeclaredConstructor().newInstance();
             return true;
-
         } catch (ClassNotFoundException e) {
             return false;
-
         } catch (IllegalAccessException e) {
-            // Constructor is private, OK for DriverManager contract
             return true;
-
         } catch (InstantiationException e) {
             return false;
-
         } catch (Throwable e) {
             return false;
         }
