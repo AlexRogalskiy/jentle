@@ -79,6 +79,14 @@ public class CExceptionUtils {
         void run() throws E;
     }
 
+    public static RuntimeException sneakyThrow(final Throwable throwable) {
+        return CExceptionUtils.doThrow(throwable);
+    }
+
+    private static <T extends Throwable> T doThrow(final Throwable throwable) throws T {
+        throw (T) throwable;
+    }
+
     /**
      * Wrap unary consumer exceptions
      * <p>
@@ -371,8 +379,8 @@ public class CExceptionUtils {
 
     public String getStack() {
         return Arrays.stream(Thread.currentThread()
-                .getStackTrace())
-                .map(element -> element.toString())
-                .collect(Collectors.joining(System.lineSeparator()));
+            .getStackTrace())
+            .map(element -> element.toString())
+            .collect(Collectors.joining(System.lineSeparator()));
     }
 }
