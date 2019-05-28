@@ -71,7 +71,7 @@ public class CDefaultsUtils {
      */
     @SuppressWarnings("unchecked")
     public static Object defaultValue(final Type type) {
-        Objects.requireNonNull(type);
+        Objects.requireNonNull(type, "Type should not be null!");
         return DEFAULTS.get(type);
     }
 }

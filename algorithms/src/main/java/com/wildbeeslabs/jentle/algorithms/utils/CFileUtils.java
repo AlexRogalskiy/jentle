@@ -31,6 +31,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -352,5 +354,24 @@ public class CFileUtils {
 
     public static String readFile7(final String path) throws IOException {
         return new String(loadFileIntoByte(path), Charset.forName(StandardCharsets.UTF_8.name()));
+    }
+
+    public static URL getResource(final String resourceName) {
+        URL url = null;
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (Objects.nonNull(loader)) {
+            url = loader.getResource(resourceName);
+        }
+        if (Objects.isNull(url)) {
+            url = ClassLoader.getSystemResource(resourceName);
+        }
+        if (Objects.isNull(url)) {
+            try {
+                url = (new File(URLDecoder.decode(resourceName, "UTF-8"))).toURI().toURL();
+            } catch (Exception e) {
+                log.error("Problem loading resource", e);
+            }
+        }
+        return url;
     }
 }

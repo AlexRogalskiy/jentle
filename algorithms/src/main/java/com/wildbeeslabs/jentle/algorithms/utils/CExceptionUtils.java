@@ -88,6 +88,43 @@ public class CExceptionUtils {
     }
 
     /**
+     * Retrieves cause exception and wraps to {@link CommandActionExecutionException}.
+     *
+     * @param throwable the throwable
+     */
+    public static void propagateCause(final Throwable throwable) throws RuntimeException {
+        throw new RuntimeException(throwable.getCause());
+    }
+
+    /**
+     * Wraps cause exception to {@link CommandActionExecutionException}.
+     *
+     * @param throwable the throwable
+     */
+    public static RuntimeException wrapCause(final Throwable throwable) {
+        return new RuntimeException(throwable.getCause());
+    }
+
+    /**
+     * Gets actual exception if it's wrapped in {@link CommandActionExecutionException} or {@link HystrixBadRequestException}.
+     *
+     * @param e the exception
+     * @return unwrapped
+     */
+    public static Throwable unwrapCause(final Throwable e) {
+        if (e instanceof Exception) {
+            return e.getCause();
+        }
+        if (e instanceof Error) {
+            throw (Error) e;
+        }
+        if (e instanceof RuntimeException) {
+            return e.getCause();
+        }
+        return e;
+    }
+
+    /**
      * Wrap unary consumer exceptions
      * <p>
      * .forEach(wrapUnaryConsumer(name ->

@@ -82,6 +82,72 @@ public class CReflectionUtils {
     }
 
     /**
+     * Gets all fields from class and its super classes.
+     *
+     * @param clazz class to get fields from
+     * @return set of fields
+     */
+    public static Set<Field> getAllFields2(final Class<?> clazz) {
+        Set<Field> set = new HashSet<>();
+        Class<?> c = clazz;
+        while (c != null) {
+            set.addAll(Arrays.asList(c.getDeclaredFields()));
+            c = c.getSuperclass();
+        }
+        return set;
+    }
+
+    /**
+     * Gets all methods from class and its super classes.
+     *
+     * @param clazz class to get methods from
+     * @return set of methods
+     */
+    public static Set<Method> getAllMethods(final Class<?> clazz) {
+        Set<Method> set = new HashSet<>();
+        Class<?> c = clazz;
+        while (c != null) {
+            set.addAll(Arrays.asList(c.getDeclaredMethods()));
+            c = c.getSuperclass();
+        }
+        return set;
+    }
+
+    /**
+     * Gets all fields annotated by annotation.
+     *
+     * @param clazz class to get fields from
+     * @param ann    annotation that must be present on the field
+     * @return set of fields
+     */
+    public static Set<Field> getFieldsAnnotatedBy(final Class<?> clazz, final Class<? extends Annotation> ann) {
+        Set<Field> set = new HashSet<>();
+        for (Field field : getAllFields(clazz)) {
+            if (field.isAnnotationPresent(ann)) {
+                set.add(field);
+            }
+        }
+        return set;
+    }
+
+    /**
+     * Gets all methods annotated by annotation.
+     *
+     * @param clazz class to get fields from
+     * @param ann    annotation that must be present on the method
+     * @return set of methods
+     */
+    public static Set<Method> getMethodsAnnotatedBy(final Class<?> clazz, final Class<? extends Annotation> ann) {
+        Set<Method> set = new HashSet<>();
+        for (Method method : getAllMethods(clazz)) {
+            if (method.isAnnotationPresent(ann)) {
+                set.add(method);
+            }
+        }
+        return set;
+    }
+
+    /**
      * Checks whether the specified class parameter is an instance of
      * {@link java.util.Map} interface.
      *
