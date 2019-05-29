@@ -115,4 +115,58 @@ public class CStreamUtils {
             }
         }, parallel);
     }
+
+    public static <T> Stream<T> enumerationAsStream(final Enumeration<T> enumeration) {
+        Objects.requireNonNull(enumeration, "Enumeration should not be null");
+        return StreamSupport.stream(
+            Spliterators.spliteratorUnknownSize(
+                new Iterator<T>() {
+                    public T next() {
+                        return enumeration.nextElement();
+                    }
+
+                    public boolean hasNext() {
+                        return enumeration.hasMoreElements();
+                    }
+                },
+                Spliterator.ORDERED), false);
+    }
+
+    public static <T> Stream<T> enumerationAsStream2(final Enumeration<T> enumeration) {
+        Objects.requireNonNull(enumeration, "Enumeration should not be null");
+        return StreamSupport.stream(
+            Spliterators.spliteratorUnknownSize(
+                new Iterator<T>() {
+                    public T next() {
+                        return enumeration.nextElement();
+                    }
+
+                    public boolean hasNext() {
+                        return enumeration.hasMoreElements();
+                    }
+
+                    public void forEachRemaining(final Consumer<? super T> action) {
+                        while (enumeration.hasMoreElements()) action.accept(enumeration.nextElement());
+                    }
+                },
+                Spliterator.ORDERED), false);
+    }
+
+    public static <T> Stream<T> enumerationAsStream3(final Enumeration<T> enumeration) {
+        Objects.requireNonNull(enumeration, "Enumeration should not be null");
+        return StreamSupport.stream(
+            new Spliterators.AbstractSpliterator<T>(Long.MAX_VALUE, Spliterator.ORDERED) {
+                public boolean tryAdvance(final Consumer<? super T> action) {
+                    if (enumeration.hasMoreElements()) {
+                        action.accept(enumeration.nextElement());
+                        return true;
+                    }
+                    return false;
+                }
+
+                public void forEachRemaining(final Consumer<? super T> action) {
+                    while (enumeration.hasMoreElements()) action.accept(enumeration.nextElement());
+                }
+            }, false);
+    }
 }
