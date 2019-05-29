@@ -102,9 +102,9 @@ public class CRegexUtils {
         return CRegexUtils.isIPv6StdAddress(input) || CRegexUtils.isIPv6HexCompressedAddress(input);
     }
 
-//    public static boolean isValidEmailAddress(final String value, final Boolean allowLocal) {
-//        return EmailValidator.getInstance(allowLocal).isValid(value);
-//    }
+    public static boolean isValidEmailAddress(final String value, final Boolean allowLocal) {
+        return allowLocal && CRegexUtils.isValidEmailAddress(value);
+    }
 
     public boolean isValidEmailAddress(final String input) {
         return CRegexUtils.DEFAULT_EMAIL_PATTERN.matcher(input).matches();

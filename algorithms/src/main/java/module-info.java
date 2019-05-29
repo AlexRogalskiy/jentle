@@ -36,4 +36,5 @@ module jentle.algorithms {
     requires org.apache.commons.compress;
     requires java.desktop;
     requires logback.classic;
+    requires json;
 }

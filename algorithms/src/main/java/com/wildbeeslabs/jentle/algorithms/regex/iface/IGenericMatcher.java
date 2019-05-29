@@ -34,5 +34,5 @@ package com.wildbeeslabs.jentle.algorithms.regex.iface;
  */
 public interface IGenericMatcher<T> {
 
-    boolean matches(final Object o);
+    boolean matches(final T o);
 }
