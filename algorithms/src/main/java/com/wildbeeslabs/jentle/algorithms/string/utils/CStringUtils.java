@@ -95,6 +95,11 @@ public class CStringUtils {
     public static final String DEFAULT_LOCALE_DELIMITER = "_";
 
     /**
+     * Default string length {@link Function}
+     */
+    public static final Function<String, Integer> DEFAULT_STRING_LENGTH = (s) -> s.length();
+
+    /**
      * Default decimal format instance {@link DecimalFormat}
      */
     public static final ThreadLocal<DecimalFormat> DEFAULT_DECIMAL_FORMATTER = ThreadLocal.withInitial(() -> {
