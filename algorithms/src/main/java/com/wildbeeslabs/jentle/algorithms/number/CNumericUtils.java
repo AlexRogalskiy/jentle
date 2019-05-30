@@ -383,7 +383,8 @@ public class CNumericUtils {
      * @param array the supplied array of positive integer numbers
      * @return GCD of the supplied array
      */
-    public static final int gcd(int[] array) {
+    public static final int gcd(final int[] array) {
+        Objects.requireNonNull(array, "Array should not be null");
         if (array.length < 2) {
             throw new IllegalArgumentException(String.format("ERROR: invalid input argument, array=(%s) has less than 2 elements", array));
         }
@@ -404,7 +405,8 @@ public class CNumericUtils {
      * @param array the supplied array of positive integer numbers
      * @return LCM of the supplied array
      */
-    public static final int lcm(int[] array) {
+    public static final int lcm(final int[] array) {
+        Objects.requireNonNull(array, "Array should not be null");
         if (array.length < 2) {
             throw new IllegalArgumentException(String.format("ERROR: invalid input argument, array=(%s) has less than 2 elements", array));
         }
@@ -475,22 +477,20 @@ public class CNumericUtils {
         return sb.toString();
     }
 
-    public static int min(int... numbers) {
+    public static int min(final int... numbers) {
         return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
     }
 
-    public static int max(int... numbers) {
+    public static int max(final int... numbers) {
         return Arrays.stream(numbers).max().orElse(Integer.MIN_VALUE);
     }
 
     public static long getBiggerPrime(int m) {
-        final BigInteger prime = BigInteger.probablePrime(CBitwise.getNumberOfBits(m) + 1, new Random());
-        return prime.longValue();
+        return BigInteger.probablePrime(CBitwise.getNumberOfBits(m) + 1, new Random()).longValue();
     }
 
     public static long getLowerPrime(long m) {
-        final BigInteger prime = BigInteger.probablePrime(CBitwise.getNumberOfBits(m) - 1, new Random());
-        return prime.longValue();
+        return BigInteger.probablePrime(CBitwise.getNumberOfBits(m) - 1, new Random()).longValue();
     }
 
     /**
@@ -581,57 +581,61 @@ public class CNumericUtils {
         return a - CNumericUtils.TWO_PI * Math.floor((a + Math.PI - center) / CNumericUtils.TWO_PI);
     }
 
-    public List<Integer> noNegative(final List<Integer> nums) {
-        return nums.stream()
-            .filter(n -> n >= 0)
-            .collect(Collectors.toList());
+    public static List<Integer> noNegative(final List<Integer> nums) {
+        return nums.stream().filter(n -> n >= 0).collect(Collectors.toList());
     }
 
-    public List<Integer> noNegative2(final List<Integer> nums) {
+    public static List<Integer> noNegative2(final List<Integer> nums) {
         nums.removeIf(n -> n < 0);
         return nums;
     }
 
-    public List<Integer> doubling(final List<Integer> nums) {
+    public static List<Integer> doubling(final List<Integer> nums) {
         nums.replaceAll(n -> n * 2);
         return nums;
     }
 
-    public List<Integer> doubling2(List<Integer> nums) {
-        return nums.stream()
-            .map(n -> n * 2)
-            .collect(Collectors.toList());
+    public static List<Integer> doubling2(final List<Integer> nums) {
+        return nums.stream().map(n -> n * 2).collect(Collectors.toList());
     }
 
-    public static Double averageDouble(@NonNull final Stream<String> stream) {
+    public static Double averageDouble(final Stream<String> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.averagingDouble(n -> Double.parseDouble(n)));
     }
 
-    public static Double averageInt(@NonNull final Stream<String> stream) {
+    public static Double averageInt(final Stream<String> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.averagingInt(n -> Integer.parseInt(n)));
     }
 
-    public static Double averageLong(@NonNull final Stream<String> stream) {
+    public static Double averageLong(final Stream<String> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.averagingLong(n -> Long.parseLong(n)));
     }
 
-    public static Integer sumInt(@NonNull final Stream<Integer> stream) {
+    public static Integer sumInt(final Stream<Integer> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.summingInt(Integer::intValue));
     }
 
-    public static Long sumParseLong(@NonNull final Stream<String> stream) {
+    public static Long sumParseLong(final Stream<String> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.summingLong(n -> Long.parseLong(n)));
     }
 
-    public static Long sumLong(@NonNull final Stream<Long> stream) {
+    public static Long sumLong(final Stream<Long> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.summingLong(n -> n));
     }
 
-    public static Double sumDouble(@NonNull final Stream<Double> stream) {
+    public static Double sumDouble(final Stream<Double> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.summingDouble(Double::doubleValue));
     }
 
-    public static long counting(@NonNull final Stream<String> stream) {
+    public static long counting(final Stream<String> stream) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.counting());
     }
 
@@ -639,40 +643,34 @@ public class CNumericUtils {
         return Stream.iterate(BigDecimal.ONE, bigDecimal -> bigDecimal.add(BigDecimal.ONE)).limit(limit).collect(Collectors.toList());
     }
 
-    public static <T> LongSummaryStatistics countBy(@NonNull final Stream<? extends T> stream, final ToLongFunction<? super T> mapper) {
+    public static <T> LongSummaryStatistics countBy(final Stream<? extends T> stream, final ToLongFunction<? super T> mapper) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.summarizingLong(mapper));
     }
 
-    public static <T> IntSummaryStatistics countBy(@NonNull final Stream<? extends T> stream, final ToIntFunction<? super T> mapper) {
+    public static <T> IntSummaryStatistics countBy(final Stream<? extends T> stream, final ToIntFunction<? super T> mapper) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.summarizingInt(mapper));
     }
 
-    public static <T> DoubleSummaryStatistics countBy(@NonNull final Stream<? extends T> stream, final ToDoubleFunction<? super T> mapper) {
+    public static <T> DoubleSummaryStatistics countBy(final Stream<? extends T> stream, final ToDoubleFunction<? super T> mapper) {
+        Objects.requireNonNull(stream, "Stream should not be null");
         return stream.collect(Collectors.summarizingDouble(mapper));
     }
 
-    public static Double reduce(@NonNull final DoubleStream stream, final DoubleBinaryOperator operator) {
-        final OptionalDouble d = stream.reduce(operator);
-        if (d.isPresent()) {
-            return d.getAsDouble();
-        }
-        return null;
+    public static Double reduce(final DoubleStream stream, final DoubleBinaryOperator operator) {
+        Objects.requireNonNull(stream, "Stream should not be null");
+        return stream.reduce(operator).orElseGet(null);
     }
 
-    public static Integer reduce(@NonNull final IntStream stream, final IntBinaryOperator operator) {
-        final OptionalInt d = stream.reduce(operator);
-        if (d.isPresent()) {
-            return d.getAsInt();
-        }
-        return null;
+    public static Integer reduce(final IntStream stream, final IntBinaryOperator operator) {
+        Objects.requireNonNull(stream, "Stream should not be null");
+        return stream.reduce(operator).orElseGet(null);
     }
 
-    public static Long reduce(@NonNull final LongStream stream, final LongBinaryOperator operator) {
-        final OptionalLong d = stream.reduce(operator);
-        if (d.isPresent()) {
-            return d.getAsLong();
-        }
-        return null;
+    public static Long reduce(final LongStream stream, final LongBinaryOperator operator) {
+        Objects.requireNonNull(stream, "Stream should not be null");
+        return stream.reduce(operator).orElseGet(null);
     }
 
     public static double calculatePercentage(Double firstValue, Double lastValue) {
@@ -683,8 +681,9 @@ public class CNumericUtils {
     }
 
     public static boolean inRange(Double value, Double lowerBound, Double upperBound) {
-        Objects.requireNonNull(lowerBound);
-        Objects.requireNonNull(upperBound);
+        Objects.requireNonNull(lowerBound, "Lower bound should not be null");
+        Objects.requireNonNull(upperBound, "Upper bound should not be null");
+
         final Range<Double> range = Range.between(lowerBound, upperBound);
         return range.contains(value);
     }
@@ -725,7 +724,6 @@ public class CNumericUtils {
     @EqualsAndHashCode
     @ToString
     public static class Averager implements IntConsumer {
-
         private int total;
         private int count;
 

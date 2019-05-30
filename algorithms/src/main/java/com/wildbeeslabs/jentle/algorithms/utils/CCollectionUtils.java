@@ -210,7 +210,7 @@ public class CCollectionUtils {
         return CCollectionUtils.countBy(list, Function.identity());
     }
 
-    public static <T, K, M> Map<K, Optional<T>> reduce(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy, final BinaryOperator<T> operator) {
+    public static <T, K> Map<K, Optional<T>> reduce(@NonNull final Stream<? extends T> list, final Function<? super T, ? extends K> groupingBy, final BinaryOperator<T> operator) {
         return list.collect(Collectors.groupingByConcurrent(groupingBy, Collectors.reducing(operator)));
     }
 
