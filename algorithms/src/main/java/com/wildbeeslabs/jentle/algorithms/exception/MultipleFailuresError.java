@@ -1,9 +1,17 @@
 package com.wildbeeslabs.jentle.algorithms.exception;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Multiple failure {@link AssertionError} implementation
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class MultipleFailuresError extends AssertionError {
 
     private static final long serialVersionUID = 191418478018791149L;
