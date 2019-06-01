@@ -117,7 +117,7 @@ public class CReflectionUtils {
      * Gets all fields annotated by annotation.
      *
      * @param clazz class to get fields from
-     * @param ann    annotation that must be present on the field
+     * @param ann   annotation that must be present on the field
      * @return set of fields
      */
     public static Set<Field> getFieldsAnnotatedBy(final Class<?> clazz, final Class<? extends Annotation> ann) {
@@ -134,7 +134,7 @@ public class CReflectionUtils {
      * Gets all methods annotated by annotation.
      *
      * @param clazz class to get fields from
-     * @param ann    annotation that must be present on the method
+     * @param ann   annotation that must be present on the method
      * @return set of methods
      */
     public static Set<Method> getMethodsAnnotatedBy(final Class<?> clazz, final Class<? extends Annotation> ann) {
@@ -159,6 +159,14 @@ public class CReflectionUtils {
         final List<Class<?>> classes = new ArrayList<>();
         CReflectionUtils.computeClassHierarchy(clazz, classes);
         return classes.contains(Map.class);
+    }
+
+    private static Class<? extends Annotation> retrieveConfigAnnotation(final List<Class<? extends Annotation>> annotationList, final Method m) {
+        return annotationList
+            .stream()
+            .filter(annotation -> Objects.nonNull(m.getAnnotation(annotation)))
+            .findAny()
+            .orElse(null);
     }
 
     /**
@@ -433,5 +441,41 @@ public class CReflectionUtils {
             }
         }
         return paramClasses.toArray(new Class<?>[0]);
+    }
+
+    public static boolean isStaticVoid(final Method method) {
+        return method.getReturnType().equals(void.class) && Modifier.isStatic(method.getModifiers());
+    }
+
+    public static List<Method> getDefaultMethods(final Class<?> clazz) {
+        List<Method> result = null;
+        for (Class<?> ifc : clazz.getInterfaces()) {
+            for (Method ifcMethod : ifc.getMethods()) {
+                if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
+                    if (result == null) {
+                        result = new LinkedList<>();
+                    }
+                    result.add(ifcMethod);
+                }
+            }
+        }
+        return result;
+    }
+
+    public static <T extends Annotation> T findAnnotation(final Class<?> typedTestClass, final Class<T> annotation) {
+        if (Objects.isNull(typedTestClass) || Objects.isNull(annotation)) {
+            return null;
+        }
+        T ignore = null;
+        Class<?> testClass = typedTestClass;
+
+        while (Objects.nonNull(testClass) && testClass != Object.class) {
+            ignore = testClass.getAnnotation(annotation);
+            if (ignore != null) {
+                break;
+            }
+            testClass = testClass.getSuperclass();
+        }
+        return ignore;
     }
 }

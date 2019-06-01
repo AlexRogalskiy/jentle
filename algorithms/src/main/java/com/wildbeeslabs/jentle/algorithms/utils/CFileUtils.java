@@ -374,4 +374,94 @@ public class CFileUtils {
         }
         return url;
     }
+
+    public static void copyFile(final File from, final File to) {
+        to.getParentFile().mkdirs();
+        try (InputStream in = new FileInputStream(from);
+             OutputStream out = new FileOutputStream(to)) {
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    public static File createTempFile(final String content) {
+        try {
+            // Create temp file.
+            File result = File.createTempFile("testng-tmp", "");
+
+            // Delete temp file when program exits.
+            result.deleteOnExit();
+
+            // Write to temp file
+            try (BufferedWriter out = new BufferedWriter(new FileWriter(result))) {
+                out.write(content);
+            }
+
+            return result;
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static String readFile(final File f) throws IOException {
+        try (InputStream is = new FileInputStream(f)) {
+            return readFile(is);
+        }
+    }
+
+    public static String readFile(final InputStream is) throws IOException {
+        StringBuilder result = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line = br.readLine();
+        while (line != null) {
+            result.append(line).append("\n");
+            line = br.readLine();
+        }
+        return result.toString();
+    }
+
+    public static void writeFile(final String string, final File f) throws IOException {
+        f.getParentFile().mkdirs();
+        try (FileWriter fw = new FileWriter(f);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(string);
+        }
+    }
+
+    public static void copyFile(final InputStream from, final File to) throws IOException {
+        if (!to.getParentFile().exists()) {
+            to.getParentFile().mkdirs();
+        }
+
+        try (OutputStream os = new FileOutputStream(to)) {
+            byte[] buffer = new byte[65536];
+            int count = from.read(buffer);
+            while (count > 0) {
+                os.write(buffer, 0, count);
+                count = from.read(buffer);
+            }
+        }
+    }
+
+    public static String streamToString(final InputStream is) throws IOException {
+        if (is != null) {
+            Writer writer = new StringWriter();
+
+            char[] buffer = new char[1024];
+            try (Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+                int n;
+                while ((n = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, n);
+                }
+            }
+            return writer.toString();
+        } else {
+            return "";
+        }
+    }
 }

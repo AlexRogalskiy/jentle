@@ -344,10 +344,10 @@ public class CCollectionUtils {
     @FunctionalInterface
     interface TriFunction<A, B, C, R> {
 
-        R apply(A a, B b, C c);
+        R apply(final A a, final B b, final C c);
 
-        default <V> TriFunction<A, B, C, V> andThen(@NonNull Function<? super R, ? extends V> after) {
-            return (A a, B b, C c) -> after.apply(apply(a, b, c));
+        default <V> TriFunction<A, B, C, V> andThen(@NonNull final Function<? super R, ? extends V> after) {
+            return (final A a, final B b, final C c) -> after.apply(apply(a, b, c));
         }
     }
 
@@ -471,5 +471,87 @@ public class CCollectionUtils {
             return false;
         }
         return set1.containsAll(set2);
+    }
+
+    @NonNull
+    public static <K> List<K> intersection(final List<K> list1, final List<K> list2) {
+        final List<K> list1Local = Optional.ofNullable(list1).orElseGet(Collections::emptyList);
+        final List<K> list2Local = Optional.ofNullable(list2).orElseGet(Collections::emptyList);
+        return list1Local.stream().filter(list2Local::contains).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns {@link Optional} of {@code T} by input parameters
+     *
+     * @param <T>       type of input element to be converted from by operation
+     * @param predicate - initial input {@link Predicate}
+     * @param reducer   - initial input {@link BinaryOperator}
+     * @param values    - initial input collection of {@code T}
+     * @return {@link Optional} of {@code T}
+     */
+    @NonNull
+    public static <T> Optional<T> reduce(final T[] values, final Predicate<T> predicate, final BinaryOperator<T> reducer) {
+        Objects.requireNonNull(predicate, "Predicate should not be null");
+        Objects.requireNonNull(reducer, "Reducer should not be null");
+
+        return streamOf(values).filter(predicate).reduce(reducer);
+    }
+
+    /**
+     * Returns {@link Optional} of {@code T} by input parameters
+     *
+     * @param <T>       type of input element to be converted from by operation
+     * @param predicate - initial input {@link Predicate}
+     * @param reducer   - initial input {@link BinaryOperator}
+     * @param values    - initial input collection of {@code T}
+     * @return {@link Optional} of {@code T}
+     */
+    @NonNull
+    public static <T, K extends Throwable> T reduceOrThrow(final T[] values, final Predicate<T> predicate, final BinaryOperator<T> reducer, final Supplier<? extends K> supplier) {
+        Objects.requireNonNull(predicate, "Predicate should not be null");
+        Objects.requireNonNull(reducer, "Reducer should not be null");
+        Objects.requireNonNull(supplier, "Supplier should not be null");
+
+        try {
+            return reduce(values, predicate, reducer).orElseThrow(supplier);
+        } catch (Throwable k) {
+            throw new IllegalArgumentException(String.format("ERROR: cannot operate reducer on values = {%s}", join(values, "|")), k);
+        }
+    }
+
+    /**
+     * Returns non-nullable {@link Stream} of {@code T} by input collection of {@code T} values
+     *
+     * @param <T>    type of input element to be converted from by operation
+     * @param values - initial input collection of {@code T} values
+     * @return non-nullable {@link Stream} of {@code T}
+     */
+    @NonNull
+    public static <T> Stream<T> streamOf(final T... values) {
+        return Arrays.stream(Optional.ofNullable(values).orElseGet(() -> (T[]) new Objects[]{}));
+    }
+
+    /**
+     * Returns non-nullable {@link Iterable} collection from input {@link Iterable} collection of values {@code T}
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param iterable - initial input {@link Iterable} collection of {@code T} values
+     * @return non-nullable {@link Iterable} collection
+     */
+    @NonNull
+    public static <T> List<T> listOf(final Iterable<T> iterable) {
+        return StreamSupport.stream(Optional.ofNullable(iterable).orElseGet(Collections::emptyList).spliterator(), false).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns {@link Iterable} by input {@link Iterator}
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param iterator - initial input {@link Iterator}
+     * @return {@link Iterable}
+     */
+    @NonNull
+    public static <T> Iterable<T> iterableOf(final Iterator<T> iterator) {
+        return () -> iterator;
     }
 }

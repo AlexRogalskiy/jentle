@@ -23,37 +23,24 @@
  */
 package com.wildbeeslabs.jentle.collections.map.impl;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Utility to have 'intern' - like functionality, which holds single instance of wrapper for a given key
+ * A container to hold sets indexed by a key.
  */
-public class InternMap<K, V> {
-    private final ConcurrentMap<K, V> storage = new ConcurrentHashMap<K, V>();
-    private final ValueConstructor<K, V> valueConstructor;
+public class SetMultiMap<K, V> extends MultiMap<K, V, Set<V>> {
 
-    public interface ValueConstructor<K, V> {
-        V create(final K key);
+    public SetMultiMap(boolean isSorted) {
+        super(isSorted);
     }
 
-    public InternMap(final ValueConstructor<K, V> valueConstructor) {
-        this.valueConstructor = valueConstructor;
+    @Override
+    protected Set<V> createValue() {
+        return new HashSet<>();
     }
 
-    public V interned(final K key) {
-        V existingKey = this.storage.get(key);
-        V newKey = null;
-        if (Objects.isNull(existingKey)) {
-            newKey = this.valueConstructor.create(key);
-            existingKey = this.storage.putIfAbsent(key, newKey);
-        }
-        return Optional.ofNullable(existingKey).orElse(newKey);
-    }
-
-    public int size() {
-        return this.storage.size();
+    public static <K, V> SetMultiMap<K, V> create() {
+        return new SetMultiMap<>(false);
     }
 }

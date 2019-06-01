@@ -749,4 +749,8 @@ public class CNumericUtils {
         }
         return builder.toString();
     }
+
+    public static List<Integer> asList(final int... ints) {
+        return Arrays.stream(ints).boxed().collect(Collectors.toList());
+    }
 }

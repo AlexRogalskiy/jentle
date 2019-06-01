@@ -23,56 +23,145 @@
  */
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
-import java.util.Properties;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
- * Custom property utilities implementation
- *
- * @author Alex
- * @version 1.0.0
- * @since 2017-08-07
+ * Utility class for setting JavaBeans-style properties on instances.
  */
 @Slf4j
+@UtilityClass
 public class CPropertyUtils {
 
-    private static CPropertyUtils ourInstance = new CPropertyUtils();
-    private static final String DEFAULT_PROPERTIES_PATH = "/default.properties";
+    public static void setProperty(Object instance, String name, String value) {
+        if (instance == null) {
+            log.warn("Cannot set property " + name + " with value " + value + ". The target instance is null");
+            return;
+        }
 
-    private Properties properties;
+        Class propClass = getPropertyType(instance.getClass(), name);
+        if (propClass == null) {
+            log.warn(
+                "Cannot set property "
+                    + name
+                    + " with value "
+                    + value
+                    + ". Property class could not be found");
+            return;
+        }
 
-    /**
-     * Default private constructor
-     */
-    private CPropertyUtils() {
-        this.properties = new Properties();
+        Object realValue = convertType(propClass, value, name);
+        // TODO: Here the property desc is serched again
+        setPropertyRealValue(instance, name, realValue);
     }
 
-    /**
-     * Initialized {@link Properties} by input source path
-     *
-     * @param path - initial input source path
-     */
-    public void init(final String path) {
-        final String propertiesPath = Objects.isNull(System.getProperty(path)) ? DEFAULT_PROPERTIES_PATH : System.getProperty(path);
-        final InputStream input = CPropertyUtils.class.getResourceAsStream(propertiesPath);
+    public static Class getPropertyType(Class instanceClass, String propertyName) {
+        if (instanceClass == null) {
+            log.warn("Cannot retrieve property class for " + propertyName + ". Target instance class is null");
+        }
+        PropertyDescriptor propDesc = getPropertyDescriptor(instanceClass, propertyName);
+        if (propDesc == null) {
+            return null;
+        }
+        return propDesc.getPropertyType();
+    }
+
+    private static PropertyDescriptor getPropertyDescriptor(Class targetClass, String propertyName) {
+        PropertyDescriptor result = null;
+        if (targetClass == null) {
+            log.warn("Cannot retrieve property " + propertyName + ". Class is null");
+        } else {
+            try {
+                BeanInfo beanInfo = Introspector.getBeanInfo(targetClass);
+                PropertyDescriptor[] propDescriptors = beanInfo.getPropertyDescriptors();
+                for (PropertyDescriptor propDesc : propDescriptors) {
+                    if (propDesc.getName().equals(propertyName)) {
+                        result = propDesc;
+                        break;
+                    }
+                }
+            } catch (IntrospectionException ie) {
+                log.warn("Cannot retrieve property " + propertyName + ". Cause is: " + ie);
+            }
+        }
+        return result;
+    }
+
+    public static void setPropertyRealValue(Object instance, String name, Object value) {
+        if (instance == null) {
+            log.warn(
+                "Cannot set property " + name + " with value " + value + ". Targe instance is null");
+            return;
+        }
+
+        PropertyDescriptor propDesc = getPropertyDescriptor(instance.getClass(), name);
+        if (propDesc == null) {
+            log.warn(
+                "Cannot set property " + name + " with value " + value + ". Property does not exist");
+            return;
+        }
+
+        Method method = propDesc.getWriteMethod();
         try {
-            this.properties.load(input);
-        } catch (IOException e) {
-            log.error("ERROR: cannot load input source: ", path);
+            method.invoke(instance, value);
+        } catch (IllegalAccessException | InvocationTargetException iae) {
+            log.warn("Cannot set property " + name + " with value " + value + ". Cause " + iae);
         }
     }
 
-    public static CPropertyUtils getInstance() {
-        return ourInstance;
-    }
+    public static <T> T convertType(Class<T> type, String value, String paramName) {
+        try {
+            if (value == null || "null".equals(value.toLowerCase())) {
+                if (type.isPrimitive()) {
+                    log.warn(
+                        "Parameters",
+                        2,
+                        "Attempt to pass null value to primitive type parameter '" + paramName + "'");
+                }
 
-    public String getProperty(final String key) {
-        return StringUtils.isNotBlank(key) ? this.properties.getProperty(key) : null;
+                return null; // null value must be used
+            }
+
+            if (type == String.class) {
+                return (T) value;
+            }
+            if (type == int.class || type == Integer.class) {
+                return (T) Integer.valueOf(value);
+            }
+            if (type == boolean.class || type == Boolean.class) {
+                return (T) Boolean.valueOf(value);
+            }
+            if (type == byte.class || type == Byte.class) {
+                return (T) Byte.valueOf(value);
+            }
+            if (type == char.class || type == Character.class) {
+                return (T) Character.valueOf(value.charAt(0));
+            }
+            if (type == double.class || type == Double.class) {
+                return (T) Double.valueOf(value);
+            }
+            if (type == float.class || type == Float.class) {
+                return (T) Float.valueOf(value);
+            }
+            if (type == long.class || type == Long.class) {
+                return (T) Long.valueOf(value);
+            }
+            if (type == short.class || type == Short.class) {
+                return (T) Short.valueOf(value);
+            }
+            if (type.isEnum()) {
+                return (T) Enum.valueOf((Class<Enum>) type, value);
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Conversion issue on parameter: " + paramName, e);
+        }
+        throw new IllegalArgumentException("Unsupported type parameter : " + type);
     }
 }

@@ -220,7 +220,7 @@ public class CDynamicArray<T> extends ACArray<T> {
 
         @Override
         public T next() {
-            if (!hasNext()) {
+            if (!this.hasNext()) {
                 return null;
             }
             final T value = this.source.array[this.cursor];
