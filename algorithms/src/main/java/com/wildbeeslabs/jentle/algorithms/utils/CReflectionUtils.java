@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
@@ -477,5 +478,16 @@ public class CReflectionUtils {
             testClass = testClass.getSuperclass();
         }
         return ignore;
+    }
+
+    public static <T> Class<? super T> getNonSerializableSuperClass(final Class<T> type) {
+        Class result = type;
+        do {
+            if (!Serializable.class.isAssignableFrom(result)) {
+                return result;
+            }
+            result = result.getSuperclass();
+        } while (Objects.nonNull(result));
+        throw new Error("Bad class hierarchy: No non-serializable parents");
     }
 }
