@@ -803,7 +803,7 @@ public class CSort {
 
     /**
      * @param array Input array.
-     * @param cmp   Function that defines an alternative sort order. The function
+     * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
      * @param <T>
@@ -825,7 +825,7 @@ public class CSort {
 
     /**
      * @param array Input array.
-     * @param cmp   Function that defines an alternative sort order. The function
+     * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
      * @param <T>
@@ -851,7 +851,7 @@ public class CSort {
 
     /**
      * @param array Input array.
-     * @param cmp   Function that defines an alternative sort order. The function
+     * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
      * @param <T>
@@ -911,7 +911,7 @@ public class CSort {
 
     /**
      * @param array Input array.
-     * @param cmp   Function that defines an alternative sort order. The function
+     * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
      * @param <T>
@@ -924,7 +924,7 @@ public class CSort {
     /**
      * @param array Input array.
      * @param steps Input array of sorting steps
-     * @param cmp   Function that defines an alternative sort order. The function
+     * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
      * @param <T>
@@ -948,7 +948,7 @@ public class CSort {
     /**
      * @param array Input array.
      * @param step  Sorting step.
-     * @param cmp   Function that defines an alternative sort order. The function
+     * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
      * @param <T>

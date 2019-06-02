@@ -37,4 +37,5 @@ module jentle.algorithms {
     requires java.desktop;
     requires logback.classic;
     requires json;
+    requires java.compiler;
 }

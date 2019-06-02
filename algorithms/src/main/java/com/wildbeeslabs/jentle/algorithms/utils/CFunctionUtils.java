@@ -25,6 +25,10 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 /**
  * Custom function utilities implementation
  *
@@ -39,11 +43,24 @@ public class CFunctionUtils {
         T apply(final T arg);
     }
 
-    public interface Function<T> {
+    public interface BinaryFunction<T> {
         T apply(final T arg1, final T arg2);
     }
 
     private static UnaryFunction<Object> IDENTITY_FUNCTION = arg -> arg;
 
-    private static final Function<Number> MAX = (n1, n2) -> Double.compare(n1.doubleValue(), n2.doubleValue()) > 0 ? n1 : n2;
+    private static final BinaryFunction<Number> MAX = (n1, n2) -> Double.compare(n1.doubleValue(), n2.doubleValue()) > 0 ? n1 : n2;
+
+    /**
+     * Return a predicate that first applies the specified function and then
+     * tests the specified predicate against the result of the function.
+     *
+     * @param function  the function to apply
+     * @param predicate the predicate to test against the result of the function
+     */
+    public static <T, V> Predicate<T> where(final Function<T, V> function, final Predicate<? super V> predicate) {
+        Objects.requireNonNull(function, "function must not be null");
+        Objects.requireNonNull(predicate, "predicate must not be null");
+        return input -> predicate.test(function.apply(input));
+    }
 }

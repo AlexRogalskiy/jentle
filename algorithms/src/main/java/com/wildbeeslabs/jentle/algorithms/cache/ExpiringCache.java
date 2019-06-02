@@ -73,7 +73,7 @@ public class ExpiringCache<K, V> {
      * computing the values as needed using the given getter.
      *
      * @param expireAfterMs Number of milliseconds after which entries will be evicted
-     * @param getter        Function that will be used to compute the values
+     * @param getter        BinaryFunction that will be used to compute the values
      */
     public ExpiringCache(final long expireAfterMs, final Function<K, V> getter) {
         this(expireAfterMs, getter, TimeUnit.MINUTES.toMillis(1), ClockWithOffset.INSTANCE);
@@ -85,7 +85,7 @@ public class ExpiringCache<K, V> {
      * computing the values as needed using the given getter.
      *
      * @param expireAfterMs    Number of milliseconds after which entries will be evicted
-     * @param getter           Function that will be used to compute the values
+     * @param getter           BinaryFunction that will be used to compute the values
      * @param expirationFreqMs Frequency at which to schedule the job that evicts entries
      *                         from the cache.
      */

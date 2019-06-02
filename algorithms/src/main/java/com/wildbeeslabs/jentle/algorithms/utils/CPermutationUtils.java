@@ -45,10 +45,10 @@ import java.util.stream.Stream;
  * Permutations.of("A", "B", "C") .map(s -> s.collect(toList()))
  * .forEachOrdered(System.out::println);
  * <p>
- * Permutations.of("A", "B", "C") .flatMap(Function.identity())
+ * Permutations.of("A", "B", "C") .flatMap(BinaryFunction.identity())
  * .forEachOrdered(System.out::print);
  * <p>
- * Permutations.of("A", "B", "C") .parallel() .flatMap(Function.identity())
+ * Permutations.of("A", "B", "C") .parallel() .flatMap(BinaryFunction.identity())
  * .forEachOrdered(System.out::print);
  * <p>
  * Permutations.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)

@@ -87,7 +87,7 @@ public class COptionalUtils {
      */
     public static <S, T> Optional<T> firstNonEmpty(final Iterable<S> source, final Function<S, Optional<T>> function) {
         Objects.requireNonNull(source, "Source must not be null!");
-        Objects.requireNonNull(function, "Function must not be null!");
+        Objects.requireNonNull(function, "BinaryFunction must not be null!");
 
         return Streamable.of(source).stream()
             .map(function::apply)
@@ -106,7 +106,7 @@ public class COptionalUtils {
      */
     public static <S, T> T firstNonEmpty(final Iterable<S> source, final Function<S, T> function, final T defaultValue) {
         Objects.requireNonNull(source, "Source must not be null!");
-        Objects.requireNonNull(function, "Function must not be null!");
+        Objects.requireNonNull(function, "BinaryFunction must not be null!");
 
         return Streamable.of(source).stream()
             .map(function::apply)

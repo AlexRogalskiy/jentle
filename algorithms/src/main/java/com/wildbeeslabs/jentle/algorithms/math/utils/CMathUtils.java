@@ -287,7 +287,7 @@ public class CMathUtils {
      * <code>k</code>-element subsets that can be selected from an
      * <code>n</code>-element set.
      *
-     * <Strong>Preconditions</strong>:
+     * <Strong>CPreconditionsUtils</strong>:
      * <ul>
      * <li> <code>0 <= k <= n </code> (otherwise
      * <code>IllegalArgumentException</code> is thrown)</li>

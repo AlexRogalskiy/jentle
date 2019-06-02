@@ -25,15 +25,17 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Spliterators.AbstractSpliterator;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.stream.Collector;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.stream.*;
 
+import static java.util.Spliterator.ORDERED;
+import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.Collectors.*;
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * Custom stream utilities implementation
@@ -168,5 +170,52 @@ public class CStreamUtils {
                     while (enumeration.hasMoreElements()) action.accept(enumeration.nextElement());
                 }
             }, false);
+    }
+
+    public static Stream<?> toStream(final Object object) {
+        Objects.requireNonNull(object, "Object must not be null");
+        if (object instanceof Stream) {
+            return (Stream<?>) object;
+        }
+        if (object instanceof DoubleStream) {
+            return ((DoubleStream) object).boxed();
+        }
+        if (object instanceof IntStream) {
+            return ((IntStream) object).boxed();
+        }
+        if (object instanceof LongStream) {
+            return ((LongStream) object).boxed();
+        }
+        if (object instanceof Collection) {
+            return ((Collection<?>) object).stream();
+        }
+        if (object instanceof Iterable) {
+            return stream(((Iterable<?>) object).spliterator(), false);
+        }
+        if (object instanceof Iterator) {
+            return stream(spliteratorUnknownSize((Iterator<?>) object, ORDERED), false);
+        }
+        if (object instanceof Object[]) {
+            return Arrays.stream((Object[]) object);
+        }
+        if (object instanceof double[]) {
+            return DoubleStream.of((double[]) object).boxed();
+        }
+        if (object instanceof int[]) {
+            return IntStream.of((int[]) object).boxed();
+        }
+        if (object instanceof long[]) {
+            return LongStream.of((long[]) object).boxed();
+        }
+        if (object.getClass().isArray() && object.getClass().getComponentType().isPrimitive()) {
+            return IntStream.range(0, Array.getLength(object)).mapToObj(i -> Array.get(object, i));
+        }
+        throw new IllegalArgumentException("Cannot convert instance of " + object.getClass().getName() + " into a Stream: " + object);
+    }
+
+    public static <T> T getOnlyElement(final Collection<T> collection) {
+        Objects.requireNonNull(collection, "collection must not be null");
+        assert collection.size() == 1 : "collection must contain exactly one element";
+        return collection.iterator().next();
     }
 }

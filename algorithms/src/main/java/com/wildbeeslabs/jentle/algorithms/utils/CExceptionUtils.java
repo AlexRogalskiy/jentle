@@ -417,7 +417,30 @@ public class CExceptionUtils {
     public String getStack() {
         return Arrays.stream(Thread.currentThread()
             .getStackTrace())
-            .map(element -> element.toString())
+            .map(Objects::toString)
             .collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    public static RuntimeException throwAsUncheckedException(final Throwable t) {
+        Objects.requireNonNull(t, "Throwable must not be null");
+        throwAs(t);
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Throwable> void throwAs(final Throwable t) throws T {
+        throw (T) t;
+    }
+
+    /**
+     * Read the stacktrace of the supplied {@link Throwable} into a String.
+     */
+    public static String readStackTrace(final Throwable throwable) {
+        Objects.requireNonNull(throwable, "Throwable must not be null");
+        final StringWriter stringWriter = new StringWriter();
+        try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
+            throwable.printStackTrace(printWriter);
+        }
+        return stringWriter.toString();
     }
 }

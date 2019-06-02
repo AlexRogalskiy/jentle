@@ -437,7 +437,7 @@ public class CCollectionUtils {
         return result;
     }
 
-    public static <E> E reduce(final List<? extends E> list, final com.wildbeeslabs.jentle.algorithms.utils.CFunctionUtils.Function<E> f, E initVal) {
+    public static <E> E reduce(final List<? extends E> list, final CFunctionUtils.BinaryFunction<E> f, E initVal) {
         List<E> snapshot;
         synchronized (list) {
             snapshot = new ArrayList<>(list);
