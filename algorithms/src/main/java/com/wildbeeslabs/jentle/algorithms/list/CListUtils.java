@@ -152,11 +152,11 @@ public class CListUtils {
     //List<String> result = list.stream().collect(CListUtils.toImmutableList(LinkedList::new));
     public static <T, A extends List<T>> Collector<T, A, List<T>> toImmutableList(final Supplier<A> supplier) {
         return Collector.of(
-                supplier,
-                List::add, (left, right) -> {
-                    left.addAll(right);
-                    return left;
-                }, Collections::unmodifiableList);
+            supplier,
+            List::add, (left, right) -> {
+                left.addAll(right);
+                return left;
+            }, Collections::unmodifiableList);
     }
 
     public static <T> List<List<? extends T>> getSubsets(final List<? extends T> list) {
@@ -201,15 +201,15 @@ public class CListUtils {
 
     public static <T> List<T> copyOf(final List<? extends T> list) {
         return Optional.ofNullable(list)
-                .map(List::stream)
-                .orElseGet(Stream::empty)
-                .collect(Collectors.toList());
+            .map(List::stream)
+            .orElseGet(Stream::empty)
+            .collect(Collectors.toList());
     }
 
     public static <T> List<T> flatten(final Collection<Collection<T>> collection) {
         return collection.stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
     }
 
     public static <T> List<T> immutableListOf(final T... elements) {
@@ -255,5 +255,20 @@ public class CListUtils {
         final List<E> difference = new ArrayList<>(first);
         difference.removeAll(second);
         return difference;
+    }
+
+
+    public static <T> LinkedList<T> filterBy(final Collection<T> collection, final Filter<T> filter) {
+        LinkedList<T> filtered = new LinkedList<T>();
+        for (T t : collection) {
+            if (!filter.isOut(t)) {
+                filtered.add(t);
+            }
+        }
+        return filtered;
+    }
+
+    public interface Filter<T> {
+        boolean isOut(final T object);
     }
 }
