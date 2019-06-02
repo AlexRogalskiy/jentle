@@ -49,5 +49,8 @@ public enum StringFormatType {
     UNESCAPE_XSI(StringEscapeUtils::unescapeXSI),
     ESCAPE_XSI(StringEscapeUtils::escapeXSI);
 
+    /**
+     * Default format {@link Function} operator
+     */
     private final Function<String, String> format;
 }

@@ -17,11 +17,11 @@ public enum Verb {
     ANY_VERB("ANY");
 
     private final String verb;
-    private static final Map<String, Verb> lookup = new HashMap<>();
+    private static final Map<String, Verb> LOOKUP_TABLE = new HashMap<>();
 
     static {
         for (final Verb v : EnumSet.allOf(Verb.class)) {
-            lookup.put(v.name(), v);
+            LOOKUP_TABLE.put(v.name(), v);
         }
     }
 
@@ -31,7 +31,7 @@ public enum Verb {
 
     private static Verb getVerb(final String verbName) {
         if (Objects.nonNull(verbName)) {
-            final Verb v = lookup.get(verbName.trim().toUpperCase());
+            final Verb v = LOOKUP_TABLE.get(verbName.trim().toUpperCase());
             return Optional.ofNullable(v).orElse(Verb.ANY_VERB);
         }
         return Verb.ANY_VERB;
