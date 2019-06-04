@@ -314,6 +314,14 @@ public class CFileUtils {
         return sb.toString();
     }
 
+    public static File getTestFile(final String payloadResourceFile) {
+        try {
+            return new File(Thread.currentThread().getContextClassLoader().getResource("data/" + payloadResourceFile).toURI());
+        } catch (final URISyntaxException urise) {
+            throw new RuntimeException(urise);
+        }
+    }
+
     public static void writeCsvFile(final String filename, final String[] data) {
         Objects.requireNonNull(filename);
         try (final FileOutputStream fos = new FileOutputStream(filename);
