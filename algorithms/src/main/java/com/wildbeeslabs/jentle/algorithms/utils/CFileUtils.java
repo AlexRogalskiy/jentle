@@ -31,6 +31,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
@@ -471,5 +472,34 @@ public class CFileUtils {
         } else {
             return "";
         }
+    }
+
+    public String encodeFileToBase64Binary(final String fileName) throws IOException {
+        Objects.requireNonNull(fileName, "File name should not be null");
+        final File file = new File(fileName);
+        byte[] bytes = loadFile(file);
+        byte[] encoded = Base64.getEncoder().encode(bytes);
+        return new String(encoded, StandardCharsets.UTF_8);
+    }
+
+    public static byte[] loadFile(final File file) throws IOException {
+        Objects.requireNonNull(file, "File should not be null");
+        final InputStream is = new FileInputStream(file);
+
+        long length = file.length();
+        if (length > Integer.MAX_VALUE) {
+            return null;
+        }
+        final byte[] bytes = new byte[(int) length];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+            offset += numRead;
+        }
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file " + file.getName());
+        }
+        is.close();
+        return bytes;
     }
 }
