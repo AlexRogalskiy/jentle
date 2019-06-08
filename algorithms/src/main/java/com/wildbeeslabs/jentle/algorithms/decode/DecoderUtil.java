@@ -3,9 +3,13 @@ package com.wildbeeslabs.jentle.algorithms.decode;
 import com.wildbeeslabs.jentle.algorithms.utils.CCharsetUtils;
 import org.apache.http.util.ByteArrayBuffer;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -257,5 +261,21 @@ public class DecoderUtil {
             }
         }
         return sb.toString();
+    }
+
+    public static byte[] encrypt(final String source, final String key, final String initVector) {
+        Objects.requireNonNull(source, "Source string should not be null");
+        Objects.requireNonNull(key, "Key should not be null");
+        Objects.requireNonNull(initVector, "Initialization vector should not be null");
+        try {
+            final SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
+            final IvParameterSpec ivspec = new IvParameterSpec(initVector.getBytes());
+
+            final Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
+            return cipher.doFinal(source.getBytes());
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
