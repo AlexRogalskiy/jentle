@@ -97,8 +97,6 @@ public class CVersionUtils {
      * @param groupId    the groupId of the library
      * @param artifactId the artifactId of the library
      * @return The version
-     * @deprecated Since 2.6: functionality not used by any official Jackson component, should be
-     * moved out if anyone needs it
      */
     @SuppressWarnings("resource")
     public static Version mavenVersionFor(final ClassLoader cl, final String groupId, final String artifactId) {

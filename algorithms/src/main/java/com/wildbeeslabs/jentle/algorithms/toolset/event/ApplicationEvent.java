@@ -14,8 +14,8 @@ import java.util.EventObject;
  * @author Juergen Hoeller
  */
 @Data
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class ApplicationEvent extends EventObject {
 
     /**

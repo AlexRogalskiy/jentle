@@ -2,6 +2,8 @@ package com.wildbeeslabs.jentle.algorithms.decode;
 
 import lombok.experimental.UtilityClass;
 
+import java.nio.charset.StandardCharsets;
+
 @UtilityClass
 public class Base64 {
     private static final int BYTES_PER_UNENCODED_BLOCK = 3;
@@ -119,6 +121,6 @@ public class Base64 {
     }
 
     private static String byteArrayToString(final byte[] buffer) {
-        return new String(buffer, 0, 0, buffer.length);
+        return new String(buffer, 0, buffer.length, StandardCharsets.UTF_8);
     }
 }

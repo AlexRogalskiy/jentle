@@ -302,7 +302,6 @@ public abstract class ReflectionUtils {
      * @return the invocation result, if any
      * @throws SQLException the JDBC API SQLException to rethrow (if any)
      * @see #invokeJdbcMethod(java.lang.reflect.Method, Object, Object[])
-     * @deprecated as of 5.0.11, in favor of custom SQLException handling
      */
     public static Object invokeJdbcMethod(Method method, final Object target) throws SQLException {
         return invokeJdbcMethod(method, target, new Object[0]);
@@ -318,7 +317,6 @@ public abstract class ReflectionUtils {
      * @return the invocation result, if any
      * @throws SQLException the JDBC API SQLException to rethrow (if any)
      * @see #invokeMethod(java.lang.reflect.Method, Object, Object[])
-     * @deprecated as of 5.0.11, in favor of custom SQLException handling
      */
     public static Object invokeJdbcMethod(Method method, Object target, Object... args)
         throws SQLException {
