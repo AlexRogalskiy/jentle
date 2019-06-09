@@ -94,10 +94,12 @@
 
     <developers>
         <developer>
-            <email>alexander.rogalsky@yandex.ru</email>
-            <name>Alexander Rogalsky</name>
-            <url>https://github.com/AlexRogalskiy</url>
             <id>AlexRogalskiy</id>
+            <name>Alexander Rogalskiy</name>
+            <email>alexander.rogalsky@yandex.ru</email>
+            <url>https://github.com/AlexRogalskiy</url>
+            <organization>Wilbees Labs, Inc.</organization>
+            <organizationUrl>https://github.com/AlexRogalskiy</organizationUrl>
         </developer>
     </developers>
 

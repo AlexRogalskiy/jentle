@@ -271,4 +271,21 @@ public class CListUtils {
     public interface Filter<T> {
         boolean isOut(final T object);
     }
+
+    public static <T> List<T> merge(final List<T> list1, final List<T> list2) {
+        final List<T> list = new ArrayList<>();
+        Collections.addAll(list, (T[]) list1.toArray());
+        Collections.addAll(list, (T[]) list2.toArray());
+        return list;
+//        return Stream.of(list1, list2)
+//            .flatMap(x -> x.stream())
+//            .collect(Collectors.toList());
+
+//        final List<T> list = new ArrayList<>();
+//        Stream.of(list1, list2).forEach(list::addAll);
+//        return list;
+
+//        return Stream.concat(list1.stream(), list2.stream())
+//            .collect(Collectors.toList());
+    }
 }
