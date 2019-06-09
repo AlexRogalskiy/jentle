@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 import static java.util.Arrays.stream;
@@ -10,6 +10,58 @@ import static java.util.stream.Collectors.joining;
 
 @UtilityClass
 public class ClassUtils {
+
+    public static List<Class<?>> getAllSuperclasses(final Class<?> cls) {
+        if (Objects.isNull(cls)) {
+            return null;
+        }
+        final List<Class<?>> classes = new ArrayList<Class<?>>();
+        Class<?> superclass = cls.getSuperclass();
+        while (Objects.nonNull(superclass)) {
+            classes.add(superclass);
+            superclass = superclass.getSuperclass();
+        }
+        return classes;
+    }
+
+    /**
+     * <p>
+     * Gets a {@code List} of all interfaces implemented by the given class and its superclasses.
+     * </p>
+     *
+     * <p>
+     * The order is determined by looking through each interface in turn as declared in the source file and following its
+     * hierarchy up. Then each superclass is considered in the same way. Later duplicates are ignored, so the order is
+     * maintained.
+     * </p>
+     *
+     * @param cls the class to look up, may be {@code null}
+     * @return the {@code List} of interfaces in order, {@code null} if null input
+     */
+    public static List<Class<?>> getAllInterfaces(final Class<?> cls) {
+        if (cls == null) return null;
+        final LinkedHashSet<Class<?>> interfacesFound = new LinkedHashSet<>();
+        getAllInterfaces(cls, interfacesFound);
+        return new ArrayList<>(interfacesFound);
+    }
+
+    /**
+     * Get the interfaces for the specified class.
+     *
+     * @param cls             the class to look up, may be {@code null}
+     * @param interfacesFound the {@code Set} of interfaces for the class
+     */
+    private static void getAllInterfaces(Class<?> cls, final HashSet<Class<?>> interfacesFound) {
+        while (Objects.nonNull(cls)) {
+            Class<?>[] interfaces = cls.getInterfaces();
+            for (final Class<?> i : interfaces) {
+                if (interfacesFound.add(i)) {
+                    getAllInterfaces(i, interfacesFound);
+                }
+            }
+            cls = cls.getSuperclass();
+        }
+    }
 
     /**
      * Get the fully qualified name of the supplied class.

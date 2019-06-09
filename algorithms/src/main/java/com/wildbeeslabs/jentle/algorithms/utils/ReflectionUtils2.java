@@ -111,7 +111,7 @@ public class ReflectionUtils2 {
 
     static {
         // @formatter:off
-        List<Class<?>> commonTypes = Arrays.asList(
+        List<Class<?>> commonTypes = java.util.Arrays.asList(
             boolean.class,
             byte.class,
             char.class,
@@ -395,7 +395,7 @@ public class ReflectionUtils2 {
         CPreconditionsUtils.containsNoNullElements(args, "Individual arguments must not be null");
 
         try {
-            Class<?>[] parameterTypes = Arrays.stream(args).map(Object::getClass).toArray(Class[]::new);
+            Class<?>[] parameterTypes = java.util.Arrays.stream(args).map(Object::getClass).toArray(Class[]::new);
             return newInstance(clazz.getDeclaredConstructor(parameterTypes), args);
         } catch (Throwable t) {
             throw throwAsUncheckedException(getUnderlyingCause(t));
@@ -685,7 +685,7 @@ public class ReflectionUtils2 {
         // but has been stable so far in all JDKs
 
         // @formatter:off
-        return Arrays.stream(inner.getClass().getDeclaredFields())
+        return java.util.Arrays.stream(inner.getClass().getDeclaredFields())
             .filter(field -> field.getName().startsWith("this$"))
             .findFirst()
             .map(field -> {
@@ -702,7 +702,7 @@ public class ReflectionUtils2 {
         // This is quite a hack, since sometimes the classpath is quite different
         String fullClassPath = System.getProperty("java.class.path");
         // @formatter:off
-        return Arrays.stream(fullClassPath.split(File.pathSeparator))
+        return java.util.Arrays.stream(fullClassPath.split(File.pathSeparator))
             .map(Paths::get)
             .filter(Files::isDirectory)
             .collect(toSet());
@@ -780,7 +780,7 @@ public class ReflectionUtils2 {
 
         try {
             // @formatter:off
-            return Arrays.stream(clazz.getDeclaredConstructors())
+            return java.util.Arrays.stream(clazz.getDeclaredConstructors())
                 .filter(predicate)
                 .collect(toUnmodifiableList());
             // @formatter:on
@@ -907,7 +907,7 @@ public class ReflectionUtils2 {
         }
 
         // @formatter:off
-        return Arrays.stream(parameterTypeNames.split(","))
+        return java.util.Arrays.stream(parameterTypeNames.split(","))
             .map(String::trim)
             .map(typeName -> loadRequiredParameterType(clazz, methodName, typeName))
             .toArray(Class[]::new);
@@ -1086,13 +1086,13 @@ public class ReflectionUtils2 {
         // @formatter:off
         // Visible default methods are interface default methods that have not
         // been overridden.
-        List<Method> visibleDefaultMethods = Arrays.stream(clazz.getMethods())
+        List<Method> visibleDefaultMethods = java.util.Arrays.stream(clazz.getMethods())
             .filter(Method::isDefault)
             .collect(toCollection(ArrayList::new));
         if (visibleDefaultMethods.isEmpty()) {
             return visibleDefaultMethods;
         }
-        return Arrays.stream(clazz.getInterfaces())
+        return java.util.Arrays.stream(clazz.getInterfaces())
             .map(ReflectionUtils2::getMethods)
             .flatMap(List::stream)
             .filter(visibleDefaultMethods::contains)
@@ -1102,7 +1102,7 @@ public class ReflectionUtils2 {
 
     private static List<Field> toSortedMutableList(Field[] fields) {
         // @formatter:off
-        return Arrays.stream(fields)
+        return java.util.Arrays.stream(fields)
             .sorted(ReflectionUtils2::defaultFieldSorter)
             // Use toCollection() instead of toList() to ensure list is mutable.
             .collect(toCollection(ArrayList::new));
@@ -1111,7 +1111,7 @@ public class ReflectionUtils2 {
 
     private static List<Method> toSortedMutableList(Method[] methods) {
         // @formatter:off
-        return Arrays.stream(methods)
+        return java.util.Arrays.stream(methods)
             .sorted(ReflectionUtils2::defaultMethodSorter)
             // Use toCollection() instead of toList() to ensure list is mutable.
             .collect(toCollection(ArrayList::new));
@@ -1241,7 +1241,7 @@ public class ReflectionUtils2 {
             return false;
         }
         // trivial case: parameter types exactly match
-        if (Arrays.equals(parameterTypes, candidate.getParameterTypes())) {
+        if (java.util.Arrays.equals(parameterTypes, candidate.getParameterTypes())) {
             return true;
         }
         // param count is equal, but types do not match exactly: check for method sub-signatures
@@ -1269,7 +1269,6 @@ public class ReflectionUtils2 {
         return type instanceof TypeVariable || type instanceof GenericArrayType;
     }
 
-    @SuppressWarnings("deprecation") // "AccessibleObject.isAccessible()" is deprecated in Java 9
     public static <T extends AccessibleObject> T makeAccessible(T object) {
         if (!object.isAccessible()) {
             object.setAccessible(true);

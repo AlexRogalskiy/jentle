@@ -81,7 +81,7 @@ public class CPermutationUtils {
 
     public static <T> Stream<Stream<? extends T>> of(final T... items) {
         Objects.requireNonNull(items);
-        final List<? extends T> itemList = Arrays.asList(items);
+        final List<? extends T> itemList = java.util.Arrays.asList(items);
         return LongStream.range(0, factorial(items.length)).mapToObj(no -> permutation(no, itemList).stream());
     }
 

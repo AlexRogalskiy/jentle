@@ -108,7 +108,7 @@ public class CLocaleUtils {
 
     public static Locale valueOf(final String code) {
         if (StringUtils.isNotBlank(code)) {
-            return Arrays.stream(Locale.getAvailableLocales())
+            return java.util.Arrays.stream(Locale.getAvailableLocales())
                 .filter(value -> value.getDisplayName().equalsIgnoreCase(code))
                 .findFirst()
                 .orElse(null);

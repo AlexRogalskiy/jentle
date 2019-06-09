@@ -293,8 +293,8 @@ public class CArrayUtils {
     public static int findMinDiff(final int[] array1, final int[] array2) {
         Objects.requireNonNull(array1);
         Objects.requireNonNull(array2);
-        Arrays.sort(array1);
-        Arrays.sort(array2);
+        java.util.Arrays.sort(array1);
+        java.util.Arrays.sort(array2);
         int a = 0;
         int b = 0;
         int difference = Integer.MAX_VALUE;
@@ -411,8 +411,8 @@ public class CArrayUtils {
     }
 
     private static Integer getTarget(int[] array1, int[] array2) {
-        int sum1 = Arrays.stream(array1).sum();
-        int sum2 = Arrays.stream(array2).sum();
+        int sum1 = java.util.Arrays.stream(array1).sum();
+        int sum2 = java.util.Arrays.stream(array2).sum();
         if ((sum1 - sum2) % 2 != 0) {
             return null;
         }
@@ -470,7 +470,7 @@ public class CArrayUtils {
 
     public static List<Pair<Integer, Integer>> getPairSum2(int[] array, int sum) {
         Objects.requireNonNull(array);
-        Arrays.sort(array);
+        java.util.Arrays.sort(array);
         int first = 0;
         int last = array.length - 1;
         final List<Pair<Integer, Integer>> result = new ArrayList<>();
@@ -502,7 +502,7 @@ public class CArrayUtils {
     public static <T> void shuffle(final T[] array, T[] subset, int m) {
         Objects.requireNonNull(array);
         Objects.requireNonNull(subset);
-        subset = Arrays.copyOfRange(array, 0, m);
+        subset = java.util.Arrays.copyOfRange(array, 0, m);
         for (int i = m; i < array.length; i++) {
             int k = CRandom.generateRandomInt(0, i);
             if (k < m) {
@@ -553,7 +553,7 @@ public class CArrayUtils {
     }
 
     private static char[] extract(char[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return java.util.Arrays.copyOfRange(array, start, end);
     }
 
     public static <T> T findMajorityElement(final T[] array, final Comparator<? super T> cmp) {
@@ -590,7 +590,7 @@ public class CArrayUtils {
     public static <T> T[] getElems(final T[] array, int k, final Class<? extends T[]> clazz, final Comparator<? super T> cmp) {
         Objects.requireNonNull(array);
         assert (k > 0 && k <= array.length);
-        Arrays.sort(array, cmp);
+        java.util.Arrays.sort(array, cmp);
         final T[] smallest = newArray(clazz, k);
         System.arraycopy(array, 0, smallest, 0, k);
         return smallest;
@@ -1256,7 +1256,7 @@ public class CArrayUtils {
 
     public static void getDistinctSortedArray(int[] array) {
         Objects.requireNonNull(array);
-        Arrays.sort(array);
+        java.util.Arrays.sort(array);
         for (int i = 1; i < array.length; i++) {
             if (array[i] == array[i - 1]) {
                 array[i]++;

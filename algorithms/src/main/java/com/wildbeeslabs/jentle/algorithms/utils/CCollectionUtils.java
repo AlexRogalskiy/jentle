@@ -162,11 +162,11 @@ public class CCollectionUtils {
     }
 
     public static <T> String[] join(final T[] first, final T[] second) {
-        return Stream.concat(Arrays.stream(first), Arrays.stream(second)).toArray(String[]::new);
+        return Stream.concat(java.util.Arrays.stream(first), java.util.Arrays.stream(second)).toArray(String[]::new);
     }
 
     public static <T> String join(final T[] array, final String delimiter) {
-        return Arrays.stream(array).map(Objects::toString).collect(Collectors.joining(delimiter));
+        return java.util.Arrays.stream(array).map(Objects::toString).collect(Collectors.joining(delimiter));
     }
 
     public static <T> String joinWithPrefixPostfix(final T[] array, final String delimiter, final String prefix, final String postfix) {
@@ -178,11 +178,11 @@ public class CCollectionUtils {
     }
 
     public static <T extends CharSequence> Map<Integer, List<T>> getMapByLength(final T[] array) {
-        return Arrays.stream(array).filter(Objects::nonNull).collect(Collectors.groupingByConcurrent(s -> s.length()));
+        return java.util.Arrays.stream(array).filter(Objects::nonNull).collect(Collectors.groupingByConcurrent(s -> s.length()));
     }
 
     public static <T extends CharSequence> CharSequence[] getArrayBy(final T[] array, final Predicate<? super T> predicate) {
-        return CList.getListBy(Arrays.asList(array), predicate);
+        return CList.getListBy(java.util.Arrays.asList(array), predicate);
     }
 
     public static List<String> split(final String value, final String delimiter) {
@@ -190,7 +190,7 @@ public class CCollectionUtils {
     }
 
     public static <T extends CharSequence> List<String> split(final T value, final String delimiter, final Predicate<? super String> predicate) {
-        return Arrays.stream(String.valueOf(value).split(delimiter))
+        return java.util.Arrays.stream(String.valueOf(value).split(delimiter))
             .map(String::trim)
             .filter(predicate)
             .collect(Collectors.toList());
@@ -528,7 +528,7 @@ public class CCollectionUtils {
      */
     @NonNull
     public static <T> Stream<T> streamOf(final T... values) {
-        return Arrays.stream(Optional.ofNullable(values).orElseGet(() -> (T[]) new Objects[]{}));
+        return java.util.Arrays.stream(Optional.ofNullable(values).orElseGet(() -> (T[]) new Objects[]{}));
     }
 
     /**

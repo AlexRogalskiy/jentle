@@ -196,7 +196,7 @@ public class CStreamUtils {
             return stream(spliteratorUnknownSize((Iterator<?>) object, ORDERED), false);
         }
         if (object instanceof Object[]) {
-            return Arrays.stream((Object[]) object);
+            return java.util.Arrays.stream((Object[]) object);
         }
         if (object instanceof double[]) {
             return DoubleStream.of((double[]) object).boxed();

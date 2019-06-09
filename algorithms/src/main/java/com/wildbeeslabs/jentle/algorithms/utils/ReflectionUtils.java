@@ -250,7 +250,7 @@ public abstract class ReflectionUtils {
             Method[] methods = (searchType.isInterface() ? searchType.getMethods() : getDeclaredMethods(searchType));
             for (Method method : methods) {
                 if (name.equals(method.getName()) &&
-                    (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
+                    (paramTypes == null || java.util.Arrays.equals(paramTypes, method.getParameterTypes()))) {
                     return method;
                 }
             }
@@ -452,7 +452,7 @@ public abstract class ReflectionUtils {
             Method methodBeingOverriddenWithCovariantReturnType = null;
             for (Method existingMethod : methods) {
                 if (method.getName().equals(existingMethod.getName()) &&
-                    Arrays.equals(method.getParameterTypes(), existingMethod.getParameterTypes())) {
+                    java.util.Arrays.equals(method.getParameterTypes(), existingMethod.getParameterTypes())) {
                     // Is this a covariant return type situation?
                     if (existingMethod.getReturnType() != method.getReturnType() &&
                         existingMethod.getReturnType().isAssignableFrom(method.getReturnType())) {

@@ -257,7 +257,7 @@ public class AnnotationUtils {
         Objects.requireNonNull(annotationType, "annotationType must not be null");
 
         // @formatter:off
-        return Arrays.stream(clazz.getFields())
+        return java.util.Arrays.stream(clazz.getFields())
             .filter(field -> fieldType.isAssignableFrom(field.getType()) && isAnnotated(field, annotationType))
             .collect(toUnmodifiableList());
         // @formatter:on

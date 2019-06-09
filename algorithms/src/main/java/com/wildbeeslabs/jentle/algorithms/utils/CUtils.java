@@ -648,8 +648,8 @@ public class CUtils {
      * @return Set
      */
     @SafeVarargs
-    public static <T> Set<T> mkSet(T... elems) {
-        return new HashSet<>(Arrays.asList(elems));
+    public static <T> Set<T> mkSet(final T... elems) {
+        return new HashSet<>(java.util.Arrays.asList(elems));
     }
 
     /*
@@ -660,7 +660,7 @@ public class CUtils {
      */
     @SafeVarargs
     public static <T> List<T> mkList(T... elems) {
-        return Arrays.asList(elems);
+        return java.util.Arrays.asList(elems);
     }
 
     /**
@@ -730,7 +730,7 @@ public class CUtils {
     public static void delete(final File file) throws IOException {
         if (file == null)
             return;
-        Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
+        java.nio.file.Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFileFailed(Path path, IOException exc) throws IOException {
                 // If the root path did not exist, ignore the error; otherwise throw it.
@@ -741,13 +741,13 @@ public class CUtils {
 
             @Override
             public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-                Files.delete(path);
+                java.nio.file.Files.delete(path);
                 return FileVisitResult.CONTINUE;
             }
 
             @Override
             public FileVisitResult postVisitDirectory(Path path, IOException exc) throws IOException {
-                Files.delete(path);
+                java.nio.file.Files.delete(path);
                 return FileVisitResult.CONTINUE;
             }
         });
@@ -791,10 +791,10 @@ public class CUtils {
      */
     public static void atomicMoveWithFallback(Path source, Path target) throws IOException {
         try {
-            Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
+            java.nio.file.Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
         } catch (IOException outer) {
             try {
-                Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+                java.nio.file.Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
                 log.debug("Non-atomic move of {} to {} succeeded after atomic move failed due to {}", source, target,
                     outer.getMessage());
             } catch (IOException inner) {

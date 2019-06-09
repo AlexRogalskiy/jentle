@@ -92,7 +92,7 @@ public class CReflectionUtils {
         Set<Field> set = new HashSet<>();
         Class<?> c = clazz;
         while (c != null) {
-            set.addAll(Arrays.asList(c.getDeclaredFields()));
+            set.addAll(java.util.Arrays.asList(c.getDeclaredFields()));
             c = c.getSuperclass();
         }
         return set;
@@ -108,7 +108,7 @@ public class CReflectionUtils {
         Set<Method> set = new HashSet<>();
         Class<?> c = clazz;
         while (c != null) {
-            set.addAll(Arrays.asList(c.getDeclaredMethods()));
+            set.addAll(java.util.Arrays.asList(c.getDeclaredMethods()));
             c = c.getSuperclass();
         }
         return set;
@@ -203,7 +203,7 @@ public class CReflectionUtils {
     }
 
     public static List<Field> getValidFields(final Field[] fields, boolean returnFinalFields) {
-        return Arrays.stream(fields)
+        return java.util.Arrays.stream(fields)
             .filter(field -> CReflectionUtils.isNotStaticOrFinal(field, returnFinalFields))
             .collect(Collectors.toList());
     }
@@ -324,7 +324,7 @@ public class CReflectionUtils {
         Objects.requireNonNull(classes);
         final Set<Field> fields = new HashSet<>();
         for (final Class<?> clazz : classes) {
-            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            fields.addAll(java.util.Arrays.asList(clazz.getDeclaredFields()));
         }
         return fields.toArray(new Field[fields.size()]);
     }
@@ -338,7 +338,7 @@ public class CReflectionUtils {
      * @return collection of fields {@link Field}
      */
     public static List<Field> getValidFields(final Field[] fields, boolean returnFinalFields, boolean returnAccessibleFields) {
-        return Arrays.stream(fields).filter(field -> isNotStaticOrFinalOrAccessible(field, returnFinalFields, returnAccessibleFields)).collect(Collectors.toList());
+        return java.util.Arrays.stream(fields).filter(field -> isNotStaticOrFinalOrAccessible(field, returnFinalFields, returnAccessibleFields)).collect(Collectors.toList());
     }
 
     /**
