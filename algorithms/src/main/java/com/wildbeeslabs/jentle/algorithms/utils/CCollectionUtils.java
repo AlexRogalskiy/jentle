@@ -107,9 +107,7 @@ public class CCollectionUtils {
 
     public static <T> boolean removeBy(@NonNull final Collection<T> collection, final Predicate<T> predicate) {
         final Collection<T> operatedList = new ArrayList<>();
-        collection.stream().filter(predicate).forEach(item -> {
-            operatedList.add(item);
-        });
+        collection.stream().filter(predicate).forEach(item -> operatedList.add(item));
         return collection.removeAll(operatedList);
     }
 
@@ -347,7 +345,7 @@ public class CCollectionUtils {
         R apply(final A a, final B b, final C c);
 
         default <V> TriFunction<A, B, C, V> andThen(@NonNull final Function<? super R, ? extends V> after) {
-            return (final A a, final B b, final C c) -> after.apply(apply(a, b, c));
+            return (final A a, final B b, final C c) -> after.apply(this.apply(a, b, c));
         }
     }
 
@@ -361,7 +359,32 @@ public class CCollectionUtils {
         }
     }
 
-    public static <T, M extends Collection<T>> Map<Boolean, M> partitionBy(@NonNull final Stream<T> stream, final Predicate<? super T> predicate, final Collector<T, ?, M> collector) {
+    public static <T> List<T> removeNullUsingIterator(final List<T> l, final Predicate<T> p) {
+        final Iterator<T> itr = l.iterator();
+        while (itr.hasNext()) {
+            final T t = itr.next();
+            if (p.test(t)) {
+                itr.remove();
+            }
+        }
+        return l;
+    }
+
+    /**
+     * Returns {@link Map} by input {@link Stream} partitioned by {@link Predicate}
+     *
+     * @param <T>       type of stream item
+     * @param <M>       type of collector result
+     * @param stream    - initial input {@link Stream}
+     * @param predicate - initial input {@link Predicate}
+     * @param collector - initial input {@link Collector}
+     * @return {@link Map} by input {@link Stream} partitioned by {@link Predicate}
+     */
+    public static <T, A, M extends Collection<T>> Map<Boolean, M> partitionBy(@NonNull final Stream<T> stream, final Predicate<? super T> predicate, final Collector<T, A, M> collector) {
+        Objects.requireNonNull(stream, "Stream should not be null!");
+        Objects.requireNonNull(predicate, "Predicate should not be null!");
+        Objects.requireNonNull(collector, "Collector should not be null!");
+
         return stream.collect(Collectors.partitioningBy(predicate, collector));
     }
 
@@ -372,7 +395,7 @@ public class CCollectionUtils {
     public static <E> Iterable<E> concat(final Iterable<? extends E> i1, final Iterable<? extends E> i2) {
         return new Iterable<E>() {
             public Iterator<E> iterator() {
-                return new Iterator<E>() {
+                return new Iterator<>() {
                     Iterator<? extends E> listIterator = i1.iterator();
                     Boolean checkedHasNext;
                     E nextValue;
