@@ -502,4 +502,10 @@ public class CFileUtils {
         is.close();
         return bytes;
     }
+
+    public static String inputStreamString(final InputStream inputStream) throws IOException {
+        try (inputStream) {
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+    }
 }
