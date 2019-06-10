@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.Spliterators.AbstractSpliterator;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.IntFunction;
 import java.util.stream.*;
 
 import static java.util.Spliterator.ORDERED;
@@ -217,5 +218,10 @@ public class CStreamUtils {
         Objects.requireNonNull(collection, "collection must not be null");
         assert collection.size() == 1 : "collection must contain exactly one element";
         return collection.iterator().next();
+    }
+
+    //String[] result = input.stream().collect( CustomCollectors.**toArray**(String[]::new));
+    public static <T> Collector<T, ?, T[]> toArray(final IntFunction<T[]> converter) {
+        return Collectors.collectingAndThen(Collectors.toList(), list -> list.toArray(converter.apply(list.size())));
     }
 }
