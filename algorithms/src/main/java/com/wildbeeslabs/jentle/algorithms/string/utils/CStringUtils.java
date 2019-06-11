@@ -44,6 +44,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
@@ -68,6 +70,10 @@ import java.util.stream.Stream;
 @Slf4j
 @UtilityClass
 public class CStringUtils {
+
+    private static final int MaxCachedBuilderSize = 8 * 1024;
+    private static final int MaxIdleBuilders = 8;
+    private static final Stack<StringBuilder> builders = new Stack<>();
 
     /**
      * Default hex digits array
@@ -930,5 +936,122 @@ public class CStringUtils {
 
     private Iterable<String> splitBy(final String compValue, final String separator) {
         return Splitter.on(separator).omitEmptyStrings().split(compValue);
+    }
+
+    /**
+     * Tests if a code point is "whitespace" as defined by what it looks like. Used for Element.text etc.
+     *
+     * @param c code point to test
+     * @return true if code point is whitespace, false otherwise
+     */
+    public static boolean isActuallyWhitespace(int c) {
+        return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+        // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+    }
+
+    /**
+     * Normalise the whitespace within this string; multiple spaces collapse to a single, and all whitespace characters
+     * (e.g. newline, tab) convert to a simple space
+     *
+     * @param string content to normalise
+     * @return normalised string
+     */
+    public static String normaliseWhitespace(final String string) {
+        StringBuilder sb = borrowBuilder();
+        appendNormalisedWhitespace(sb, string, false);
+        return releaseBuilder(sb);
+    }
+
+    /**
+     * After normalizing the whitespace within a string, appends it to a string builder.
+     *
+     * @param accum        builder to append to
+     * @param string       string to normalize whitespace within
+     * @param stripLeading set to true if you wish to remove any leading whitespace
+     */
+    public static void appendNormalisedWhitespace(StringBuilder accum, String string, boolean stripLeading) {
+        boolean lastWasWhite = false;
+        boolean reachedNonWhite = false;
+
+        int len = string.length();
+        int c;
+        for (int i = 0; i < len; i += Character.charCount(c)) {
+            c = string.codePointAt(i);
+            if (isActuallyWhitespace(c)) {
+                if ((stripLeading && !reachedNonWhite) || lastWasWhite)
+                    continue;
+                accum.append(' ');
+                lastWasWhite = true;
+            } else if (!isInvisibleChar(c)) {
+                accum.appendCodePoint(c);
+                lastWasWhite = false;
+                reachedNonWhite = true;
+            }
+        }
+    }
+
+    /**
+     * Create a new absolute URL, from a provided existing absolute URL and a relative URL component.
+     *
+     * @param base   the existing absolute base URL
+     * @param relUrl the relative URL to resolve. (If it's already absolute, it will be returned)
+     * @return the resolved absolute URL
+     * @throws MalformedURLException if an error occurred generating the URL
+     */
+    public static URL resolve(URL base, String relUrl) throws MalformedURLException {
+        // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+        if (relUrl.startsWith("?"))
+            relUrl = base.getPath() + relUrl;
+        // workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
+        if (relUrl.indexOf('.') == 0 && base.getFile().indexOf('/') != 0) {
+            base = new URL(base.getProtocol(), base.getHost(), base.getPort(), "/" + base.getFile());
+        }
+        return new URL(base, relUrl);
+    }
+
+    public static String resolve(final String baseUrl, final String relUrl) {
+        URL base;
+        try {
+            try {
+                base = new URL(baseUrl);
+            } catch (MalformedURLException e) {
+                // the base is unsuitable, but the attribute/rel may be abs on its own, so try that
+                URL abs = new URL(relUrl);
+                return abs.toExternalForm();
+            }
+            return resolve(base, relUrl).toExternalForm();
+        } catch (MalformedURLException e) {
+            return "";
+        }
+    }
+
+    public static StringBuilder borrowBuilder() {
+        synchronized (builders) {
+            return builders.empty() ?
+                new StringBuilder(MaxCachedBuilderSize) :
+                builders.pop();
+        }
+    }
+
+    public static String releaseBuilder(StringBuilder sb) {
+        String string = sb.toString();
+
+        if (sb.length() > MaxCachedBuilderSize)
+            sb = new StringBuilder(MaxCachedBuilderSize); // make sure it hasn't grown too big
+        else
+            sb.delete(0, sb.length()); // make sure it's emptied on release
+
+        synchronized (builders) {
+            builders.push(sb);
+
+            while (builders.size() > MaxIdleBuilders) {
+                builders.pop();
+            }
+        }
+        return string;
+    }
+
+    public static boolean isInvisibleChar(int c) {
+        return Character.getType(c) == 16 && (c == 8203 || c == 8204 || c == 8205 || c == 173);
     }
 }
