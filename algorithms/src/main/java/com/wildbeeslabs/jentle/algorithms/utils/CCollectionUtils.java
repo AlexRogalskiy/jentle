@@ -401,7 +401,7 @@ public class CCollectionUtils {
                     E nextValue;
                     private boolean startTheSecond;
 
-                    void theNext() {
+                    private void theNext() {
                         if (this.listIterator.hasNext()) {
                             this.checkedHasNext = true;
                             this.nextValue = this.listIterator.next();
