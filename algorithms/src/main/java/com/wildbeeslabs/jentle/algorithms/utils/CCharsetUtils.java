@@ -25,9 +25,12 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -39,6 +42,14 @@ import java.util.Objects;
  */
 @UtilityClass
 public class CCharsetUtils {
+
+    /**
+     * Array containing the hexadecimal alphabet.
+     */
+    static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3',
+        '4', '5', '6', '7',
+        '8', '9', 'A', 'B',
+        'C', 'D', 'E', 'F'};
 
     /**
      * carriage return - line feed sequence
@@ -146,5 +157,45 @@ public class CCharsetUtils {
         } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
             return null;
         }
+    }
+
+    public boolean translate(final int codepoint, final Writer out) throws IOException {
+        if (codepoint >= Character.MIN_SURROGATE && codepoint <= Character.MAX_SURROGATE) {
+            // It's a surrogate. Write nothing and say we've translated.
+            return true;
+        }
+        // It's not a surrogate. Don't translate it.
+        return false;
+    }
+
+    public static boolean translate(final int codepoint, final int below, final int above, final boolean between, final Writer out) throws IOException {
+        if (between) {
+            if (codepoint < below || codepoint > above) {
+                return false;
+            }
+        } else {
+            if (codepoint >= below && codepoint <= above) {
+                return false;
+            }
+        }
+
+        if (codepoint > 0xffff) {
+            out.write(toUtf16Escape(codepoint));
+        } else {
+            out.write("\\u");
+            out.write(HEX_DIGITS[(codepoint >> 12) & 15]);
+            out.write(HEX_DIGITS[(codepoint >> 8) & 15]);
+            out.write(HEX_DIGITS[(codepoint >> 4) & 15]);
+            out.write(HEX_DIGITS[(codepoint) & 15]);
+        }
+        return true;
+    }
+
+    public static String hex(final int codepoint) {
+        return Integer.toHexString(codepoint).toUpperCase(Locale.ENGLISH);
+    }
+
+    public static String toUtf16Escape(final int codepoint) {
+        return "\\u" + hex(codepoint);
     }
 }
