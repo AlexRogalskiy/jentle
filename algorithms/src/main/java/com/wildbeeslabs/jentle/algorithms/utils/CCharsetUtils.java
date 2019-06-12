@@ -160,12 +160,7 @@ public class CCharsetUtils {
     }
 
     public boolean translate(final int codepoint, final Writer out) throws IOException {
-        if (codepoint >= Character.MIN_SURROGATE && codepoint <= Character.MAX_SURROGATE) {
-            // It's a surrogate. Write nothing and say we've translated.
-            return true;
-        }
-        // It's not a surrogate. Don't translate it.
-        return false;
+        return (codepoint >= Character.MIN_SURROGATE && codepoint <= Character.MAX_SURROGATE);
     }
 
     public static boolean translate(final int codepoint, final int below, final int above, final boolean between, final Writer out) throws IOException {
