@@ -44,10 +44,10 @@ public class CBitSetField {
     private final int shiftCount;
 
     /**
-     * Creates a BitField instance.
+     * Creates a CBitArray instance.
      *
-     * @param mask the mask specifying which bits apply to this BitField. Bits
-     * that are set in this mask are the bits that this BitField operates on
+     * @param mask the mask specifying which bits apply to this CBitArray. Bits
+     * that are set in this mask are the bits that this CBitArray operates on
      */
     public CBitSetField(int mask) {
         this.mask = mask;
@@ -63,12 +63,12 @@ public class CBitSetField {
     }
 
     /**
-     * Obtains the value for the specified BitField, appropriately shifted
+     * Obtains the value for the specified CBitArray, appropriately shifted
      * right.
      *
-     * Many users of a BitField will want to treat the specified bits as an int
+     * Many users of a CBitArray will want to treat the specified bits as an int
      * value, and will not want to be aware that the value is stored as a
-     * BitField (and so shifted left so many bits).
+     * CBitArray (and so shifted left so many bits).
      *
      * @see #setValue(int,int)
      * @param holder the int data containing the bits we're interested in
@@ -79,12 +79,12 @@ public class CBitSetField {
     }
 
     /**
-     * Obtains the value for the specified BitField, appropriately shifted
+     * Obtains the value for the specified CBitArray, appropriately shifted
      * right, as a short.
      *
-     * Many users of a BitField will want to treat the specified bits as an int
+     * Many users of a CBitArray will want to treat the specified bits as an int
      * value, and will not want to be aware that the value is stored as a
-     * BitField (and so shifted left so many bits).
+     * CBitArray (and so shifted left so many bits).
      *
      * @see #setShortValue(short,short)
      * @param holder the short data containing the bits we're interested in
@@ -95,7 +95,7 @@ public class CBitSetField {
     }
 
     /**
-     * Obtains the value for the specified BitField, unshifted.
+     * Obtains the value for the specified CBitArray, unshifted.
      *
      * @param holder the int data containing the bits we're interested in
      * @return the selected bits
@@ -105,7 +105,7 @@ public class CBitSetField {
     }
 
     /**
-     * Obtains the value for the specified BitField, unshifted.
+     * Obtains the value for the specified CBitArray, unshifted.
      *
      * @param holder the short data containing the bits we're interested in
      * @return the selected bits
@@ -236,7 +236,7 @@ public class CBitSetField {
     }
 
     /**
-     * Sets a boolean BitField.
+     * Sets a boolean CBitArray.
      *
      * @param holder the int data containing the bits we're interested in
      * @param flag indicating whether to set or clear the bits
@@ -247,7 +247,7 @@ public class CBitSetField {
     }
 
     /**
-     * Sets a boolean BitField.
+     * Sets a boolean CBitArray.
      *
      * @param holder the short data containing the bits we're interested in
      * @param flag indicating whether to set or clear the bits
@@ -258,7 +258,7 @@ public class CBitSetField {
     }
 
     /**
-     * Sets a boolean BitField.
+     * Sets a boolean CBitArray.
      *
      * @param holder the byte data containing the bits we're interested in
      * @param flag indicating whether to set or clear the bits
