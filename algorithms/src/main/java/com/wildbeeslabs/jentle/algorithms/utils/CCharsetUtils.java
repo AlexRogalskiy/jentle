@@ -193,4 +193,23 @@ public class CCharsetUtils {
     public static String toUtf16Escape(final int codepoint) {
         return "\\u" + hex(codepoint);
     }
+
+    public static boolean isUnicode(char c) {
+        return ((c >= '\u0000' && c <= '\u001F') || (c >= '\u007F' && c <= '\u009F') || (c >= '\u2000' && c <= '\u20FF'));
+    }
+
+    public static boolean isKeyword(String s) {
+        if (s.length() < 3)
+            return false;
+        char c = s.charAt(0);
+        if (c == 'n')
+            return s.equals("null");
+        if (c == 't')
+            return s.equals("true");
+        if (c == 'f')
+            return s.equals("false");
+        if (c == 'N')
+            return s.equals("NaN");
+        return false;
+    }
 }
