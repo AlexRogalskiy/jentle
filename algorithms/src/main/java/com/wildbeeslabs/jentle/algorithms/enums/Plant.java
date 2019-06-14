@@ -13,7 +13,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class Plant {
-    public enum LifeCycle {ANNUAL, PERENNIAL, BIENNIAL}
+    public enum LifeCycle {
+        ANNUAL,
+        PERENNIAL,
+        BIENNIAL
+    }
 
     private final String name;
     private final LifeCycle lifeCycle;

@@ -172,8 +172,7 @@ public class CPreconditionsUtils {
      *                                        any {@code null} elements
      * @see #notNull(Object, String)
      */
-    public static <T> T[] containsNoNullElements(T[] array, Supplier<String> messageSupplier)
-        throws IllegalArgumentException {
+    public static <T> T[] containsNoNullElements(T[] array, Supplier<String> messageSupplier) throws IllegalArgumentException {
 
         if (array != null) {
             Arrays.stream(array).forEach(object -> notNull(object, messageSupplier));

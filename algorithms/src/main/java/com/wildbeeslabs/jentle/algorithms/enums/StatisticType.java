@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.algorithms.statistics;
+package com.wildbeeslabs.jentle.algorithms.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

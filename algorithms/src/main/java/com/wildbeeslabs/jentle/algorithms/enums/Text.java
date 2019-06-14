@@ -11,13 +11,6 @@ import java.util.Set;
  */
 public class Text {
 
-    public enum Style {
-        BOLD,
-        ITALIC,
-        UNDERLINE,
-        STRIKETHROUGH
-    }
-
     public void applyStyles(final Set<Style> styles) {
         //EnumSet.of(Style.BOLD, Style.ITALIC)
     }

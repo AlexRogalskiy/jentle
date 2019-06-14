@@ -173,43 +173,43 @@ public class CStreamUtils {
             }, false);
     }
 
-    public static Stream<?> toStream(final Object object) {
+    public static <T> Stream<T> toStream(final T object) {
         Objects.requireNonNull(object, "Object must not be null");
         if (object instanceof Stream) {
-            return (Stream<?>) object;
+            return (Stream<T>) object;
         }
         if (object instanceof DoubleStream) {
-            return ((DoubleStream) object).boxed();
+            return (Stream<T>) ((DoubleStream) object).boxed();
         }
         if (object instanceof IntStream) {
-            return ((IntStream) object).boxed();
+            return (Stream<T>) ((IntStream) object).boxed();
         }
         if (object instanceof LongStream) {
-            return ((LongStream) object).boxed();
+            return (Stream<T>) ((LongStream) object).boxed();
         }
         if (object instanceof Collection) {
-            return ((Collection<?>) object).stream();
+            return (Stream<T>) ((Collection<T>) object).stream();
         }
         if (object instanceof Iterable) {
-            return stream(((Iterable<?>) object).spliterator(), false);
+            return (Stream<T>) stream(((Iterable<T>) object).spliterator(), false);
         }
         if (object instanceof Iterator) {
-            return stream(spliteratorUnknownSize((Iterator<?>) object, ORDERED), false);
+            return stream(spliteratorUnknownSize((Iterator<T>) object, ORDERED), false);
         }
         if (object instanceof Object[]) {
-            return java.util.Arrays.stream((Object[]) object);
+            return java.util.Arrays.stream((T[]) object);
         }
         if (object instanceof double[]) {
-            return DoubleStream.of((double[]) object).boxed();
+            return (Stream<T>) DoubleStream.of((double[]) object).boxed();
         }
         if (object instanceof int[]) {
-            return IntStream.of((int[]) object).boxed();
+            return (Stream<T>) IntStream.of((int[]) object).boxed();
         }
         if (object instanceof long[]) {
-            return LongStream.of((long[]) object).boxed();
+            return (Stream<T>) LongStream.of((long[]) object).boxed();
         }
         if (object.getClass().isArray() && object.getClass().getComponentType().isPrimitive()) {
-            return IntStream.range(0, Array.getLength(object)).mapToObj(i -> Array.get(object, i));
+            return IntStream.range(0, Array.getLength(object)).mapToObj(i -> (T) Array.get(object, i));
         }
         throw new IllegalArgumentException("Cannot convert instance of " + object.getClass().getName() + " into a Stream: " + object);
     }
