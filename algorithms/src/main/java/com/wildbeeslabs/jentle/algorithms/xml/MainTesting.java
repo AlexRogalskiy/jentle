@@ -7,7 +7,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class MainTesting {
 
-    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException, JAXBException {
+    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
         String xmlRecords = "<?xml version=\"1.0\"?>\n" +
             "<COMMAND>\n" +
             "    <DATA>\n" +

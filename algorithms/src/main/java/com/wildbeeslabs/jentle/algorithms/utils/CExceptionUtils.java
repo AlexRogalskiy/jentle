@@ -80,7 +80,7 @@ public class CExceptionUtils {
     }
 
     public static RuntimeException sneakyThrow(final Throwable throwable) {
-        return CExceptionUtils.doThrow(throwable);
+        return doThrow(throwable);
     }
 
     private static <T extends Throwable> T doThrow(final Throwable throwable) throws T {

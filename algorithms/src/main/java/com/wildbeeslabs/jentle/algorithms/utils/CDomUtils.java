@@ -60,11 +60,11 @@ public class CDomUtils {
     private static final ThreadLocal<SAXParser> saxParserHolder = new ThreadLocal<>();
     private static final Logger log = LoggerFactory.getLogger(CDomUtils.class);
 
-    public static Document readDocument(String xmlString) {
+    public static Document readDocument(final String xmlString) {
         return readDocument(new StringReader(xmlString));
     }
 
-    public static Document readDocument(Reader reader) {
+    public static Document readDocument(final Reader reader) {
         SAXReader xmlReader = getSaxReader();
         try {
             return xmlReader.read(reader);
@@ -118,8 +118,7 @@ public class CDomUtils {
         return parser;
     }
 
-    private static void setParserFeature(XMLReader reader,
-                                         String featureName, boolean value) {
+    private static void setParserFeature(final XMLReader reader, final String featureName, boolean value) {
         try {
             reader.setFeature(featureName, value);
         } catch (SAXNotSupportedException | SAXNotRecognizedException e) {
@@ -127,7 +126,7 @@ public class CDomUtils {
         }
     }
 
-    public static Document readDocument(InputStream stream) {
+    public static Document readDocument(final InputStream stream) {
         SAXReader xmlReader = getSaxReader();
         try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
             return xmlReader.read(reader);
@@ -136,7 +135,7 @@ public class CDomUtils {
         }
     }
 
-    public static Document readDocument(File file) {
+    public static Document readDocument(final File file) {
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
@@ -148,13 +147,13 @@ public class CDomUtils {
         }
     }
 
-    public static String writeDocument(Document doc, boolean prettyPrint) {
+    public static String writeDocument(final Document doc, boolean prettyPrint) {
         StringWriter writer = new StringWriter();
         writeDocument(doc, prettyPrint, writer);
         return writer.toString();
     }
 
-    public static void writeDocument(Document doc, boolean prettyPrint, Writer writer) {
+    public static void writeDocument(final Document doc, boolean prettyPrint, final Writer writer) {
         XMLWriter xmlWriter;
         try {
             if (prettyPrint) {
@@ -169,7 +168,7 @@ public class CDomUtils {
         }
     }
 
-    public static void writeDocument(Document doc, boolean prettyPrint, OutputStream stream) {
+    public static void writeDocument(final Document doc, boolean prettyPrint, final OutputStream stream) {
         XMLWriter xmlWriter;
         try {
             if (prettyPrint) {
@@ -188,7 +187,7 @@ public class CDomUtils {
      * @deprecated Use CDomUtils API.
      */
     @Deprecated
-    public static List<Element> elements(Element element) {
+    public static List<Element> elements(final Element element) {
         return element.elements();
     }
 
@@ -196,7 +195,7 @@ public class CDomUtils {
      * @deprecated Use CDomUtils API.
      */
     @Deprecated
-    public static List<Element> elements(Element element, String name) {
+    public static List<Element> elements(final Element element, String name) {
         return element.elements(name);
     }
 
@@ -204,11 +203,11 @@ public class CDomUtils {
      * @deprecated Use CDomUtils API.
      */
     @Deprecated
-    public static List<Attribute> attributes(Element element) {
+    public static List<Attribute> attributes(final Element element) {
         return element.attributes();
     }
 
-    public static void storeMap(Element parentElement, Map<String, String> map) {
+    public static void storeMap(final Element parentElement, final Map<String, String> map) {
         if (map == null) {
             return;
         }
@@ -259,6 +258,6 @@ public class CDomUtils {
     }
 
     public interface ElementAttributeVisitor {
-        void onVisit(Element element, Attribute attribute);
+        void onVisit(final Element element, final Attribute attribute);
     }
 }
