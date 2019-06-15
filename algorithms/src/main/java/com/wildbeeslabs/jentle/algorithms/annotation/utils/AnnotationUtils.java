@@ -207,6 +207,23 @@ public class AnnotationUtils {
             || String.class.equals(type) || Class.class.equals(type);
     }
 
+    private <T extends Annotation> T findDeepAnnotation(final Annotation[] annotations, final Class<T> annotationType, int depth) {
+        if (depth == 0) {
+            return null;
+        }
+        for (final Annotation each : annotations) {
+            if (annotationType.isInstance(each)) {
+                return annotationType.cast(each);
+            }
+            Annotation candidate = findDeepAnnotation(each.annotationType()
+                .getAnnotations(), annotationType, depth - 1);
+            if (candidate != null) {
+                return annotationType.cast(candidate);
+            }
+        }
+        return null;
+    }
+
     //besides modularity, this has the advantage of autoboxing primitives:
 
     /**
