@@ -50,6 +50,11 @@ public class CFactoryUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T[] newArray(final Class<T> type, int length) {
+        return (T[]) Array.newInstance(type, length);
+    }
+
     public static <T> T createInstance(@NonNull final Class<T> type, final int sizeIfArray) {
         if (type.isArray()) {
             return type.cast(Array.newInstance(type.getComponentType(), sizeIfArray));
