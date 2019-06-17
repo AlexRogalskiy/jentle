@@ -28,14 +28,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * Custom abstract binary tree extended node 3 implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -45,8 +44,12 @@ public abstract class ACTreeNodeExtended3<T, U extends ACTreeNodeExtended3<T, U>
     protected ACTreeNodeExtended3.Color color;
     protected U node;
 
+    /**
+     * Default color marker
+     */
     public enum Color {
-        RED, BLACK;
+        RED,
+        BLACK;
     }
 
     public ACTreeNodeExtended3() {

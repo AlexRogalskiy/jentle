@@ -28,20 +28,22 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * Custom abstract binary tree node implementation
  *
+ * @param <T>
+ * @param <U>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <T>
- * @param <U>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class ACTreeNode2<T, U extends ACTreeNode2<T, U>> extends ACBaseTreeNode<T, U> {
 
+    /**
+     * Default youngest binary flag
+     */
     protected boolean isYoungest;
 
     public ACTreeNode2() {

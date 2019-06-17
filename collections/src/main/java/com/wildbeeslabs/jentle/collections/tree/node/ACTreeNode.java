@@ -117,6 +117,14 @@ public abstract class ACTreeNode<T, U extends ACTreeNode<T, U>> extends ACNode<T
         return this.children.get(selectRandom);
     }
 
+    /**
+     * Return <code>true</code> if this state has any children (outgoing
+     * transitions).
+     */
+    public boolean hasChildren() {
+        return !this.children.isEmpty();
+    }
+
     public int getNumOfChildren() {
         return this.children.size();
     }

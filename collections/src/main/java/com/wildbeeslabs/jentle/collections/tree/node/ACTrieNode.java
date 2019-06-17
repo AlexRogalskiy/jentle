@@ -83,6 +83,14 @@ public abstract class ACTrieNode<T, U extends ACTrieNode<T, U>> extends ACBaseTr
         }
     }
 
+    /**
+     * Return <code>true</code> if this state has any children (outgoing
+     * transitions).
+     */
+    public boolean hasChilds() {
+        return !this.childs.isEmpty();
+    }
+
     public int getNumOfChilds() {
         return this.childs.size();
     }
