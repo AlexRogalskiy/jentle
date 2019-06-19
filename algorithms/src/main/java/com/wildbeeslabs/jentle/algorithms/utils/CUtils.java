@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.exception.ResourceNotFoundException;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -988,4 +989,10 @@ public class CUtils {
         return res;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T newFrom(final T from) throws Exception {
+        final T to = (T) from.getClass().getConstructor().newInstance();
+        BeanUtils.copyProperties(from, to);
+        return to;
+    }
 }

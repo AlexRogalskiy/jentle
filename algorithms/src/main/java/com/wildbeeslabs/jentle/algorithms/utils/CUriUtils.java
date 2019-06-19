@@ -27,7 +27,7 @@ import java.net.URI;
  * @since 3.0
  */
 @UtilityClass
-public class UriUtils {
+public class CUriUtils {
 
     /**
      * Extract the file extension from the given URI path.
