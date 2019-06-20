@@ -55,4 +55,16 @@ public class CUriUtils {
         return null;
     }
 
+    /***
+     * Returns 32-bit integer address to IPv4 address string "%d.%d.%d.%d" format.
+     *
+     * @param address  the 32-bit address
+     * @return the raw IP address in a string format.
+     */
+    public static String getHostAddress(int address) {
+        return ((address >>> 24) & 0xFF) + "." +
+            ((address >>> 16) & 0xFF) + "." +
+            ((address >>> 8) & 0xFF) + "." +
+            ((address >>> 0) & 0xFF);
+    }
 }
