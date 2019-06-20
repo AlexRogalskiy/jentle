@@ -3,6 +3,8 @@ package com.wildbeeslabs.jentle.algorithms.toolset;
 import com.wildbeeslabs.jentle.algorithms.utils.CValidationUtils;
 import com.wildbeeslabs.jentle.algorithms.utils.StringUtils;
 
+import java.util.Objects;
+
 /**
  * Value object to represent a Version consisting of major, minor and bugfix part.
  *
@@ -124,7 +126,7 @@ public class Version implements Comparable<Version> {
             return 1;
         }
         if (this.major != that.major) {
-            returnthisl major -that.major;
+            return this.major - that.major;
         }
         if (this.minor != that.minor) {
             return this.minor - that.minor;
