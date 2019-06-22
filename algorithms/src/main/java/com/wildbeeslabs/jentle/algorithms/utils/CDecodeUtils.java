@@ -25,7 +25,10 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -39,7 +42,7 @@ import java.util.stream.Collectors;
 public class CDecodeUtils {
 
     public static String decode(final byte[] bytes) {
-        return new String(Base64.getDecoder().decode(bytes));
+        return new String(Base64.decodeBase64(bytes));
     }
 
     public static String[] decodeMultiple(final byte[]... bytes) {
@@ -51,7 +54,7 @@ public class CDecodeUtils {
     }
 
     public static byte[] encode(final String string) {
-        return (Objects.isNull(string) ? null : Base64.getEncoder().encode(string.getBytes()));
+        return (Objects.isNull(string) ? null : Base64.encodeBase64(string.getBytes()));
     }
 
     public static Map<byte[], byte[]> encodeMap(final Map<String, byte[]> map) {

@@ -1270,7 +1270,7 @@ public class ReflectionUtils2 {
     }
 
     public static <T extends AccessibleObject> T makeAccessible(T object) {
-        if (!object.isAccessible()) {
+        if (!object.trySetAccessible()) {
             object.setAccessible(true);
         }
         return object;

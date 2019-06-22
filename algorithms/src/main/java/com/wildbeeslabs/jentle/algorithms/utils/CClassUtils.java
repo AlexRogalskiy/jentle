@@ -771,7 +771,7 @@ public class CClassUtils {
      *                                  conflicting method signatures (or a similar constraint is violated)
      * @see java.lang.reflect.Proxy#getProxyClass
      */
-    public static Class<?> createCompositeInterface(Class<?>[] interfaces, ClassLoader classLoader) {
+    public static Class<?> createCompositeInterface(final Class<?>[] interfaces, final ClassLoader classLoader) {
         Objects.requireNonNull(interfaces, "Interface array must not be empty");
         return Proxy.getProxyClass(classLoader, interfaces);
     }

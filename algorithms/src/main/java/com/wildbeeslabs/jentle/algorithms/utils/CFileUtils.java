@@ -164,11 +164,11 @@ public class CFileUtils {
 
     public static String convertToBase64(final String fileName) throws IOException {
         byte[] fileContent = FileUtils.readFileToByteArray(new File(fileName));
-        return Base64.getEncoder().encodeToString(fileContent);
+        return Base64.encodeBase64String(fileContent);
     }
 
     public static void convertFromBase64(final String fileName, final String encodedString) throws IOException {
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        byte[] decodedBytes = Base64.decodeBase64(encodedString);
         FileUtils.writeByteArrayToFile(new File(fileName), decodedBytes);
     }
 
@@ -478,7 +478,7 @@ public class CFileUtils {
         Objects.requireNonNull(fileName, "File name should not be null");
         final File file = new File(fileName);
         byte[] bytes = loadFile(file);
-        byte[] encoded = Base64.getEncoder().encode(bytes);
+        byte[] encoded = Base64.encodeBase64(bytes);
         return new String(encoded, StandardCharsets.UTF_8);
     }
 

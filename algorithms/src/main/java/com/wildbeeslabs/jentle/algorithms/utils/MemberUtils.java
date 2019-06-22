@@ -32,7 +32,7 @@ public class MemberUtils {
      * @param o the AccessibleObject to set as accessible
      */
     static void setAccessibleWorkaround(final AccessibleObject o) {
-        if (o == null || o.isAccessible()) {
+        if (o == null || o.trySetAccessible()) {
             return;
         }
         Member m = (Member) o;

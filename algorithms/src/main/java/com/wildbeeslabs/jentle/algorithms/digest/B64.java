@@ -14,7 +14,7 @@ import java.util.Random;
  * @version $Id: B64.java 1435550 2013-01-19 14:09:52Z tn $
  * @since 1.7
  */
-class B64 {
+public class B64 {
 
     /**
      * Table with characters for Base64 transformation.
