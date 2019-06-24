@@ -23,14 +23,11 @@
  */
 package com.wildbeeslabs.jentle.algorithms.date.time;
 
-import com.wildbeeslabs.jentle.algorithms.date.time.IDuration;
-import com.wildbeeslabs.jentle.algorithms.date.time.ITimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * Duration implementation
  *
  * @author Alex
