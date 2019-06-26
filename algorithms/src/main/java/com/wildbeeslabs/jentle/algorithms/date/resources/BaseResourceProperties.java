@@ -87,7 +87,7 @@ public class BaseResourceProperties extends Properties {
     }
 
     public Object[][] getContents() {
-        return this.getProperties().stream().map((item) -> item.toArray()).collect(CConverterUtils.toArray(Object[][]::new));
+        return this.getProperties().stream().map(BaseResource::toArray).collect(CConverterUtils.toArray(Object[][]::new));
     }
 
     public Enumeration<String> getKeys() {
@@ -95,7 +95,7 @@ public class BaseResourceProperties extends Properties {
     }
 
     public Enumeration<Object> getValues() {
-        return (Enumeration<Object>) this.defaults.elements();
+        return this.defaults.elements();
     }
 
     public void clearProperties() {
