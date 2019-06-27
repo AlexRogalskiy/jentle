@@ -34,6 +34,9 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.UUID;
+
+import static com.wildbeeslabs.jentle.algorithms.number.CNumericUtils.bytesToHex;
 
 /**
  * Custom digest utilities implementation
@@ -140,6 +143,16 @@ public class CDigestUtils {
             final MessageDigest digest = MessageDigest.getInstance(DEFAULT_SHA256_HASH);
             digest.update(text.getBytes(StandardCharsets.UTF_8));
             return digest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String digest() {
+        try {
+            final MessageDigest salt = MessageDigest.getInstance(DEFAULT_SHA256_HASH);
+            salt.update(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(salt.digest());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
