@@ -37,8 +37,11 @@ import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.wildbeeslabs.jentle.algorithms.utils.CValidationUtils.fail;
 import static org.apache.http.impl.client.HttpClients.createDefault;
 
@@ -118,5 +121,94 @@ public class CHttpUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * Return true for valid port numbers.
+     */
+    public static boolean isValidPort(int port) {
+        return port >= 0 && port <= 65535;
+    }
+
+    /**
+     * Returns a new InetAddress that is one less than the passed in address. This method works for
+     * both IPv4 and IPv6 addresses.
+     *
+     * @param address the InetAddress to decrement
+     * @return a new InetAddress that is one less than the passed in address
+     * @throws IllegalArgumentException if InetAddress is at the beginning of its range
+     * @since 18.0
+     */
+    public static InetAddress decrement(final InetAddress address) {
+        byte[] addr = address.getAddress();
+        int i = addr.length - 1;
+        while (i >= 0 && addr[i] == (byte) 0x00) {
+            addr[i] = (byte) 0xff;
+            i--;
+        }
+
+        checkArgument(i >= 0, "Decrementing %s would wrap.", address);
+
+        addr[i]--;
+        return bytesToInetAddress(addr);
+    }
+
+    /**
+     * Returns a new InetAddress that is one more than the passed in address. This method works for
+     * both IPv4 and IPv6 addresses.
+     *
+     * @param address the InetAddress to increment
+     * @return a new InetAddress that is one more than the passed in address
+     * @throws IllegalArgumentException if InetAddress is at the end of its range
+     * @since 10.0
+     */
+    public static InetAddress increment(final InetAddress address) {
+        byte[] addr = address.getAddress();
+        int i = addr.length - 1;
+        while (i >= 0 && addr[i] == (byte) 0xff) {
+            addr[i] = 0;
+            i--;
+        }
+
+        checkArgument(i >= 0, "Incrementing %s would wrap.", address);
+
+        addr[i]++;
+        return bytesToInetAddress(addr);
+    }
+
+    /**
+     * Returns true if the InetAddress is either 255.255.255.255 for IPv4 or
+     * ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff for IPv6.
+     *
+     * @return true if the InetAddress is either 255.255.255.255 for IPv4 or
+     * ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff for IPv6
+     * @since 10.0
+     */
+    public static boolean isMaximum(final InetAddress address) {
+        byte[] addr = address.getAddress();
+        for (int i = 0; i < addr.length; i++) {
+            if (addr[i] != (byte) 0xff) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Convert a byte array into an InetAddress.
+     *
+     * <p>{@link InetAddress#getByAddress} is documented as throwing a checked exception "if IP
+     * address is of illegal length." We replace it with an unchecked exception, for use by callers
+     * who already know that addr is an array of length 4 or 16.
+     *
+     * @param addr the raw 4-byte or 16-byte IP address in big-endian order
+     * @return an InetAddress object created from the raw IP address
+     */
+    private static InetAddress bytesToInetAddress(final byte[] addr) {
+        try {
+            return InetAddress.getByAddress(addr);
+        } catch (UnknownHostException e) {
+            throw new AssertionError(e);
+        }
     }
 }
