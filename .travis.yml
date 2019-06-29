@@ -11,7 +11,7 @@ branches:
     - master
     - stable
 jdk:
-  - oraclejdk11
+  #- oraclejdk11
   - openjdk11
 services:
   - docker
