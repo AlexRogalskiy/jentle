@@ -38,4 +38,9 @@ module jentle.algorithms {
     requires logback.classic;
     requires json;
     requires java.compiler;
+    requires selenium.api;
+    requires selenium.support;
+    requires selenium.chrome.driver;
+    requires selenium.firefox.driver;
+    requires selenium.ie.driver;
 }

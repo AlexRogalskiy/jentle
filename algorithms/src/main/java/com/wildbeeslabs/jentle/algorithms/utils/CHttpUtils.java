@@ -27,6 +27,8 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -36,6 +38,9 @@ import org.jsoup.Jsoup;
 
 import java.io.IOException;
 import java.util.Objects;
+
+import static com.wildbeeslabs.jentle.algorithms.utils.CValidationUtils.fail;
+import static org.apache.http.impl.client.HttpClients.createDefault;
 
 /**
  * Custom http utilities implementation
@@ -47,6 +52,20 @@ import java.util.Objects;
 @Slf4j
 @UtilityClass
 public class CHttpUtils {
+
+    private void checkImageDisplayedHttpClient(final String url) throws IOException {
+        final CloseableHttpClient httpclient = createDefault();
+        final HttpGet httpGet = new HttpGet(url);
+        final CloseableHttpResponse response = httpclient.execute(httpGet);
+        try {
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                System.out.println("Actual status code is: " + response.getStatusLine().getStatusCode());
+                fail("The image is broken. The url for it is: " + url);
+            }
+        } finally {
+            response.close();
+        }
+    }
 
     public static String readUrl(final String url) {
         Objects.requireNonNull(url);

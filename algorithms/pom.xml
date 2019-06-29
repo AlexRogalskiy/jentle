@@ -45,6 +45,7 @@
         <dom4j.version>2.1.1</dom4j.version>
         <opennlp.tools.version>1.9.1</opennlp.tools.version>
         <jenetics.version>4.3.0</jenetics.version>
+        <selenium.version>3.141.59</selenium.version>
     </properties>
 
     <build>
@@ -169,6 +170,13 @@
             <version>${jenetics.version}</version>
         </dependency>
 
+        <!-- Selenium library dependencies -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
         <!-- Proton pack library dependencies -->
         <dependency>
             <groupId>com.codepoetics</groupId>
@@ -273,6 +281,12 @@
             <groupId>org.apache.opennlp</groupId>
             <artifactId>opennlp-brat-annotator</artifactId>
             <version>${opennlp.tools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.0.0-beta3</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
