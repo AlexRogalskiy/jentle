@@ -4,33 +4,44 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Array {@link Iterator} implementation
+ * Iterator implementation used to efficiently expose contents of an
+ * Array as read-only iterator.
  */
-public class ArrayIterator<T> implements Iterator<T[]> {
+public class ArrayIterator<T> implements Iterator<T>, Iterable<T> {
+    /**
+     * Default array of {@code T} items
+     */
+    private final T[] _a;
+    /**
+     * Default array index
+     */
+    private int _index;
 
-    private final T[][] m_objects;
-    private int m_count;
-
-    public ArrayIterator(final T[][] objects) {
-        this.m_objects = objects;
-        this.m_count = 0;
+    public ArrayIterator(final T[] a) {
+        this._a = a;
+        this._index = 0;
     }
 
     @Override
     public boolean hasNext() {
-        return this.m_count < this.m_objects.length;
+        return this._index < this._a.length;
     }
 
     @Override
-    public T[] next() {
-        if (this.m_count >= this.m_objects.length) {
+    public T next() {
+        if (this._index >= this._a.length) {
             throw new NoSuchElementException();
         }
-        return this.m_objects[this.m_count++];
+        return this._a[this._index++];
     }
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("Remove operation is not supported on this iterator");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return this;
     }
 }
