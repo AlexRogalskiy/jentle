@@ -2,13 +2,11 @@ package com.wildbeeslabs.jentle.algorithms.toolset.event;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.util.Objects;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public abstract class IntegrationEvent extends ApplicationEvent {
 
     private final Throwable cause;

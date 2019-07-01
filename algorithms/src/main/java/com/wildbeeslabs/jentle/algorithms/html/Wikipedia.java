@@ -21,7 +21,7 @@ public class Wikipedia {
         }
     }
 
-    @SuppressWarnings("vargs")
+    @SuppressWarnings("non-vargs")
     private static void log(final String msg, final String... vals) {
         System.out.println(String.format(msg, vals));
     }

@@ -759,22 +759,22 @@ public class CClassUtils {
         return interfaces;
     }
 
-    /**
-     * Create a composite interface Class for the given interfaces,
-     * implementing the given interfaces in one single Class.
-     * <p>This implementation builds a JDK proxy class for the given interfaces.
-     *
-     * @param interfaces  the interfaces to merge
-     * @param classLoader the ClassLoader to create the composite Class in
-     * @return the merged interface as Class
-     * @throws IllegalArgumentException if the specified interfaces expose
-     *                                  conflicting method signatures (or a similar constraint is violated)
-     * @see java.lang.reflect.Proxy#getProxyClass
-     */
-    public static Class<?> createCompositeInterface(final Class<?>[] interfaces, final ClassLoader classLoader) {
-        Objects.requireNonNull(interfaces, "Interface array must not be empty");
-        return Proxy.getProxyClass(classLoader, interfaces);
-    }
+//    /**
+//     * Create a composite interface Class for the given interfaces,
+//     * implementing the given interfaces in one single Class.
+//     * <p>This implementation builds a JDK proxy class for the given interfaces.
+//     *
+//     * @param interfaces  the interfaces to merge
+//     * @param classLoader the ClassLoader to create the composite Class in
+//     * @return the merged interface as Class
+//     * @throws IllegalArgumentException if the specified interfaces expose
+//     *                                  conflicting method signatures (or a similar constraint is violated)
+//     * @see java.lang.reflect.Proxy#getProxyClass
+//     */
+//    public static Class<?> createCompositeInterface(final Class<?>[] interfaces, final ClassLoader classLoader) {
+//        Objects.requireNonNull(interfaces, "Interface array must not be empty");
+//        return Proxy.getProxyClass(classLoader, interfaces);
+//    }
 
     /**
      * Determine the common ancestor of the given classes, if any.
