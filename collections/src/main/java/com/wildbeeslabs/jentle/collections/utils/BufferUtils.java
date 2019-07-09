@@ -135,8 +135,7 @@ public class BufferUtils {
     /**
      * Convert chars into bytes.
      */
-    public static ByteBuffer charsToBytes(CharsetEncoder encoder, CharBuffer chars, ByteBuffer bytes)
-        throws UnmappableInputException {
+    public static ByteBuffer charsToBytes(CharsetEncoder encoder, CharBuffer chars, ByteBuffer bytes) throws RuntimeException {
         assert encoder.malformedInputAction() == CodingErrorAction.REPORT;
 
         bytes = clearAndEnsureCapacity(bytes, (int) (chars.remaining() * encoder.maxBytesPerChar()));
@@ -150,7 +149,7 @@ public class BufferUtils {
             try {
                 cr.throwException();
             } catch (CharacterCodingException e) {
-                throw new UnmappableInputException("Input cannot be mapped to characters using encoding "
+                throw new RuntimeException("Input cannot be mapped to characters using encoding "
                     + encoder.charset().name() + ": " + Arrays.toString(toArray(bytes)), e);
             }
         }
