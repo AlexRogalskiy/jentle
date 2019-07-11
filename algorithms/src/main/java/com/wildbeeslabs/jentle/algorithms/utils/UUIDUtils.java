@@ -513,44 +513,6 @@ public class UUIDUtils {
     }
 
     /**
-     * Basic implementation of equals that checks if the given object is null or a different type, then compares the
-     * byte arrays which store the content of the UUID. I've considered making this compatible with the content of
-     * java.util.UUID, but not sure thats a good idea given that those are objects of a different type, and doing
-     * a deep comparison might be surprising functionality.
-     *
-     * @param o Object against which we compare this UUID.
-     * @return True or false if this UUID's content is identical to the given UUID.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        UUID that = (UUID) o;
-
-        if (this.content.length != that.content.length)
-            return false;
-
-        for (int i = 0; i < this.content.length; i++)
-            if (this.content[i] != that.content[i])
-                return false;
-
-        return true;
-    }
-
-    /**
-     * The hash code implementation just calls Arrays.hashCode() on the contents of this UUID (stored as a byte array).
-     *
-     * @return The hash value of this object.
-     */
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(content);
-    }
-
-    /**
      * Get the active MAC address on the current machine as a byte array. This is called when generating a new UUID.
      * Note that a machine can have multiple or no active MAC addresses. This method works by iterating through the list
      * of network interfaces, ignoring the loopback interface and any virtual interfaces (which often have made-up
