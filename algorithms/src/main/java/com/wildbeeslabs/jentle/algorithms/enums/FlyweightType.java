@@ -1,5 +1,8 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.namespace.QName;
 import java.lang.reflect.Field;
@@ -17,8 +20,8 @@ import java.util.logging.Logger;
  *
  * @author Alex Snaps
  */
-@SuppressWarnings("BoxingBoxedValue")
-// Don't be smart IDE, these _ARE_ required, we want access to the instances in the cache.
+@Getter
+@RequiredArgsConstructor
 public enum FlyweightType {
 
     /**
@@ -210,7 +213,7 @@ public enum FlyweightType {
     private static final Map<Class<?>, FlyweightType> TYPE_MAPPINGS = new HashMap<>();
 
     static {
-        for (FlyweightType type : FlyweightType.values()) {
+        for (final FlyweightType type : FlyweightType.values()) {
             TYPE_MAPPINGS.put(type.clazz, type);
         }
     }
@@ -218,14 +221,13 @@ public enum FlyweightType {
     private static final Set<Locale> GLOBAL_LOCALES;
 
     static {
-        Map<Locale, Void> locales = new IdentityHashMap<>();
-        for (Field f : Locale.class.getFields()) {
+        final Map<Locale, Void> locales = new IdentityHashMap<>();
+        for (final Field f : Locale.class.getFields()) {
             int modifiers = f.getModifiers();
             if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Locale.class.equals(f.getType())) {
                 try {
                     locales.put((Locale) f.get(null), null);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
-                    //
                 }
             }
         }
@@ -233,10 +235,6 @@ public enum FlyweightType {
     }
 
     private final Class<?> clazz;
-
-    FlyweightType(final Class<?> clazz) {
-        this.clazz = clazz;
-    }
 
     /**
      * Whether this is a shared object
@@ -255,9 +253,8 @@ public enum FlyweightType {
     static FlyweightType getFlyweightType(final Class<?> aClazz) {
         if (aClazz.isEnum() || (aClazz.getSuperclass() != null && aClazz.getSuperclass().isEnum())) {
             return ENUM;
-        } else {
-            FlyweightType flyweightType = TYPE_MAPPINGS.get(aClazz);
-            return flyweightType != null ? flyweightType : MISC;
         }
+        final FlyweightType flyweightType = TYPE_MAPPINGS.get(aClazz);
+        return Optional.ofNullable(flyweightType).orElse(MISC);
     }
 }

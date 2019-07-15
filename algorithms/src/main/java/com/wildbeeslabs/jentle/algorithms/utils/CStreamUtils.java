@@ -188,10 +188,10 @@ public class CStreamUtils {
             return (Stream<T>) ((LongStream) object).boxed();
         }
         if (object instanceof Collection) {
-            return (Stream<T>) ((Collection<T>) object).stream();
+            return ((Collection<T>) object).stream();
         }
         if (object instanceof Iterable) {
-            return (Stream<T>) stream(((Iterable<T>) object).spliterator(), false);
+            return stream(((Iterable<T>) object).spliterator(), false);
         }
         if (object instanceof Iterator) {
             return stream(spliteratorUnknownSize((Iterator<T>) object, ORDERED), false);

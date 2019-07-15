@@ -14,6 +14,5 @@ public enum Status {
     NOT_ALLOWED((short) 2, true);
 
     private final short type;
-
     private final boolean isExceptional;
 }

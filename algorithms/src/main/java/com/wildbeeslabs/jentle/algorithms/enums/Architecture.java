@@ -4,17 +4,11 @@ package com.wildbeeslabs.jentle.algorithms.enums;
  * Represents the known architectures used in WebDriver.  It attempts to smooth over some of Java's
  * rough edges when dealing with microprocessor architectures by, for instance, allowing you to
  * query if a particular architecture is 32- or 64-bit.
- *
- * @see org.openqa.selenium.Platform
  */
-// Useful URLs:
-// http://hg.openjdk.java.net/jdk7/modules/jdk/file/a37326fa7f95/src/windows/native/java/lang/java_props_md.c
 public enum Architecture {
 
     // Architecture families
-
-    X86("x86", "i386", "ia32", "i686", "i486", "i86", "pentium", "pentium_pro", "pentium_pro+mmx",
-        "pentium+mmx") {
+    X86("x86", "i386", "ia32", "i686", "i486", "i86", "pentium", "pentium_pro", "pentium_pro+mmx", "pentium+mmx") {
         @Override
         public int getDataModel() {
             return 32;
@@ -45,7 +39,7 @@ public enum Architecture {
 
     private final String[] archIdentifiers;
 
-    Architecture(String... partOfArch) {
+    Architecture(final String... partOfArch) {
         archIdentifiers = partOfArch;
     }
 
@@ -56,7 +50,7 @@ public enum Architecture {
      * @param compareWith the architecture to compare with
      * @return true if architectures belong to the same architecture family, false otherwise
      */
-    public boolean is(Architecture compareWith) {
+    public boolean is(final Architecture compareWith) {
         return this.equals(compareWith);
     }
 
@@ -93,28 +87,18 @@ public enum Architecture {
      * @return the most likely architecture based on the given architecture name
      * @throws UnsupportedOperationException if the architecture given is unknown or unsupported
      */
-    public static Architecture extractFromSysProperty(String arch) {
-        if (arch != null) {
-            arch = arch.toLowerCase();
-        }
-
-        // Some architectures are basically the same even though they have different names.  ia32, x86,
-        // i386 and i686 are for WebDriver's purposes the same sort of 32-bit x86-esque architecture.
-        // So each architecture defined in this enum has an array of strings with the different
-        // identifiers it matches.
-        for (Architecture architecture : values()) {
+    public static Architecture extractFromSysProperty(final String arch) {
+        for (final Architecture architecture : values()) {
             if (architecture == Architecture.ANY) {
                 continue;
             }
 
-            for (String matcher : architecture.archIdentifiers) {
-                if (matcher.equals(arch)) {
+            for (final String matcher : architecture.archIdentifiers) {
+                if (matcher.equalsIgnoreCase(arch)) {
                     return architecture;
                 }
             }
         }
-
         throw new UnsupportedOperationException("Unknown architecture: " + arch);
     }
-
 }

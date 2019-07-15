@@ -1,8 +1,13 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Enum that represents the Fitzpatrick modifiers supported by the emojis.
  */
+@Getter
+@RequiredArgsConstructor
 public enum Fitzpatrick {
     /**
      * Fitzpatrick modifier of type 1/2 (pale white/white)
@@ -34,13 +39,8 @@ public enum Fitzpatrick {
      */
     public final String unicode;
 
-    Fitzpatrick(String unicode) {
-        this.unicode = unicode;
-    }
-
-
-    public static Fitzpatrick fitzpatrickFromUnicode(String unicode) {
-        for (Fitzpatrick v : values()) {
+    public static Fitzpatrick fitzpatrickFromUnicode(final String unicode) {
+        for (final Fitzpatrick v : values()) {
             if (v.unicode.equals(unicode)) {
                 return v;
             }
@@ -48,7 +48,7 @@ public enum Fitzpatrick {
         return null;
     }
 
-    public static Fitzpatrick fitzpatrickFromType(String type) {
+    public static Fitzpatrick fitzpatrickFromType(final String type) {
         try {
             return Fitzpatrick.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {

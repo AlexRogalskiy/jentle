@@ -278,16 +278,6 @@ public class CCollectionUtils {
         return null;
     }
 
-    /**
-     * average time complexity: O(n) worst time complexity: O(n^2)
-     *
-     * @param <T>
-     * @param arr
-     * @param left
-     * @param right
-     * @param cmp
-     * @return
-     */
     public static <T> int iterativePartition(final T[] arr, int left, int right, final Comparator<? super T> cmp) {
         final T pivot = arr[right];
         int i = left;
@@ -301,14 +291,6 @@ public class CCollectionUtils {
         return i;
     }
 
-    /**
-     * average time complexity: O(n) worst time complexity: O(n^2)
-     *
-     * @param arr
-     * @param left
-     * @param right
-     * @return
-     */
     private static int randomPartition(final Integer arr[], int left, int right) {
         int n = right - left + 1;
         int pivot = (int) (Math.random()) * n;

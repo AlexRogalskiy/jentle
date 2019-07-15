@@ -8,10 +8,7 @@ import java.util.regex.Pattern;
  * Operating System, but differs slightly, because this class is used to extract information such as
  * program locations and line endings.
  */
-// Useful URLs:
-// http://hg.openjdk.java.net/jdk7/modules/jdk/file/a37326fa7f95/src/windows/native/java/lang/java_props_md.c
 public enum Platform {
-
     /**
      * Never returned, but can be used to request a browser running on any version of Windows.
      */
@@ -220,12 +217,12 @@ public enum Platform {
     private int minorVersion = 0;
     private int majorVersion = 0;
 
-    Platform(String... partOfOsName) {
+    Platform(final String... partOfOsName) {
         this.partOfOsName = partOfOsName;
     }
 
     public String[] getPartOfOsName() {
-        return partOfOsName;
+        return this.partOfOsName;
     }
 
     private static Platform current;
@@ -239,12 +236,12 @@ public enum Platform {
         if (current == null) {
             current = extractFromSysProperty(System.getProperty("os.name"));
 
-            String version = System.getProperty("os.version", "0.0.0");
+            final String version = System.getProperty("os.version", "0.0.0");
             int major = 0;
             int min = 0;
 
-            Pattern pattern = Pattern.compile("^(\\d+)\\.(\\d+).*");
-            Matcher matcher = pattern.matcher(version);
+            final Pattern pattern = Pattern.compile("^(\\d+)\\.(\\d+).*");
+            final Matcher matcher = pattern.matcher(version);
             if (matcher.matches()) {
                 try {
                     major = Integer.parseInt(matcher.group(1));
@@ -253,7 +250,6 @@ public enum Platform {
                     // These things happen
                 }
             }
-
             current.majorVersion = major;
             current.minorVersion = min;
         }
@@ -268,7 +264,7 @@ public enum Platform {
      * @param osName the operating system name to determine the platform of
      * @return the most likely platform based on given operating system name
      */
-    public static Platform extractFromSysProperty(String osName) {
+    public static Platform extractFromSysProperty(final String osName) {
         return extractFromSysProperty(osName, System.getProperty("os.version"));
     }
 
@@ -281,32 +277,32 @@ public enum Platform {
      * @param osVersion the operating system version to determine the platform of
      * @return the most likely platform based on given operating system name and version
      */
-    public static Platform extractFromSysProperty(String osName, String osVersion) {
-        osName = osName.toLowerCase();
+    public static Platform extractFromSysProperty(final String osName, final String osVersion) {
+        final String result = osName.toLowerCase();
         // os.name for android is linux
         if ("dalvik".equalsIgnoreCase(System.getProperty("java.vm.name"))) {
             return Platform.ANDROID;
         }
         // Windows 8 can't be detected by osName alone
-        if (osVersion.equals("6.2") && osName.startsWith("windows nt")) {
+        if (osVersion.equals("6.2") && result.startsWith("windows nt")) {
             return WIN8;
         }
         // Windows 8 can't be detected by osName alone
-        if (osVersion.equals("6.3") && osName.startsWith("windows nt")) {
+        if (osVersion.equals("6.3") && result.startsWith("windows nt")) {
             return WIN8_1;
         }
         Platform mostLikely = UNIX;
         String previousMatch = null;
-        for (Platform os : Platform.values()) {
+        for (final Platform os : Platform.values()) {
             for (String matcher : os.partOfOsName) {
                 if ("".equals(matcher)) {
                     continue;
                 }
                 matcher = matcher.toLowerCase();
-                if (os.isExactMatch(osName, matcher)) {
+                if (os.isExactMatch(result, matcher)) {
                     return os;
                 }
-                if (os.isCurrentPlatform(osName, matcher) && isBetterMatch(previousMatch, matcher)) {
+                if (os.isCurrentPlatform(result, matcher) && isBetterMatch(previousMatch, matcher)) {
                     previousMatch = matcher;
                     mostLikely = os;
                 }
@@ -360,7 +356,7 @@ public enum Platform {
      * @param compareWith the platform to compare with
      * @return true if platforms are approximately similar, false otherwise
      */
-    public boolean is(Platform compareWith) {
+    public boolean is(final Platform compareWith) {
         return
             // Any platform is itself
             this == compareWith ||
@@ -379,11 +375,11 @@ public enum Platform {
      */
     public abstract Platform family();
 
-    private boolean isCurrentPlatform(String osName, String matchAgainst) {
+    private boolean isCurrentPlatform(final String osName, final String matchAgainst) {
         return osName.contains(matchAgainst);
     }
 
-    private boolean isExactMatch(String osName, String matchAgainst) {
+    private boolean isExactMatch(final String osName, final String matchAgainst) {
         return matchAgainst.equals(osName);
     }
 

@@ -12,16 +12,6 @@ import java.util.Locale;
  * if the {@code os.name} JVM system property is undefined &mdash; then none
  * of the constants defined in this enum will be considered to be the
  * {@linkplain #isCurrentOs current operating system}.
- *
- * @see #AIX
- * @see #LINUX
- * @see #MAC
- * @see #SOLARIS
- * @see #WINDOWS
- * @see #OTHER
- * @see EnabledOnOs
- * @see DisabledOnOs
- * @since 5.1
  */
 @Slf4j
 public enum OS {

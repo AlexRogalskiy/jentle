@@ -38,7 +38,7 @@ public interface ITimeFormat {
      * should be decorated.
      * @return formatted string
      */
-    abstract String format(final IDuration duration);
+    String format(final IDuration duration);
 
     /**
      * Given a populated {@link Duration} object. Apply formatting (without

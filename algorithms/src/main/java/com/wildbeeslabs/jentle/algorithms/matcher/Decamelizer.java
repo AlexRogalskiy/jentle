@@ -7,7 +7,7 @@ public class Decamelizer {
 
     private static final Pattern CAPS = Pattern.compile("([A-Z\\d][^A-Z\\d]*)");
 
-    public static String decamelizeMatcher(String className) {
+    public static String decamelizeMatcher(final String className) {
         if (className.length() == 0) {
             return "<custom argument matcher>";
         }
@@ -21,7 +21,7 @@ public class Decamelizer {
         return "<" + decamelized + ">";
     }
 
-    private static String decamelizeClassName(String className) {
+    private static String decamelizeClassName(final String className) {
         final Matcher match = CAPS.matcher(className);
         final StringBuilder deCameled = new StringBuilder();
         while (match.find()) {

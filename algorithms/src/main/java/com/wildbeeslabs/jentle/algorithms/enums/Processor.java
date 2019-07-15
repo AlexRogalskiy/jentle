@@ -1,7 +1,11 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
-public class Processor {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
+public class Processor {
     /**
      * The {@link Arch} enum defines the architecture of
      * a microprocessor. The architecture represents the bit value
@@ -14,7 +18,6 @@ public class Processor {
      * </ul>
      */
     public enum Arch {
-
         /**
          * A 32-bit processor architecture.
          */
@@ -42,7 +45,6 @@ public class Processor {
      * </ul>
      */
     public enum Type {
-
         /**
          * Intel x86 series of instruction set architectures.
          */
@@ -66,18 +68,6 @@ public class Processor {
 
     private final Arch arch;
     private final Type type;
-
-    /**
-     * Constructs a {@link Processor} object with the given
-     * parameters.
-     *
-     * @param arch The processor architecture.
-     * @param type The processor type.
-     */
-    public Processor(final Arch arch, final Type type) {
-        this.arch = arch;
-        this.type = type;
-    }
 
     /**
      * Returns the processor architecture as an {@link Arch} enum.
@@ -107,7 +97,7 @@ public class Processor {
      * @return <code>true</code>, if {@link Processor} is {@link Arch#BIT_32}, else <code>false</code>.
      */
     public boolean is32Bit() {
-        return Arch.BIT_32.equals(arch);
+        return Arch.BIT_32.equals(this.arch);
     }
 
     /**
@@ -116,7 +106,7 @@ public class Processor {
      * @return <code>true</code>, if {@link Processor} is {@link Arch#BIT_64}, else <code>false</code>.
      */
     public boolean is64Bit() {
-        return Arch.BIT_64.equals(arch);
+        return Arch.BIT_64.equals(this.arch);
     }
 
     /**
@@ -125,7 +115,7 @@ public class Processor {
      * @return <code>true</code>, if {@link Processor} is {@link Type#X86}, else <code>false</code>.
      */
     public boolean isX86() {
-        return Type.X86.equals(type);
+        return Type.X86.equals(this.type);
     }
 
     /**
@@ -134,7 +124,7 @@ public class Processor {
      * @return <code>true</code>. if {@link Processor} is {@link Type#IA_64}, else <code>false</code>.
      */
     public boolean isIA64() {
-        return Type.IA_64.equals(type);
+        return Type.IA_64.equals(this.type);
     }
 
     /**
@@ -143,7 +133,7 @@ public class Processor {
      * @return <code>true</code>. if {@link Processor} is {@link Type#PPC}, else <code>false</code>.
      */
     public boolean isPPC() {
-        return Type.PPC.equals(type);
+        return Type.PPC.equals(this.type);
     }
 
 }

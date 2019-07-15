@@ -84,7 +84,7 @@ public enum Keys implements CharSequence {
     private final char keyCode;
     private final int codePoint;
 
-    Keys(Keys key) {
+    Keys(final Keys key) {
         this(key.charAt(0));
     }
 
@@ -94,12 +94,12 @@ public enum Keys implements CharSequence {
     }
 
     public int getCodePoint() {
-        return codePoint;
+        return this.codePoint;
     }
 
     public char charAt(int index) {
         if (index == 0) {
-            return keyCode;
+            return this.keyCode;
         }
 
         return 0;
@@ -111,15 +111,14 @@ public enum Keys implements CharSequence {
 
     public CharSequence subSequence(int start, int end) {
         if (start == 0 && end == 1) {
-            return String.valueOf(keyCode);
+            return String.valueOf(this.keyCode);
         }
-
         throw new IndexOutOfBoundsException();
     }
 
     @Override
     public String toString() {
-        return String.valueOf(keyCode);
+        return String.valueOf(this.keyCode);
     }
 
     /**
@@ -142,13 +141,11 @@ public enum Keys implements CharSequence {
      * @return String representation of the char sequence
      * @see #chord(CharSequence...)
      */
-    public static String chord(Iterable<CharSequence> value) {
-        StringBuilder builder = new StringBuilder();
-
-        for (CharSequence seq : value) {
+    public static String chord(final Iterable<CharSequence> value) {
+        final StringBuilder builder = new StringBuilder();
+        for (final CharSequence seq : value) {
             builder.append(seq);
         }
-
         builder.append(Keys.NULL);
         return builder.toString();
     }
@@ -161,12 +158,11 @@ public enum Keys implements CharSequence {
      * @return special key linked to the character code, or null if character is not a special key
      */
     public static Keys getKeyFromUnicode(char key) {
-        for (Keys unicodeKey : values()) {
+        for (final Keys unicodeKey : values()) {
             if (unicodeKey.charAt(0) == key) {
                 return unicodeKey;
             }
         }
-
         return null;
     }
 }

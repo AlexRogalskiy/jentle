@@ -30,7 +30,6 @@ public enum StringPredicateType {
     IS_NUMERIC_SPACE(org.apache.commons.lang3.StringUtils::isNumericSpace),
     IS_WHITESPACE(org.apache.commons.lang3.StringUtils::isWhitespace);
 
-
     /**
      * Default validator {@link Predicate} operator
      */

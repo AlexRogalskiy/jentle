@@ -7,59 +7,58 @@ package com.wildbeeslabs.jentle.algorithms.enums;    // Nested types
  * @see <a href="https://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a>
  */
 public enum Type {
-
     SCHEME {
         @Override
         public boolean isAllowed(int c) {
-            return isAlpha(c) || isDigit(c) || '+' == c || '-' == c || '.' == c;
+            return this.isAlpha(c) || this.isDigit(c) || '+' == c || '-' == c || '.' == c;
         }
     },
     AUTHORITY {
         @Override
         public boolean isAllowed(int c) {
-            return isUnreserved(c) || isSubDelimiter(c) || ':' == c || '@' == c;
+            return this.isUnreserved(c) || this.isSubDelimiter(c) || ':' == c || '@' == c;
         }
     },
     USER_INFO {
         @Override
         public boolean isAllowed(int c) {
-            return isUnreserved(c) || isSubDelimiter(c) || ':' == c;
+            return this.isUnreserved(c) || this.isSubDelimiter(c) || ':' == c;
         }
     },
     HOST_IPV4 {
         @Override
         public boolean isAllowed(int c) {
-            return isUnreserved(c) || isSubDelimiter(c);
+            return this.isUnreserved(c) || this.isSubDelimiter(c);
         }
     },
     HOST_IPV6 {
         @Override
         public boolean isAllowed(int c) {
-            return isUnreserved(c) || isSubDelimiter(c) || '[' == c || ']' == c || ':' == c;
+            return this.isUnreserved(c) || this.isSubDelimiter(c) || '[' == c || ']' == c || ':' == c;
         }
     },
     PORT {
         @Override
         public boolean isAllowed(int c) {
-            return isDigit(c);
+            return this.isDigit(c);
         }
     },
     PATH {
         @Override
         public boolean isAllowed(int c) {
-            return isPchar(c) || '/' == c;
+            return this.isPchar(c) || '/' == c;
         }
     },
     PATH_SEGMENT {
         @Override
         public boolean isAllowed(int c) {
-            return isPchar(c);
+            return this.isPchar(c);
         }
     },
     QUERY {
         @Override
         public boolean isAllowed(int c) {
-            return isPchar(c) || '/' == c || '?' == c;
+            return this.isPchar(c) || '/' == c || '?' == c;
         }
     },
     QUERY_PARAM {
@@ -67,21 +66,20 @@ public enum Type {
         public boolean isAllowed(int c) {
             if ('=' == c || '&' == c) {
                 return false;
-            } else {
-                return isPchar(c) || '/' == c || '?' == c;
             }
+            return this.isPchar(c) || '/' == c || '?' == c;
         }
     },
     FRAGMENT {
         @Override
         public boolean isAllowed(int c) {
-            return isPchar(c) || '/' == c || '?' == c;
+            return this.isPchar(c) || '/' == c || '?' == c;
         }
     },
     URI {
         @Override
         public boolean isAllowed(int c) {
-            return isUnreserved(c);
+            return this.isUnreserved(c);
         }
     };
 
@@ -125,8 +123,7 @@ public enum Type {
      * @see <a href="https://www.ietf.org/rfc/rfc3986.txt">RFC 3986, appendix A</a>
      */
     protected boolean isSubDelimiter(int c) {
-        return ('!' == c || '$' == c || '&' == c || '\'' == c || '(' == c || ')' == c || '*' == c || '+' == c ||
-            ',' == c || ';' == c || '=' == c);
+        return ('!' == c || '$' == c || '&' == c || '\'' == c || '(' == c || ')' == c || '*' == c || '+' == c || ',' == c || ';' == c || '=' == c);
     }
 
     /**
@@ -135,7 +132,7 @@ public enum Type {
      * @see <a href="https://www.ietf.org/rfc/rfc3986.txt">RFC 3986, appendix A</a>
      */
     protected boolean isReserved(int c) {
-        return (isGenericDelimiter(c) || isSubDelimiter(c));
+        return (this.isGenericDelimiter(c) || this.isSubDelimiter(c));
     }
 
     /**
@@ -144,7 +141,7 @@ public enum Type {
      * @see <a href="https://www.ietf.org/rfc/rfc3986.txt">RFC 3986, appendix A</a>
      */
     protected boolean isUnreserved(int c) {
-        return (isAlpha(c) || isDigit(c) || '-' == c || '.' == c || '_' == c || '~' == c);
+        return (this.isAlpha(c) || this.isDigit(c) || '-' == c || '.' == c || '_' == c || '~' == c);
     }
 
     /**
@@ -153,6 +150,6 @@ public enum Type {
      * @see <a href="https://www.ietf.org/rfc/rfc3986.txt">RFC 3986, appendix A</a>
      */
     protected boolean isPchar(int c) {
-        return (isUnreserved(c) || isSubDelimiter(c) || ':' == c || '@' == c);
+        return (this.isUnreserved(c) || this.isSubDelimiter(c) || ':' == c || '@' == c);
     }
 }

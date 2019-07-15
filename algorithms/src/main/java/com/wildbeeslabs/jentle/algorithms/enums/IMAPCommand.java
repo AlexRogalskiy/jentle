@@ -98,5 +98,3 @@ public enum IMAPCommand {
         return this.imapCommand != null ? this.imapCommand : this.name();
     }
 }
-
-/* kate: indent-width 4; replace-tabs on; */

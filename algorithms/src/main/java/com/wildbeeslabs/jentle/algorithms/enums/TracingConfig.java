@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
 /**
- * Enumeration of possible values of property {@link org.glassfish.jersey.server.ServerProperties#TRACING}.
+ * Enumeration of possible values of property.
  *
  * @author Libor Kramolis (libor.kramolis at oracle.com)
  * @since 2.3
@@ -12,8 +12,7 @@ public enum TracingConfig {
      */
     OFF,
     /**
-     * Tracing support is in stand-by mode. Waiting for a request header
-     * {@link org.glassfish.jersey.message.internal.TracingLogger#HEADER_ACCEPT} existence.
+     * Tracing support is in stand-by mode. Waiting for a request header existence.
      */
     ON_DEMAND,
     /**

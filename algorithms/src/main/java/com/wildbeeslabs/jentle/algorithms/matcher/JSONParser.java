@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.jentle.algorithms.matcher;
 
+import lombok.experimental.UtilityClass;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,15 +32,13 @@ import org.json.JSONString;
 /**
  * Simple JSON parsing utility.
  */
+@UtilityClass
 public class JSONParser {
 
     /**
      * Default number regex pattern {@link String}
      */
     private static final String NUMBER_REGEX = "-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?";
-
-    private JSONParser() {
-    }
 
     /**
      * Takes a JSON string and returns either a {@link org.json.JSONObject} or {@link org.json.JSONArray},

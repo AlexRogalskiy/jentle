@@ -12,7 +12,7 @@ public enum DictionaryAttribute {
      */
     SEPARATOR("fsa.dict.separator") {
         @Override
-        public Character fromString(String separator) {
+        public Character fromString(final String separator) {
             if (separator == null || separator.length() != 1) {
                 throw new IllegalArgumentException("Attribute " + propertyName
                     + " must be a single character.");
@@ -34,7 +34,7 @@ public enum DictionaryAttribute {
      */
     ENCODING("fsa.dict.encoding") {
         @Override
-        public Charset fromString(String charsetName) {
+        public Charset fromString(final String charsetName) {
             return Charset.forName(charsetName);
         }
     },
@@ -44,7 +44,7 @@ public enum DictionaryAttribute {
      */
     FREQUENCY_INCLUDED("fsa.dict.frequency-included") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -54,7 +54,7 @@ public enum DictionaryAttribute {
      */
     IGNORE_NUMBERS("fsa.dict.speller.ignore-numbers") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -64,7 +64,7 @@ public enum DictionaryAttribute {
      */
     IGNORE_PUNCTUATION("fsa.dict.speller.ignore-punctuation") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -74,7 +74,7 @@ public enum DictionaryAttribute {
      */
     IGNORE_CAMEL_CASE("fsa.dict.speller.ignore-camel-case") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -84,7 +84,7 @@ public enum DictionaryAttribute {
      */
     IGNORE_ALL_UPPERCASE("fsa.dict.speller.ignore-all-uppercase") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -95,7 +95,7 @@ public enum DictionaryAttribute {
      */
     IGNORE_DIACRITICS("fsa.dict.speller.ignore-diacritics") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -106,7 +106,7 @@ public enum DictionaryAttribute {
      */
     CONVERT_CASE("fsa.dict.speller.convert-case") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -116,7 +116,7 @@ public enum DictionaryAttribute {
      */
     RUN_ON_WORDS("fsa.dict.speller.runon-words") {
         @Override
-        public Boolean fromString(String value) {
+        public Boolean fromString(final String value) {
             return booleanValue(value);
         }
     },
@@ -126,7 +126,7 @@ public enum DictionaryAttribute {
      */
     LOCALE("fsa.dict.speller.locale") {
         @Override
-        public Locale fromString(String value) {
+        public Locale fromString(final String value) {
             return new Locale(value);
         }
     },
@@ -136,7 +136,7 @@ public enum DictionaryAttribute {
      */
     ENCODER("fsa.dict.encoder") {
         @Override
-        public String fromString(String value) {
+        public String fromString(final String value) {
             try {
                 return value.trim().toUpperCase(Locale.ROOT);
             } catch (IllegalArgumentException e) {
@@ -151,7 +151,7 @@ public enum DictionaryAttribute {
      */
     INPUT_CONVERSION("fsa.dict.input-conversion") {
         @Override
-        public LinkedHashMap<String, String> fromString(String value) throws IllegalArgumentException {
+        public LinkedHashMap<String, String> fromString(final String value) throws IllegalArgumentException {
             LinkedHashMap<String, String> conversionPairs = new LinkedHashMap<>();
             final String[] replacements = value.split(",\\s*");
             for (final String stringPair : replacements) {
@@ -180,8 +180,8 @@ public enum DictionaryAttribute {
      */
     OUTPUT_CONVERSION("fsa.dict.output-conversion") {
         @Override
-        public LinkedHashMap<String, String> fromString(String value) throws IllegalArgumentException {
-            LinkedHashMap<String, String> conversionPairs = new LinkedHashMap<String, String>();
+        public LinkedHashMap<String, String> fromString(final String value) throws IllegalArgumentException {
+            final LinkedHashMap<String, String> conversionPairs = new LinkedHashMap<>();
             final String[] replacements = value.split(",\\s*");
             for (final String stringPair : replacements) {
                 final String[] twoStrings = stringPair.trim().split(" ");
@@ -209,7 +209,7 @@ public enum DictionaryAttribute {
      */
     REPLACEMENT_PAIRS("fsa.dict.speller.replacement-pairs") {
         @Override
-        public LinkedHashMap<String, List<String>> fromString(String value) throws IllegalArgumentException {
+        public LinkedHashMap<String, List<String>> fromString(final String value) throws IllegalArgumentException {
             LinkedHashMap<String, List<String>> replacementPairs = new LinkedHashMap<>();
             final String[] replacements = value.split(",\\s*");
             for (final String stringPair : replacements) {
@@ -291,7 +291,7 @@ public enum DictionaryAttribute {
      * @throws IllegalArgumentException If the input string cannot be converted to the attribute's
      *                                  value.
      */
-    public Object fromString(String value) throws IllegalArgumentException {
+    public Object fromString(final String value) throws IllegalArgumentException {
         return value;
     }
 
@@ -300,7 +300,7 @@ public enum DictionaryAttribute {
      * @return Return a {@link DictionaryAttribute} associated with
      * a given {@link #propertyName}.
      */
-    public static DictionaryAttribute fromPropertyName(String propertyName) {
+    public static DictionaryAttribute fromPropertyName(final String propertyName) {
         DictionaryAttribute value = attrsByPropertyName.get(propertyName);
         if (value == null) {
             throw new IllegalArgumentException("No attribute for property: " + propertyName);
@@ -311,7 +311,7 @@ public enum DictionaryAttribute {
     private static final Map<String, DictionaryAttribute> attrsByPropertyName;
 
     static {
-        attrsByPropertyName = new HashMap<String, DictionaryAttribute>();
+        attrsByPropertyName = new HashMap<>();
         for (DictionaryAttribute attr : DictionaryAttribute.values()) {
             if (attrsByPropertyName.put(attr.propertyName, attr) != null) {
                 throw new RuntimeException("Duplicate property key for: " + attr);
@@ -322,18 +322,18 @@ public enum DictionaryAttribute {
     /**
      * Private enum instance constructor.
      */
-    private DictionaryAttribute(String propertyName) {
+    DictionaryAttribute(final String propertyName) {
         this.propertyName = propertyName;
     }
 
-    private static Boolean booleanValue(String value) {
-        value = value.toLowerCase(Locale.ROOT);
-        if ("true".equals(value) || "yes".equals(value) || "on".equals(value)) {
+    private static Boolean booleanValue(final String value) {
+        final String result = value.toLowerCase(Locale.ROOT);
+        if ("true".equals(result) || "yes".equals(result) || "on".equals(result)) {
             return Boolean.TRUE;
         }
-        if ("false".equals(value) || "no".equals(value) || "off".equals(value)) {
+        if ("false".equals(result) || "no".equals(result) || "off".equals(result)) {
             return Boolean.FALSE;
         }
-        throw new IllegalArgumentException("Not a boolean value: " + value);
+        throw new IllegalArgumentException("Not a boolean result: " + result);
     }
 }

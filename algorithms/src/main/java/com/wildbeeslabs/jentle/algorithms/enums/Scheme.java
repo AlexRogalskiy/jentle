@@ -27,6 +27,6 @@ public enum Scheme {
 
     @JsonValue
     public String toValue() {
-        return value;
+        return this.value;
     }
 }

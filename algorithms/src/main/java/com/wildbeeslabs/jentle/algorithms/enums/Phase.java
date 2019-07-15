@@ -23,7 +23,6 @@ public enum Phase {
     @Getter
     @RequiredArgsConstructor
     public enum Transition {
-
         MELT(SOLID, LIQUID),
         FREEZE(LIQUID, SOLID),
         BOIL(LIQUID, GAS),

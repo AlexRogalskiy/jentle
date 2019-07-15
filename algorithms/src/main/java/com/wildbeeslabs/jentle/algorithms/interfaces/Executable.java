@@ -16,19 +16,9 @@ package com.wildbeeslabs.jentle.algorithms.interfaces;
  * scenarios), there may be use cases where an {@code Executable} needs to
  * explicitly throw a {@code Throwable}. In order to support such specialized
  * use cases, {@link #execute()} is declared to throw {@code Throwable}.
- *
- * @see org.junit.jupiter.api.Assertions#assertAll(Executable...)
- * @see org.junit.jupiter.api.Assertions#assertAll(String, Executable...)
- * @see org.junit.jupiter.api.Assertions#assertThrows(Class, Executable)
- * @see org.junit.jupiter.api.Assumptions#assumingThat(java.util.function.BooleanSupplier, Executable)
- * @see org.junit.jupiter.api.DynamicTest#dynamicTest(String, Executable)
- * @see ThrowingConsumer
- * @see ThrowingSupplier
- * @since 5.0
  */
 @FunctionalInterface
 public interface Executable {
 
     void execute() throws Throwable;
-
 }

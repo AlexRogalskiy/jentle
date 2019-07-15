@@ -1,25 +1,25 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
-public enum PageLoadStrategy {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
+public enum PageLoadStrategy {
     NONE("none"),
     EAGER("eager"),
     NORMAL("normal");
 
-    private String text;
-
-    private PageLoadStrategy(String text) {
-        this.text = text;
-    }
+    private final String text;
 
     @Override
     public String toString() {
         return String.valueOf(text);
     }
 
-    public static PageLoadStrategy fromString(String text) {
+    public static PageLoadStrategy fromString(final String text) {
         if (text != null) {
-            for (PageLoadStrategy b : PageLoadStrategy.values()) {
+            for (final PageLoadStrategy b : PageLoadStrategy.values()) {
                 if (text.equalsIgnoreCase(b.text)) {
                     return b;
                 }
