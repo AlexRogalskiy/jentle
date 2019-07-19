@@ -1,8 +1,8 @@
 package com.wildbeeslabs.jentle.algorithms.toolset;
 
-import org.yaml.snakeyaml.error.Mark;
-import org.yaml.snakeyaml.error.YAMLException;
+import lombok.Data;
 
+@Data
 public abstract class Token {
     public enum ID {
         Alias("<alias>"),
@@ -41,23 +41,15 @@ public abstract class Token {
         }
     }
 
-    private final Mark startMark;
-    private final Mark endMark;
+    private final String startMark;
+    private final String endMark;
 
-    public Token(Mark startMark, Mark endMark) {
+    public Token(final String startMark, final String endMark) {
         if (startMark == null || endMark == null) {
-            throw new YAMLException("Token requires marks.");
+            throw new IllegalArgumentException("Token requires marks.");
         }
         this.startMark = startMark;
         this.endMark = endMark;
-    }
-
-    public Mark getStartMark() {
-        return startMark;
-    }
-
-    public Mark getEndMark() {
-        return endMark;
     }
 
     /**
