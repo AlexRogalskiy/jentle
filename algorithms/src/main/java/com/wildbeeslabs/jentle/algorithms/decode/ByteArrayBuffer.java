@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.decode;
 
 /**
- * A resizable byte array.
+ * A resizable byte ArrayUtils.
  */
 public final class ByteArrayBuffer implements ByteSequence {
 

@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class Shell {
 
     /**
-     * Return an array containing the command name and its parameters
+     * Return an ArrayUtils containing the command name and its parameters
      */
     protected abstract String[] execString();
 

@@ -76,8 +76,8 @@
 //	}
 //
 //	@Override
-//	public <B> B[] toArray(final B[] array) {
-//		return _list.toArray(array);
+//	public <B> B[] toArray(final B[] ArrayUtils) {
+//		return _list.toArray(ArrayUtils);
 //	}
 //
 //}

@@ -25,17 +25,17 @@ import java.util.*;
 public class CClassUtils {
 
     /**
-     * Suffix for array class names: {@code "[]"}.
+     * Suffix for ArrayUtils class names: {@code "[]"}.
      */
     public static final String ARRAY_SUFFIX = "[]";
 
     /**
-     * Prefix for internal array class names: {@code "["}.
+     * Prefix for internal ArrayUtils class names: {@code "["}.
      */
     private static final String INTERNAL_ARRAY_PREFIX = "[";
 
     /**
-     * Prefix for internal non-primitive array class names: {@code "[L"}.
+     * Prefix for internal non-primitive ArrayUtils class names: {@code "[L"}.
      */
     private static final String NON_PRIMITIVE_ARRAY_PREFIX = "[L";
 
@@ -204,7 +204,7 @@ public class CClassUtils {
 
     /**
      * Replacement for {@code Class.forName()} that also returns Class instances
-     * for primitives (e.g. "int") and array class names (e.g. "String[]").
+     * for primitives (e.g. "int") and ArrayUtils class names (e.g. "String[]").
      * Furthermore, it is also capable of resolving inner class names in Java source
      * style (e.g. "java.lang.Thread.State" instead of "java.lang.Thread$State").
      *
@@ -273,7 +273,7 @@ public class CClassUtils {
 
     /**
      * Resolve the given class name into a Class instance. Supports
-     * primitives (like "int") and array class names (like "String[]").
+     * primitives (like "int") and ArrayUtils class names (like "String[]").
      * <p>This is effectively equivalent to the {@code forName}
      * method with the same arguments, with the only difference being
      * the exceptions thrown in case of class loading failure.
@@ -425,7 +425,7 @@ public class CClassUtils {
      *
      * @param name the name of the potentially primitive class
      * @return the primitive class, or {@code null} if the name does not denote
-     * a primitive class or primitive array class
+     * a primitive class or primitive ArrayUtils class
      */
     public static Class<?> resolvePrimitiveClassName(String name) {
         Class<?> result = null;
@@ -464,11 +464,11 @@ public class CClassUtils {
     }
 
     /**
-     * Check if the given class represents an array of primitives,
+     * Check if the given class represents an ArrayUtils of primitives,
      * i.e. boolean, byte, char, short, int, long, float, or double.
      *
      * @param clazz the class to check
-     * @return whether the given class is a primitive array class
+     * @return whether the given class is a primitive ArrayUtils class
      */
     public static boolean isPrimitiveArray(Class<?> clazz) {
         Objects.requireNonNull(clazz, "Class must not be null");
@@ -476,11 +476,11 @@ public class CClassUtils {
     }
 
     /**
-     * Check if the given class represents an array of primitive wrappers,
+     * Check if the given class represents an ArrayUtils of primitive wrappers,
      * i.e. Boolean, Byte, Character, Short, Integer, Long, Float, or Double.
      *
      * @param clazz the class to check
-     * @return whether the given class is a primitive wrapper array class
+     * @return whether the given class is a primitive wrapper ArrayUtils class
      */
     public static boolean isPrimitiveWrapperArray(Class<?> clazz) {
         Objects.requireNonNull(clazz, "Class must not be null");
@@ -618,11 +618,11 @@ public class CClassUtils {
 
     /**
      * Build a String that consists of the names of the classes/interfaces
-     * in the given array.
+     * in the given ArrayUtils.
      * <p>Basically like {@code AbstractCollection.toString()}, but stripping
      * the "class "/"interface " prefix before every class name.
      *
-     * @param classes an array of Class objects
+     * @param classes an ArrayUtils of Class objects
      * @return a String of form "[com.foo.Bar, com.foo.Baz]"
      * @see java.util.AbstractCollection#toString()
      */
@@ -657,11 +657,11 @@ public class CClassUtils {
     }
 
     /**
-     * Copy the given {@code Collection} into a {@code Class} array.
+     * Copy the given {@code Collection} into a {@code Class} ArrayUtils.
      * <p>The {@code Collection} must contain {@code Class} elements only.
      *
      * @param collection the {@code Collection} to copy
-     * @return the {@code Class} array
+     * @return the {@code Class} ArrayUtils
      * @since 3.1
      */
     public static Class<?>[] toClassArray(Collection<Class<?>> collection) {
@@ -669,11 +669,11 @@ public class CClassUtils {
     }
 
     /**
-     * Return all interfaces that the given instance implements as an array,
+     * Return all interfaces that the given instance implements as an ArrayUtils,
      * including ones implemented by superclasses.
      *
      * @param instance the instance to analyze for interfaces
-     * @return all interfaces that the given instance implements as an array
+     * @return all interfaces that the given instance implements as an ArrayUtils
      */
     public static Class<?>[] getAllInterfaces(Object instance) {
         Objects.requireNonNull(instance, "Instance must not be null");
@@ -681,26 +681,26 @@ public class CClassUtils {
     }
 
     /**
-     * Return all interfaces that the given class implements as an array,
+     * Return all interfaces that the given class implements as an ArrayUtils,
      * including ones implemented by superclasses.
      * <p>If the class itself is an interface, it gets returned as sole interface.
      *
      * @param clazz the class to analyze for interfaces
-     * @return all interfaces that the given object implements as an array
+     * @return all interfaces that the given object implements as an ArrayUtils
      */
     public static Class<?>[] getAllInterfacesForClass(Class<?> clazz) {
         return getAllInterfacesForClass(clazz, null);
     }
 
     /**
-     * Return all interfaces that the given class implements as an array,
+     * Return all interfaces that the given class implements as an ArrayUtils,
      * including ones implemented by superclasses.
      * <p>If the class itself is an interface, it gets returned as sole interface.
      *
      * @param clazz       the class to analyze for interfaces
      * @param classLoader the ClassLoader that the interfaces need to be visible in
      *                    (may be {@code null} when accepting all declared interfaces)
-     * @return all interfaces that the given object implements as an array
+     * @return all interfaces that the given object implements as an ArrayUtils
      */
     public static Class<?>[] getAllInterfacesForClass(Class<?> clazz, ClassLoader classLoader) {
         return toClassArray(getAllInterfacesForClassAsSet(clazz, classLoader));
@@ -772,7 +772,7 @@ public class CClassUtils {
 //     * @see java.lang.reflect.Proxy#getProxyClass
 //     */
 //    public static Class<?> createCompositeInterface(final Class<?>[] interfaces, final ClassLoader classLoader) {
-//        Objects.requireNonNull(interfaces, "Interface array must not be empty");
+//        Objects.requireNonNull(interfaces, "Interface ArrayUtils must not be empty");
 //        return Proxy.getProxyClass(classLoader, interfaces);
 //    }
 

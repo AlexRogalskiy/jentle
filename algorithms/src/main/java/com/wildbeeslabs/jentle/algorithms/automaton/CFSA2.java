@@ -124,7 +124,7 @@ public final class CFSA2 extends FSA {
     public static final int LABEL_INDEX_SIZE = (1 << LABEL_INDEX_BITS) - 1;
 
     /**
-     * An array of bytes with the internal representation of the automaton.
+     * An ArrayUtils of bytes with the internal representation of the automaton.
      * Please see the documentation of this class for more information on how
      * this structure is organized.
      */

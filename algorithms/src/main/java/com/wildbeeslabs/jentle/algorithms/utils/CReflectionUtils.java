@@ -300,12 +300,12 @@ public class CReflectionUtils {
     }
 
     /**
-     * Returns an array of all fields {@link Field} of the supplied class. Union of
+     * Returns an ArrayUtils of all fields {@link Field} of the supplied class. Union of
      * {@link Class#getDeclaredFields()} which ignores and super-classes, and
      * {@link Class#getFields()} which ignored non-public fields
      *
      * @param clazz - initial class to reflect on {@link Class}
-     * @return array of fields {@link Field} of the supplied class
+     * @return ArrayUtils of fields {@link Field} of the supplied class
      */
     public static Field[] getAllFields(final Class<?> clazz) {
         final List<Class<?>> classes = getAllSuperclasses(clazz);
@@ -314,11 +314,11 @@ public class CReflectionUtils {
     }
 
     /**
-     * Returns array of fields {@link #getAllFields(Class)} but acts on a
+     * Returns ArrayUtils of fields {@link #getAllFields(Class)} but acts on a
      * list of {@link Class}s and uses only {@link Class#getDeclaredFields()}.
      *
      * @param classes - collection of classes to reflect on {@link List}
-     * @return array of fields {@link Field} of the supplied list of classes
+     * @return ArrayUtils of fields {@link Field} of the supplied list of classes
      */
     private static Field[] getAllFields(final List<Class<?>> classes) {
         Objects.requireNonNull(classes);
@@ -332,7 +332,7 @@ public class CReflectionUtils {
     /**
      * Returns collection of fields {@link Field} filtered by static/final/accessible field modifiers
      *
-     * @param fields                 - initial array of fields {@link Field} to be filtered on
+     * @param fields                 - initial ArrayUtils of fields {@link Field} to be filtered on
      * @param returnFinalFields      - flag to filter non-static/final fields (true - to return static/final fields, false - otherwise)
      * @param returnAccessibleFields - flag to filter non-accessible fields (true - to return only accessible fields, false - otherwise)
      * @return collection of fields {@link Field}

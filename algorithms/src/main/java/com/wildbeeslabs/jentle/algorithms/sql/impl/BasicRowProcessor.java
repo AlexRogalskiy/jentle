@@ -67,9 +67,9 @@ public class BasicRowProcessor implements RowProcessor {
 
     /**
      * Convert a <code>ResultSet</code> row into an <code>Object[]</code>.
-     * This implementation copies column values into the array in the same
+     * This implementation copies column values into the ArrayUtils in the same
      * order they're returned from the <code>ResultSet</code>.  Array elements
-     * will be set to <code>null</code> if the column was SQL NULL.
+     * will be set to <code>null</code> if the column was SQL DEFAULT_NULL_REGEX.
      */
     @Override
     public Object[] toArray(ResultSet rs) throws SQLException {

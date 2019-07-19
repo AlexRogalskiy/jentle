@@ -107,18 +107,18 @@ public final class CValidationUtils {
     }
 
     /**
-     * Validates that the array contains no null elements
+     * Validates that the ArrayUtils contains no null elements
      *
-     * @param objects the array to test
+     * @param objects the ArrayUtils to test
      */
     public static void noNullElements(final Object[] objects) {
         noNullElements(objects, "Array must not contain any null objects");
     }
 
     /**
-     * Validates that the array contains no null elements
+     * Validates that the ArrayUtils contains no null elements
      *
-     * @param objects the array to test
+     * @param objects the ArrayUtils to test
      * @param msg     message to output if validation fails
      */
     public static void noNullElements(final Object[] objects, final String msg) {

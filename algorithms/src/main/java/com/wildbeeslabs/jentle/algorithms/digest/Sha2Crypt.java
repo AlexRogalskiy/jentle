@@ -433,7 +433,7 @@ public class Sha2Crypt {
         // 4. character: the six high bits from the third byte
         //
         // The groups of three bytes are as follows (in this sequence).
-        // These are the indices into the byte array containing the
+        // These are the indices into the byte ArrayUtils containing the
         // digest, starting with index 0. For the last group there are
         // not enough bytes left in the digest and the value zero is used
         // in its place. This group also produces only three or two

@@ -213,7 +213,7 @@ public class EncoderUtil {
      * words separated by space. The text is separated into a sequence of
      * encoded words if it does not fit in a single one.
      * <p>
-     * The charset to encode the specified text into a byte array and the
+     * The charset to encode the specified text into a byte ArrayUtils and the
      * encoding to use for the encoded-word are detected automatically.
      * <p>
      * This method assumes that zero characters have already been used up in the
@@ -235,7 +235,7 @@ public class EncoderUtil {
      * words separated by space. The text is separated into a sequence of
      * encoded words if it does not fit in a single one.
      * <p>
-     * The charset to encode the specified text into a byte array and the
+     * The charset to encode the specified text into a byte ArrayUtils and the
      * encoding to use for the encoded-word are detected automatically.
      *
      * @param text           text to encode.
@@ -261,7 +261,7 @@ public class EncoderUtil {
      *                       or a word entity (see RFC 822).
      * @param usedCharacters number of characters already used up (<code>0 <= usedCharacters <= 50</code>).
      * @param charset        the Java charset that should be used to encode the specified
-     *                       string into a byte array. A suitable charset is detected
+     *                       string into a byte ArrayUtils. A suitable charset is detected
      *                       automatically if this parameter is <code>null</code>.
      * @param encoding       the encoding to use for the encoded-word (either B or Q). A
      *                       suitable encoding is automatically chosen if this parameter is
@@ -295,10 +295,10 @@ public class EncoderUtil {
     }
 
     /**
-     * Encodes the specified byte array using the B encoding defined in RFC
+     * Encodes the specified byte ArrayUtils using the B encoding defined in RFC
      * 2047.
      *
-     * @param bytes byte array to encode.
+     * @param bytes byte ArrayUtils to encode.
      * @return encoded string.
      */
     public static String encodeB(byte[] bytes) {
@@ -334,10 +334,10 @@ public class EncoderUtil {
     }
 
     /**
-     * Encodes the specified byte array using the Q encoding defined in RFC
+     * Encodes the specified byte ArrayUtils using the Q encoding defined in RFC
      * 2047.
      *
-     * @param bytes byte array to encode.
+     * @param bytes byte ArrayUtils to encode.
      * @param usage whether the encoded-word is to be used to replace a text token
      *              or a word entity (see RFC 822).
      * @return encoded string.

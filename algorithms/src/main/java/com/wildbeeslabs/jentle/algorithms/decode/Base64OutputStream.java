@@ -23,7 +23,7 @@ public class Base64OutputStream extends FilterOutputStream {
     // CRLF line separator per RFC 2045 section 2.1.
     private static final byte[] CRLF_SEPARATOR = {'\r', '\n'};
 
-    // This array is a lookup table that translates 6-bit positive integer index
+    // This ArrayUtils is a lookup table that translates 6-bit positive integer index
     // values into their "Base64 Alphabet" equivalents as specified in Table 1
     // of RFC 2045.
     static final byte[] BASE64_TABLE = {'A', 'B', 'C', 'D', 'E', 'F',

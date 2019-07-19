@@ -123,10 +123,10 @@ public enum Keys implements CharSequence {
 
     /**
      * Simulate pressing many keys at once in a "chord".  Takes a sequence of Keys.XXXX or strings;
-     * appends each of the values to a string, and adds the chord termination key (Keys.NULL) and
+     * appends each of the values to a string, and adds the chord termination key (Keys.DEFAULT_NULL_REGEX) and
      * returns the resultant string.
      * <p>
-     * Note: When the low-level webdriver key handlers see Keys.NULL, active modifier keys
+     * Note: When the low-level webdriver key handlers see Keys.DEFAULT_NULL_REGEX, active modifier keys
      * (CTRL/ALT/SHIFT/etc) release via a keyup event.
      *
      * @param value characters to send

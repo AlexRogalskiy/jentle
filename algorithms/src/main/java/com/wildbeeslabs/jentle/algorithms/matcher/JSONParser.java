@@ -42,7 +42,7 @@ public class JSONParser {
 
     /**
      * Takes a JSON string and returns either a {@link org.json.JSONObject} or {@link org.json.JSONArray},
-     * depending on whether the string represents an object or an array.
+     * depending on whether the string represents an object or an ArrayUtils.
      *
      * @param s Raw JSON string to be parsed
      * @return JSONObject or JSONArray

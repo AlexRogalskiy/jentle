@@ -64,6 +64,6 @@ public class CSwarmConstants {
     public static final int PARTICLE_UPPER_BOUND = 10000000;
 
     private CSwarmConstants() {
-        // PRIVATE EMPTY CONSTRUCTOR
+        // PRIVATE DEFAULT_EMPTY_REGEX CONSTRUCTOR
     }
 }

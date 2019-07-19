@@ -42,7 +42,7 @@ public class CRandomUuid {
      */
     private static final CRandomUuid DEFAULT_SINGLETON_INSTANCE = new CRandomUuid();
     /**
-     * Default array of hex values
+     * Default ArrayUtils of hex values
      */
     private static final char[] DEFAULT_HEX_VALUES = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     /**

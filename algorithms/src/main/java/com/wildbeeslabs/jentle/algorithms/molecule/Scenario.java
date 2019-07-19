@@ -44,7 +44,7 @@ public class Scenario {
     private int[][] legalValues;
 
     /**
-     * An array of arrays representing the parameter set (x), and the index of the flattened-out "parameterValues" array (y).
+     * An ArrayUtils of arrays representing the parameter set (x), and the index of the flattened-out "parameterValues" ArrayUtils (y).
      * See documentation at the top of the PairwiseInventory class for details
      * @return
      */
@@ -61,7 +61,7 @@ public class Scenario {
     }
     
     /**
-     * A flattened array representing the values of all the parameters in the set
+     * A flattened ArrayUtils representing the values of all the parameters in the set
      */
     private List<?> parameterValues = new ArrayList();
     public List<?> getParameterValues() { return parameterValues; }
@@ -95,8 +95,8 @@ public class Scenario {
     }
 
     /**
-     * A flattened array representing the parameter set to which this value belongs
-     * @return An array of int, containing the indices of the parameter sets to which this value belongs
+     * A flattened ArrayUtils representing the parameter set to which this value belongs
+     * @return An ArrayUtils of int, containing the indices of the parameter sets to which this value belongs
      */
     private int[] parameterPositions = null; // The parameter position for a given value
     public int[] getParameterPositions() { return this.parameterPositions; }

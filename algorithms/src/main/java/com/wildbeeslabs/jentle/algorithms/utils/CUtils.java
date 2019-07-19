@@ -81,9 +81,9 @@ public class CUtils {
     }
 
     /**
-     * Turn the given UTF8 byte array into a string
+     * Turn the given UTF8 byte ArrayUtils into a string
      *
-     * @param bytes The byte array
+     * @param bytes The byte ArrayUtils
      * @return The string
      */
     public static String utf8(byte[] bytes) {
@@ -209,7 +209,7 @@ public class CUtils {
     }
 
     /**
-     * Read the given byte buffer from its current position to its limit into a byte array.
+     * Read the given byte buffer from its current position to its limit into a byte ArrayUtils.
      *
      * @param buffer The buffer to read from
      */
@@ -218,41 +218,41 @@ public class CUtils {
     }
 
     /**
-     * Read a byte array from its current position given the size in the buffer
+     * Read a byte ArrayUtils from its current position given the size in the buffer
      *
      * @param buffer The buffer to read from
-     * @param size   The number of bytes to read into the array
+     * @param size   The number of bytes to read into the ArrayUtils
      */
     public static byte[] toArray(ByteBuffer buffer, int size) {
         return toArray(buffer, 0, size);
     }
 
     /**
-     * Convert a ByteBuffer to a nullable array.
+     * Convert a ByteBuffer to a nullable ArrayUtils.
      *
      * @param buffer The buffer to convert
-     * @return The resulting array or null if the buffer is null
+     * @return The resulting ArrayUtils or null if the buffer is null
      */
     public static byte[] toNullableArray(ByteBuffer buffer) {
         return buffer == null ? null : toArray(buffer);
     }
 
     /**
-     * Wrap an array as a nullable ByteBuffer.
+     * Wrap an ArrayUtils as a nullable ByteBuffer.
      *
-     * @param array The nullable array to wrap
-     * @return The wrapping ByteBuffer or null if array is null
+     * @param array The nullable ArrayUtils to wrap
+     * @return The wrapping ByteBuffer or null if ArrayUtils is null
      */
     public static ByteBuffer wrapNullable(byte[] array) {
         return array == null ? null : ByteBuffer.wrap(array);
     }
 
     /**
-     * Read a byte array from the given offset and size in the buffer
+     * Read a byte ArrayUtils from the given offset and size in the buffer
      *
      * @param buffer The buffer to read from
      * @param offset The offset relative to the current position of the buffer
-     * @param size   The number of bytes to read into the array
+     * @param size   The number of bytes to read into the ArrayUtils
      */
     public static byte[] toArray(ByteBuffer buffer, int offset, int size) {
         byte[] dest = new byte[size];
@@ -372,10 +372,10 @@ public class CUtils {
     }
 
     /**
-     * Generates 32 bit murmur2 hash from byte array
+     * Generates 32 bit murmur2 hash from byte ArrayUtils
      *
-     * @param data byte array to hash
-     * @return 32 bit hash of the given array
+     * @param data byte ArrayUtils to hash
+     * @return 32 bit hash of the given ArrayUtils
      */
     public static int murmur2(final byte[] data) {
         int length = data.length;
@@ -399,7 +399,7 @@ public class CUtils {
             h ^= k;
         }
 
-        // Handle the last few bytes of the input array
+        // Handle the last few bytes of the input ArrayUtils
         switch (length % 4) {
             case 3:
                 h ^= (data[(length & ~3) + 2] & 0xff) << 16;
@@ -477,9 +477,9 @@ public class CUtils {
     }
 
     /**
-     * Create a string representation of an array joined by the given separator
+     * Create a string representation of an ArrayUtils joined by the given separator
      *
-     * @param strs      The array of items
+     * @param strs      The ArrayUtils of items
      * @param separator The separator
      * @return The string representation.
      */
@@ -583,7 +583,7 @@ public class CUtils {
     }
 
     /**
-     * Read a buffer into a Byte array for the given offset and length
+     * Read a buffer into a Byte ArrayUtils for the given offset and length
      */
     public static byte[] readBytes(ByteBuffer buffer, int offset, int length) {
         byte[] dest = new byte[length];
@@ -599,7 +599,7 @@ public class CUtils {
     }
 
     /**
-     * Read the given byte buffer into a Byte array
+     * Read the given byte buffer into a Byte ArrayUtils
      */
     public static byte[] readBytes(ByteBuffer buffer) {
         return CUtils.readBytes(buffer, 0, buffer.limit());
@@ -939,12 +939,12 @@ public class CUtils {
      * end of the stream has been reached.
      *
      * @param inputStream       Input stream to read from
-     * @param destinationBuffer The buffer into which bytes are to be transferred (it must be backed by an array)
+     * @param destinationBuffer The buffer into which bytes are to be transferred (it must be backed by an ArrayUtils)
      * @throws IOException If an I/O error occurs
      */
     public static final void readFully(InputStream inputStream, ByteBuffer destinationBuffer) throws IOException {
         if (!destinationBuffer.hasArray())
-            throw new IllegalArgumentException("destinationBuffer must be backed by an array");
+            throw new IllegalArgumentException("destinationBuffer must be backed by an ArrayUtils");
         int initialOffset = destinationBuffer.arrayOffset() + destinationBuffer.position();
         byte[] array = destinationBuffer.array();
         int length = destinationBuffer.remaining();

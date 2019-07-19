@@ -210,12 +210,12 @@ public final class LongSummary implements Serializable {
      **************************************************************************/
 
     /**
-     * Return the minimum value of the given double array.
+     * Return the minimum value of the given double ArrayUtils.
      *
-     * @param values the array.
-     * @return the minimum value or {@link Long#MAX_VALUE} if the given array is
+     * @param values the ArrayUtils.
+     * @return the minimum value or {@link Long#MAX_VALUE} if the given ArrayUtils is
      * empty.
-     * @throws NullPointerException if the given array is {@code null}.
+     * @throws NullPointerException if the given ArrayUtils is {@code null}.
      * @since 4.0
      */
     public static long min(final long[] values) {
@@ -234,12 +234,12 @@ public final class LongSummary implements Serializable {
     }
 
     /**
-     * Return the maximum value of the given double array.
+     * Return the maximum value of the given double ArrayUtils.
      *
-     * @param values the array.
-     * @return the maximum value or {@link Long#MIN_VALUE} if the given array is
+     * @param values the ArrayUtils.
+     * @return the maximum value or {@link Long#MIN_VALUE} if the given ArrayUtils is
      * empty.
-     * @throws NullPointerException if the given array is {@code null}.
+     * @throws NullPointerException if the given ArrayUtils is {@code null}.
      * @since 4.0
      */
     public static long max(final long[] values) {
@@ -258,11 +258,11 @@ public final class LongSummary implements Serializable {
     }
 
     /**
-     * Return the sum of the given double array.
+     * Return the sum of the given double ArrayUtils.
      *
      * @param values the values to sum up.
      * @return the sum of the given {@code values}.
-     * @throws NullPointerException if the given array is {@code null}.
+     * @throws NullPointerException if the given ArrayUtils is {@code null}.
      * @since 4.0
      */
     public static long sum(final long[] values) {
@@ -275,12 +275,12 @@ public final class LongSummary implements Serializable {
 
     /**
      * Returns a double describing the arithmetic mean of the values, or
-     * {@link Double#NaN} if the {@code values} array is empty.
+     * {@link Double#NaN} if the {@code values} ArrayUtils is empty.
      *
      * @param values the values to calculate the mean of
      * @return the arithmetic mean of the given {@code values} or
-     * {@link Double#NaN} if the {@code values} array is empty
-     * @throws NullPointerException if the given array is {@code null}.
+     * {@link Double#NaN} if the {@code values} ArrayUtils is empty
+     * @throws NullPointerException if the given ArrayUtils is {@code null}.
      * @since 4.0
      */
     public static double mean(final long[] values) {

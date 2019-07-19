@@ -45,13 +45,13 @@ import java.util.Objects;
 public class CByteUtils {
 
     /**
-     * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice.
+     * Concatenate the given {@code byte} arrays into one, with overlapping ArrayUtils elements included twice.
      * <p/>
      * The order of elements in the original arrays is preserved.
      *
-     * @param array1 the first array.
-     * @param array2 the second array.
-     * @return the new array.
+     * @param array1 the first ArrayUtils.
+     * @param array2 the second ArrayUtils.
+     * @return the new ArrayUtils.
      */
     public static byte[] concat(final byte[] array1, final byte[] array2) {
         byte[] result = Arrays.copyOf(array1, array1.length + array2.length);
@@ -60,13 +60,13 @@ public class CByteUtils {
     }
 
     /**
-     * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice. Returns a new,
-     * empty array if {@code arrays} was empty and returns the first array if {@code arrays} contains only a single array.
+     * Concatenate the given {@code byte} arrays into one, with overlapping ArrayUtils elements included twice. Returns a new,
+     * empty ArrayUtils if {@code arrays} was empty and returns the first ArrayUtils if {@code arrays} contains only a single ArrayUtils.
      * <p/>
      * The order of elements in the original arrays is preserved.
      *
      * @param arrays the arrays.
-     * @return the new array.
+     * @return the new ArrayUtils.
      */
     public static byte[] concatAll(final byte[]... arrays) {
         if (arrays.length == 0) {
@@ -86,7 +86,7 @@ public class CByteUtils {
     /**
      * Split {@code source} into partitioned arrays using delimiter {@code c}.
      *
-     * @param source the source array.
+     * @param source the source ArrayUtils.
      * @param c      delimiter.
      * @return the partitioned arrays.
      */
@@ -114,14 +114,14 @@ public class CByteUtils {
     }
 
     /**
-     * Merge multiple {@code byte} arrays into one array
+     * Merge multiple {@code byte} arrays into one ArrayUtils
      *
      * @param firstArray       must not be {@literal null}
      * @param additionalArrays must not be {@literal null}
      * @return
      */
     public static byte[][] mergeArrays(byte[] firstArray, byte[]... additionalArrays) {
-        Objects.requireNonNull(firstArray, "first array must not be null");
+        Objects.requireNonNull(firstArray, "first ArrayUtils must not be null");
         Objects.requireNonNull(additionalArrays, "additional arrays must not be null");
 
         byte[][] result = new byte[additionalArrays.length + 1][];
@@ -132,7 +132,7 @@ public class CByteUtils {
     }
 
     /**
-     * Extract a byte array from {@link ByteBuffer} without consuming it.
+     * Extract a byte ArrayUtils from {@link ByteBuffer} without consuming it.
      *
      * @param byteBuffer must not be {@literal null}.
      * @return
@@ -188,7 +188,7 @@ public class CByteUtils {
     }
 
     /**
-     * Searches the specified array of bytes for the specified value. Returns the index of the first matching value in the
+     * Searches the specified ArrayUtils of bytes for the specified value. Returns the index of the first matching value in the
      * {@code haystack}s natural order or {@code -1} of {@code needle} could not be found.
      *
      * @param haystack the source to scan.
@@ -232,7 +232,7 @@ public class CByteUtils {
     }
 
     /**
-     * Extract/Transfer bytes from the given {@link ByteBuffer} into an array by duplicating the buffer and fetching its
+     * Extract/Transfer bytes from the given {@link ByteBuffer} into an ArrayUtils by duplicating the buffer and fetching its
      * content.
      *
      * @param buffer must not be {@literal null}.
@@ -281,10 +281,10 @@ public class CByteUtils {
     }
 
     /**
-     * Read an unsigned integer stored in little-endian format from a byte array
+     * Read an unsigned integer stored in little-endian format from a byte ArrayUtils
      * at a given offset.
      *
-     * @param buffer The byte array to read from
+     * @param buffer The byte ArrayUtils to read from
      * @param offset The position in buffer to read from
      * @return The integer read (MUST BE TREATED WITH SPECIAL CARE TO AVOID SIGNEDNESS)
      */
@@ -330,10 +330,10 @@ public class CByteUtils {
     }
 
     /**
-     * Write an unsigned integer in little-endian format to a byte array
+     * Write an unsigned integer in little-endian format to a byte ArrayUtils
      * at a given offset.
      *
-     * @param buffer The byte array to write to
+     * @param buffer The byte ArrayUtils to write to
      * @param offset The position in buffer to write to
      * @param value  The value to write
      */

@@ -20,7 +20,7 @@ public final class SignednessUtil {
     }
 
     /**
-     * Wraps an unsigned byte array into a ByteBuffer. This method is a wrapper around {@link
+     * Wraps an unsigned byte ArrayUtils into a ByteBuffer. This method is a wrapper around {@link
      * java.nio.ByteBuffer#wrap(byte[]) wrap(byte[])}, but assumes that the input should be
      * interpreted as unsigned.
      */
@@ -30,7 +30,7 @@ public final class SignednessUtil {
     }
 
     /**
-     * Wraps an unsigned byte array into a ByteBuffer. This method is a wrapper around {@link
+     * Wraps an unsigned byte ArrayUtils into a ByteBuffer. This method is a wrapper around {@link
      * java.nio.ByteBuffer#wrap(byte[], int, int) wrap(byte[], int, int)}, but assumes that the
      * input should be interpreted as unsigned.
      */
@@ -80,7 +80,7 @@ public final class SignednessUtil {
     }
 
     /**
-     * Populates an unsigned byte array from the ByteBuffer b at i with l bytes. This method is a
+     * Populates an unsigned byte ArrayUtils from the ByteBuffer b at i with l bytes. This method is a
      * wrapper around {@link java.nio.ByteBuffer#get(byte[] bs, int, int) get(byte[], int, int)},
      * but assumes that the bytes should be interpreted as unsigned.
      */
@@ -130,7 +130,7 @@ public final class SignednessUtil {
     }
 
     /**
-     * Places an unsigned int array into the IntBuffer b. This method is a wrapper around {@link
+     * Places an unsigned int ArrayUtils into the IntBuffer b. This method is a wrapper around {@link
      * java.nio.IntBuffer#put(int[]) put(int[])}, but assumes that the input should be interpreted
      * as unsigned.
      */
@@ -140,7 +140,7 @@ public final class SignednessUtil {
     }
 
     /**
-     * Places an unsigned int array into the IntBuffer b at i with length l. This method is a
+     * Places an unsigned int ArrayUtils into the IntBuffer b at i with length l. This method is a
      * wrapper around {@link java.nio.IntBuffer#put(int[], int, int) put(int[], int, int)}, but
      * assumes that the input should be interpreted as unsigned.
      */
@@ -260,7 +260,7 @@ public final class SignednessUtil {
     }
 
     /**
-     * Reads up to {@code len} bytes of data from this file into an unsigned array of bytes. This
+     * Reads up to {@code len} bytes of data from this file into an unsigned ArrayUtils of bytes. This
      * method is a wrapper around {@link java.io.RandomAccessFile#read(byte[], int, int)
      * read(byte[], int, int)}, but assumes the output should be interpreted as unsigned.
      */
@@ -271,7 +271,7 @@ public final class SignednessUtil {
     }
 
     /**
-     * Reads a file fully into an unsigned byte array. This method is a wrapper around {@link
+     * Reads a file fully into an unsigned byte ArrayUtils. This method is a wrapper around {@link
      * java.io.RandomAccessFile#readFully(byte[]) readFully(byte[])}, but assumes the output should
      * be interpreted as unsigned.
      */
@@ -344,9 +344,9 @@ public final class SignednessUtil {
     }
 
     /**
-     * Gets an array of unsigned bytes from the ByteBuffer b and stores them in the array bs. This
+     * Gets an ArrayUtils of unsigned bytes from the ByteBuffer b and stores them in the ArrayUtils bs. This
      * method is a wrapper around {@link java.nio.ByteBuffer#get(byte[]) get(byte[])}, but assumes
-     * that the array of bytes should be interpreted as unsigned.
+     * that the ArrayUtils of bytes should be interpreted as unsigned.
      */
     @SuppressWarnings("signedness")
     public static void getUnsigned(ByteBuffer b, byte[] bs) {

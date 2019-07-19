@@ -234,7 +234,7 @@
 //    }
 //
 //    /**
-//     * Returns an array containing only elements found in {@code first} and also in {@code
+//     * Returns an ArrayUtils containing only elements found in {@code first} and also in {@code
 //     * second}. The returned elements are in the same order as in {@code first}.
 //     */
 //    @SuppressWarnings("unchecked")
@@ -291,16 +291,16 @@
 //            && e.getMessage().contains("getsockname failed");
 //    }
 //
-//    public static int indexOf(Comparator<String> comparator, String[] array, String value) {
-//        for (int i = 0, size = array.length; i < size; i++) {
-//            if (comparator.compare(array[i], value) == 0) return i;
+//    public static int indexOf(Comparator<String> comparator, String[] ArrayUtils, String value) {
+//        for (int i = 0, size = ArrayUtils.length; i < size; i++) {
+//            if (comparator.compare(ArrayUtils[i], value) == 0) return i;
 //        }
 //        return -1;
 //    }
 //
-//    public static String[] concat(String[] array, String value) {
-//        String[] result = new String[array.length + 1];
-//        System.arraycopy(array, 0, result, 0, array.length);
+//    public static String[] concat(String[] ArrayUtils, String value) {
+//        String[] result = new String[ArrayUtils.length + 1];
+//        System.arraycopy(ArrayUtils, 0, result, 0, ArrayUtils.length);
 //        result[result.length - 1] = value;
 //        return result;
 //    }
@@ -557,7 +557,7 @@
 //            int groupLength = i - groupOffset;
 //            if (groupLength == 0 || groupLength > 4) return null; // Group is the wrong size.
 //
-//            // We've successfully read a group. Assign its value to our byte array.
+//            // We've successfully read a group. Assign its value to our byte ArrayUtils.
 //            address[b++] = (byte) ((value >>> 8) & 0xff);
 //            address[b++] = (byte) (value & 0xff);
 //        }

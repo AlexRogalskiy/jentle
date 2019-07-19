@@ -33,19 +33,19 @@ package com.wildbeeslabs.jentle.algorithms.matcher;
  */
 public enum JSONCompareMode {
     /**
-     * Strict checking.  Not extensible, and strict array ordering.
+     * Strict checking.  Not extensible, and strict ArrayUtils ordering.
      */
     STRICT(false, true),
     /**
-     * Lenient checking.  Extensible, and non-strict array ordering.
+     * Lenient checking.  Extensible, and non-strict ArrayUtils ordering.
      */
     LENIENT(true, false),
     /**
-     * Non-extensible checking.  Not extensible, and non-strict array ordering.
+     * Non-extensible checking.  Not extensible, and non-strict ArrayUtils ordering.
      */
     NON_EXTENSIBLE(false, false),
     /**
-     * Strict order checking.  Extensible, and strict array ordering.
+     * Strict order checking.  Extensible, and strict ArrayUtils ordering.
      */
     STRICT_ORDER(true, true);
 
@@ -67,7 +67,7 @@ public enum JSONCompareMode {
 
     /**
      * Strict order required
-     * @return True if results require strict array ordering, otherwise false.
+     * @return True if results require strict ArrayUtils ordering, otherwise false.
      */
     public boolean hasStrictOrder() {
         return _strictOrder;
@@ -76,7 +76,7 @@ public enum JSONCompareMode {
     /**
      * Get the equivalent {@code JSONCompareMode} with or without strict ordering.
      * 
-     * @param strictOrdering if true, requires strict ordering of array elements
+     * @param strictOrdering if true, requires strict ordering of ArrayUtils elements
      * @return the equivalent {@code JSONCompareMode}
      */
     public JSONCompareMode withStrictOrdering(boolean strictOrdering) {

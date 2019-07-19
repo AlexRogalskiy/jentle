@@ -424,7 +424,7 @@ public class EntityArrays {
      * Used to invert an escape Map into an unescape Map.
      *
      * @param map Map&lt;String, String&gt; to be inverted
-     * @return Map&lt;String, String&gt; inverted array
+     * @return Map&lt;String, String&gt; inverted ArrayUtils
      */
     public static Map<CharSequence, CharSequence> invert(final Map<CharSequence, CharSequence> map) {
         final Map<CharSequence, CharSequence> newMap = new HashMap<>();

@@ -101,7 +101,7 @@ public class CStopWatch {
     }
 
     /**
-     * Determines whether the CTaskInfo array is built over time. Set this to
+     * Determines whether the CTaskInfo ArrayUtils is built over time. Set this to
      * "false" when using a StopWatch for millions of intervals, or the task
      * info structure will consume excessive memory (default is "true").
      *
@@ -207,9 +207,9 @@ public class CStopWatch {
     }
 
     /**
-     * Returns an array of the data of tasks performed.
+     * Returns an ArrayUtils of the data of tasks performed.
      *
-     * @return array of tasks performed
+     * @return ArrayUtils of tasks performed
      */
     public CTaskInfo[] getTaskInfo() {
         if (!this.keepTaskList) {

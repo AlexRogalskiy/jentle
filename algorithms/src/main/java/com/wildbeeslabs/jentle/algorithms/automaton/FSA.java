@@ -119,8 +119,8 @@ public abstract class FSA implements Iterable<ByteBuffer> {
      *
      * <p>
      * <b>Important.</b> It is guaranteed that the returned byte buffer is backed
-     * by a byte array and that the content of the byte buffer starts at the
-     * array's index 0.
+     * by a byte ArrayUtils and that the content of the byte buffer starts at the
+     * ArrayUtils's index 0.
      * </p>
      *
      * @param node Identifier of the starting node from which to return subsequences.
@@ -157,8 +157,8 @@ public abstract class FSA implements Iterable<ByteBuffer> {
      *
      * <p>
      * <b>Important.</b> It is guaranteed that the returned byte buffer is backed
-     * by a byte array and that the content of the byte buffer starts at the
-     * array's index 0.
+     * by a byte ArrayUtils and that the content of the byte buffer starts at the
+     * ArrayUtils's index 0.
      * </p>
      */
     public final Iterator<ByteBuffer> iterator() {
@@ -254,7 +254,7 @@ public abstract class FSA implements Iterable<ByteBuffer> {
     /**
      * @param in The input stream.
      * @return Reads all remaining bytes from an input stream and returns
-     * them as a byte array.
+     * them as a byte ArrayUtils.
      * @throws IOException Rethrown if an I/O exception occurs.
      */
     protected static final byte[] readRemaining(InputStream in) throws IOException {

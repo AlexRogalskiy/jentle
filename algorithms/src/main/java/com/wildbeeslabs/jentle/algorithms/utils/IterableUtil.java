@@ -64,17 +64,17 @@ public class IterableUtil {
     }
 
     /**
-     * Create an array from an {@link Iterable}.
+     * Create an ArrayUtils from an {@link Iterable}.
      * <p>
-     * Note: this method will return Object[]. If you require a typed array please use {@link #toArray(Iterable, Class)}.
+     * Note: this method will return Object[]. If you require a typed ArrayUtils please use {@link #toArray(Iterable, Class)}.
      * It's main usage is to keep the generic type for chaining call like in:
      * <pre><code class='java'> public S containsOnlyElementsOf(Iterable&lt;? extends T&gt; iterable) {
      *   return containsOnly(toArray(iterable));
      * }</code></pre>
      *
-     * @param iterable an {@link Iterable} to translate in an array.
+     * @param iterable an {@link Iterable} to translate in an ArrayUtils.
      * @param <T>      the type of elements of the {@code Iterable}.
-     * @return all the elements from the given {@link Iterable} in an array. {@code null} if given {@link Iterable} is
+     * @return all the elements from the given {@link Iterable} in an ArrayUtils. {@code null} if given {@link Iterable} is
      * null.
      */
     @SuppressWarnings("unchecked")
@@ -84,12 +84,12 @@ public class IterableUtil {
     }
 
     /**
-     * Create an typed array from an {@link Iterable}.
+     * Create an typed ArrayUtils from an {@link Iterable}.
      *
-     * @param iterable an {@link Iterable} to translate in an array.
-     * @param type     the type of the resulting array.
+     * @param iterable an {@link Iterable} to translate in an ArrayUtils.
+     * @param type     the type of the resulting ArrayUtils.
      * @param <T>      the type of elements of the {@code Iterable}.
-     * @return all the elements from the given {@link Iterable} in an array. {@code null} if given {@link Iterable} is
+     * @return all the elements from the given {@link Iterable} in an ArrayUtils. {@code null} if given {@link Iterable} is
      * null.
      */
     public static <T> T[] toArray(Iterable<? extends T> iterable, Class<T> type) {

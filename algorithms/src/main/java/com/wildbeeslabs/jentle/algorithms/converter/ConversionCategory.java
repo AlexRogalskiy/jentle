@@ -10,7 +10,7 @@ import java.util.*;
  *
  * <blockquote>
  *
- * <pre>{@literal @}Format({ConversionCategory.GENERAL, ConversionCategory.INT})
+ * <pre>{@literal @}Format({ConversionCategory.GENERAL, ConversionCategory.DEFAULT_INT_REGEX})
  * String f = "String '%s' has length %d";
  * String.format(f, "Example", 7);</pre>
  *
@@ -68,10 +68,10 @@ public enum ConversionCategory {
      * the parameter must be compatible with both conversion, and can therefore neither be char nor
      * long. This intersection of conversions is called CHAR_AND_INT.
      *
-     * <p>One other conversion intersection is interesting, namely the intersection of INT and TIME,
+     * <p>One other conversion intersection is interesting, namely the intersection of DEFAULT_INT_REGEX and TIME,
      * resulting in INT_AND_TIME.
      *
-     * <p>All other intersection either lead to an already existing type, or NULL, in which case it
+     * <p>All other intersection either lead to an already existing type, or DEFAULT_NULL_REGEX, in which case it
      * is illegal to pass object's of any type as parameter.
      */
     CHAR_AND_INT(new Class<?>[]{Byte.class, Short.class, Integer.class}, null),
@@ -119,7 +119,7 @@ public enum ConversionCategory {
      * <blockquote>
      *
      * <pre>
-     * ConversionCategory.fromConversionChar('d') == ConversionCategory.INT;
+     * ConversionCategory.fromConversionChar('d') == ConversionCategory.DEFAULT_INT_REGEX;
      * </pre>
      *
      * </blockquote>
@@ -147,7 +147,7 @@ public enum ConversionCategory {
      * <blockquote>
      *
      * <pre>
-     * ConversionCategory.intersect(INT, TIME) == INT_AND_TIME;
+     * ConversionCategory.intersect(DEFAULT_INT_REGEX, TIME) == INT_AND_TIME;
      * </pre>
      *
      * </blockquote>
@@ -188,7 +188,7 @@ public enum ConversionCategory {
      * <blockquote>
      *
      * <pre>
-     * ConversionCategory.union(INT, TIME) == GENERAL;
+     * ConversionCategory.union(DEFAULT_INT_REGEX, TIME) == GENERAL;
      * </pre>
      *
      * </blockquote>
@@ -202,8 +202,8 @@ public enum ConversionCategory {
         }
         if ((a == CHAR_AND_INT && b == INT_AND_TIME) || (a == INT_AND_TIME && b == CHAR_AND_INT)) {
             // This is special-cased because the union of a.types and b.types
-            // does not include BigInteger.class, whereas the types for INT does.
-            // Returning INT here to prevent returning GENERAL below.
+            // does not include BigInteger.class, whereas the types for DEFAULT_INT_REGEX does.
+            // Returning DEFAULT_INT_REGEX here to prevent returning GENERAL below.
             return INT;
         }
 

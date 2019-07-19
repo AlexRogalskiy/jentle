@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * See README.md for more information. This is a UUID implementation that uses vB (custom) UUIDs by default, but can
- * parse and hold validly formatted UUIDs of any type. The content is stored as a byte array, and some effort has been
+ * parse and hold validly formatted UUIDs of any type. The content is stored as a byte ArrayUtils, and some effort has been
  * put into making this look at least a little bit like the java.util.UUID implementation. Probably the most common
  * uses of this class will be
  * <p>
@@ -88,15 +88,15 @@ public class UUIDUtils {
     }
 
     /**
-     * Constructor that takes a byte array as this UUID's content. This is equivalent to the binary representation
-     * of the UUID. Note that the byte array is copied, so if the argument value changes then the constructed UUID
-     * will not. This throws an IllegalArgumentException if the byte array is null or not 16 bytes long.
+     * Constructor that takes a byte ArrayUtils as this UUID's content. This is equivalent to the binary representation
+     * of the UUID. Note that the byte ArrayUtils is copied, so if the argument value changes then the constructed UUID
+     * will not. This throws an IllegalArgumentException if the byte ArrayUtils is null or not 16 bytes long.
      *
      * @param bytes UUID content as bytes.
      */
     public UUIDUtils(byte[] bytes) {
         if (bytes == null)
-            throw new IllegalArgumentException("Tried to construct UUID with null byte array");
+            throw new IllegalArgumentException("Tried to construct UUID with null byte ArrayUtils");
 
         if (bytes.length != 16)
             throw new IllegalArgumentException("Attempted to parse malformed UUID: " + Arrays.toString(bytes));
@@ -141,7 +141,7 @@ public class UUIDUtils {
 
     /**
      * Constructs a Locality UUID from a standard Java java.util.UUID object. A java.util.UUID object won't return
-     * its content as a byte array, but will return the first and second halves of content as longs. We use these
+     * its content as a byte ArrayUtils, but will return the first and second halves of content as longs. We use these
      * to construct a new Locality UUID object. This throws an IllegalArgumentException if the uuid argument is null.
      *
      * @param uuid A non-null java.util.UUID object, from which we will construct a locality UUID with identical content.
@@ -203,13 +203,13 @@ public class UUIDUtils {
     }
 
     /**
-     * This method validates a character array as the expected format for a printed representation of a UUID. The
+     * This method validates a character ArrayUtils as the expected format for a printed representation of a UUID. The
      * expected format is 36 characters long, with '-' at the 8th, 13th, 18th, and 23rd characters. The remaining
      * characters are expected to be valid hex, meaning in the range ('0' - '9', 'a' - 'f', 'A' - 'F') inclusive.
-     * If a character array is valid, then it can be used to construct a UUID. This method has been written unrolled
+     * If a character ArrayUtils is valid, then it can be used to construct a UUID. This method has been written unrolled
      * and verbosely, with the theory that this is simpler and faster than using loops or a regex.
      *
-     * @param ch A character array of a UUID's printed representation.
+     * @param ch A character ArrayUtils of a UUID's printed representation.
      * @return True or false based on whether the UUID is valid, no exceptions are thrown.
      */
     public static boolean isValidUUID(char[] ch) {
@@ -342,9 +342,9 @@ public class UUIDUtils {
     }
 
     /**
-     * Get contents of this UUID as a byte array. The array is copied before returning so that it can't be changed.
+     * Get contents of this UUID as a byte ArrayUtils. The ArrayUtils is copied before returning so that it can't be changed.
      *
-     * @return Raw byte array of UUID contents.
+     * @return Raw byte ArrayUtils of UUID contents.
      */
     public byte[] getBytes() {
         return Arrays.copyOf(content, 16);
@@ -494,7 +494,7 @@ public class UUIDUtils {
      * Extract MAC address fragment from raw UUID bytes, setting missing values to 0, thus the first 2 and a half bytes
      * will be 0, followed by 3 and a half bytes of the active MAC address when the UUID was generated.
      *
-     * @return Byte array of UUID fragment, or null for unrecognized format.
+     * @return Byte ArrayUtils of UUID fragment, or null for unrecognized format.
      */
     public byte[] getMacFragment() {
         if (getVersion() != 'b')
@@ -513,13 +513,13 @@ public class UUIDUtils {
     }
 
     /**
-     * Get the active MAC address on the current machine as a byte array. This is called when generating a new UUID.
+     * Get the active MAC address on the current machine as a byte ArrayUtils. This is called when generating a new UUID.
      * Note that a machine can have multiple or no active MAC addresses. This method works by iterating through the list
      * of network interfaces, ignoring the loopback interface and any virtual interfaces (which often have made-up
-     * addresses), and returning the first one we find. If no valid addresses are found, then a byte array of the same
+     * addresses), and returning the first one we find. If no valid addresses are found, then a byte ArrayUtils of the same
      * length with all zeros is returned.
      *
-     * @return 6-byte array for first active MAC address, or 6-byte zeroed array if no interfaces are active.
+     * @return 6-byte ArrayUtils for first active MAC address, or 6-byte zeroed ArrayUtils if no interfaces are active.
      */
     private static byte[] macAddress() {
         try {

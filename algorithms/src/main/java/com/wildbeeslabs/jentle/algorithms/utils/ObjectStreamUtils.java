@@ -9,11 +9,11 @@ import java.util.Iterator;
 public class ObjectStreamUtils {
 
     /**
-     * Creates an {@link ObjectStream} form an array.
+     * Creates an {@link ObjectStream} form an ArrayUtils.
      *
      * @param <T>
      * @param array
-     * @return the object stream over the array elements
+     * @return the object stream over the ArrayUtils elements
      */
     @SafeVarargs
 

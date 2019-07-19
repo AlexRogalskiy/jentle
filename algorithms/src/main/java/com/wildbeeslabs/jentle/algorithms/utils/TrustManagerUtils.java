@@ -45,7 +45,7 @@ public class TrustManagerUtils {
         }
 
         /**
-         * @return an empty array of certificates
+         * @return an empty ArrayUtils of certificates
          */
         @Override
         public X509Certificate[] getAcceptedIssuers() {

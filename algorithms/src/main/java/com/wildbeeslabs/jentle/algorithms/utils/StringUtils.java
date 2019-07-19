@@ -115,9 +115,9 @@ public class StringUtils {
      *
      * <ul>
      * <li>If the supplied object is {@code null}, this method returns {@code "null"}.</li>
-     * <li>If the supplied object is a primitive array, the appropriate
+     * <li>If the supplied object is a primitive ArrayUtils, the appropriate
      * {@code Arrays#toString(...)} variant will be used to convert it to a String.</li>
-     * <li>If the supplied object is an object array, {@code Arrays#deepToString(Object[])}
+     * <li>If the supplied object is an object ArrayUtils, {@code Arrays#deepToString(Object[])}
      * will be used to convert it to a String.</li>
      * <li>Otherwise, the result of invoking {@code toString()} on the object
      * will be returned.</li>

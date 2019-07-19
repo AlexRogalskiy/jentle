@@ -16,7 +16,7 @@ public final class AndTerm<T> implements SearchTermIF<T> {
     private static final long serialVersionUID = -3583274505380989582L;
 
     /**
-     * The array of terms on which the AND operator should be
+     * The ArrayUtils of terms on which the AND operator should be
      * applied.
      *
      * @serial
@@ -36,9 +36,9 @@ public final class AndTerm<T> implements SearchTermIF<T> {
     }
 
     /**
-     * Constructor that takes an array of SearchTerms.
+     * Constructor that takes an ArrayUtils of SearchTerms.
      *
-     * @param term array of terms
+     * @param term ArrayUtils of terms
      */
     public AndTerm(final SearchTermIF<T>[] term) {
         this.terms = new SearchTermIF[term.length];

@@ -107,7 +107,7 @@ public final class FSA5 extends FSA {
     public final static int ADDRESS_OFFSET = 1;
 
     /**
-     * An array of bytes with the internal representation of the automaton. Please
+     * An ArrayUtils of bytes with the internal representation of the automaton. Please
      * see the documentation of this class for more information on how this
      * structure is organized.
      */
@@ -305,7 +305,7 @@ public final class FSA5 extends FSA {
      */
     final int getDestinationNodeOffset(int arc) {
         if (isNextSet(arc)) {
-            /* The destination node follows this arc in the array. */
+            /* The destination node follows this arc in the ArrayUtils. */
             return skipArc(arc);
         } else {
             /*

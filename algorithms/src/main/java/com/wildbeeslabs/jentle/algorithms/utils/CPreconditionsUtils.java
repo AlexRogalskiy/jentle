@@ -62,15 +62,15 @@ public class CPreconditionsUtils {
     }
 
     /**
-     * Assert that the supplied array is neither {@code null} nor <em>empty</em>.
+     * Assert that the supplied ArrayUtils is neither {@code null} nor <em>empty</em>.
      *
      * <p><strong>WARNING</strong>: this method does NOT check if the supplied
-     * array contains any {@code null} elements.
+     * ArrayUtils contains any {@code null} elements.
      *
-     * @param array   the array to check
+     * @param array   the ArrayUtils to check
      * @param message precondition violation message
-     * @return the supplied array as a convenience
-     * @throws PreconditionViolationException if the supplied array is
+     * @return the supplied ArrayUtils as a convenience
+     * @throws PreconditionViolationException if the supplied ArrayUtils is
      *                                        {@code null} or <em>empty</em>
      * @see #containsNoNullElements(Object[], String)
      * @see #condition(boolean, String)
@@ -81,15 +81,15 @@ public class CPreconditionsUtils {
     }
 
     /**
-     * Assert that the supplied array is neither {@code null} nor <em>empty</em>.
+     * Assert that the supplied ArrayUtils is neither {@code null} nor <em>empty</em>.
      *
      * <p><strong>WARNING</strong>: this method does NOT check if the supplied
-     * array contains any {@code null} elements.
+     * ArrayUtils contains any {@code null} elements.
      *
-     * @param array           the array to check
+     * @param array           the ArrayUtils to check
      * @param messageSupplier precondition violation message supplier
-     * @return the supplied array as a convenience
-     * @throws PreconditionViolationException if the supplied array is
+     * @return the supplied ArrayUtils as a convenience
+     * @throws PreconditionViolationException if the supplied ArrayUtils is
      *                                        {@code null} or <em>empty</em>
      * @see #containsNoNullElements(Object[], String)
      * @see #condition(boolean, String)
@@ -140,15 +140,15 @@ public class CPreconditionsUtils {
     }
 
     /**
-     * Assert that the supplied array contains no {@code null} elements.
+     * Assert that the supplied ArrayUtils contains no {@code null} elements.
      *
      * <p><strong>WARNING</strong>: this method does NOT check if the supplied
-     * array is {@code null} or <em>empty</em>.
+     * ArrayUtils is {@code null} or <em>empty</em>.
      *
-     * @param array   the array to check
+     * @param array   the ArrayUtils to check
      * @param message precondition violation message
-     * @return the supplied array as a convenience
-     * @throws PreconditionViolationException if the supplied array contains
+     * @return the supplied ArrayUtils as a convenience
+     * @throws PreconditionViolationException if the supplied ArrayUtils contains
      *                                        any {@code null} elements
      * @see #notNull(Object, String)
      */
@@ -160,15 +160,15 @@ public class CPreconditionsUtils {
     }
 
     /**
-     * Assert that the supplied array contains no {@code null} elements.
+     * Assert that the supplied ArrayUtils contains no {@code null} elements.
      *
      * <p><strong>WARNING</strong>: this method does NOT check if the supplied
-     * array is {@code null} or <em>empty</em>.
+     * ArrayUtils is {@code null} or <em>empty</em>.
      *
-     * @param array           the array to check
+     * @param array           the ArrayUtils to check
      * @param messageSupplier precondition violation message supplier
-     * @return the supplied array as a convenience
-     * @throws PreconditionViolationException if the supplied array contains
+     * @return the supplied ArrayUtils as a convenience
+     * @throws PreconditionViolationException if the supplied ArrayUtils contains
      *                                        any {@code null} elements
      * @see #notNull(Object, String)
      */

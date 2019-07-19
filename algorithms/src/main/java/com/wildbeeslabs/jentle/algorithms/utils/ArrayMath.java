@@ -107,7 +107,7 @@ public class ArrayMath {
     // === Not really related to math ===
 
     /**
-     * Convert a list of Double objects into an array of primitive doubles
+     * Convert a list of Double objects into an ArrayUtils of primitive doubles
      */
     public static double[] toDoubleArray(List<Double> list) {
         double[] arr = new double[list.size()];
@@ -118,7 +118,7 @@ public class ArrayMath {
     }
 
     /**
-     * Convert a list of Integer objects into an array of primitive integers
+     * Convert a list of Integer objects into an ArrayUtils of primitive integers
      */
     public static int[] toIntArray(List<Integer> list) {
         int[] arr = new int[list.size()];

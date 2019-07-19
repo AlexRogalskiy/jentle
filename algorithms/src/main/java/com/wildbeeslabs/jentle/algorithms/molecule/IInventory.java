@@ -62,7 +62,7 @@ public interface IInventory {
     void processUnusedValues();
 
     /**
-     * Process the legalValues array to populate the allSets, unusedPairs, and unusedPairsSearch collections
+     * Process the legalValues ArrayUtils to populate the allSets, unusedPairs, and unusedPairsSearch collections
      */
     void buildMolecules();
 

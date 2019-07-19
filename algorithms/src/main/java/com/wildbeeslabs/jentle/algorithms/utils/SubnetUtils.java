@@ -314,7 +314,7 @@ public class SubnetUtils {
     }
 
     /*
-     * Convert a packed integer address into a 4-element array
+     * Convert a packed integer address into a 4-element ArrayUtils
      */
     private int[] toArray(int val) {
         int ret[] = new int[4];
@@ -325,7 +325,7 @@ public class SubnetUtils {
     }
 
     /*
-     * Convert a 4-element array into dotted decimal format
+     * Convert a 4-element ArrayUtils into dotted decimal format
      */
     private String format(int[] octets) {
         StringBuilder str = new StringBuilder();

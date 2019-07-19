@@ -77,19 +77,19 @@
 //
 //    @Override
 //    public Object[] toArray() {
-//        final Object[] array = new Object[size()];
+//        final Object[] ArrayUtils = new Object[size()];
 //        for (int i = size(); --i >= 0; ) {
-//            array[i] = seq.get(i);
+//            ArrayUtils[i] = seq.get(i);
 //        }
-//        return array;
+//        return ArrayUtils;
 //    }
 //
 //    @SuppressWarnings("unchecked")
 //    @Override
-//    public <E> E[] toArray(final E[] array) {
-//        if (array.length < size()) {
+//    public <E> E[] toArray(final E[] ArrayUtils) {
+//        if (ArrayUtils.length < size()) {
 //            final E[] copy = (E[]) java.lang.reflect.Array.newInstance(
-//                array.getClass().getComponentType(), size()
+//                ArrayUtils.getClass().getComponentType(), size()
 //            );
 //            for (int i = size(); --i >= 0; ) {
 //                copy[i] = (E) seq.get(i);
@@ -99,9 +99,9 @@
 //        }
 //
 //        for (int i = size(); --i >= 0; ) {
-//            array[i] = (E) seq.get(i);
+//            ArrayUtils[i] = (E) seq.get(i);
 //        }
-//        return array;
+//        return ArrayUtils;
 //    }
 //
 //}

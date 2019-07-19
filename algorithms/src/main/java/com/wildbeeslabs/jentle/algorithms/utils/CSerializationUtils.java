@@ -42,8 +42,8 @@ public class CSerializationUtils {
     /**
      * Gets bytes representation of object instance
      *
-     * @param value - object instance to serialize to a byte array
-     * @return byte array representing the serialized object instance
+     * @param value - object instance to serialize to a byte ArrayUtils
+     * @return byte ArrayUtils representing the serialized object instance
      */
     public static byte[] serialize(final Object value) {
         try (final ObjectOutputStream o = new ObjectOutputStream(new ByteArrayOutputStream())) {
@@ -58,7 +58,7 @@ public class CSerializationUtils {
     /**
      * Gets object instance representation of bytes stream
      *
-     * @param array - the byte array that holds the serialized object instance
+     * @param array - the byte ArrayUtils that holds the serialized object instance
      * @return the de-serialized object instance
      */
     public static Object deserialize(final byte[] array) {

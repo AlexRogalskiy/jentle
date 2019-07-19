@@ -271,9 +271,9 @@ public class AnnotationUtils {
     }
 
     /**
-     * Helper method for comparing two objects of an array type.
+     * Helper method for comparing two objects of an ArrayUtils type.
      *
-     * @param componentType the component type of the array
+     * @param componentType the component type of the ArrayUtils
      * @param o1            the first object
      * @param o2            the second object
      * @return a flag whether these objects are equal
@@ -312,8 +312,8 @@ public class AnnotationUtils {
     /**
      * Helper method for comparing two arrays of annotations.
      *
-     * @param a1 the first array
-     * @param a2 the second array
+     * @param a1 the first ArrayUtils
+     * @param a2 the second ArrayUtils
      * @return a flag whether these arrays are equal
      */
     private static boolean annotationArrayMemberEquals(final Annotation[] a1, final Annotation[] a2) {
@@ -329,11 +329,11 @@ public class AnnotationUtils {
     }
 
     /**
-     * Helper method for generating a hash code for an array.
+     * Helper method for generating a hash code for an ArrayUtils.
      *
-     * @param componentType the component type of the array
-     * @param o             the array
-     * @return a hash code for the specified array
+     * @param componentType the component type of the ArrayUtils
+     * @param o             the ArrayUtils
+     * @return a hash code for the specified ArrayUtils
      */
     private static int arrayMemberHash(final Class<?> componentType, final Object o) {
         if (componentType.equals(Byte.TYPE)) {

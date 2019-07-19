@@ -90,9 +90,9 @@ public class CStringFormatter {
     }
 
     /**
-     * UnGzips compressed array of bytes to raw format string output
+     * UnGzips compressed ArrayUtils of bytes to raw format string output
      *
-     * @param bytes input array of bytes.
+     * @param bytes input ArrayUtils of bytes.
      * @return String Unzip raw string.
      * @throws Exception On unzip operation.
      * @see Exception
@@ -112,9 +112,9 @@ public class CStringFormatter {
     }
 
     /**
-     * Checks whether input array of bytes is GZIP formatted or not
+     * Checks whether input ArrayUtils of bytes is GZIP formatted or not
      *
-     * @param bytes input array of bytes.
+     * @param bytes input ArrayUtils of bytes.
      * @return boolean true - if GZIP formatted, false - otherwise.
      */
     private static boolean isGZIPStream(final byte[] bytes) {
@@ -183,8 +183,8 @@ public class CStringFormatter {
     /**
      * Returns an UTF-8 encoded String
      *
-     * @param bytes  The byte array to be transformed to
-     * @param length The length of the byte array to be converted
+     * @param bytes  The byte ArrayUtils to be transformed to
+     * @param length The length of the byte ArrayUtils to be converted
      * @return encode string.
      */
     public static final String convertToUtf8(byte[] bytes, int length) {
@@ -342,8 +342,8 @@ public class CStringFormatter {
      * Returns the UniCode char which is coded in the bytes at the given
      * position.
      *
-     * @param c The character to be transformed to an array of bytes
-     * @return The byte array representing the char
+     * @param c The character to be transformed to an ArrayUtils of bytes
+     * @return The byte ArrayUtils representing the char
      */
     public static final byte[] charToBytes(char c) {
         byte[] bytes = new byte[countNbBytesPerChar(c)];

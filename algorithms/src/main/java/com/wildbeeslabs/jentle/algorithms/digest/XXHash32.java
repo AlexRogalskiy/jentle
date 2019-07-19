@@ -160,9 +160,9 @@ public class XXHash32 implements Checksum {
     }
 
     /**
-     * Reads the given byte array as a little endian long.
-     * @param bytes the byte array to convert
-     * @param off the offset into the array that starts the value
+     * Reads the given byte ArrayUtils as a little endian long.
+     * @param bytes the byte ArrayUtils to convert
+     * @param off the offset into the ArrayUtils that starts the value
      * @param length the number of bytes representing the value
      * @return the number read
      * @throws IllegalArgumentException if len is bigger than eight

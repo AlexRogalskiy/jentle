@@ -255,20 +255,20 @@ public class ReflectionUtils2 {
     }
 
     /**
-     * Determine if the supplied object is an array.
+     * Determine if the supplied object is an ArrayUtils.
      *
      * @param obj the object to test; potentially {@code null}
-     * @return {@code true} if the object is an array
+     * @return {@code true} if the object is an ArrayUtils
      */
     public static boolean isArray(Object obj) {
         return (obj != null && obj.getClass().isArray());
     }
 
     /**
-     * Determine if the supplied object is a multidimensional array.
+     * Determine if the supplied object is a multidimensional ArrayUtils.
      *
      * @param obj the object to test; potentially {@code null}
-     * @return {@code true} if the object is a multidimensional array
+     * @return {@code true} if the object is a multidimensional ArrayUtils
      * @since 1.3.2
      */
     public static boolean isMultidimensionalArray(Object obj) {
@@ -391,7 +391,7 @@ public class ReflectionUtils2 {
      */
     public static <T> T newInstance(Class<T> clazz, Object... args) {
         CPreconditionsUtils.notNull(clazz, "Class must not be null");
-        CPreconditionsUtils.notNull(args, "Argument array must not be null");
+        CPreconditionsUtils.notNull(args, "Argument ArrayUtils must not be null");
         CPreconditionsUtils.containsNoNullElements(args, "Individual arguments must not be null");
 
         try {
@@ -621,7 +621,7 @@ public class ReflectionUtils2 {
      *
      * @param fullyQualifiedMethodName a <em>fully qualified method name</em>,
      *                                 never {@code null} or blank
-     * @return a 3-element array of strings containing the parsed values
+     * @return a 3-element ArrayUtils of strings containing the parsed values
      */
     public static String[] parseFullyQualifiedMethodName(String fullyQualifiedMethodName) {
         CPreconditionsUtils.notBlank(fullyQualifiedMethodName, "fullyQualifiedMethodName must not be null or blank");
@@ -926,7 +926,7 @@ public class ReflectionUtils2 {
     public static Optional<Method> findMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
         CPreconditionsUtils.notNull(clazz, "Class must not be null");
         CPreconditionsUtils.notBlank(methodName, "Method name must not be null or blank");
-        CPreconditionsUtils.notNull(parameterTypes, "Parameter types array must not be null");
+        CPreconditionsUtils.notNull(parameterTypes, "Parameter types ArrayUtils must not be null");
         CPreconditionsUtils.containsNoNullElements(parameterTypes, "Individual parameter types must not be null");
 
         return findMethod(clazz, method -> hasCompatibleSignature(method, methodName, parameterTypes));

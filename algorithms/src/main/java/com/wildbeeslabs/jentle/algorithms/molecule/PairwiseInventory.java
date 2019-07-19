@@ -44,13 +44,13 @@ import java.util.List;
  * <p>
  * The fields within this class will be set as follows:
  * <p>
- * parameterValues:          [ a, b, c, i, j, k, l, x, y ] --  A flattened out array of all possible values
+ * parameterValues:          [ a, b, c, i, j, k, l, x, y ] --  A flattened out ArrayUtils of all possible values
  * getParameterSetCount:     3
  * getParameterValuesCount:  9
  * pairCount:
- * legalValues:              [ [ 0, 1, 2 ], [ 3, 4, 5, 6 ], [ 7, 8 ] ] -- A list of arrays representing the parameter set (x), and the pointer to the value of the flattened-out "parameterValues" array (y)
+ * legalValues:              [ [ 0, 1, 2 ], [ 3, 4, 5, 6 ], [ 7, 8 ] ] -- A list of arrays representing the parameter set (x), and the pointer to the value of the flattened-out "parameterValues" ArrayUtils (y)
  * allMolecules:
- * parameterPositions:       [ 0, 0, 0, 1, 1, 1, 1, 2, 2 ]  --  Allows us to look up which parameter set a given value is attached to, given the flattened out array of values
+ * parameterPositions:       [ 0, 0, 0, 1, 1, 1, 1, 2, 2 ]  --  Allows us to look up which parameter set a given value is attached to, given the flattened out ArrayUtils of values
  * one possible test set:    [ 2, 4, 7 ], representing one value (index) from each parameter set. This is conceivably a "test case"
  */
 public class PairwiseInventory implements IInventory {

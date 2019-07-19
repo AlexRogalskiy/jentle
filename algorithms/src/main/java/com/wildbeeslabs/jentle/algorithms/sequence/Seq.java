@@ -438,7 +438,7 @@
 //     * @param values the values to append
 //     * @return a <i>new</i> {@code Seq} with the elements of {@code this}
 //     * sequence and the given {@code values} appended.
-//     * @throws NullPointerException if the given {@code values} array is
+//     * @throws NullPointerException if the given {@code values} ArrayUtils is
 //     *                              {@code null}
 //     * @since 3.4
 //     */
@@ -465,7 +465,7 @@
 //     * @param values the values to append
 //     * @return a <i>new</i> {@code Seq} with the elements of {@code this}
 //     * sequence and the given {@code values} prepended.
-//     * @throws NullPointerException if the given {@code values} array is
+//     * @throws NullPointerException if the given {@code values} ArrayUtils is
 //     *                              {@code null}
 //     * @since 3.4
 //     */
@@ -480,7 +480,7 @@
 //     * @param values the values to append
 //     * @return a <i>new</i> {@code Seq} with the elements of {@code this}
 //     * sequence and the given {@code values} prepended.
-//     * @throws NullPointerException if the given {@code values} array is
+//     * @throws NullPointerException if the given {@code values} ArrayUtils is
 //     *                              {@code null}
 //     * @since 3.4
 //     */
@@ -488,7 +488,7 @@
 //
 //    /**
 //     * Returns a fixed-size list backed by the specified sequence. (Changes to
-//     * the returned list "write through" to the array.) The returned list is
+//     * the returned list "write through" to the ArrayUtils.) The returned list is
 //     * fixed size, serializable and implements {@link RandomAccess}.
 //     *
 //     * @return a list view of this sequence
@@ -498,52 +498,52 @@
 //    }
 //
 //    /**
-//     * Return an array containing all of the elements in this sequence in right
-//     * order. The returned array will be "safe" in that no references to it
+//     * Return an ArrayUtils containing all of the elements in this sequence in right
+//     * order. The returned ArrayUtils will be "safe" in that no references to it
 //     * are maintained by this sequence. (In other words, this method must allocate
-//     * a new array.) The caller is thus free to modify the returned array.
+//     * a new ArrayUtils.) The caller is thus free to modify the returned ArrayUtils.
 //     *
-//     * @return an array containing all of the elements in this list in right
+//     * @return an ArrayUtils containing all of the elements in this list in right
 //     * order
 //     * @see java.util.Collection#toArray()
 //     */
 //    public default Object[] toArray() {
-//        final Object[] array = new Object[size()];
+//        final Object[] ArrayUtils = new Object[size()];
 //        for (int i = size(); --i >= 0; ) {
-//            array[i] = get(i);
+//            ArrayUtils[i] = get(i);
 //        }
-//        return array;
+//        return ArrayUtils;
 //    }
 //
 //    /**
-//     * Return an array containing all of the elements in this sequence in right
-//     * order; the runtime type of the returned array is that of the specified
-//     * array. If this sequence fits in the specified array, it is returned
-//     * therein. Otherwise, a new array is allocated with the runtime type of the
-//     * specified array and the length of this array.
+//     * Return an ArrayUtils containing all of the elements in this sequence in right
+//     * order; the runtime type of the returned ArrayUtils is that of the specified
+//     * ArrayUtils. If this sequence fits in the specified ArrayUtils, it is returned
+//     * therein. Otherwise, a new ArrayUtils is allocated with the runtime type of the
+//     * specified ArrayUtils and the length of this ArrayUtils.
 //     * <p>
-//     * If this sequence fits in the specified array with room to spare (i.e.,
-//     * the array has more elements than this array), the element in the array
-//     * immediately following the end of this array is set to null. (This is
-//     * useful in determining the length of the array only if the caller knows
+//     * If this sequence fits in the specified ArrayUtils with room to spare (i.e.,
+//     * the ArrayUtils has more elements than this ArrayUtils), the element in the ArrayUtils
+//     * immediately following the end of this ArrayUtils is set to null. (This is
+//     * useful in determining the length of the ArrayUtils only if the caller knows
 //     * that the list does not contain any null elements.)
 //     *
-//     * @param <B>   the runtime type of the array to contain the sequence
-//     * @param array the array into which the elements of this array are to be
-//     *              stored, if it is big enough; otherwise, a new array of the same
+//     * @param <B>   the runtime type of the ArrayUtils to contain the sequence
+//     * @param ArrayUtils the ArrayUtils into which the elements of this ArrayUtils are to be
+//     *              stored, if it is big enough; otherwise, a new ArrayUtils of the same
 //     *              runtime type is allocated for this purpose.
-//     * @return an array containing the elements of this array
-//     * @throws ArrayStoreException  if the runtime type of the specified array is
+//     * @return an ArrayUtils containing the elements of this ArrayUtils
+//     * @throws ArrayStoreException  if the runtime type of the specified ArrayUtils is
 //     *                              not a super type of the runtime type of every element in this
-//     *                              array
-//     * @throws NullPointerException if the given array is {@code null}.
+//     *                              ArrayUtils
+//     * @throws NullPointerException if the given ArrayUtils is {@code null}.
 //     * @see java.util.Collection#toArray(Object[])
 //     */
 //    @SuppressWarnings("unchecked")
-//    public default <B> B[] toArray(final B[] array) {
-//        if (array.length < length()) {
+//    public default <B> B[] toArray(final B[] ArrayUtils) {
+//        if (ArrayUtils.length < length()) {
 //            final Object[] copy = (Object[]) java.lang.reflect.Array
-//                .newInstance(array.getClass().getComponentType(), length());
+//                .newInstance(ArrayUtils.getClass().getComponentType(), length());
 //
 //            for (int i = length(); --i >= 0; ) {
 //                copy[i] = get(i);
@@ -553,13 +553,13 @@
 //        }
 //
 //        for (int i = 0, n = length(); i < n; ++i) {
-//            ((Object[]) array)[i] = get(i);
+//            ((Object[]) ArrayUtils)[i] = get(i);
 //        }
-//        if (array.length > length()) {
-//            array[length()] = null;
+//        if (ArrayUtils.length > length()) {
+//            ArrayUtils[length()] = null;
 //        }
 //
-//        return array;
+//        return ArrayUtils;
 //    }
 //
 //    /**
@@ -575,8 +575,8 @@
 //     * expects an sequence can be used as a range operation by passing an sub
 //     * sequence view instead of an whole sequence.
 //     *
-//     * @param start low end point (inclusive) of the sub array.
-//     * @return a view of the specified range within this array.
+//     * @param start low end point (inclusive) of the sub ArrayUtils.
+//     * @return a view of the specified range within this ArrayUtils.
 //     * @throws IndexOutOfBoundsException for an illegal end point index value
 //     *                                   ({@code start < 0 || start > length()}).
 //     */
@@ -587,12 +587,12 @@
 //     * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
 //     * and {@code end} are equal, the returned sequence has the length zero.)
 //     * The returned sequence is backed by this sequence, so non-structural
-//     * changes in the returned sequence are reflected in this array, and
+//     * changes in the returned sequence are reflected in this ArrayUtils, and
 //     * vice-versa.
 //     * <p>
 //     * This method eliminates the need for explicit range operations (of the
 //     * populationSort that commonly exist for arrays). Any operation that
-//     * expects an array can be used as a range operation by passing an sub
+//     * expects an ArrayUtils can be used as a range operation by passing an sub
 //     * sequence view instead of an whole sequence.
 //     *
 //     * @param start low end point (inclusive) of the sub sequence.
@@ -604,11 +604,11 @@
 //    public Seq<T> subSeq(final int start, final int end);
 //
 //    /**
-//     * Test whether the given array is sorted in ascending order.
+//     * Test whether the given ArrayUtils is sorted in ascending order.
 //     *
-//     * @return {@code true} if the given {@code array} is sorted in ascending
+//     * @return {@code true} if the given {@code ArrayUtils} is sorted in ascending
 //     * order, {@code false} otherwise.
-//     * @throws NullPointerException if the given array or one of it's element is
+//     * @throws NullPointerException if the given ArrayUtils or one of it's element is
 //     *                              {@code null}.
 //     */
 //    @SuppressWarnings("unchecked")
@@ -622,13 +622,13 @@
 //    }
 //
 //    /**
-//     * Test whether the given array is sorted in ascending order. The order of
-//     * the array elements is defined by the given comparator.
+//     * Test whether the given ArrayUtils is sorted in ascending order. The order of
+//     * the ArrayUtils elements is defined by the given comparator.
 //     *
 //     * @param comparator the comparator which defines the order.
-//     * @return {@code true} if the given {@code array} is sorted in ascending
+//     * @return {@code true} if the given {@code ArrayUtils} is sorted in ascending
 //     * order, {@code false} otherwise.
-//     * @throws NullPointerException if the given array or one of it's element or
+//     * @throws NullPointerException if the given ArrayUtils or one of it's element or
 //     *                              the comparator is {@code null}.
 //     */
 //    public default boolean isSorted(final Comparator<? super T> comparator) {
@@ -704,7 +704,7 @@
 //     * Create a string representation of the given sequence.
 //     *
 //     * @param prefix    the prefix of the string representation; e.g {@code '['}.
-//     * @param separator the separator of the array elements; e.g. {@code ','}.
+//     * @param separator the separator of the ArrayUtils elements; e.g. {@code ','}.
 //     * @param suffix    the suffix of the string representation; e.g. {@code ']'}.
 //     * @return the string representation of this sequence.
 //     */
@@ -721,7 +721,7 @@
 //    /**
 //     * Create a string representation of the given sequence.
 //     *
-//     * @param separator the separator of the array elements; e.g. {@code ','}.
+//     * @param separator the separator of the ArrayUtils elements; e.g. {@code ','}.
 //     * @return the string representation of this sequence.
 //     */
 //    public default String toString(final String separator) {
@@ -793,7 +793,7 @@
 //     *
 //     * @since 3.3
 //     */
-//    public static final Seq<?> EMPTY = ISeq.EMPTY;
+//    public static final Seq<?> DEFAULT_EMPTY_REGEX = ISeq.DEFAULT_EMPTY_REGEX;
 //
 //    /**
 //     * Return an empty {@code Seq}.
@@ -830,9 +830,9 @@
 //     * Create a new {@code Seq} from the given values.
 //     *
 //     * @param <T>    the element type
-//     * @param values the array values.
+//     * @param values the ArrayUtils values.
 //     * @return a new {@code Seq} with the given values.
-//     * @throws NullPointerException if the {@code values} array is {@code null}.
+//     * @throws NullPointerException if the {@code values} ArrayUtils is {@code null}.
 //     */
 //    @SafeVarargs
 //    public static <T> Seq<T> of(final T... values) {
@@ -843,9 +843,9 @@
 //     * Create a new {@code Seq} from the given values.
 //     *
 //     * @param <T>    the element type
-//     * @param values the array values.
+//     * @param values the ArrayUtils values.
 //     * @return a new {@code Seq} with the given values.
-//     * @throws NullPointerException if the {@code values} array is {@code null}.
+//     * @throws NullPointerException if the {@code values} ArrayUtils is {@code null}.
 //     */
 //    public static <T> Seq<T> of(final Iterable<? extends T> values) {
 //        return ISeq.of(values);
@@ -905,20 +905,20 @@
 //    }
 //
 //    /**
-//     * Returns a fixed-size sequence backed by the specified array. (Changes to
-//     * the given array are "write through" to the returned sequence.)  This
-//     * method acts as bridge between array-based and sequence-based APIs.
+//     * Returns a fixed-size sequence backed by the specified ArrayUtils. (Changes to
+//     * the given ArrayUtils are "write through" to the returned sequence.)  This
+//     * method acts as bridge between ArrayUtils-based and sequence-based APIs.
 //     *
-//     * @param array the array containing the sequence elements
+//     * @param ArrayUtils the ArrayUtils containing the sequence elements
 //     * @param <T>   the element type
-//     * @return a sequence view of the given {@code array}
-//     * @throws NullPointerException if the given array is {@code null}
+//     * @return a sequence view of the given {@code ArrayUtils}
+//     * @throws NullPointerException if the given ArrayUtils is {@code null}
 //     * @since 4.2
 //     */
-//    public static <T> Seq<T> viewOf(final T[] array) {
-//        return array.length == 0
+//    public static <T> Seq<T> viewOf(final T[] ArrayUtils) {
+//        return ArrayUtils.length == 0
 //            ? empty()
-//            : new SeqView<>(Arrays.asList(array));
+//            : new SeqView<>(Arrays.asList(ArrayUtils));
 //    }
 //
 //}

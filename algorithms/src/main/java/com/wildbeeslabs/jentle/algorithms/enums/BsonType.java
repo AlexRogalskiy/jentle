@@ -27,7 +27,7 @@ public enum BsonType {
      */
     DOCUMENT(0x03),
     /**
-     * A BSON array.
+     * A BSON ArrayUtils.
      */
     ARRAY(0x04),
     /**
@@ -122,7 +122,7 @@ public enum BsonType {
     }
 
     /**
-     * Returns whether this type is some sort of containing type, e.g. a document or array.
+     * Returns whether this type is some sort of containing type, e.g. a document or ArrayUtils.
      *
      * @return true if this is some sort of containing type rather than a primitive value
      */

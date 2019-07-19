@@ -16,7 +16,7 @@ public final class OrTerm<T> implements SearchTermIF<T> {
     private static final long serialVersionUID = 5380534067523646936L;
 
     /**
-     * The array of terms on which the OR operator should
+     * The ArrayUtils of terms on which the OR operator should
      * be applied
      */
     private final SearchTermIF<T>[] terms;
@@ -34,9 +34,9 @@ public final class OrTerm<T> implements SearchTermIF<T> {
     }
 
     /**
-     * Constructor that takes an array of SearchTerms.
+     * Constructor that takes an ArrayUtils of SearchTerms.
      *
-     * @param term array of search terms
+     * @param term ArrayUtils of search terms
      */
     public OrTerm(final SearchTermIF<T>[] term) {
         this.terms = new SearchTermIF[term.length];

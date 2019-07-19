@@ -35,7 +35,7 @@ public class CaseUtils {
      *
      * @param str                   the String to be converted to camelCase, may be null
      * @param capitalizeFirstLetter boolean that determines if the first character of first word should be title case.
-     * @param delimiters            set of characters to determine capitalization, null and/or empty array means whitespace
+     * @param delimiters            set of characters to determine capitalization, null and/or empty ArrayUtils means whitespace
      * @return camelCase of String, <code>null</code> if null String input
      */
     public static String toCamelCase(String str, final boolean capitalizeFirstLetter, final char... delimiters) {
@@ -77,7 +77,7 @@ public class CaseUtils {
     }
 
     /**
-     * <p>Converts an array of delimiters to a hash set of code points. Code point of space(32) is added
+     * <p>Converts an ArrayUtils of delimiters to a hash set of code points. Code point of space(32) is added
      * as the default value. The generated hash set provides O(1) lookup time.</p>
      *
      * @param delimiters set of characters to determine capitalization, null means whitespace

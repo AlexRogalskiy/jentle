@@ -77,7 +77,7 @@ public class CStringUtils {
     private static final Stack<StringBuilder> builders = new Stack<>();
 
     /**
-     * Default hex digits array
+     * Default hex digits ArrayUtils
      */
     private static final char[] HEXDIGITS = "0123456789abcdef".toCharArray();
     /**

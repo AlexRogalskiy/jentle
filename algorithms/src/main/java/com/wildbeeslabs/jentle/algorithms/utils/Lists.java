@@ -21,7 +21,7 @@ public class Lists {
      *
      * @param <T>      the generic type of the {@code ArrayList} to create.
      * @param elements the elements to store in the {@code ArrayList}.
-     * @return the created {@code ArrayList}, of {@code null} if the given array of elements is {@code null}.
+     * @return the created {@code ArrayList}, of {@code null} if the given ArrayUtils of elements is {@code null}.
      */
     @SafeVarargs
     public static <T> ArrayList<T> newArrayList(T... elements) {
@@ -73,7 +73,7 @@ public class Lists {
      * Creates a <em>mutable</em> {@link ArrayList}.
      *
      * @param <T> the generic type of the {@code ArrayList} to create.
-     * @return the created {@code ArrayList}, of {@code null} if the given array of elements is {@code null}.
+     * @return the created {@code ArrayList}, of {@code null} if the given ArrayUtils of elements is {@code null}.
      */
     public static <T> ArrayList<T> newArrayList() {
         return new ArrayList<>();

@@ -135,7 +135,7 @@ public final class CFSA extends FSA {
     public static final int BIT_TARGET_NEXT = 1 << 2;
 
     /**
-     * An array of bytes with the internal representation of the automaton.
+     * An ArrayUtils of bytes with the internal representation of the automaton.
      * Please see the documentation of this class for more information on how
      * this structure is organized.
      */
@@ -158,7 +158,7 @@ public final class CFSA extends FSA {
     public final int gtl;
 
     /**
-     * Label mapping for arcs of type (1) (see class documentation). The array
+     * Label mapping for arcs of type (1) (see class documentation). The ArrayUtils
      * is indexed by mapped label's value and contains the original label.
      */
     public final byte[] labelMapping;
@@ -339,7 +339,7 @@ public final class CFSA extends FSA {
      */
     final int getDestinationNodeOffset(int arc) {
         if (isNextSet(arc)) {
-            /* The destination node follows this arc in the array. */
+            /* The destination node follows this arc in the ArrayUtils. */
             return skipArc(arc);
         } else {
             /*

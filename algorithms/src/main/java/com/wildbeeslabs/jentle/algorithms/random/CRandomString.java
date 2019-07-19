@@ -164,7 +164,7 @@ public class CRandomString {
      * <code>null</code>, then it will use the set of all chars.
      * @return the random string
      * @throws ArrayIndexOutOfBoundsException if there are not
-     * <code>(end - start) + 1</code> characters in the set array.
+     * <code>(end - start) + 1</code> characters in the set ArrayUtils.
      */
     public static String random(int count, int start, int end, boolean letters, boolean numbers, char[] chars) {
         return CRandomString.random(count, start, end, letters, numbers, chars, CRandomString.DEFAULT_RANDOM_INSTANCE);
@@ -198,7 +198,7 @@ public class CRandomString {
      * @param random a source of randomness.
      * @return the random string
      * @throws ArrayIndexOutOfBoundsException if there are not
-     * <code>(end - start) + 1</code> characters in the set array.
+     * <code>(end - start) + 1</code> characters in the set ArrayUtils.
      * @throws IllegalArgumentException if <code>count</code> &lt; 0.
      * @since 2.0
      */
@@ -285,7 +285,7 @@ public class CRandomString {
      * Characters will be chosen from the set of characters specified.
      *
      * @param count the length of random string to create
-     * @param chars the character array containing the set of characters to use,
+     * @param chars the character ArrayUtils containing the set of characters to use,
      * may be null
      * @return the random string
      * @throws IllegalArgumentException if <code>count</code> &lt; 0.

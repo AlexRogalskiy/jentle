@@ -28,9 +28,9 @@ public interface ByteSequence {
 
     /**
      * Copies the contents of this byte sequence into a newly allocated byte
-     * array and returns that array.
+     * ArrayUtils and returns that ArrayUtils.
      *
-     * @return a byte array holding a copy of this byte sequence.
+     * @return a byte ArrayUtils holding a copy of this byte sequence.
      */
     byte[] toByteArray();
 

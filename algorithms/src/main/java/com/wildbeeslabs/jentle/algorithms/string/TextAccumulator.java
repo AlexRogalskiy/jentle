@@ -43,8 +43,8 @@ public final class TextAccumulator {
                 mText = null;
             } else if (mBuilder == null) {
                 /* more efficient to use a builder than a string; and although
-                 * could use a char array, StringBuilder has the benefit of
-                 * being able to share the array, eventually.
+                 * could use a char ArrayUtils, StringBuilder has the benefit of
+                 * being able to share the ArrayUtils, eventually.
                  */
                 mBuilder = new StringBuilder(len);
             }

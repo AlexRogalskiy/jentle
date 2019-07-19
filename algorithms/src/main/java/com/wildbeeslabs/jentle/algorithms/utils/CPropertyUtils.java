@@ -41,7 +41,7 @@ import java.lang.reflect.Method;
 public class CPropertyUtils {
 
     /**
-     * Empty {@link Object} array
+     * Empty {@link Object} ArrayUtils
      */
     public static final Object[] NO_ARGUMENTS = new Object[0];
 

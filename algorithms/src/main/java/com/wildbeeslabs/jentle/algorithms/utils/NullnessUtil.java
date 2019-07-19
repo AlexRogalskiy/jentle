@@ -70,8 +70,8 @@ public final class NullnessUtil {
 
     /**
      * Like castNonNull, but whereas that method only checks and casts the reference itself, this
-     * traverses all levels of the argument array. The array is recursively checked to ensure that
-     * all elements at every array level are non-null.
+     * traverses all levels of the argument ArrayUtils. The ArrayUtils is recursively checked to ensure that
+     * all elements at every ArrayUtils level are non-null.
      *
      * @see #castNonNull(Object)
      */
@@ -81,8 +81,8 @@ public final class NullnessUtil {
 
     /**
      * Like castNonNull, but whereas that method only checks and casts the reference itself, this
-     * traverses all levels of the argument array. The array is recursively checked to ensure that
-     * all elements at every array level are non-null.
+     * traverses all levels of the argument ArrayUtils. The ArrayUtils is recursively checked to ensure that
+     * all elements at every ArrayUtils level are non-null.
      *
      * @see #castNonNull(Object)
      */
@@ -92,8 +92,8 @@ public final class NullnessUtil {
 
     /**
      * Like castNonNull, but whereas that method only checks and casts the reference itself, this
-     * traverses all levels of the argument array. The array is recursively checked to ensure that
-     * all elements at every array level are non-null.
+     * traverses all levels of the argument ArrayUtils. The ArrayUtils is recursively checked to ensure that
+     * all elements at every ArrayUtils level are non-null.
      *
      * @see #castNonNull(Object)
      */
@@ -103,8 +103,8 @@ public final class NullnessUtil {
 
     /**
      * Like castNonNull, but whereas that method only checks and casts the reference itself, this
-     * traverses all levels of the argument array. The array is recursively checked to ensure that
-     * all elements at every array level are non-null.
+     * traverses all levels of the argument ArrayUtils. The ArrayUtils is recursively checked to ensure that
+     * all elements at every ArrayUtils level are non-null.
      *
      * @see #castNonNull(Object)
      */
@@ -114,8 +114,8 @@ public final class NullnessUtil {
 
     /**
      * Like castNonNull, but whereas that method only checks and casts the reference itself, this
-     * traverses all levels of the argument array. The array is recursively checked to ensure that
-     * all elements at every array level are non-null.
+     * traverses all levels of the argument ArrayUtils. The ArrayUtils is recursively checked to ensure that
+     * all elements at every ArrayUtils level are non-null.
      *
      * @see #castNonNull(Object)
      */
@@ -124,9 +124,9 @@ public final class NullnessUtil {
     }
 
     private static <T extends Object> @lombok.NonNull T @lombok.NonNull [] castNonNullArray(final T[] arr) {
-        assert Objects.nonNull(arr) : "Misuse of castNonNullArray: called with a null array argument";
+        assert Objects.nonNull(arr) : "Misuse of castNonNullArray: called with a null ArrayUtils argument";
         for (int i = 0; i < arr.length; ++i) {
-            assert Objects.nonNull(arr[i]) : "Misuse of castNonNull: called with a null array element";
+            assert Objects.nonNull(arr[i]) : "Misuse of castNonNull: called with a null ArrayUtils element";
             checkIfArray(arr[i]);
         }
         return arr;

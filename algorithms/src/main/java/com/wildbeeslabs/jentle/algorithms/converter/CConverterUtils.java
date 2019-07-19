@@ -287,7 +287,7 @@ public class CConverterUtils {
     }
 
     /**
-     * Converts supplied objects to array by function converter
+     * Converts supplied objects to ArrayUtils by function converter
      *
      * @param <T>
      * @param <U>

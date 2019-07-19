@@ -67,30 +67,30 @@ public final class bit {
     private static final int BIT_SET_TABLE_INDEX_OFFSET = 128;
 
     /**
-     * Return the (boolean) value of the byte array at the given bit index.
+     * Return the (boolean) value of the byte ArrayUtils at the given bit index.
      *
-     * @param data  the byte array.
+     * @param data  the byte ArrayUtils.
      * @param index the bit index.
      * @return the value at the given bit index.
      * @throws IndexOutOfBoundsException if the index is
      *                                   {@code index >= max || index < 0}.
-     * @throws NullPointerException      if the {@code data} array is {@code null}.
+     * @throws NullPointerException      if the {@code data} ArrayUtils is {@code null}.
      */
     public static boolean get(final byte[] data, final int index) {
         return (data[index >>> 3] & (1 << (index & 7))) != 0;
     }
 
     /**
-     * Set the bit in the given byte array at the bit position (not the index
-     * within the byte array) to the specified value.
+     * Set the bit in the given byte ArrayUtils at the bit position (not the index
+     * within the byte ArrayUtils) to the specified value.
      *
-     * @param data  the byte array.
-     * @param index the bit index within the byte array.
+     * @param data  the byte ArrayUtils.
+     * @param index the bit index within the byte ArrayUtils.
      * @param value the value to set.
-     * @return the given data array.
+     * @return the given data ArrayUtils.
      * @throws IndexOutOfBoundsException if the index is
      *                                   {@code index >= max || index < 0}.
-     * @throws NullPointerException      if the {@code data} array is {@code null}.
+     * @throws NullPointerException      if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] set(
         final byte[] data,
@@ -101,15 +101,15 @@ public final class bit {
     }
 
     /**
-     * Set the bit in the given byte array at the bit position (not the index
-     * within the byte array) to {@code true}.
+     * Set the bit in the given byte ArrayUtils at the bit position (not the index
+     * within the byte ArrayUtils) to {@code true}.
      *
-     * @param data  the byte array.
-     * @param index the bit index within the byte array.
-     * @return the given data array.
+     * @param data  the byte ArrayUtils.
+     * @param index the bit index within the byte ArrayUtils.
+     * @return the given data ArrayUtils.
      * @throws IndexOutOfBoundsException if the index is
      *                                   {@code index >= max || index < 0}.
-     * @throws NullPointerException      if the {@code data} array is {@code null}.
+     * @throws NullPointerException      if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] set(final byte[] data, final int index) {
         data[index >>> 3] |= 1 << (index & 7);
@@ -117,15 +117,15 @@ public final class bit {
     }
 
     /**
-     * Set the bit in the given byte array at the bit position (not the index
-     * within the byte array) to {@code false}.
+     * Set the bit in the given byte ArrayUtils at the bit position (not the index
+     * within the byte ArrayUtils) to {@code false}.
      *
-     * @param data  the byte array.
-     * @param index the bit index within the byte array.
-     * @return the given data array.
+     * @param data  the byte ArrayUtils.
+     * @param index the bit index within the byte ArrayUtils.
+     * @return the given data ArrayUtils.
      * @throws IndexOutOfBoundsException if the index is
      *                                   {@code index >= max || index < 0}.
-     * @throws NullPointerException      if the {@code data} array is {@code null}.
+     * @throws NullPointerException      if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] unset(final byte[] data, final int index) {
         data[index >>> 3] &= ~(1 << (index & 7));
@@ -133,7 +133,7 @@ public final class bit {
     }
 
     /**
-     * Swap a given range with a range of the same size with another array.
+     * Swap a given range with a range of the same size with another ArrayUtils.
      *
      * <pre>
      *                start            end
@@ -146,12 +146,12 @@ public final class bit {
      *                          otherStart
      * </pre>
      *
-     * @param data       the first byte array which are used for swapping.
-     * @param start      the start bit index of the {@code data} byte array,
+     * @param data       the first byte ArrayUtils which are used for swapping.
+     * @param start      the start bit index of the {@code data} byte ArrayUtils,
      *                   inclusively.
-     * @param end        the end bit index of the {@code data} byte array, exclusively.
-     * @param otherData  the other byte array to swap the elements with.
-     * @param otherStart the start index of the {@code otherData} byte array.
+     * @param end        the end bit index of the {@code data} byte ArrayUtils, exclusively.
+     * @param otherData  the other byte ArrayUtils to swap the elements with.
+     * @param otherStart the start index of the {@code otherData} byte ArrayUtils.
      * @throws IndexOutOfBoundsException if {@code start > end} or
      *                                   if {@code start < 0 || end >= data.length*8 || otherStart < 0 ||
      *                                   otherStart + (end - start) >= otherData.length*8}
@@ -168,11 +168,11 @@ public final class bit {
     }
 
     /**
-     * Returns the number of one-bits in the given {@code byte} array.
+     * Returns the number of one-bits in the given {@code byte} ArrayUtils.
      *
-     * @param data the {@code byte} array for which the one bits should be
+     * @param data the {@code byte} ArrayUtils for which the one bits should be
      *             counted.
-     * @return the number of one bits in the given {@code byte} array.
+     * @return the number of one bits in the given {@code byte} ArrayUtils.
      */
     public static int count(final byte[] data) {
         int count = 0;
@@ -193,14 +193,14 @@ public final class bit {
     }
 
     /**
-     * Shifting all bits in the given {@code data} array the given
+     * Shifting all bits in the given {@code data} ArrayUtils the given
      * {@code shift} to the right. The bits on the left side are filled with
      * zeros.
      *
      * @param data  the data bits to shift.
      * @param shift the number of bits to shift.
-     * @return the given {@code data} array.
-     * @throws NullPointerException if the {@code data} array is {@code null}.
+     * @return the given {@code data} ArrayUtils.
+     * @throws NullPointerException if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] shiftRight(final byte[] data, final int shift) {
         final int bytes = min(shift >>> 3, data.length);
@@ -234,14 +234,14 @@ public final class bit {
     }
 
     /**
-     * Shifting all bits in the given {@code data} array the given
+     * Shifting all bits in the given {@code data} ArrayUtils the given
      * {@code shift} to the left. The bits on the right side are filled with
      * zeros.
      *
      * @param data  the data bits to shift.
      * @param shift the number of bits to shift.
-     * @return the given {@code data} array.
-     * @throws NullPointerException if the {@code data} array is {@code null}.
+     * @return the given {@code data} ArrayUtils.
+     * @throws NullPointerException if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] shiftLeft(final byte[] data, final int shift) {
         final int bytes = min(shift >>> 3, data.length);
@@ -275,11 +275,11 @@ public final class bit {
     }
 
     /**
-     * Increment the given {@code data} array.
+     * Increment the given {@code data} ArrayUtils.
      *
-     * @param data the given {@code data} array.
-     * @return the given {@code data} array.
-     * @throws NullPointerException if the {@code data} array is {@code null}.
+     * @param data the given {@code data} ArrayUtils.
+     * @return the given {@code data} ArrayUtils.
+     * @throws NullPointerException if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] increment(final byte[] data) {
         for (int i = 0; i < data.length && (data[i] += (byte) 1) == 0; ++i) ;
@@ -287,11 +287,11 @@ public final class bit {
     }
 
     /**
-     * Invert the given {@code data} array.
+     * Invert the given {@code data} ArrayUtils.
      *
-     * @param data the given {@code data} array.
-     * @return the given {@code data} array.
-     * @throws NullPointerException if the {@code data} array is {@code null}.
+     * @param data the given {@code data} ArrayUtils.
+     * @return the given {@code data} ArrayUtils.
+     * @throws NullPointerException if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] invert(final byte[] data) {
         for (int i = data.length; --i >= 0; ) {
@@ -301,11 +301,11 @@ public final class bit {
     }
 
     /**
-     * Make the two's complement of the given {@code data} array.
+     * Make the two's complement of the given {@code data} ArrayUtils.
      *
-     * @param data the given {@code data} array.
-     * @return the given {@code data} array.
-     * @throws NullPointerException if the {@code data} array is {@code null}.
+     * @param data the given {@code data} ArrayUtils.
+     * @return the given {@code data} ArrayUtils.
+     * @throws NullPointerException if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] complement(final byte[] data) {
         return increment(invert(data));
@@ -314,12 +314,12 @@ public final class bit {
     /**
      * Flip the bit at the given index.
      *
-     * @param data  the data array.
+     * @param data  the data ArrayUtils.
      * @param index the index of the bit to flip.
-     * @return the input array, for command chaining
+     * @return the input ArrayUtils, for command chaining
      * @throws IndexOutOfBoundsException if the index is
      *                                   {@code index >= max || index < 0}.
-     * @throws NullPointerException      if the {@code data} array is {@code null}.
+     * @throws NullPointerException      if the {@code data} ArrayUtils is {@code null}.
      */
     public static byte[] flip(final byte[] data, final int index) {
         return get(data, index) ? unset(data, index) : set(data, index);
@@ -343,16 +343,16 @@ public final class bit {
     }
 
     /**
-     * Copies the specified range of the specified array into a new array.
+     * Copies the specified range of the specified ArrayUtils into a new ArrayUtils.
      *
      * @param data  the bits from which a range is to be copied
      * @param start the initial index of the range to be copied, inclusive
      * @param end   the final index of the range to be copied, exclusive.
-     * @return a new array containing the specified range from the original array
+     * @return a new ArrayUtils containing the specified range from the original ArrayUtils
      * @throws ArrayIndexOutOfBoundsException if start &lt; 0 or
      *                                        start &gt; data.length*8
      * @throws IllegalArgumentException       if start &gt; end
-     * @throws NullPointerException           if the {@code data} array is
+     * @throws NullPointerException           if the {@code data} ArrayUtils is
      *                                        {@code null}.
      */
     public static byte[] copy(final byte[] data, final int start, final int end) {
@@ -401,7 +401,7 @@ public final class bit {
     }
 
     /**
-     * Convert a binary representation of the given byte array to a string. The
+     * Convert a binary representation of the given byte ArrayUtils to a string. The
      * string has the following format:
      * <pre>
      *  Byte:       3        2        1        0
@@ -410,10 +410,10 @@ public final class bit {
      *          |                 |        |      |
      *  Bit:    23                15       7      0
      * </pre>
-     * <i>Only the array string is printed.</i>
+     * <i>Only the ArrayUtils string is printed.</i>
      *
-     * @param data the byte array to convert to a string.
-     * @return the binary representation of the given byte array.
+     * @param data the byte ArrayUtils to convert to a string.
+     * @return the binary representation of the given byte ArrayUtils.
      * @see #fromByteString(String)
      */
     public static String toByteString(final byte... data) {
@@ -436,10 +436,10 @@ public final class bit {
 
     /**
      * Convert a string which was created with the {@link #toByteString(byte...)}
-     * method back to an byte array.
+     * method back to an byte ArrayUtils.
      *
      * @param data the string to convert.
-     * @return the byte array.
+     * @return the byte ArrayUtils.
      * @throws IllegalArgumentException if the given data string could not be
      *                                  converted.
      * @see #toByteString(byte...)
@@ -466,25 +466,25 @@ public final class bit {
     }
 
     /**
-     * Create a new {@code byte[]} array which can store at least the number
+     * Create a new {@code byte[]} ArrayUtils which can store at least the number
      * of bits as defined by the given {@code length} parameter.
      *
-     * @param length the number of bits, the returned byte array can store.
-     * @return the new byte array.s
+     * @param length the number of bits, the returned byte ArrayUtils can store.
+     * @return the new byte ArrayUtils.s
      */
     public static byte[] newArray(final int length) {
         return new byte[toByteLength(length)];
     }
 
     /**
-     * Create a new {@code byte[]} array which can store at least the number
+     * Create a new {@code byte[]} ArrayUtils which can store at least the number
      * of bits as defined by the given {@code length} parameter. The returned
-     * byte array is initialized with ones according to the given ones
+     * byte ArrayUtils is initialized with ones according to the given ones
      * probability {@code p}.
      *
-     * @param length the number of bits, the returned byte array can store.
-     * @param p      the ones probability of the returned byte array.
-     * @return the new byte array.s
+     * @param length the number of bits, the returned byte ArrayUtils can store.
+     * @param p      the ones probability of the returned byte ArrayUtils.
+     * @return the new byte ArrayUtils.s
      * @throws IllegalArgumentException if {@code p} is not a valid probability.
      */
     public static byte[] newArray(final int length, final double p) {

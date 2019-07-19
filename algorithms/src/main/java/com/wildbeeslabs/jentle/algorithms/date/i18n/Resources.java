@@ -53,12 +53,12 @@ public abstract class Resources extends ListResourceBundle {
     }
 
     /**
-     * Returns an {@code Object} array containing the resources of this
-     * {@code ListResourceBundle}. Each element in the array is an array of two
+     * Returns an {@code Object} ArrayUtils containing the resources of this
+     * {@code ListResourceBundle}. Each element in the ArrayUtils is an ArrayUtils of two
      * elements, the first is the resource key string and the second is the
      * resource.
      *
-     * @return a {@code Object} array containing the resources.
+     * @return a {@code Object} ArrayUtils containing the resources.
      */
     protected abstract Object[][] getResources();
 

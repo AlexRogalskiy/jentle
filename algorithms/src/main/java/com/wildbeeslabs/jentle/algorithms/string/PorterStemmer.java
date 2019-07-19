@@ -503,7 +503,7 @@ public class PorterStemmer implements Stemmer {
     }
 
     /**
-     * Stem a word contained in a portion of a char[] array.  Returns
+     * Stem a word contained in a portion of a char[] ArrayUtils.  Returns
      * true if the stemming process resulted in a word different from
      * the input.  You can retrieve the result with
      * getResultLength()/getResultBuffer() or toString().
@@ -519,7 +519,7 @@ public class PorterStemmer implements Stemmer {
     }
 
     /**
-     * Stem a word contained in a leading portion of a char[] array.
+     * Stem a word contained in a leading portion of a char[] ArrayUtils.
      * Returns true if the stemming process resulted in a word different
      * from the input.  You can retrieve the result with
      * getResultLength()/getResultBuffer() or toString().

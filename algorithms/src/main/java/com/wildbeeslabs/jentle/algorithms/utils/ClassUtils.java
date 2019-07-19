@@ -87,7 +87,7 @@ public class ClassUtils {
      * @param classes the classes whose names should be included in the
      *                generated string
      * @return a comma-separated list of fully qualified class names, or an empty
-     * string if the supplied class array is {@code null} or empty
+     * string if the supplied class ArrayUtils is {@code null} or empty
      * @see #nullSafeToString(Function, Class...)
      * @see StringUtils#nullSafeToString(Object)
      */
@@ -106,7 +106,7 @@ public class ClassUtils {
      * @param mapper  the mapper to use
      * @param classes the classes to map
      * @return a comma-separated list of mapped values, or an empty string if
-     * the supplied class array is {@code null} or empty
+     * the supplied class ArrayUtils is {@code null} or empty
      * @see #nullSafeToString(Class...)
      * @see StringUtils#nullSafeToString(Object)
      */

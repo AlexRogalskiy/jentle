@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
- * {@link InputStream} backed by byte array.
+ * {@link InputStream} backed by byte ArrayUtils.
  */
 class BinaryInputStream extends InputStream {
 

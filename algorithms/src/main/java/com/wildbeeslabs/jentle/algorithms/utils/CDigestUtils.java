@@ -58,7 +58,7 @@ public class CDigestUtils {
      */
     private static final String DEFAULT_SHA256_HASH = "SHA-256";
     /**
-     * Default hex array
+     * Default hex ArrayUtils
      */
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 

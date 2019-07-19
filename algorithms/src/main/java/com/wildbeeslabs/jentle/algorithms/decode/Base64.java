@@ -20,7 +20,7 @@ public class Base64 {
     private static final byte PAD = '=';
 
     /**
-     * This array is a lookup table that translates 6-bit positive integer index values into their "Base64 Alphabet"
+     * This ArrayUtils is a lookup table that translates 6-bit positive integer index values into their "Base64 Alphabet"
      * equivalents as specified in Table 1 of RFC 2045.
      */
     private static final byte[] ENCODE_TABLE = {'A', 'B', 'C', 'D', 'E', 'F',
@@ -42,7 +42,7 @@ public class Base64 {
      * Decodes the given Base64-encoded string.
      *
      * @param s the Base64-encoded string
-     * @return the decoded byte array
+     * @return the decoded byte ArrayUtils
      */
     public static byte[] decode(final String s) {
         int delta = s.endsWith("==") ? 2 : s.endsWith("=") ? 1 : 0;
@@ -68,9 +68,9 @@ public class Base64 {
     }
 
     /**
-     * Encodes the given byte array into a Base64-encoded string.
+     * Encodes the given byte ArrayUtils into a Base64-encoded string.
      *
-     * @param in the byte array
+     * @param in the byte ArrayUtils
      * @return the Base64-encoded string
      */
     public static String encode(final byte[] in) {

@@ -5,14 +5,14 @@ import io.jenetics.util.RandomRegistry;
 import java.util.Random;
 
 /**
- * Helper class which contains array helper methods.
+ * Helper class which contains ArrayUtils helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.0
  * @since 3.0
  */
-public final class array {
-    private array() {
+public final class ArrayUtils {
+    private ArrayUtils() {
     }
 
     public static <T> void swap(final T[] array, final int i, final int j) {
@@ -72,11 +72,11 @@ public final class array {
     }
 
     /**
-     * Randomize the {@code array} using the given {@link Random} object. The used
+     * Randomize the {@code ArrayUtils} using the given {@link Random} object. The used
      * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
      * Third edition, page 142, Algorithm S (Selection sampling technique).
      *
-     * @param array  the array to shuffle
+     * @param array  the ArrayUtils to shuffle
      * @param random the PRNG
      */
     public static double[] shuffle(final double[] array, final Random random) {

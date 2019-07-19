@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * This class extends the ByteArrayOutputStream by providing a method that
- * returns a new ByteArrayInputStream which uses the internal byte array buffer.
+ * returns a new ByteArrayInputStream which uses the internal byte ArrayUtils buffer.
  * This buffer is not copied, so no additional memory is used. After creating
  * the ByteArrayInputStream the instance of the CByteArrayInOutStream can not be
  * used anymore.
@@ -82,10 +82,10 @@ public class CByteArrayInOutStream extends ByteArrayOutputStream {
     }
 
     /**
-     * Creates a new ByteArrayInputStream that uses the internal byte array
-     * buffer of this CByteArrayInOutStream instance as its buffer array. The
+     * Creates a new ByteArrayInputStream that uses the internal byte ArrayUtils
+     * buffer of this CByteArrayInOutStream instance as its buffer ArrayUtils. The
      * initial value of pos is set to zero and the initial value of count is the
-     * number of bytes that can be read from the byte array. The buffer array is
+     * number of bytes that can be read from the byte ArrayUtils. The buffer ArrayUtils is
      * not copied. This instance of CByteArrayInOutStream can not be used anymore
      * after calling this method.
      *

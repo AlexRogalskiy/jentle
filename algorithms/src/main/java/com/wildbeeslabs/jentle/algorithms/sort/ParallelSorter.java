@@ -18,7 +18,7 @@ public abstract class ParallelSorter extends SorterTemplate {
     /**
      * Sort the arrays using the quicksort algorithm.
      *
-     * @param index array (column) to sort by
+     * @param index ArrayUtils (column) to sort by
      */
     public void quickSort(int index) {
         quickSort(index, 0, len(), null);
@@ -27,9 +27,9 @@ public abstract class ParallelSorter extends SorterTemplate {
     /**
      * Sort the arrays using the quicksort algorithm.
      *
-     * @param index array (column) to sort by
-     * @param lo    starting array index (row), inclusive
-     * @param hi    ending array index (row), exclusive
+     * @param index ArrayUtils (column) to sort by
+     * @param lo    starting ArrayUtils index (row), inclusive
+     * @param hi    ending ArrayUtils index (row), exclusive
      */
     public void quickSort(int index, int lo, int hi) {
         quickSort(index, lo, hi, null);
@@ -38,7 +38,7 @@ public abstract class ParallelSorter extends SorterTemplate {
     /**
      * Sort the arrays using the quicksort algorithm.
      *
-     * @param index array (column) to sort by
+     * @param index ArrayUtils (column) to sort by
      * @param cmp   Comparator to use if the specified column is non-primitive
      */
     public void quickSort(int index, Comparator cmp) {
@@ -48,9 +48,9 @@ public abstract class ParallelSorter extends SorterTemplate {
     /**
      * Sort the arrays using the quicksort algorithm.
      *
-     * @param index array (column) to sort by
-     * @param lo    starting array index (row), inclusive
-     * @param hi    ending array index (row), exclusive
+     * @param index ArrayUtils (column) to sort by
+     * @param lo    starting ArrayUtils index (row), inclusive
+     * @param hi    ending ArrayUtils index (row), exclusive
      * @param cmp   Comparator to use if the specified column is non-primitive
      */
     public void quickSort(int index, int lo, int hi, Comparator cmp) {
@@ -59,7 +59,7 @@ public abstract class ParallelSorter extends SorterTemplate {
     }
 
     /**
-     * @param index array (column) to sort by
+     * @param index ArrayUtils (column) to sort by
      */
     public void mergeSort(int index) {
         mergeSort(index, 0, len(), null);
@@ -68,9 +68,9 @@ public abstract class ParallelSorter extends SorterTemplate {
     /**
      * Sort the arrays using an in-place merge sort.
      *
-     * @param index array (column) to sort by
-     * @param lo    starting array index (row), inclusive
-     * @param hi    ending array index (row), exclusive
+     * @param index ArrayUtils (column) to sort by
+     * @param lo    starting ArrayUtils index (row), inclusive
+     * @param hi    ending ArrayUtils index (row), exclusive
      */
     public void mergeSort(int index, int lo, int hi) {
         mergeSort(index, lo, hi, null);
@@ -79,9 +79,9 @@ public abstract class ParallelSorter extends SorterTemplate {
     /**
      * Sort the arrays using an in-place merge sort.
      *
-     * @param index array (column) to sort by
-     * @param lo    starting array index (row), inclusive
-     * @param hi    ending array index (row), exclusive
+     * @param index ArrayUtils (column) to sort by
+     * @param lo    starting ArrayUtils index (row), inclusive
+     * @param hi    ending ArrayUtils index (row), exclusive
      */
     public void mergeSort(int index, Comparator cmp) {
         mergeSort(index, 0, len(), cmp);
@@ -90,9 +90,9 @@ public abstract class ParallelSorter extends SorterTemplate {
     /**
      * Sort the arrays using an in-place merge sort.
      *
-     * @param index array (column) to sort by
-     * @param lo    starting array index (row), inclusive
-     * @param hi    ending array index (row), exclusive
+     * @param index ArrayUtils (column) to sort by
+     * @param lo    starting ArrayUtils index (row), inclusive
+     * @param hi    ending ArrayUtils index (row), exclusive
      * @param cmp   Comparator to use if the specified column is non-primitive
      */
     public void mergeSort(int index, int lo, int hi, Comparator cmp) {

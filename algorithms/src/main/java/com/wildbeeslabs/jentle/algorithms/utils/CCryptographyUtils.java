@@ -179,7 +179,7 @@ public class CCryptographyUtils {
      * @return encrypted/decrypted value
      */
     public static long xtea(final int rounds, final long value, final int[] key, final boolean encrypt) {
-        assert (key != null && key.length == 4) : "Crypt key array must have be 4 elements long";
+        assert (key != null && key.length == 4) : "Crypt key ArrayUtils must have be 4 elements long";
 
         long[] k = new long[key.length];
         for (int i = 0; i < key.length; i++) {
@@ -221,7 +221,7 @@ public class CCryptographyUtils {
      * @return encrypted/decrypted value
      */
     public static int feistel(final int value, final int rounds, final int[] key) {
-        assert (key != null && key.length == 3) : "Crypt key array must have be 3 elements long";
+        assert (key != null && key.length == 3) : "Crypt key ArrayUtils must have be 3 elements long";
 
         long l1 = (value >> 16) & 0xffff;
         long r1 = value & 0xffff;

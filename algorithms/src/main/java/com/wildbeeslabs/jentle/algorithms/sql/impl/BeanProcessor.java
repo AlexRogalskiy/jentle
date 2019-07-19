@@ -30,16 +30,16 @@ import java.util.*;
 public class BeanProcessor {
 
     /**
-     * Special array value used by {@code mapColumnsToProperties} that
+     * Special ArrayUtils value used by {@code mapColumnsToProperties} that
      * indicates there is no bean property that matches a column from a
      * {@code ResultSet}.
      */
     protected static final int PROPERTY_NOT_FOUND = -1;
 
     /**
-     * Set a bean's primitive properties to these defaults when SQL NULL
+     * Set a bean's primitive properties to these defaults when SQL DEFAULT_NULL_REGEX
      * is returned.  These are the same as the defaults that ResultSet get*
-     * methods return in the event of a NULL column.
+     * methods return in the event of a DEFAULT_NULL_REGEX column.
      */
     private static final Map<Class, Object> primitiveDefaults = new HashMap<>();
 
@@ -82,10 +82,10 @@ public class BeanProcessor {
      * </ol>
      *
      * <p>
-     * Primitive bean properties are set to their defaults when SQL NULL is
+     * Primitive bean properties are set to their defaults when SQL DEFAULT_NULL_REGEX is
      * returned from the {@code ResultSet}.  Numeric fields are set to 0
      * and booleans are set to false.  Object bean properties are set to
-     * {@code null} when SQL NULL is returned.  This is the same behavior
+     * {@code null} when SQL DEFAULT_NULL_REGEX is returned.  This is the same behavior
      * as the {@code ResultSet} get* methods.
      * </p>
      *
@@ -125,10 +125,10 @@ public class BeanProcessor {
      * </ol>
      *
      * <p>
-     * Primitive bean properties are set to their defaults when SQL NULL is
+     * Primitive bean properties are set to their defaults when SQL DEFAULT_NULL_REGEX is
      * returned from the {@code ResultSet}.  Numeric fields are set to 0
      * and booleans are set to false.  Object bean properties are set to
-     * {@code null} when SQL NULL is returned.  This is the same behavior
+     * {@code null} when SQL DEFAULT_NULL_REGEX is returned.  This is the same behavior
      * as the {@code ResultSet} get* methods.
      * </p>
      *
@@ -249,7 +249,7 @@ public class BeanProcessor {
     }
 
     /**
-     * ResultSet.getObject() returns an Integer object for an INT column.  The
+     * ResultSet.getObject() returns an Integer object for an DEFAULT_INT_REGEX column.  The
      * setter method for the property might take an Integer or a primitive int.
      * This method returns true if the value can be successfully passed into
      * the setter method.  Remember, Method.invoke() handles the unwrapping
@@ -347,7 +347,7 @@ public class BeanProcessor {
     }
 
     /**
-     * The positions in the returned array represent column numbers.  The
+     * The positions in the returned ArrayUtils represent column numbers.  The
      * values stored at each position represent the index in the
      * {@code PropertyDescriptor[]} for the bean property that matches
      * the column name.  If no bean property was found for a column, the
@@ -401,7 +401,7 @@ public class BeanProcessor {
      *                 converted into.
      * @return The object from the {@code ResultSet} at the given column
      * index after optional type processing or {@code null} if the column
-     * value was SQL NULL.
+     * value was SQL DEFAULT_NULL_REGEX.
      * @throws SQLException if a database access error occurs
      */
     protected Object processColumn(ResultSet rs, int index, Class propType)

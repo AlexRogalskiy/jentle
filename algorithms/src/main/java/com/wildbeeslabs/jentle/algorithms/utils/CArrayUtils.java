@@ -37,7 +37,7 @@ import java.util.stream.IntStream;
 import static com.wildbeeslabs.jentle.collections.utils.CUtils.newArray;
 
 /**
- * Custom array utilities implementation
+ * Custom ArrayUtils utilities implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -161,7 +161,7 @@ public class CArrayUtils {
         byte applyAsByte(short s);
     }
 
-    //byte[] transformedArray = transformArray(array, s -> (byte) (s * 2));
+    //byte[] transformedArray = transformArray(ArrayUtils, s -> (byte) (s * 2));
     public byte[] transformArray(final short[] array, final ShortToByteFunction function) {
         byte[] transformedArray = new byte[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -1317,8 +1317,8 @@ public class CArrayUtils {
     }
 
     /**
-     * Determine whether the given object is an array:
-     * either an Object array or a primitive array.
+     * Determine whether the given object is an ArrayUtils:
+     * either an Object ArrayUtils or a primitive ArrayUtils.
      *
      * @param obj the object to check
      */
@@ -1327,10 +1327,10 @@ public class CArrayUtils {
     }
 
     /**
-     * Determine whether the given array is empty:
+     * Determine whether the given ArrayUtils is empty:
      * i.e. {@code null} or of zero length.
      *
-     * @param array the array to check
+     * @param array the ArrayUtils to check
      */
     public static boolean isEmpty(final Object array) {
         return (Objects.isNull(array) || Array.getLength(array) == 0);

@@ -42,7 +42,7 @@ public class CDFSMazeAlgorithm {
     private static final int[][] DIRECTIONS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
     private CDFSMazeAlgorithm() {
-        // PRIVATE EMPTY CONSTRUCTOR
+        // PRIVATE DEFAULT_EMPTY_REGEX CONSTRUCTOR
     }
 
     public List<CCoordinate> solve(final CMaze maze) {

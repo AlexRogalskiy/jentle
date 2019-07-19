@@ -67,7 +67,7 @@
 //     *
 //     * @since 3.3
 //     */
-//    public static final ISeq<?> EMPTY = EmptyISeq.INSTANCE;
+//    public static final ISeq<?> DEFAULT_EMPTY_REGEX = EmptyISeq.INSTANCE;
 //
 //    /**
 //     * Return an empty {@code ISeq}.
@@ -104,9 +104,9 @@
 //     * Create a new {@code ISeq} from the given values.
 //     *
 //     * @param <T>    the element type
-//     * @param values the array values.
+//     * @param values the ArrayUtils values.
 //     * @return a new {@code ISeq} with the given values.
-//     * @throws NullPointerException if the {@code values} array is {@code null}.
+//     * @throws NullPointerException if the {@code values} ArrayUtils is {@code null}.
 //     */
 //    @SafeVarargs
 //    public static <T> ISeq<T> of(final T... values) {
@@ -119,9 +119,9 @@
 //     * Create a new {@code ISeq} from the given values.
 //     *
 //     * @param <T>    the element type
-//     * @param values the array values.
+//     * @param values the ArrayUtils values.
 //     * @return a new {@code ISeq} with the given values.
-//     * @throws NullPointerException if the {@code values} array is {@code null}.
+//     * @throws NullPointerException if the {@code values} ArrayUtils is {@code null}.
 //     */
 //    @SuppressWarnings("unchecked")
 //    public static <T> ISeq<T> of(final Iterable<? extends T> values) {

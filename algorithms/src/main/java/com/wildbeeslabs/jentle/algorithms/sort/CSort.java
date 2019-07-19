@@ -138,7 +138,7 @@ public class CSort {
 
     public static <T extends Comparable<? super T>> int binarySearch2(final T[] array, final T value, final Comparator<? super T> cmp) {
         return Arrays.binarySearch(array, value);
-        //return Collections.binarySearch(array, value);
+        //return Collections.binarySearch(ArrayUtils, value);
     }
 
     public static <T extends Comparable<? super T>> int binarySearchRecursive(final T[] array, final T value, int low, int high) {
@@ -162,7 +162,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param <T>
      * @public @module sort
      * @see [average] - O(n * log(n)) /worst - O(n * n) / memory - O(log(n))
@@ -174,7 +174,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param left  Left border.
      * @param right Right border.
      * @param <T>
@@ -187,7 +187,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param left  Left border.
      * @param right Right border.
      * @param cmp   A function that defines an alternative sort order. The
@@ -230,7 +230,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -279,7 +279,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param left  start index.
      * @param right end index.
      * @param cmp   A function that defines an alternative sort order. The
@@ -304,7 +304,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -338,7 +338,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -355,9 +355,9 @@ public class CSort {
             swap(array, 0, i);
             siftup(array, 0, i--, cmp);
         }
-        //for(var i=array.length-1; i>=1; i--) {
-        //	swap(array, 0, i, cmp);
-        //	siftdown(array, i-1, cmp);
+        //for(var i=ArrayUtils.length-1; i>=1; i--) {
+        //	swap(ArrayUtils, 0, i, cmp);
+        //	siftdown(ArrayUtils, i-1, cmp);
         //}
     }
 
@@ -388,13 +388,13 @@ public class CSort {
                 break;
             }
         }
-        //for(var p, i=pos; i>=1 && Objects.compare(array[p=(i/2)], array[i], cmp) < 0; i=p) {
-        //	swap(array, p, i);
+        //for(var p, i=pos; i>=1 && Objects.compare(ArrayUtils[p=(i/2)], ArrayUtils[i], cmp) < 0; i=p) {
+        //	swap(ArrayUtils, p, i);
         //}
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param left  Left border.
      * @param right Right border.
      * @param cmp   A function that defines an alternative sort order. The
@@ -432,7 +432,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -447,20 +447,20 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param <T>
      * @public @module sort
      * @see [best] time: O(n * log(n)) average time: O(n * log(n)) worst time: O(n
      * * log(n)) memory: O(n) stable: false complexity: T(n) = 2T(n/2) + O(n),
      * where 2T(n/2) - the time required to sort the sub-arrays, O(n) - the time
-     * to merge the entire array.
+     * to merge the entire ArrayUtils.
      */
     public static <T extends Comparable<? super T>> void mergeSort(final T[] array) {
         CSort.mergeSort(array, CUtils.<T>getDefaultSortComparator());
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -473,7 +473,7 @@ public class CSort {
         Objects.requireNonNull(array);
         Objects.requireNonNull(cmp);
 
-        final T[] temp = SerializationUtils.clone(array);//newArray((Class<? extends T[]>) array.getClass(), array.length);
+        final T[] temp = SerializationUtils.clone(array);//newArray((Class<? extends T[]>) ArrayUtils.getClass(), ArrayUtils.length);
         mergeSort(array, temp, 0, array.length - 1, cmp);
     }
 
@@ -595,7 +595,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -622,7 +622,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param left  start index.
      * @param right end index.
      * @param cmp   A function that defines an alternative sort order. The
@@ -644,7 +644,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -671,7 +671,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -706,7 +706,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -764,7 +764,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -802,7 +802,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
@@ -824,7 +824,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
@@ -850,7 +850,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
@@ -879,7 +879,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @public @module sort
      */
     public static void bucketSort(final int[] array) {
@@ -910,7 +910,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
@@ -922,8 +922,8 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
-     * @param steps Input array of sorting steps
+     * @param array Input ArrayUtils.
+     * @param steps Input ArrayUtils of sorting steps
      * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
      *              arguments.
@@ -946,7 +946,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param step  Sorting step.
      * @param cmp   BinaryFunction that defines an alternative sort order. The function
      *              should return a negative, zero, or positive value, depending on the
@@ -972,7 +972,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -997,7 +997,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param cmp   A function that defines an alternative sort order. The
      *              function should return a negative, zero, or positive value, depending on
      *              the arguments.
@@ -1009,7 +1009,7 @@ public class CSort {
     }
 
     /**
-     * @param array Input array.
+     * @param array Input ArrayUtils.
      * @param left  Left border.
      * @param right Right border.
      * @param cmp   A function that defines an alternative sort order. The

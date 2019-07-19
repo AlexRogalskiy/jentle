@@ -475,12 +475,12 @@ public abstract class ReflectionUtils {
 
     /**
      * This variant retrieves {@link Class#getDeclaredMethods()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
+     * in order to avoid the JVM's SecurityManager check and defensive ArrayUtils copying.
      * In addition, it also includes Java 8 default methods from locally implemented
      * interfaces, since those are effectively to be treated just like declared methods.
      *
      * @param clazz the class to introspect
-     * @return the cached array of methods
+     * @return the cached ArrayUtils of methods
      * @throws IllegalStateException if introspection fails
      * @see Class#getDeclaredMethods()
      */
@@ -753,10 +753,10 @@ public abstract class ReflectionUtils {
 
     /**
      * This variant retrieves {@link Class#getDeclaredFields()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
+     * in order to avoid the JVM's SecurityManager check and defensive ArrayUtils copying.
      *
      * @param clazz the class to introspect
-     * @return the cached array of fields
+     * @return the cached ArrayUtils of fields
      * @throws IllegalStateException if introspection fails
      * @see Class#getDeclaredFields()
      */

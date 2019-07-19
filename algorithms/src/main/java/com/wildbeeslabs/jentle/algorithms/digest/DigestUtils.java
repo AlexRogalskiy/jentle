@@ -38,7 +38,7 @@ public class DigestUtils {
     private static final int STREAM_BUFFER_LENGTH = 1024;
 
     /**
-     * Reads through a byte array and returns the digest for the data. Provided for symmetry with other methods.
+     * Reads through a byte ArrayUtils and returns the digest for the data. Provided for symmetry with other methods.
      *
      * @param messageDigest
      *            The MessageDigest to use (e.g. MD5)
@@ -915,7 +915,7 @@ public class DigestUtils {
      * Updates the given {@link MessageDigest} from a String (converted to bytes using UTF-8).
      * <p>
      * To update the digest using a different charset for the conversion,
-     * convert the String to a byte array using
+     * convert the String to a byte ArrayUtils using
      * {@link String#getBytes(java.nio.charset.Charset)} and pass that
      * to the {@link DigestUtils#updateDigest(MessageDigest, byte[])} method
      *
@@ -993,7 +993,7 @@ public class DigestUtils {
     }
 
     /**
-     * Reads through a byte array and returns the digest for the data.
+     * Reads through a byte ArrayUtils and returns the digest for the data.
      *
      * @param data
      *            Data to digest
@@ -1005,7 +1005,7 @@ public class DigestUtils {
     }
 
     /**
-     * Reads through a byte array and returns the digest for the data.
+     * Reads through a byte ArrayUtils and returns the digest for the data.
      *
      * @param data
      *            Data to digest treated as UTF-8 string
@@ -1058,7 +1058,7 @@ public class DigestUtils {
     }
 
     /**
-     * Reads through a byte array and returns the digest for the data.
+     * Reads through a byte ArrayUtils and returns the digest for the data.
      *
      * @param data
      *            Data to digest
@@ -1070,7 +1070,7 @@ public class DigestUtils {
     }
 
     /**
-     * Reads through a byte array and returns the digest for the data.
+     * Reads through a byte ArrayUtils and returns the digest for the data.
      *
      * @param data
      *            Data to digest treated as UTF-8 string

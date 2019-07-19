@@ -24,21 +24,21 @@ import static java.util.Collections.emptyList;
 public class Arrays {
 
     /**
-     * Indicates whether the given object is not {@code null} and is an array.
+     * Indicates whether the given object is not {@code null} and is an ArrayUtils.
      *
      * @param o the given object.
-     * @return {@code true} if the given object is not {@code null} and is an array, otherwise {@code false}.
+     * @return {@code true} if the given object is not {@code null} and is an ArrayUtils, otherwise {@code false}.
      */
     public static boolean isArray(final Object o) {
         return Objects.nonNull(o) && o.getClass().isArray();
     }
 
     /**
-     * Get the values of any array (primitive or not) into a {@code Object[]}.
+     * Get the values of any ArrayUtils (primitive or not) into a {@code Object[]}.
      *
-     * @param array array passed as an object to support both primitive and Object array
+     * @param array ArrayUtils passed as an object to support both primitive and Object ArrayUtils
      * @return the values of the given Object as a {@code Object[]}.
-     * @throws IllegalArgumentException it the given Object is not an array.
+     * @throws IllegalArgumentException it the given Object is not an ArrayUtils.
      */
     public static Object[] asObjectArray(final Object array) {
         Objects.requireNonNull(array, "Array should not be null");
@@ -54,33 +54,33 @@ public class Arrays {
     }
 
     /**
-     * Get the values of any array (primitive or not) into a {@code List<Object>}.
+     * Get the values of any ArrayUtils (primitive or not) into a {@code List<Object>}.
      *
-     * @param array array passed as an object to support both primitive and Object array
+     * @param array ArrayUtils passed as an object to support both primitive and Object ArrayUtils
      * @return the values of the given Object as a {@code List<Object>}.
-     * @throws IllegalArgumentException it the given Object is not an array.
+     * @throws IllegalArgumentException it the given Object is not an ArrayUtils.
      */
     public static List<Object> asList(Object array) {
         return newArrayList(asObjectArray(array));
     }
 
     /**
-     * Indicates whether the given array is {@code null} or empty.
+     * Indicates whether the given ArrayUtils is {@code null} or empty.
      *
-     * @param <T>   the type of elements of the array.
-     * @param array the array to check.
-     * @return {@code true} if the given array is {@code null} or empty, otherwise {@code false}.
+     * @param <T>   the type of elements of the ArrayUtils.
+     * @param array the ArrayUtils to check.
+     * @return {@code true} if the given ArrayUtils is {@code null} or empty, otherwise {@code false}.
      */
     public static <T> boolean isNullOrEmpty(final T[] array) {
         return array == null || isEmpty(array);
     }
 
     /**
-     * Returns an array containing the given arguments.
+     * Returns an ArrayUtils containing the given arguments.
      *
-     * @param <T>    the type of the array to return.
-     * @param values the values to store in the array.
-     * @return an array containing the given arguments.
+     * @param <T>    the type of the ArrayUtils to return.
+     * @param values the values to store in the ArrayUtils.
+     * @return an ArrayUtils containing the given arguments.
      */
     @SafeVarargs
     public static <T> T[] array(final T... values) {
@@ -88,7 +88,7 @@ public class Arrays {
     }
 
     /**
-     * Returns an int[] from the {@link AtomicIntegerArray}, null if the given atomic array is null.
+     * Returns an int[] from the {@link AtomicIntegerArray}, null if the given atomic ArrayUtils is null.
      *
      * @param atomicIntegerArray the {@link AtomicIntegerArray} to convert to int[].
      * @return an int[].
@@ -105,7 +105,7 @@ public class Arrays {
     }
 
     /**
-     * Returns an long[] from the {@link AtomicLongArray}, null if the given atomic array is null.
+     * Returns an long[] from the {@link AtomicLongArray}, null if the given atomic ArrayUtils is null.
      *
      * @param atomicLongArray the {@link AtomicLongArray} to convert to long[].
      * @return an long[].
@@ -122,9 +122,9 @@ public class Arrays {
     }
 
     /**
-     * Returns an T[] from the {@link AtomicReferenceArray}, null if the given atomic array is null.
+     * Returns an T[] from the {@link AtomicReferenceArray}, null if the given atomic ArrayUtils is null.
      *
-     * @param <T>                  the type of elements of the array.
+     * @param <T>                  the type of elements of the ArrayUtils.
      * @param atomicReferenceArray the {@link AtomicReferenceArray} to convert to T[].
      * @return an T[].
      */
@@ -143,11 +143,11 @@ public class Arrays {
     }
 
     /**
-     * Returns all the non-{@code null} elements in the given array.
+     * Returns all the non-{@code null} elements in the given ArrayUtils.
      *
-     * @param <T>   the type of elements of the array.
-     * @param array the given array.
-     * @return all the non-{@code null} elements in the given array. An empty list is returned if the given array is
+     * @param <T>   the type of elements of the ArrayUtils.
+     * @param array the given ArrayUtils.
+     * @return all the non-{@code null} elements in the given ArrayUtils. An empty list is returned if the given ArrayUtils is
      * {@code null}.
      */
     public static <T> List<T> nonNullElementsIn(final T[] array) {
@@ -160,13 +160,13 @@ public class Arrays {
     }
 
     /**
-     * Returns {@code true} if the given array has only {@code null} elements, {@code false} otherwise. If given array is
+     * Returns {@code true} if the given ArrayUtils has only {@code null} elements, {@code false} otherwise. If given ArrayUtils is
      * empty, this method returns {@code true}.
      *
-     * @param <T>   the type of elements of the array.
-     * @param array the given array. <b>It must not be null</b>.
-     * @return {@code true} if the given array has only {@code null} elements or is empty, {@code false} otherwise.
-     * @throws NullPointerException if the given array is {@code null}.
+     * @param <T>   the type of elements of the ArrayUtils.
+     * @param array the given ArrayUtils. <b>It must not be null</b>.
+     * @return {@code true} if the given ArrayUtils has only {@code null} elements or is empty, {@code false} otherwise.
+     * @throws NullPointerException if the given ArrayUtils is {@code null}.
      */
     public static <T> boolean hasOnlyNullElements(final T[] array) {
         Objects.requireNonNull(array, "Array should not be null");
@@ -190,7 +190,7 @@ public class Arrays {
     }
 
     public static IllegalArgumentException notAnArrayOfPrimitives(final Object o) {
-        return new IllegalArgumentException(String.format("<%s> is not an array of primitives", o));
+        return new IllegalArgumentException(String.format("<%s> is not an ArrayUtils of primitives", o));
     }
 
     @SuppressWarnings("unchecked")

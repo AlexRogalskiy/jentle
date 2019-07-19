@@ -109,7 +109,7 @@
 //    }
 //
 //    /**
-//     * Swap a given range with a range of the same size with another array.
+//     * Swap a given range with a range of the same size with another ArrayUtils.
 //     *
 //     * <pre>
 //     *            start                end
@@ -124,8 +124,8 @@
 //     *
 //     * @param start      the start index of {@code this} range, inclusively.
 //     * @param end        the end index of {@code this} range, exclusively.
-//     * @param other      the other array to swap the elements with.
-//     * @param otherStart the start index of the {@code other} array.
+//     * @param other      the other ArrayUtils to swap the elements with.
+//     * @param otherStart the start index of the {@code other} ArrayUtils.
 //     * @throws IndexOutOfBoundsException if {@code start > end} or
 //     *                                   if {@code start < 0 || end >= this.length() || otherStart < 0 ||
 //     *                                   otherStart + (end - start) >= other.length()}
@@ -154,7 +154,7 @@
 //     * Swap the elements at the same position.
 //     *
 //     * @param index the index of swapped element.
-//     * @param other the other array to swap the elements with.
+//     * @param other the other ArrayUtils to swap the elements with.
 //     * @throws IndexOutOfBoundsException if
 //     *                                   {@code index < 0 || index >= this.length() || index >= other.length()}.
 //     * @throws NullPointerException      if the {@code other} sequence is {@code null}
@@ -167,7 +167,7 @@
 //    }
 //
 //    /**
-//     * Randomize the {@code array} using the {@link Random} object currently
+//     * Randomize the {@code ArrayUtils} using the {@link Random} object currently
 //     * registered in the {@link RandomRegistry} class. The used shuffling
 //     * algorithm is from D. Knuth TAOCP, Seminumerical Algorithms, Third edition,
 //     * page 142, Algorithm S (Selection sampling technique).
@@ -179,7 +179,7 @@
 //    }
 //
 //    /**
-//     * Randomize the {@code array} using the given {@link Random} object. The used
+//     * Randomize the {@code ArrayUtils} using the given {@link Random} object. The used
 //     * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 //     * Third edition, page 142, Algorithm S (Selection sampling technique).
 //     *
@@ -376,7 +376,7 @@
 //    /**
 //     * Single instance of an empty {@code MSeq}.
 //     */
-//    public static final MSeq<?> EMPTY = EmptyMSeq.INSTANCE;
+//    public static final MSeq<?> DEFAULT_EMPTY_REGEX = EmptyMSeq.INSTANCE;
 //
 //    /**
 //     * Return an empty {@code MSeq}.
@@ -427,9 +427,9 @@
 //     * Create a new {@code MSeq} from the given values.
 //     *
 //     * @param <T>    the element type
-//     * @param values the array values.
+//     * @param values the ArrayUtils values.
 //     * @return a new {@code Meq} with the given values.
-//     * @throws NullPointerException if the {@code values} array is {@code null}.
+//     * @throws NullPointerException if the {@code values} ArrayUtils is {@code null}.
 //     */
 //    @SafeVarargs
 //    public static <T> MSeq<T> of(final T... values) {
@@ -442,7 +442,7 @@
 //     * Create a new {@code MSeq} from the given values.
 //     *
 //     * @param <T>    the element type
-//     * @param values the array values.
+//     * @param values the ArrayUtils values.
 //     * @return a new {@code MSeq} with the given values.
 //     * @throws NullPointerException if the {@code values} object is
 //     *                              {@code null}.
@@ -526,9 +526,9 @@
 //     * Create a new {@code MSeq} from the values of the given {@code Seq}.
 //     *
 //     * @param <T>    the element type
-//     * @param values the array values.
+//     * @param values the ArrayUtils values.
 //     * @return an new {@code MSeq} with the given values
-//     * @throws NullPointerException if the {@code values} array is {@code null}.
+//     * @throws NullPointerException if the {@code values} ArrayUtils is {@code null}.
 //     */
 //    @SuppressWarnings("unchecked")
 //    public static <T> MSeq<T> of(final Seq<? extends T> values) {

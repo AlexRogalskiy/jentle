@@ -227,7 +227,7 @@ public class AnnotationUtils {
                 // Container?
                 else if (candidateAnnotationType.equals(containerType)) {
                     // Note: it's not a legitimate containing annotation type if it doesn't declare
-                    // a 'value' attribute that returns an array of the contained annotation type.
+                    // a 'value' attribute that returns an ArrayUtils of the contained annotation type.
                     // See https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.3
                     final Method method = ReflectionUtils2.getMethod(containerType, "value").orElseThrow(
                         () -> new IllegalArgumentException(String.format(

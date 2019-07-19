@@ -58,7 +58,7 @@ public class TestDataSet {
                 log.debug("Candidate: {}", candidate);
                 int[] testSet = getSingleTestSet();
                 logCandidateTestSet(testSet);
-                candidateSets[candidate] = testSet;  // add candidate testSet to candidateSets array
+                candidateSets[candidate] = testSet;  // add candidate testSet to candidateSets ArrayUtils
             } // for each candidate testSet
             logCandidateTestSets(candidateSets);
             int[] bestTestSet = determineBestCandidateSet(candidateSets);
@@ -173,7 +173,7 @@ public class TestDataSet {
     }
 
     private void logCandidateTestSet(int[] testSet) {
-        log.debug("Adding candidate Test Molecules to candidateSets array: ");
+        log.debug("Adding candidate Test Molecules to candidateSets ArrayUtils: ");
         log.debug("Candidate Test Set (indexes): {}", Arrays.toString(testSet));
         for (int i = 0; i < testSet.length; i++) {
             log.debug("Candidate Test Set: (parameter {}): {}", i, scenario.getParameterValues().get(testSet[i]));

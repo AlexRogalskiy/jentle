@@ -15,28 +15,28 @@ public final class InputStreams {
 
     public static InputStream create(final byte[] b, int off, int len) {
         if (b == null) {
-            throw new IllegalArgumentException("Byte array may not be null");
+            throw new IllegalArgumentException("Byte ArrayUtils may not be null");
         }
         return new BinaryInputStream(ByteBuffer.wrap(b, off, len));
     }
 
     public static InputStream create(final byte[] b) {
         if (b == null) {
-            throw new IllegalArgumentException("Byte array may not be null");
+            throw new IllegalArgumentException("Byte ArrayUtils may not be null");
         }
         return new BinaryInputStream(ByteBuffer.wrap(b));
     }
 
     public static InputStream create(final ByteArrayBuffer b) {
         if (b == null) {
-            throw new IllegalArgumentException("Byte array may not be null");
+            throw new IllegalArgumentException("Byte ArrayUtils may not be null");
         }
         return new BinaryInputStream(ByteBuffer.wrap(b.buffer(), 0, b.length()));
     }
 
     public static InputStream create(final ByteBuffer b) {
         if (b == null) {
-            throw new IllegalArgumentException("Byte array may not be null");
+            throw new IllegalArgumentException("Byte ArrayUtils may not be null");
         }
         return new BinaryInputStream(b);
     }

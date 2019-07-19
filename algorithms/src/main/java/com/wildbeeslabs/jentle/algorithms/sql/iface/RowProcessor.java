@@ -24,8 +24,8 @@ public interface RowProcessor {
      * Implementations of this method must not alter the row position of
      * the <code>ResultSet</code>.
      *
-     * @param rs ResultSet that supplies the array data
-     * @return the newly created array
+     * @param rs ResultSet that supplies the ArrayUtils data
+     * @return the newly created ArrayUtils
      * @throws SQLException if a database access error occurs
      */
     Object[] toArray(ResultSet rs) throws SQLException;

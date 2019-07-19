@@ -44,7 +44,7 @@ public class SmallCharMatcher {
     private static final double DESIRED_LOAD_FACTOR = 0.5;
 
     /**
-     * Returns an array size suitable for the backing array of a hash table that uses open addressing
+     * Returns an ArrayUtils size suitable for the backing ArrayUtils of a hash table that uses open addressing
      * with linear probing in its implementation. The returned size is the smallest power of two that
      * can hold setSize elements with the desired load factor.
      */

@@ -48,7 +48,7 @@ public final class StringUtil {
     }
 
     /**
-     * Join an array of strings by a separator
+     * Join an ArrayUtils of strings by a separator
      *
      * @param strings collection of string objects
      * @param sep     string to place between strings

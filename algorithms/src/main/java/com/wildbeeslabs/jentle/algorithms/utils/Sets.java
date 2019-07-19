@@ -26,7 +26,7 @@ public class Sets {
      *
      * @param <T>      the generic type of the {@code HashSet} to create.
      * @param elements the elements to store in the {@code HashSet}.
-     * @return the created {@code HashSet}, or {@code null} if the given array of elements is {@code null}.
+     * @return the created {@code HashSet}, or {@code null} if the given ArrayUtils of elements is {@code null}.
      */
     public static <T> HashSet<T> newHashSet(final Iterable<? extends T> elements) {
         if (Objects.isNull(elements)) {
@@ -54,7 +54,7 @@ public class Sets {
      *
      * @param <T>      the generic type of the {@code LinkedHashSet} to create.
      * @param elements the elements to store in the {@code LinkedHashSet}.
-     * @return the created {@code LinkedHashSet}, or {@code null} if the given array of elements is {@code null}.
+     * @return the created {@code LinkedHashSet}, or {@code null} if the given ArrayUtils of elements is {@code null}.
      */
     @SafeVarargs
     public static <T> LinkedHashSet<T> newLinkedHashSet(final T... elements) {
@@ -81,7 +81,7 @@ public class Sets {
      *
      * @param <T>      the generic type of the {@link TreeSet} to create.
      * @param elements the elements to store in the {@link TreeSet}.
-     * @return the created {@link TreeSet}, or {@code null} if the given array of elements is {@code null}.
+     * @return the created {@link TreeSet}, or {@code null} if the given ArrayUtils of elements is {@code null}.
      */
     @SafeVarargs
     public static <T> TreeSet<T> newTreeSet(final T... elements) {
