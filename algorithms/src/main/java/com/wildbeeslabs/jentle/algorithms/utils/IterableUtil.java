@@ -3,10 +3,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
@@ -120,5 +117,27 @@ public class IterableUtil {
     @SuppressWarnings("unchecked")
     private static <T> T[] newArray(Class<T> type, int length) {
         return (T[]) Array.newInstance(type, length);
+    }
+
+    public static Iterable<Object> iterable(final Object first, final Object second, final Object[] rest) {
+        CValidationUtils.notNull(rest, "Array should not be null");
+        return new AbstractList<>() {
+            @Override
+            public int size() {
+                return rest.length + 2;
+            }
+
+            @Override
+            public Object get(int index) {
+                switch (index) {
+                    case 0:
+                        return first;
+                    case 1:
+                        return second;
+                    default:
+                        return rest[index - 2];
+                }
+            }
+        };
     }
 }
