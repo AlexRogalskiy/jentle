@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.*;
 
@@ -32,6 +33,14 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @UtilityClass
 public class StringUtils {
+    /**
+     * Default {@link Charset} constants
+     */
+    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final Charset UTF16BE = Charset.forName("UTF-16BE");
+    private static final Charset UTF16LE = Charset.forName("UTF-16LE");
+    private static final Charset UTF32BE = Charset.forName("UTF-32BE");
+    private static final Charset UTF32LE = Charset.forName("UTF-32LE");
 
     /**
      * Determine if the supplied {@link String} is <em>blank</em> (i.e.,
