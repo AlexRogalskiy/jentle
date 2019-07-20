@@ -26,7 +26,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 import lombok.experimental.UtilityClass;
 
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
@@ -174,5 +174,18 @@ public class StringUtils {
         } catch (Throwable throwable) {
             throw throwable;
         }
+    }
+
+    public static Boolean isAnagram(final String word1, final String word2) {
+        final List<String> listWord1 = new ArrayList<>(Arrays.asList(word1.split("")));
+        final List<String> listWord2 = new ArrayList<>(Arrays.asList(word2.split("")));
+
+        Collections.sort(listWord1);
+        Collections.sort(listWord2);
+
+        final String newWord1 = String.join(EMPTY, listWord1);
+        final String newWord2 = String.join(EMPTY, listWord2);
+
+        return newWord1.equals(newWord2);
     }
 }
