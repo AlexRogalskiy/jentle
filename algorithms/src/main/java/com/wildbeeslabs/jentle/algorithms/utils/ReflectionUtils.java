@@ -25,7 +25,10 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.lang.reflect.*;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -43,6 +46,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.2.2
  */
 public abstract class ReflectionUtils {
+
+    public static <T> T instanceOf(final Constructor<T> constructor, final Class<T> type) {
+        try {
+            return constructor.newInstance(type);
+        } catch (InstantiationException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalArgumentException(e);
+        } catch (InvocationTargetException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
     /**
      * Pre-built MethodFilter that matches all non-bridge methods.

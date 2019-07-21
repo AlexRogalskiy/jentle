@@ -44,4 +44,5 @@ module jentle.algorithms {
     requires selenium.firefox.driver;
     requires selenium.ie.driver;
     requires java.management;
+    requires jdk.unsupported;
 }
