@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.map;
+package com.wildbeeslabs.jentle.collections.map.impl;
 
 import java.io.Serializable;
 import java.security.AccessController;

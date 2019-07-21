@@ -88,6 +88,14 @@ public class CNumericUtils {
         return (int) (Math.log10(value) + 1);
     }
 
+    /**
+     * @param x the int to test
+     * @return true if x is a power of 2
+     */
+    public static boolean isPowerOfTwo(final int x) {
+        return Integer.bitCount(x) == 1;
+    }
+
     public static boolean hasPrimeNumbers(int n) {
         assert (n >= 0);
         int sqrt = (int) Math.sqrt(n);

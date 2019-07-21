@@ -25,6 +25,7 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.*;
@@ -36,11 +37,22 @@ public class StringUtils {
     /**
      * Default {@link Charset} constants
      */
+    public static final Charset ASCII = Charset.forName("US-ASCII");
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private static final Charset UTF16BE = Charset.forName("UTF-16BE");
     private static final Charset UTF16LE = Charset.forName("UTF-16LE");
     private static final Charset UTF32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF32LE = Charset.forName("UTF-32LE");
+
+    /**
+     * Create a ByteBuffer from a string using ASCII encoding.
+     *
+     * @param s the string
+     * @return ByteBuffer
+     */
+    public static ByteBuffer buffer(final String s) {
+        return ByteBuffer.wrap(s.getBytes(ASCII));
+    }
 
     /**
      * Determine if the supplied {@link String} is <em>blank</em> (i.e.,
