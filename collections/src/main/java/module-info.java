@@ -48,4 +48,5 @@ module jentle.collections {
     requires org.apache.commons.lang3;
     requires commons.collections4;
     requires stdlib;
+    requires org.jsoup;
 }

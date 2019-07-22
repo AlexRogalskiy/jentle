@@ -26,6 +26,7 @@
         <apache.commons.collections.version>4.1</apache.commons.collections.version>
         <princeton.java.algorithms.version>4.0.1</princeton.java.algorithms.version>
         <jama.version>1.0.3</jama.version>
+        <jsoup.version>1.12.1</jsoup.version>
     </properties>
 
     <build>
@@ -114,6 +115,13 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>${apache.commons.collections.version}</version>
+        </dependency>
+
+        <!-- Jsoup library dependencies -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
     </dependencies>
 </project>
