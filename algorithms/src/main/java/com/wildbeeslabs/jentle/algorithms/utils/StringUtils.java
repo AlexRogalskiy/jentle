@@ -90,6 +90,11 @@ public class StringUtils {
         return str != null && str.codePoints().anyMatch(Character::isWhitespace);
     }
 
+    private Optional<String> getLargestName(final List<String> values) {
+        CValidationUtils.notNull(values, "List should not be null");
+        return values.stream().reduce((s1, s2) -> s1.length() > s2.length() ? s1 : s2);
+    }
+
     /**
      * Determine if the supplied {@link String} does not contain any whitespace
      * characters.

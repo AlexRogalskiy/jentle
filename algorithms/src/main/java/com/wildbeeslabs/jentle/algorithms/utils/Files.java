@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -313,5 +315,9 @@ public class Files {
 
     private static void checkArgumentCharsetIsSupported(String charsetName) {
         checkArgument(Charset.isSupported(charsetName), "Charset:<'%s'> is not supported on this system", charsetName);
+    }
+
+    public static void copy(final Path source, final Path target, final StandardCopyOption replaceExisting) {
+        Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
     }
 }

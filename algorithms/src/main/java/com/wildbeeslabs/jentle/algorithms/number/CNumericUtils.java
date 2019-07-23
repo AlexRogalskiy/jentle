@@ -783,4 +783,12 @@ public class CNumericUtils {
 
         return true;
     }
+
+    public static OptionalInt parse(final Integer... values) {
+        return Arrays.asList(values).stream().mapToInt(Integer::intValue).max();
+    }
+
+    public static Integer parse(final Predicate<Integer> predicate, final Integer... values) {
+        return Arrays.asList(values).stream().filter(predicate).mapToInt(Integer::intValue).sum();
+    }
 }
