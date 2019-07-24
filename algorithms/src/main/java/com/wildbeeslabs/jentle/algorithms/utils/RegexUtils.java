@@ -78,6 +78,31 @@ public class RegexUtils {
     };
 
     /**
+     * Regex matching a getter (is* or get*). The second group is the field name.
+     */
+    static final Pattern GET_RE = Pattern.compile("^(is|get)(.+)$");
+    /**
+     * Regex matching a setter (set*). The second group is the field name.
+     */
+    static final Pattern SET_RE = Pattern.compile("^(set)(.+)$");
+    /**
+     * Regex matching an accessor (is*, get* or set*). The second group is the field name.
+     */
+    static final Pattern ACCESS_RE = Pattern.compile("^(is|get|set)(.+)$");
+    /**
+     * Regex matching an add listener method (add*Listener). The second group is the field name.
+     */
+    static final Pattern ADD_LISTENER_RE = Pattern.compile("^(add)(.*)Listener$");
+    /**
+     * Regex matching a remove listener method (remove*Listener). The second group is the field name.
+     */
+    static final Pattern REMOVE_LISTENER_RE = Pattern.compile("^(remove)(.*)Listener$");
+    /**
+     * Regex matching a listener method (add*Listener or remove*Listener). The second group is the field name.
+     */
+    static final Pattern LISTENER_RE = Pattern.compile("^(add|remove)(.*)Listener$");
+
+    /**
      * Default boolean regex pattern
      */
     public static final Pattern DEFAULT_BOOL_REGEX = Pattern.compile("^(?:yes|Yes|YES|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)$");
