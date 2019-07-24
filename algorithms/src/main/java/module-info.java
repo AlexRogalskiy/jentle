@@ -45,4 +45,5 @@ module jentle.algorithms {
     requires selenium.ie.driver;
     requires java.management;
     requires jdk.unsupported;
+    requires snakeyaml;
 }
