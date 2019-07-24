@@ -2,6 +2,8 @@ package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -13,6 +15,8 @@ import java.security.NoSuchAlgorithmException;
  * @since 2.0
  */
 public final class Digester {
+
+    private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
     private final MessageDigest messageDigest;
 
@@ -92,5 +96,40 @@ public final class Digester {
         }
         sb.append(md5);
         return sb.toString();
+    }
+
+    private static final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+    /**
+     * Returns the SHA1 of the provided data
+     *
+     * @param data The data to calculate, such as the contents of a file
+     * @return The human-readable SHA1
+     */
+    public static String sha1DigestAsHex(String data) {
+        byte[] dataBytes = getDigest("SHA").digest(data.getBytes(UTF8_CHARSET));
+        return new String(encodeHex(dataBytes));
+    }
+
+    private static char[] encodeHex(byte[] data) {
+        int l = data.length;
+        char[] out = new char[l << 1];
+        for (int i = 0, j = 0; i < l; i++) {
+            out[j++] = HEX_CHARS[(0xF0 & data[i]) >>> 4];
+            out[j++] = HEX_CHARS[0x0F & data[i]];
+        }
+        return out;
+    }
+
+    /**
+     * Creates a new {@link MessageDigest} with the given algorithm. Necessary because {@code MessageDigest} is not
+     * thread-safe.
+     */
+    private static MessageDigest getDigest(String algorithm) {
+        try {
+            return MessageDigest.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new IllegalStateException("Could not find MessageDigest with algorithm \"" + algorithm + "\"", ex);
+        }
     }
 }
