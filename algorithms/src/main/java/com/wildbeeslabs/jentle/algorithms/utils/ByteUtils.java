@@ -1,8 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -70,8 +69,7 @@ public class ByteUtils {
      * @return the partitioned arrays.
      */
     public static byte[][] split(byte[] source, int c) {
-
-        if (ObjectUtils.isEmpty(source)) {
+        if (ArrayUtils.isEmpty(source)) {
             return new byte[][]{};
         }
 
@@ -101,9 +99,8 @@ public class ByteUtils {
      * @return
      */
     public static byte[][] mergeArrays(byte[] firstArray, byte[]... additionalArrays) {
-
-        Assert.notNull(firstArray, "first array must not be null");
-        Assert.notNull(additionalArrays, "additional arrays must not be null");
+        CValidationUtils.notNull(firstArray, "first array must not be null");
+        CValidationUtils.notNull(additionalArrays, "additional arrays must not be null");
 
         byte[][] result = new byte[additionalArrays.length + 1][];
         result[0] = firstArray;
@@ -120,8 +117,7 @@ public class ByteUtils {
      * @since 2.0
      */
     public static byte[] getBytes(ByteBuffer byteBuffer) {
-
-        Assert.notNull(byteBuffer, "ByteBuffer must not be null!");
+        CValidationUtils.notNull(byteBuffer, "ByteBuffer must not be null!");
 
         ByteBuffer duplicate = byteBuffer.duplicate();
         byte[] bytes = new byte[duplicate.remaining()];
@@ -210,9 +206,8 @@ public class ByteUtils {
      * @since 2.1
      */
     public static ByteBuffer getByteBuffer(String theString, Charset charset) {
-
-        Assert.notNull(theString, "The String must not be null!");
-        Assert.notNull(charset, "The String must not be null!");
+        CValidationUtils.notNull(theString, "The String must not be null!");
+        CValidationUtils.notNull(charset, "The String must not be null!");
 
         return charset.encode(theString);
     }
