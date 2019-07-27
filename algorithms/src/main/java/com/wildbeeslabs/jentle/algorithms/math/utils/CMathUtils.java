@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -72,6 +73,13 @@ public class CMathUtils {
             memo[i] = fibonacci_2(i - 1, memo) + fibonacci_2(i - 2, memo);
         }
         return memo[i];
+    }
+
+    public static int sumRange(int low, int high) {
+        //return IntStream.range(low, high).sum();
+        int sum = IntStream.range(low, high).reduce(0, (v1, v2) -> v1 + v2);
+//        int product = IntStream.range(low, high).reduce(1, (v1, v2) -> v1 * v2);
+        return sum;
     }
 
     //upward dynamic
@@ -731,6 +739,54 @@ public class CMathUtils {
                 counter++;
             }
         });
+    }
 
+    public static Long streamOf(final long initValue, final int skipValue) {
+        return Stream.generate(() -> initValue)
+            .skip(skipValue)
+            .findFirst()
+            .orElse(Long.MIN_VALUE);
     }
 }
+/*
+   static void customCollect(List<Student> students) {
+
+        Collector<Student, Map<String, Student>, Map<String, Student>> c = Collector.of(
+                // Initial state
+                new Supplier<Map<String, Student>>() {
+                    @Override
+                    public Map<String, Student> get() {
+                        return new HashMap<>();
+                    }
+                },
+                // Accumulate values in state
+                new BiConsumer<Map<String, Student>, Student>() {
+                    @Override
+                    public void accept(Map<String, Student> stringStudentMap, Student student) {
+                        stringStudentMap.put(student.getName(), student);
+                    }
+                },
+                // Combine multiple states into one (for splitted streams)
+                new BinaryOperator<Map<String, Student>>() {
+                    @Override
+                    public Map<String, Student> apply(Map<String, Student> stringStudentMap, Map<String, Student> stringStudentMap2) {
+                        stringStudentMap.putAll(stringStudentMap2);
+                        return stringStudentMap;
+                    }
+                }
+        );
+
+        Map<String, Student> studentMap = students.stream()
+                .collect(c);
+        System.out.println(studentMap);
+
+Map<String, Student> studentMap1 = students.stream()
+    .collect(
+        HashMap::new, // initial
+        (map, val) -> map.put(val.getName(), val), // foreach do
+        (m1, m2) -> m1.putAll(m2) // combine sub results
+    );
+
+        System.out.println(studentMap1);
+            }
+ */
