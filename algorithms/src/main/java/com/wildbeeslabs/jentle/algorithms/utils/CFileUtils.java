@@ -30,16 +30,29 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
+import javax.imageio.ImageIO;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.FileTime;
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -354,7 +367,7 @@ public class CFileUtils {
     }
 
     public static byte[] loadFileIntoByte(final String path) throws IOException {
-        return Files.readAllBytes(loadFile(path).toPath());
+        return readAllBytes(loadFile(path).toPath());
     }
 
     public static InputStream loadFileIntoInputStream(final String path) throws IOException {
@@ -457,6 +470,196 @@ public class CFileUtils {
         }
     }
 
+    public static void writeToFile(Path path, byte[] content, StandardOpenOption... openOption) {
+        try {
+            Files.write(path, content, openOption);
+        } catch (Exception e) {
+            log.error("Problem occured while writing {}", path, e);
+        }
+    }
+
+    private static Charset detectCharset(File f, String[] charsets, byte[] bytes) {
+        for (final String charsetName : charsets) {
+            if (Objects.nonNull(charsetName)) {
+                Charset charset = detectCharset(f, Charset.forName(charsetName), bytes);
+                if (charset != null) {
+                    return charset;
+                }
+            }
+        }
+
+        throw new RuntimeException("Charset not detected, can't open this file ");
+    }
+
+    private static Charset detectCharset(File f, Charset charset, byte[] bytes) {
+        try {
+            CharsetDecoder decoder = charset.newDecoder();
+            decoder.reset();
+            boolean identified = true;
+
+            try {
+                decoder.decode(ByteBuffer.wrap(bytes));
+            } catch (CharacterCodingException e) {
+                identified = false;
+            }
+            if (identified) {
+                return charset;
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static void createDirectories(Path path) {
+        try {
+            Files.createDirectories(path);
+        } catch (Exception e) {
+            log.error("Problem occured while creating directories {}", path, e);
+        }
+
+    }
+
+    public static Path createTempFile2(final String suffix) {
+        try {
+            return Files.createTempFile("asciidoc-temp", suffix);
+        } catch (Exception e) {
+            log.error("Problem occured while creating temp file", e);
+        }
+        return null;
+    }
+
+    public static Path createTempFile(Path path, String prefix, String suffix) {
+        if (Objects.isNull(path)) {
+            return createTempFile2(suffix);
+        }
+        try {
+            return Files.createTempFile(path, prefix, suffix);
+        } catch (Exception e) {
+            log.error("Problem occured while creating temp file {}", path, e);
+        }
+        return null;
+    }
+
+    public static Path createTempFile(Path path, String suffix) {
+        if (Objects.isNull(path)) {
+            return createTempFile2(suffix);
+        }
+
+        return createTempFile(path, "asciidoc-temp", suffix);
+    }
+
+    public static void copy(Path source, Path target, CopyOption... copyOptions) {
+        try {
+            Files.copy(source, target, copyOptions);
+        } catch (Exception e) {
+            log.error("Problem occured while copying {} to {}", source, target, e);
+        }
+    }
+
+    public static String pathToUrl(Path path) {
+        try {
+            return path.toUri().toURL().toString();
+        } catch (Exception e) {
+            log.error("Problem occured while getting URL of {}", path, e);
+        }
+        return null;
+    }
+
+    public static Stream<Path> list(Path path) {
+        try {
+            return Files.list(path);
+        } catch (Exception e) {
+            log.error("Problem occured while listing {}", path, e);
+        }
+        return Stream.empty();
+    }
+
+    public static void imageWrite(BufferedImage bufferedImage, String format, File output) {
+        try {
+            ImageIO.write(bufferedImage, format, output);
+        } catch (Exception e) {
+            log.error("Problem occured while writing buff image to {}", output, e);
+        }
+    }
+
+    public static byte[] readAllBytes(Path path) {
+        try {
+            return Files.readAllBytes(path);
+        } catch (Exception e) {
+            log.error("Problem occured while reading {}", path, e);
+        }
+        return new byte[]{};
+    }
+
+    public static void move(Path source, Path target, StandardCopyOption... option) {
+        try {
+            Files.move(source, target, option);
+        } catch (Exception e) {
+            log.error("Problem occured while moving {} to {}", source, target, e);
+        }
+    }
+
+    public static void transform(Transformer transformer, StreamSource xmlSource, StreamResult streamResult) {
+        try {
+            transformer.transform(xmlSource, streamResult);
+        } catch (TransformerException e) {
+            log.error("Problem occured while transforming XML Source to Stream result", e);
+
+        }
+    }
+
+    public static void copyDirectoryToDirectory(File source, File target) {
+        try {
+            FileUtils.copyDirectoryToDirectory(source, target);
+        } catch (Exception e) {
+            log.error("Problem occured while copying {} to {}", source, target, e);
+        }
+    }
+
+    public static Optional<Exception> deleteIfExists(Path path) {
+        try {
+            Files.deleteIfExists(path);
+        } catch (Exception e) {
+            log.error("Problem occured while deleting {}", path, e);
+            return Optional.ofNullable(e);
+        }
+
+        return Optional.empty();
+    }
+
+    public static void copyDirectory(Path sourceDir, Path targetDir) {
+        try {
+            FileUtils.copyDirectory(sourceDir.toFile(), targetDir.toFile());
+        } catch (Exception e) {
+            log.error("Problem occured while copying {} to {}", sourceDir, targetDir, e);
+        }
+    }
+
+    public static Stream<Path> find(Path start, Integer maxDepth, BiPredicate<Path, BasicFileAttributes> matcher, FileVisitOption... options) {
+        if (Objects.isNull(maxDepth)) {
+            maxDepth = Integer.MAX_VALUE;
+        }
+
+        try {
+            return Files.find(start, maxDepth, matcher, options);
+        } catch (Exception e) {
+            log.error("Problem occured while finding in path {}", start, e);
+        }
+        return Stream.empty();
+    }
+
+    public static boolean isHidden(Path path) {
+        try {
+            return Files.exists(path) && (Files.isHidden(path) || path.getFileName().toString().startsWith("."));
+        } catch (Exception e) {
+//            logger.error("Problem occured while detecting hidden path {}", path, e);
+        }
+        return false;
+    }
+
     public static String streamToString(final InputStream is) throws IOException {
         if (is != null) {
             Writer writer = new StringWriter();
@@ -507,5 +710,202 @@ public class CFileUtils {
         try (inputStream) {
             return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         }
+    }
+
+    public static void copyFileToDirectory(File file, File directory) {
+        try {
+            FileUtils.copyFileToDirectory(file, directory);
+        } catch (Exception e) {
+            log.error("Problem occured while copying {} to {}", file, directory, e);
+        }
+    }
+
+    public static void copyFile2(File file, File dest) {
+        try {
+            FileUtils.copyFile(file, dest);
+        } catch (Exception e) {
+            log.error("Problem occured while copying {} to {}", file, dest, e);
+        }
+    }
+
+    public static void createDirectory(Path path) {
+        try {
+            Files.createDirectory(path);
+        } catch (Exception e) {
+            log.error("Problem occured while creating {} path", path, e);
+        }
+    }
+
+    private static Optional<Exception> forceDelete(Path path) {
+
+        try {
+            Objects.requireNonNull(path);
+
+            if (Files.notExists(path)) {
+                return Optional.empty();
+            }
+
+            FileUtils.forceDelete(path.toFile());
+        } catch (FileNotFoundException fnx) {
+            return Optional.empty();
+        } catch (Exception e) {
+            log.error("Problem occured while deleting {}", path, e);
+            return Optional.ofNullable(e);
+        }
+        return Optional.empty();
+    }
+
+    public static List<String> readAllLines(Path path) {
+        try {
+            return Files.readAllLines(path);
+        } catch (Exception e) {
+            log.error("Problem occured while reading {} path", path, e);
+        }
+        return new ArrayList<>();
+    }
+
+    public static Reader fileReader(Path path) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(path.toFile());
+            return new InputStreamReader(fileInputStream, "UTF-8");
+        } catch (Exception e) {
+            log.error("Problem occured while creating FileReader for {} path", path, e);
+        }
+        return null;
+    }
+
+    public static FileTime getLastModifiedTime(Path path) {
+        try {
+            return Files.getLastModifiedTime(path);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public static String decode(String uri, String encoding) {
+        try {
+            return URLDecoder.decode(uri, encoding);
+        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+        }
+        return uri;
+    }
+
+    public static Path createTempDirectory(final Path path, final String prefix, final FileAttribute<?>... attrs) {
+        try {
+            return Files.createTempDirectory(path, prefix, attrs);
+        } catch (Exception e) {
+            log.error("Problem occured while creating temp directory");
+        }
+
+        return null;
+    }
+
+    public static String getPathCleanName(Path object) {
+        return object.getFileName().toString().replaceAll("\\..*", "");
+    }
+
+    public static <T> T readFile(Path path, Class<T> clazz) throws IOException {
+
+        if (clazz.isAssignableFrom(byte[].class)) {
+            return clazz.cast(readAllBytes(path));
+        } else {
+            return clazz.cast(readFile((InputStream) path));
+        }
+
+    }
+
+    public static boolean isEmptyDir(Path path) {
+        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(path)) {
+            return !dirStream.iterator().hasNext();
+        } catch (Exception e) {
+//            logger.warn("Problem occured while checking is directory empty {}", path);
+        }
+        return false;
+    }
+
+    public static WatchService newWatchService() {
+        try {
+            return FileSystems.getDefault().newWatchService();
+        } catch (Exception e) {
+            log.warn("Problem occured while creating new watch service");
+        }
+        return null;
+    }
+
+    public static Optional<Long> size(Path path) {
+        try {
+            long size = Files.size(path);
+            return Optional.of(size);
+        } catch (Exception e) {
+            log.warn("Problem occured while getting size info of {}", path);
+        }
+        return Optional.empty();
+    }
+
+    public static boolean contains(Path root, Path subPath) {
+
+        if (root == null || subPath == null)
+            return false;
+
+        Iterator<Path> realPathIterator = root.normalize().iterator();
+        Iterator<Path> subPathIterator = subPath.normalize().iterator();
+
+        while (realPathIterator.hasNext()) {
+            Path realPathSegment = realPathIterator.next();
+            if (subPathIterator.hasNext()) {
+                Path subPathSegment = subPathIterator.next();
+                if (!Objects.equals(realPathSegment, subPathSegment)) {
+                    subPathIterator = subPath.normalize().iterator();
+                }
+            } else {
+                break;
+            }
+        }
+        return !subPathIterator.hasNext();
+    }
+
+    public static Stream<Path> walk(Path path) {
+        try {
+            return Files.walk(path);
+        } catch (Exception e) {
+            log.warn("Problem occured while walking path {}", path);
+        }
+        return Stream.empty();
+    }
+
+    public static Stream<Path> walk(Path path, int depth) {
+        try {
+            return Files.walk(path, depth);
+        } catch (Exception e) {
+            log.warn("Problem occured while walking path {}", path);
+        }
+        return Stream.empty();
+    }
+
+    public static boolean isSameImage(BufferedImage firstImage, BufferedImage secondImage) {
+        if (Objects.isNull(firstImage)) {
+            return false;
+        }
+        if (Objects.isNull(secondImage)) {
+            return false;
+        }
+
+        // The images must be the same size.
+        if (firstImage.getWidth() == secondImage.getWidth() && firstImage.getHeight() == secondImage.getHeight()) {
+            int width = firstImage.getWidth();
+            int height = firstImage.getHeight();
+
+            // Loop over every pixel.
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    // Compare the pixels for equality.
+                    if (firstImage.getRGB(x, y) != secondImage.getRGB(x, y)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
