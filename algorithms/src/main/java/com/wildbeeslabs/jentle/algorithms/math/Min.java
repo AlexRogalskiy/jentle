@@ -11,7 +11,7 @@ public class Min implements AbstractAggregation {
     }
 
     @Override
-    public Number getValue() {
+    public Double getValue() {
         return min;
     }
 }

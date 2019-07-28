@@ -12,7 +12,7 @@ public class Average implements AbstractAggregation {
     }
 
     @Override
-    public Number getValue() {
+    public Double getValue() {
         if (count != 0d) {
             return summation / count;
         }

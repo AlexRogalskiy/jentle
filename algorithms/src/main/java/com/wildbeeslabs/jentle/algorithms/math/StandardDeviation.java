@@ -13,7 +13,7 @@ public class StandardDeviation implements AbstractAggregation {
     }
 
     @Override
-    public Number getValue() {
+    public Double getValue() {
         return Math.sqrt(sumSq / count - sum * sum / count / count);
     }
 }

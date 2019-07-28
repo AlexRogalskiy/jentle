@@ -9,7 +9,7 @@ public class Sum implements AbstractAggregation {
     }
 
     @Override
-    public Number getValue() {
+    public Double getValue() {
         return summation;
     }
 }

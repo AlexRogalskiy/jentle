@@ -4,5 +4,5 @@ public interface AbstractAggregation {
 
     void next(final Number value);
 
-    Number getValue();
+    Double getValue();
 }

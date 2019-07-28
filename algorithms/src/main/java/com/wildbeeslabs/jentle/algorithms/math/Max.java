@@ -11,7 +11,7 @@ public class Max implements AbstractAggregation {
     }
 
     @Override
-    public Number getValue() {
+    public Double getValue() {
         return max;
     }
 }
