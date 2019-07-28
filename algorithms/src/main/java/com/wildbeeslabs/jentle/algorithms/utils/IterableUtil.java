@@ -1,9 +1,14 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.collections.iterator.BigDecimalHalvingIterator;
+import com.wildbeeslabs.jentle.collections.iterator.BigIntegerHalvingIterator;
 import com.wildbeeslabs.jentle.collections.iterator.CartesianIterator;
+import com.wildbeeslabs.jentle.collections.iterator.IntegerHalvingIterator;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -147,5 +152,17 @@ public class IterableUtil {
     public <T> Stream<List<T>> cartesian(final List<Iterator<T>> sources) {
         Iterable<List<T>> cartesian = () -> new CartesianIterator<>(sources);
         return StreamSupport.stream(cartesian.spliterator(), false);
+    }
+
+    public static Iterable<BigInteger> halvingIntegral(final BigInteger max, final BigInteger start) {
+        return () -> new BigIntegerHalvingIterator(start, max);
+    }
+
+    public static Iterable<BigDecimal> halvingDecimal(final BigDecimal max, final BigDecimal start) {
+        return () -> new BigDecimalHalvingIterator(start, max);
+    }
+
+    public static Iterable<Integer> halving(int start) {
+        return () -> new IntegerHalvingIterator(start);
     }
 }
