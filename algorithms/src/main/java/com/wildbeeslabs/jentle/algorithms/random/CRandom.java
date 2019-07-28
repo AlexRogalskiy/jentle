@@ -199,4 +199,12 @@ public class CRandom {
         assert maxSize > 0 : "Max size should be greater than zero";
         return DoubleStream.generate(() -> new Random().nextDouble()).limit(maxSize).toArray();
     }
+
+    public int nextCodePoint(final Random random) {
+        return random.nextInt(Character.MIN_SURROGATE - 1);
+    }
+
+    public boolean codePointInRange(int codePoint) {
+        return codePoint >= 0 && codePoint < Character.MIN_SURROGATE;
+    }
 }

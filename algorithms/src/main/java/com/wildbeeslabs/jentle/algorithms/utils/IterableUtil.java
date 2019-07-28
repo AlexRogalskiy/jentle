@@ -1,9 +1,12 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
+import com.wildbeeslabs.jentle.collections.iterator.CartesianIterator;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
@@ -139,5 +142,10 @@ public class IterableUtil {
                 }
             }
         };
+    }
+
+    public <T> Stream<List<T>> cartesian(final List<Iterator<T>> sources) {
+        Iterable<List<T>> cartesian = () -> new CartesianIterator<>(sources);
+        return StreamSupport.stream(cartesian.spliterator(), false);
     }
 }

@@ -42,6 +42,7 @@ module jentle.collections {
     exports com.wildbeeslabs.jentle.collections.exception;
     exports com.wildbeeslabs.jentle.collections.iface.node;
     exports com.wildbeeslabs.jentle.collections.model;
+    exports com.wildbeeslabs.jentle.collections.iterator;
 
     requires static lombok;
     requires slf4j.api;
