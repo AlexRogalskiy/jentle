@@ -908,4 +908,16 @@ public class CFileUtils {
         }
         return false;
     }
+
+    public static File getOrCreateFile(final String path) {
+        final File file = new File(path);
+        if (!file.exists() && file.canWrite()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
 }
