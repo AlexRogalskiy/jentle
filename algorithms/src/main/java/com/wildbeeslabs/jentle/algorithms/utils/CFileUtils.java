@@ -920,4 +920,15 @@ public class CFileUtils {
         }
         return file;
     }
+
+    public static void findFiles(final String extension, final File baseDir, final Collection<File> found) {
+        baseDir.listFiles(pathname -> {
+            if (pathname.isDirectory()) {
+                findFiles(extension, pathname, found);
+            } else if (pathname.getName().endsWith(extension)) {
+                found.add(pathname);
+            }
+            return false;
+        });
+    }
 }

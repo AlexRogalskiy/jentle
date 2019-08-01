@@ -21,7 +21,7 @@ public enum NullLockFactory implements LockFactory {
      * This implementation does nothing.
      */
     @Override
-    public Lock obtainLock(String identifier) {
+    public Lock obtainLock(final String identifier) {
         return NO_LOCK;
     }
 
