@@ -1,10 +1,13 @@
 package com.wildbeeslabs.jentle.algorithms.enums;
 
+import lombok.Getter;
+
 /**
  * Represents the known architectures used in WebDriver.  It attempts to smooth over some of Java's
  * rough edges when dealing with microprocessor architectures by, for instance, allowing you to
  * query if a particular architecture is 32- or 64-bit.
  */
+@Getter
 public enum Architecture {
 
     // Architecture families
@@ -39,8 +42,8 @@ public enum Architecture {
 
     private final String[] archIdentifiers;
 
-    Architecture(final String... partOfArch) {
-        archIdentifiers = partOfArch;
+    Architecture(final String... archIdentifiers) {
+        this.archIdentifiers = archIdentifiers;
     }
 
     /**
@@ -92,8 +95,7 @@ public enum Architecture {
             if (architecture == Architecture.ANY) {
                 continue;
             }
-
-            for (final String matcher : architecture.archIdentifiers) {
+            for (final String matcher : architecture.getArchIdentifiers()) {
                 if (matcher.equalsIgnoreCase(arch)) {
                     return architecture;
                 }

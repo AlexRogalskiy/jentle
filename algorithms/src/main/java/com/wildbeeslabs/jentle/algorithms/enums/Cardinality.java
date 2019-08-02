@@ -7,7 +7,7 @@ public enum Cardinality {
     ONE_TO_MANY,
     MANY_TO_MANY;
 
-    public boolean isMany() {
-        return this.equals(ONE_TO_MANY) || this.equals(MANY_TO_MANY);
+    public boolean isManyCardinality() {
+        return this.equals(ONE_TO_MANY) || this.equals(MANY_TO_ONE) || this.equals(MANY_TO_MANY);
     }
 }

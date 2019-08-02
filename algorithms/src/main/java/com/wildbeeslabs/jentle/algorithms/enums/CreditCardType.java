@@ -3,10 +3,7 @@ package com.wildbeeslabs.jentle.algorithms.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toList;
@@ -49,12 +46,11 @@ public enum CreditCardType {
     VISA_19(19, 4);
 
     private final Integer length;
-
     private final List<List<Integer>> prefixes;
 
     CreditCardType(final Integer length, final Integer... prefixes) {
         this.length = length;
-        this.prefixes = unmodifiableList(Arrays.stream(Optional.ofNullable(prefixes).orElseGet(() -> new Integer[0])).map(this::fromNumber).collect(toList()));
+        this.prefixes = Collections.unmodifiableList(Arrays.stream(Optional.ofNullable(prefixes).orElseGet(() -> new Integer[0])).map(this::fromNumber).collect(toList()));
     }
 
     private List<Integer> fromNumber(final int num) {
@@ -65,6 +61,6 @@ public enum CreditCardType {
             list.add(0, tmp % 10);
             tmp /= 10;
         }
-        return unmodifiableList(list);
+        return Collections.unmodifiableList(list);
     }
 }
