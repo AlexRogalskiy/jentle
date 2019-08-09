@@ -6,7 +6,7 @@ public class BitArray {
     final static int INT_SIZE = 32;
 
     /**
-     * Creates a new instance of BitArray
+     * Creates a new instance of BitArray2
      */
     public BitArray(int size) {
         int implSize = (int) (size / INT_SIZE) + 1;

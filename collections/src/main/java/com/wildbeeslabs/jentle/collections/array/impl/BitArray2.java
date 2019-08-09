@@ -1,12 +1,12 @@
-package com.wildbeeslabs.jentle.collections.array;
+package com.wildbeeslabs.jentle.collections.array.impl;
 
 import java.util.Objects;
 
-public /*inline*/ class BitArray {
+public /*inline*/ class BitArray2 {
     private final int capacity;
     private final int[] array;
 
-    public BitArray(int capacity) {
+    public BitArray2(int capacity) {
         this.capacity = capacity;
         array = new int[1 + capacity / 32];
     }
