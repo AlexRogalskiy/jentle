@@ -1,71 +1,160 @@
 package com.wildbeeslabs.jentle.collections.stack;
 
-import java.lang.reflect.Array;
-
-/*
- * Stack - Array implementation
+/**
+ * This class Implements Stack
+ *
+ * @author hamza39460
  */
-@SuppressWarnings("unchecked")
-public class Stack<E> {
+public class Stack<T> {
+    /**
+     * node for stack
+     */
+    private static class Node<K> {
+        // data to store in node
+        private K data;
+        // next node reference
+        private Node<K> next;
 
-	private Class<E> clazz;
-	private E[] elements;
-	private E top;
-	private int capacity;
-	private int index;
+        /**
+         * Constructor for Class Node
+         *
+         * @param data to be saved in node
+         */
+        public Node(final K data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
-	public Stack(Class<E> clazz) {
-		this.clazz = clazz;
-		this.capacity = 10;
-		this.top = null;
-		this.index = -1;
-		this.elements = (E[]) Array.newInstance(clazz, capacity);
-	}
+    // reference to head node of stack
+    private Node headNode;
+    // stack size
+    private int stackSize;
 
-	public Stack(Class<E> clazz, int capacity) {
-		this(clazz);
-		this.capacity = capacity;
-		this.elements = (E[]) Array.newInstance(clazz, capacity);
-	}
+    /**
+     * constructor for class stack
+     * initialize head node reference to null
+     * initialize stack size to zero
+     */
+    public Stack() {
+        this.headNode = null;
+        this.stackSize = 0;
+    }
 
-	/*
-	 * Insere no final LIFO
-	 */
-	public void push(E Node) {
-		if ((index + 1) == capacity) {
-			capacity *= 2;
-			E[] resizedElements = (E[]) Array.newInstance(clazz, capacity);
-			for (int i = 0; i <= index; i++) {
-				resizedElements[i] = elements[i];
-			}
-			elements = resizedElements;
-		}
-		elements[++index] = Node;
-		top = elements[index];
-	}
+    /**
+     * to create new node
+     *
+     * @param data to be saved in node
+     * @return new created node
+     */
+    private Node addNode(final T data) {
+        return new Node<>(data);
+    }
 
-	public E pop() throws IllegalStateException {
-		if (index == -1) {
-			throw new IllegalStateException("Stack is empty");
-		}
-		E oldTop = top;
-		elements[index] = null;
-		if (index == 0) {
-			--index;
-			top = null;
-		} else {
-			top = elements[--index];
-		}
-		
-		return oldTop;
-	}
-	
-	public E top() {
-		return top;
-	}
-	
-	public int size(){
-		return index + 1;
-	}
-	
+    /**
+     * @return size of stack
+     */
+    public int stackSize() {
+        return stackSize;
+    }
+
+    /**
+     * to push in stack
+     *
+     * @param data to be pushed in stack
+     */
+    public void push(final T data) {
+        final Node newNode = addNode(data);
+        newNode.next = this.headNode;
+        this.headNode = newNode;
+        this.stackSize++;
+    }
+
+    /**
+     * removes top element
+     *
+     * @return top element if not empty
+     * else return false
+     */
+    public T pop() {
+        if (this.headNode != null) {
+            final T data = (T) this.headNode.data;
+            this.headNode = this.headNode.next;
+            this.stackSize--;
+            return data;
+        }
+        return null;
+    }
+
+    /**
+     * to get top element of stack
+     *
+     * @return top of stack if stack is not empty
+     * else return null
+     */
+    public T top() {
+        if (this.headNode != null) {
+            return (T) this.headNode.data;
+        }
+        return null;
+    }
+
+    /**
+     * to check if stack is empty
+     *
+     * @return true if stack is empty
+     * false if stack is not empty
+     */
+    boolean is_empty() {
+        if (this.headNode == null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * check if an element exist in stack
+     *
+     * @param key element to check
+     * @return true if element exists
+     * false if element does not exist
+     */
+    boolean exist(final T key) {
+        if (this.headNode == null) {
+            return false;
+        } else if (this.headNode.data == key) {
+            return true;
+        } else {
+            Node temp = this.headNode;
+            while (temp != null && temp.data != key) {
+                temp = temp.next;
+            }
+            if (temp != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+    pop all elements from stack
+    */
+    public void popAll() {
+        while (this.headNode != null) {
+            this.headNode = this.headNode.next;
+        }
+    }
+
+    // driver program
+    public static void main(final String args[]) {
+        final Stack<Double> obj = new Stack<>();
+        obj.push(2.2);
+        obj.push(3.3);
+        obj.push(4.4);
+        obj.push(5.5);
+        obj.push(6.6);
+        while (!obj.is_empty()) {
+            System.out.println(obj.pop());
+        }
+    }
 }
