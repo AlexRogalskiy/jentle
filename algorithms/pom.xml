@@ -48,6 +48,9 @@
         <jenetics.version>4.3.0</jenetics.version>
         <selenium.version>3.141.59</selenium.version>
         <testng.version>7.0.0-beta3</testng.version>
+
+        <cyclops-react.version>2.1.1</cyclops-react.version>
+        <reactive-streams.version>1.0.2</reactive-streams.version>
     </properties>
 
     <build>
@@ -219,6 +222,19 @@
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>
             <version>${com.vdurmont.emoji.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.aol.simplereact/cyclops-react -->
+        <dependency>
+            <groupId>com.aol.simplereact</groupId>
+            <artifactId>cyclops-react</artifactId>
+            <version>${cyclops-react.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.reactivestreams/reactive-streams -->
+        <dependency>
+            <groupId>org.reactivestreams</groupId>
+            <artifactId>reactive-streams</artifactId>
+            <version>${reactive-streams.version}</version>
         </dependency>
 
         <!-- JSoup library dependencies -->

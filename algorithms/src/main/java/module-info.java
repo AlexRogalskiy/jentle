@@ -46,4 +46,5 @@ module jentle.algorithms {
     requires java.management;
     requires jdk.unsupported;
     requires snakeyaml;
+    requires cyclops.react;
 }

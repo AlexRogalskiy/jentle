@@ -1,9 +1,14 @@
 package com.wildbeeslabs.jentle.algorithms.number;
 
 import com.wildbeeslabs.jentle.algorithms.utils.CValidationUtils;
+import cyclops.control.Trampoline;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+
+import static cyclops.control.Trampoline.done;
+import static cyclops.control.Trampoline.more;
 
 /**
  * The 3 general approaches to a very basic dynamic programming problem - the fibonacci sequence
@@ -77,7 +82,6 @@ public class Fibonacci {
      */
     public int tabulatedFibonacci(final int n) {
         CValidationUtils.isTrue(n > 0, "Number should be positive");
-
         if (n < 3) {
             return 1;
         }
@@ -90,5 +94,9 @@ public class Fibonacci {
             tab[i] = tab[i - 1] + tab[i - 2];
         }
         return tab[n - 1];
+    }
+
+    public Trampoline<BigInteger> fibonacci(final BigInteger count, final BigInteger a, final BigInteger b) {
+        return count.equals(BigInteger.ZERO) ? done(a) : more(() -> fibonacci(count.subtract(BigInteger.ONE), b, a.add(b)));
     }
 }
