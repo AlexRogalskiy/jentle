@@ -114,7 +114,7 @@ public class BSTTest {
         this.bst.insert(Integer.valueOf(30));
 
         assertEquals(Integer.valueOf(30), this.bst.sucessor(Integer.valueOf(20)).getData());
-        assertNotEquals(Integer.valueOf(30), this.bst.sucessor(new Integer(10)).getData());
+        assertNotEquals(Integer.valueOf(30), this.bst.sucessor(Integer.valueOf(10)).getData());
         this.bst.insert(Integer.valueOf(5));
 
         assertEquals(Integer.valueOf(10), this.bst.sucessor(Integer.valueOf(5)).getData());
