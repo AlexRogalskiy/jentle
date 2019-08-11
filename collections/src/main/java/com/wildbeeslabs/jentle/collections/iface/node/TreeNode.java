@@ -9,7 +9,7 @@ package com.wildbeeslabs.jentle.collections.iface.node;
  * @version 1.0.0
  * @since 2017-08-07
  */
-public interface TreeNode<T, R> extends Node<T> {
+public interface TreeNode<T, R extends TreeNode<T, R>> extends Node<T> {
 
     R getLeft();
 

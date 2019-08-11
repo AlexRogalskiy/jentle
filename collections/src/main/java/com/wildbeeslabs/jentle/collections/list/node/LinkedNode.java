@@ -23,21 +23,29 @@
  */
 package com.wildbeeslabs.jentle.collections.list.node;
 
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.Objects;
 
-@Getter
+@Data
 public final class LinkedNode<T> {
 
     /**
      * Default node {@code T} value
      */
-    private final T value;
+    private T value;
     /**
      * Default {@link LinkedNode} next instance
      */
     private LinkedNode<T> next;
+
+    public LinkedNode() {
+        this(null);
+    }
+
+    public LinkedNode(final T value) {
+        this(value, null);
+    }
 
     public LinkedNode(final T value, final LinkedNode<T> next) {
         this.value = value;
