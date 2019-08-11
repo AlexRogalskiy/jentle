@@ -1,18 +1,20 @@
 package com.wildbeeslabs.jentle.collections.list.impl;
 
+import com.wildbeeslabs.jentle.collections.list.node.Node;
+
 public class LinkedList {
     private Node head;
     private Node tail;
     public int size;
 
     public LinkedList() {
-        head = null;
-        tail = null;
-        size = 0;
+        this.head = null;
+        this.tail = null;
+        this.size = 0;
     }
 
     public boolean isEmpty() {
-        return head == tail;
+        return this.head == this.tail;
     }
 
     public int getSize() {
@@ -20,35 +22,35 @@ public class LinkedList {
     }
 
     public void insertAtStart(int val) {
-        Node newNode = new Node(val);
-        size++;
+        final Node newNode = new Node(val);
+        this.size++;
         if (head == null) {
-            head = newNode;
-            tail = head;
+            this.head = newNode;
+            this.tail = this.head;
         } else {
-            newNode.next = head;
-            head = newNode;
+            newNode.next = this.head;
+            this.head = newNode;
         }
     }
 
     public void insertAtLast(int val) {
-        Node newNode = new Node(val);
-        size++;
-        if (head == null) {
-            head = newNode;
-            tail = newNode;
+        final Node newNode = new Node(val);
+        this.size++;
+        if (this.head == null) {
+            this.head = newNode;
+            this.tail = newNode;
         } else {
-            tail.next = newNode;
-            tail = newNode;
+            this.tail.next = newNode;
+            this.tail = newNode;
         }
     }
 
-    public void insertAtPos(int val, int pos) {
-        Node newNode = new Node(val);
-        Node temp = head;
-        pos = pos - 1;
+    public void insertAtPos(final int val, final int pos) {
+        final Node newNode = new Node(val);
+        Node temp = this.head;
+        int position = pos - 1;
         for (int i = 0; i < size; i++) {
-            if (i == pos) {
+            if (i == position) {
                 Node temp1 = temp.next;
                 temp.next = newNode;
                 newNode.next = temp1;
@@ -61,8 +63,8 @@ public class LinkedList {
 
     public void delete(int pos) {
         if (pos == 1) {
-            head = head.next;
-            size--;
+            this.head = this.head.next;
+            this.size--;
             return;
         }
         if (pos == size) {
@@ -79,16 +81,15 @@ public class LinkedList {
         }
         Node ptr = head;
         pos = pos - 1;
-        for (int i = 1; i < size - 1; i++) {
+        for (int i = 1; i < this.size - 1; i++) {
             if (i == pos) {
-                Node tmp = ptr.next;
-                tmp = tmp.next;
+                Node temp = ptr.next;
+                temp = temp.next;
                 ptr.next = temp;
                 break;
             }
             ptr = ptr.next;
         }
-        size--;
+        this.size--;
     }
-
 }
