@@ -3,7 +3,7 @@
 //import com.kodedu.helper.IOHelper;
 //import com.kodedu.service.ThreadService;
 //import javafx.embed.swing.SwingFXUtils;
-//import javafx.scene.Node;
+//import javafx.scene.TreeNode;
 //import javafx.scene.image.WritableImage;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Lazy;
@@ -36,7 +36,7 @@
 //
 //    private BufferedImage latestBufferedImage;
 //
-//    public ScheduledFuture<?> captureNow(Node target, Path outputDirectory, int timeBetweenFramesMS, boolean loopContinuously) throws Exception {
+//    public ScheduledFuture<?> captureNow(TreeNode target, Path outputDirectory, int timeBetweenFramesMS, boolean loopContinuously) throws Exception {
 //        ImageOutputStream output = new FileImageOutputStream(outputDirectory.toFile());
 //        GifSequenceWriter gifWriter = new GifSequenceWriter(output, 3, timeBetweenFramesMS, loopContinuously);
 //

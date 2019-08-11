@@ -56,7 +56,7 @@ public abstract class ACTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTr
     protected U insertToLeft(final U node, final Optional<? extends T> value) {
         Objects.requireNonNull(node);
         if (Objects.nonNull(node.getLeft())) {
-            log.debug(String.format("Node (%s) has already left child", node));
+            log.debug(String.format("TreeNode (%s) has already left child", node));
             return null;
         }
         final U newNode = this.createTreeNode(value);
@@ -68,7 +68,7 @@ public abstract class ACTree<T, U extends ACBaseTreeNode<T, U>> extends ACBaseTr
     protected U insertToRight(final U node, final Optional<? extends T> value) {
         Objects.requireNonNull(node);
         if (Objects.nonNull(node.getRight())) {
-            log.debug(String.format("Node (%s) has already right child", node));
+            log.debug(String.format("TreeNode (%s) has already right child", node));
             return null;
         }
         final U newNode = this.createTreeNode(value);

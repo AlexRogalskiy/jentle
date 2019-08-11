@@ -1,9 +1,9 @@
 package com.wildbeeslabs.jentle.algorithms.tree;
 
 import com.wildbeeslabs.jentle.collections.exception.InvalidPositionException;
+import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
 import com.wildbeeslabs.jentle.collections.iface.position.Position;
 import com.wildbeeslabs.jentle.collections.tree.iface.tree.binary.position.IPositionalBinaryTree;
-import com.wildbeeslabs.jentle.collections.iface.node.PositionTreeNode;
 import com.wildbeeslabs.jentle.collections.tree.node.ACTreeNodeExtended;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

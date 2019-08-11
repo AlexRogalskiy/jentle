@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
  */
 public class SinglyLinkedList<T> {
 
-    /* Linked List Node */
+    /* Linked List TreeNode */
     @NoArgsConstructor
     private static class Node<K> {
 
-        /*data in Node*/
+        /*data in TreeNode*/
         private K data;
         /*Next node reference*/
         private Node next;
@@ -41,7 +41,7 @@ public class SinglyLinkedList<T> {
     }
 
     /*
-     * @return head Reference of Node
+     * @return head Reference of TreeNode
      */
     public Node headNode() {
         return this.headNode;
@@ -55,10 +55,10 @@ public class SinglyLinkedList<T> {
     }
 
     /**
-     * create new new Node increment in list size
+     * create new new TreeNode increment in list size
      *
      * @param data data to store in new node
-     * @return Reference of new Node
+     * @return Reference of new TreeNode
      */
     private Node addNode(final T data) {
         final Node<T> newNode = new Node(data);
@@ -67,9 +67,9 @@ public class SinglyLinkedList<T> {
     }
 
     /**
-     * Add Node at the end of list
+     * Add TreeNode at the end of list
      *
-     * @param data for data of new Node
+     * @param data for data of new TreeNode
      */
     public void addAtEnd(final T data) {
         final Node<T> newNode = this.addNode(data);
@@ -85,7 +85,7 @@ public class SinglyLinkedList<T> {
     }
 
     /**
-     * Add Node at the front of List
+     * Add TreeNode at the front of List
      *
      * @param data for date of new node
      */
@@ -96,9 +96,9 @@ public class SinglyLinkedList<T> {
     }
 
     /**
-     * add Node at specific index
+     * add TreeNode at specific index
      *
-     * @param data  to add data in new Node
+     * @param data  to add data in new TreeNode
      * @param index index where new node has to be created
      */
     public void addAtPosition(final T data, final int index) {

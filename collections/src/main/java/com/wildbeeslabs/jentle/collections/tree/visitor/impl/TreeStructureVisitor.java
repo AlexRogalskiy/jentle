@@ -31,7 +31,7 @@ public class TreeStructureVisitor implements TreeVisitor {
 
     @Override
     public Void visit(final Node node) {
-        addLine("Node");
+        addLine("TreeNode");
         ++this.depth;
         node.left().accept(this);
         ++this.depth;

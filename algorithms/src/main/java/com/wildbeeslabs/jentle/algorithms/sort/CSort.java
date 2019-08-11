@@ -136,8 +136,99 @@ public class CSort {
         return -1;
     }
 
+    public static <T> void selectSort(final T[] nums, final Comparator<? super T> cmp) {
+        if (nums != null &&
+            nums.length > 1) {
+            for (int i = nums.length - 1; i > 0; i--) {
+                int maxIndex = i;
+
+                for (int j = 0; j < i; j++) {
+                    if (Objects.compare(nums[maxIndex], nums[j], cmp) < 0) {
+                        maxIndex = j;
+                    }
+                }
+
+                if (maxIndex != i) {
+                    T temp = nums[i];
+                    nums[i] = nums[maxIndex];
+                    nums[maxIndex] = temp;
+                }
+            }
+        }
+    }
+
+    public static <T> void insertSort(final T[] nums, final Comparator<T> cmp) {
+        if (nums == null ||
+            nums.length < 2) {
+            return;
+        }
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            for (int j = i; j > 0; j--) {
+                if (Objects.compare(nums[j], nums[j - 1], cmp) < 0) {
+                    final T temp = nums[j - 1];
+                    nums[j - 1] = nums[j];
+                    nums[j] = temp;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    public static <T> void binaryInsertSort(final T[] nums, final Comparator<? super T> cmp) {
+        if (nums == null ||
+            nums.length < 2) {
+            return;
+        }
+
+        for (int i = 1; i < nums.length; i++) {
+            final T temp = nums[i];
+            int low = 0;
+            int high = i - 1;
+
+            while (low <= high) {
+                int mid = (low + high) / 2;
+                if (Objects.compare(temp, nums[mid], cmp) < 0) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+            for (int j = i; j >= low + 1; j--) {
+                nums[j] = nums[j - 1];
+            }
+            nums[low] = temp;
+        }
+    }
+
+    public static <T> void shellInsertSort(final T[] nums, final Comparator<T> cmp) {
+        if (nums == null ||
+            nums.length < 2) {
+            return;
+        }
+
+        int d = nums.length;
+        while (true) {
+            d = d / 2;
+            for (int x = 0; x < d; x++) {
+                for (int i = x + d; i < nums.length; i = i + d) {
+                    T temp = nums[i];
+                    int j;
+                    for (j = i - d; j >= 0 && Objects.compare(nums[j], temp, cmp) > 0; j = j - d) {
+                        nums[j + d] = nums[j];
+                    }
+                    nums[j + d] = temp;
+                }
+            }
+            if (d == 1) {
+                break;
+            }
+        }
+    }
+
     public static <T extends Comparable<? super T>> int binarySearch2(final T[] array, final T value, final Comparator<? super T> cmp) {
-        return Arrays.binarySearch(array, value);
+        return Arrays.binarySearch(array, value, cmp);
         //return Collections.binarySearch(ArrayUtils, value);
     }
 
@@ -824,10 +915,10 @@ public class CSort {
     }
 
     /**
-     * @param array Input ArrayUtils.
-     * @param cmp   BinaryFunction that defines an alternative sort order. The function
-     *              should return a negative, zero, or positive value, depending on the
-     *              arguments.
+     * @param sequence Input ArrayUtils.
+     * @param cmp      BinaryFunction that defines an alternative sort order. The function
+     *                 should return a negative, zero, or positive value, depending on the
+     *                 arguments.
      * @param <T>
      * @public @module sort
      * @see [best] time: O(n * n) average time: O(n * n) worst time: O(n * n)
@@ -1137,6 +1228,50 @@ public class CSort {
                     return result;
                 }
             }
+        }
+        return -1;
+    }
+
+    /**
+     * 顺序排序
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static <T> int orderSearch(final T[] nums, final T target) {
+        if (nums == null) {
+            return -1;
+        }
+        if (nums.length < 2 &&
+            nums[0] != target) {
+            return -1;
+        }
+
+        int i = 0;
+        for (; i < nums.length - 1; i++) {
+            if (nums[i] == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static <T> int orderSearch2(final T[] nums, final T target, final Class<? extends T> clazz) {
+        final T[] temp = newArray2(clazz, nums.length + 1);
+        for (int i = 0; i < nums.length; i++) {
+            temp[i] = nums[i];
+        }
+        temp[nums.length] = target;
+        int result;
+        for (int i = 0; ; i++) {
+            if (temp[i] == target) {
+                result = i;
+                break;
+            }
+        }
+        if (result < nums.length) {
+            return result;
         }
         return -1;
     }

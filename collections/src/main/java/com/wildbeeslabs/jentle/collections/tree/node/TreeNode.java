@@ -4,16 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 /**
- * Node Class for Binary Search Tree Implementation
+ * TreeNode Class for Binary Search Tree Implementation
  */
 @NoArgsConstructor
 @AllArgsConstructor
-public class Node<T> {
+public class TreeNode<T> {
     //Attributes
     private T data;
-    private Node<T> left;
-    private Node<T> right;
-    private Node<T> parent;
+    private TreeNode<T> left;
+    private TreeNode<T> right;
+    private TreeNode<T> parent;
+
+    public TreeNode(final T data) {
+        this(data, null, null, null);
+    }
 
     /**
      * Return true if data is null or false if not
@@ -43,29 +47,29 @@ public class Node<T> {
     }
 
     /**
-     * Return left Node
+     * Return left TreeNode
      *
-     * @return Node
+     * @return TreeNode
      */
-    public Node<T> getLeft() {
+    public TreeNode<T> getLeft() {
         return this.left;
     }
 
     /**
-     * Return right Node
+     * Return right TreeNode
      *
-     * @return Node
+     * @return TreeNode
      */
-    public Node<T> getRight() {
+    public TreeNode<T> getRight() {
         return this.right;
     }
 
     /**
-     * Return parent Node
+     * Return parent TreeNode
      *
-     * @return Node
+     * @return TreeNode
      */
-    public Node<T> getParent() {
+    public TreeNode<T> getParent() {
         return this.parent;
     }
 
@@ -83,7 +87,7 @@ public class Node<T> {
      *
      * @param value
      */
-    public void setLeft(final Node<T> value) {
+    public void setLeft(final TreeNode<T> value) {
         this.left = value;
     }
 
@@ -92,7 +96,7 @@ public class Node<T> {
      *
      * @param value
      */
-    public void setRight(final Node<T> value) {
+    public void setRight(final TreeNode<T> value) {
         this.right = value;
     }
 
@@ -101,17 +105,17 @@ public class Node<T> {
      *
      * @param value
      */
-    public void setParent(final Node<T> value) {
+    public void setParent(final TreeNode<T> value) {
         this.parent = value;
     }
 
     public boolean equals(final Object obj) {
         boolean resp = false;
-        if (obj instanceof Node) {
-            if (!this.isNIL() && !((Node<T>) obj).isNIL()) {
-                resp = this.data.equals(((Node<T>) obj).data);
+        if (obj instanceof TreeNode) {
+            if (!this.isNIL() && !((TreeNode<T>) obj).isNIL()) {
+                resp = this.data.equals(((TreeNode<T>) obj).data);
             } else {
-                resp = this.isNIL() && ((Node<T>) obj).isNIL();
+                resp = this.isNIL() && ((TreeNode<T>) obj).isNIL();
             }
 
         }

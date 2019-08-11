@@ -130,7 +130,7 @@ public abstract class ACGraphNodeExtended<T, E extends ACGraphNodeExtended<T, E>
     }
 
     /**
-     * Remove the {@code Node<T>} element at index index of the {@code List<Node<T>>}.
+     * Remove the {@code TreeNode<T>} element at index index of the {@code List<TreeNode<T>>}.
      *
      * @param index the index of the element to delete.
      * @throws IndexOutOfBoundsException if thrown.

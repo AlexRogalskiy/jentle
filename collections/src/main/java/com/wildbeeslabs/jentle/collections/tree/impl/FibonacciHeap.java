@@ -36,7 +36,7 @@ public class FibonacciHeap<T> {
     @Data
     public static class FibonacciHeapNode<T> {
         /**
-         * Node data.
+         * TreeNode data.
          */
         T data;
 

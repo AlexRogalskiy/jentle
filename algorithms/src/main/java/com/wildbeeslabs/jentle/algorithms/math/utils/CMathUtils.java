@@ -525,7 +525,6 @@ public class CMathUtils {
     @EqualsAndHashCode
     @ToString
     public static class Line<T extends Point> {
-
         private static final double epsilon = 0.0001;
         private double slope;
         private double yIntercept;
@@ -569,7 +568,6 @@ public class CMathUtils {
     @EqualsAndHashCode
     @ToString
     public static class Square<T extends Point> {
-
         private double left;
         private double right;
         private double top;
@@ -635,7 +633,6 @@ public class CMathUtils {
     @EqualsAndHashCode
     @ToString
     public static class Rectangle<T extends Point> {
-
         private final T topRight;
         private final T bottomLeft;
 
@@ -659,7 +656,6 @@ public class CMathUtils {
     @EqualsAndHashCode
     @ToString
     public static class LevenshteinDistance {
-
         /**
          * time complexity: O(3^n)
          *

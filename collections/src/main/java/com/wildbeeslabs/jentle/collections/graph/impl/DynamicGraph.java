@@ -311,7 +311,7 @@ public class DynamicGraph<T> {
          * Remove a node from the graph and all associated edges. Each edge needs to be removed from
          * both maps to keep the maps in sync.
          *
-         * @param node Node to remove.
+         * @param node TreeNode to remove.
          */
         void removeNode(T node) {
             Map<T, Integer> outgoingEdges = m_outgoingEdges.remove(node);

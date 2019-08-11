@@ -1,7 +1,7 @@
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
 import com.wildbeeslabs.jentle.collections.tree.iface.BSTInterface;
-import com.wildbeeslabs.jentle.collections.tree.node.Node;
+import com.wildbeeslabs.jentle.collections.tree.node.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
     //Attributes
-    private Node<T> root;
+    private TreeNode<T> root;
 
     /**
      * BSTree Constructor
      */
     public BSTree() {
-        this.root = new Node<>();
+        this.root = new TreeNode<>();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
         this.recursiveInsert(element, this.root, this.root.getParent());
     }
 
-    protected void recursiveInsert(T element, Node<T> node, Node<T> parent) {
+    protected void recursiveInsert(T element, TreeNode<T> node, TreeNode<T> parent) {
         if (!node.isNIL()) {
             if (node.getData().equals(element)) return;
             if (node.getData().compareTo(element) > 0) {
@@ -43,22 +43,22 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
             }
         } else {
             node.setData(element);
-            node.setRight(new Node<T>());
-            node.setLeft(new Node<T>());
+            node.setRight(new TreeNode<T>());
+            node.setLeft(new TreeNode<T>());
             node.setParent(parent);
         }
     }
 
     @Override
     public void remove(T element) {
-        Node<T> foundNode = search(element);
-        if (foundNode == new Node<T>()) {
+        TreeNode<T> foundNode = search(element);
+        if (foundNode == new TreeNode<T>()) {
             return;
         }
         this.recursiveRemove(foundNode);
     }
 
-    protected void recursiveRemove(Node<T> node) {
+    protected void recursiveRemove(TreeNode<T> node) {
         if (node.isLeaf()) {
             node.setData(null);
             node.setLeft(null);
@@ -77,7 +77,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
             node.setLeft(node.getLeft().getLeft());
         } else {
             T removedValue = node.getData();
-            Node<T> sucessor = sucessor(removedValue);
+            TreeNode<T> sucessor = sucessor(removedValue);
             node.setData(sucessor.getData());
             sucessor.setData(removedValue);
             recursiveRemove(sucessor);
@@ -89,7 +89,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
         return recursiveHeight(this.root) - 1;
     }
 
-    public int recursiveHeight(Node<T> node) {
+    public int recursiveHeight(TreeNode<T> node) {
         if (!node.isNIL()) {
             int leftHeight = recursiveHeight(node.getLeft());
             int rightHeight = recursiveHeight(node.getRight());
@@ -107,7 +107,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
         return recursiveSize(this.root);
     }
 
-    private int recursiveSize(Node<T> node) {
+    private int recursiveSize(TreeNode<T> node) {
         if (!node.isNIL()) {
             return 1 + recursiveSize(node.getLeft()) + recursiveSize(node.getRight());
         }
@@ -115,14 +115,14 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
     }
 
     @Override
-    public Node<T> search(T element) {
+    public TreeNode<T> search(T element) {
         if (element == null || this.root.isNIL()) {
-            return new Node<T>();
+            return new TreeNode<T>();
         }
         return recursiveSearch(element, this.root);
     }
 
-    private Node<T> recursiveSearch(T element, Node<T> node) {
+    private TreeNode<T> recursiveSearch(T element, TreeNode<T> node) {
         if (!node.isNIL()) {
             if (node.getData().equals(element)) {
                 return node;
@@ -136,14 +136,14 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
     }
 
     @Override
-    public Node<T> maximum() {
+    public TreeNode<T> maximum() {
         if (size() == 0) {
             return null;
         }
         return recursiveMaximum(this.root);
     }
 
-    protected Node<T> recursiveMaximum(Node<T> node) {
+    protected TreeNode<T> recursiveMaximum(TreeNode<T> node) {
         if (!node.getRight().isNIL()) {
             return recursiveMaximum(node.getRight());
         }
@@ -151,14 +151,14 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
     }
 
     @Override
-    public Node<T> minimum() {
+    public TreeNode<T> minimum() {
         if (size() == 0) {
             return null;
         }
         return recursiveMinimum(this.root);
     }
 
-    protected Node<T> recursiveMinimum(Node<T> node) {
+    protected TreeNode<T> recursiveMinimum(TreeNode<T> node) {
         if (!node.getLeft().isNIL()) {
             return recursiveMinimum(node.getLeft());
         }
@@ -166,14 +166,14 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
     }
 
     @Override
-    public Node<T> predecessor(final T element) {
-        Node<T> foundNode = search(element);
+    public TreeNode<T> predecessor(final T element) {
+        TreeNode<T> foundNode = search(element);
         if (foundNode.isNIL()) {
             return null;
         } else if (!foundNode.getLeft().isNIL()) {
             return recursiveMaximum(foundNode.getLeft());
         } else {
-            Node<T> parent = foundNode.getParent();
+            TreeNode<T> parent = foundNode.getParent();
             while (parent != null && !foundNode.equals(parent.getRight())) {
                 parent = parent.getParent();
                 foundNode = foundNode.getParent();
@@ -183,14 +183,14 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
     }
 
     @Override
-    public Node<T> sucessor(final T element) {
-        Node<T> foundNode = search(element);
+    public TreeNode<T> sucessor(final T element) {
+        TreeNode<T> foundNode = search(element);
         if (foundNode.isNIL()) {
             return null;
         } else if (!foundNode.getRight().isNIL()) {
             return recursiveMinimum(foundNode.getRight());
         } else {
-            Node<T> parent = foundNode.getParent();
+            TreeNode<T> parent = foundNode.getParent();
             while (parent != null && !foundNode.equals(parent.getLeft())) {
                 parent = parent.getParent();
                 foundNode = foundNode.getParent();
@@ -201,7 +201,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
 
 
     @Override
-    public Node<T> getRoot() {
+    public TreeNode<T> getRoot() {
         return this.root;
     }
 
@@ -216,7 +216,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
         return array;
     }
 
-    private void recursivePreOrder(final Node<T> node, final List list) {
+    private void recursivePreOrder(final TreeNode<T> node, final List list) {
         if (!node.isNIL()) {
             list.add(node.getData());
             recursivePreOrder(node.getLeft(), list);
@@ -236,7 +236,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
 
     }
 
-    private void recursiveOrder(final Node<T> node, final List list) {
+    private void recursiveOrder(final TreeNode<T> node, final List list) {
         if (!node.isNIL()) {
             recursiveOrder(node.getLeft(), list);
             list.add(node.getData());
@@ -256,7 +256,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
 
     }
 
-    private void recursivePostOrder(final Node<T> node, final List list) {
+    private void recursivePostOrder(final TreeNode<T> node, final List list) {
         if (!node.isNIL()) {
             recursivePostOrder(node.getLeft(), list);
             recursivePostOrder(node.getRight(), list);
@@ -264,7 +264,7 @@ public class BSTree<T extends Comparable<T>> implements BSTInterface<T> {
         }
     }
 
-    protected void setRoot(final Node<T> newRoot) {
+    protected void setRoot(final TreeNode<T> newRoot) {
         this.root = newRoot;
     }
 }

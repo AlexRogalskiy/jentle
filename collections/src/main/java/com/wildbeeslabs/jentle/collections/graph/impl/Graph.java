@@ -255,7 +255,7 @@ public class Graph<T> {
     }
 
     /////
-    // class Node
+    // class TreeNode
     //
     public static class Node<T> {
         private T m_object;
@@ -309,7 +309,7 @@ public class Graph<T> {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder("[Node:" + m_object);
+            StringBuilder sb = new StringBuilder("[TreeNode:" + m_object);
             sb.append("  pred:");
             for (T o : m_predecessors.values()) {
                 sb.append(" ").append(o);

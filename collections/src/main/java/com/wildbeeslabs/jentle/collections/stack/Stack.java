@@ -16,7 +16,7 @@ public class Stack<T> {
         private Node<K> next;
 
         /**
-         * Constructor for Class Node
+         * Constructor for Class TreeNode
          *
          * @param data to be saved in node
          */

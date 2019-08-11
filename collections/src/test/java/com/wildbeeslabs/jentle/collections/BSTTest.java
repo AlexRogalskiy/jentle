@@ -2,7 +2,7 @@ package com.wildbeeslabs.jentle.collections;
 
 import com.wildbeeslabs.jentle.collections.tree.iface.BSTInterface;
 import com.wildbeeslabs.jentle.collections.tree.impl.BSTree;
-import com.wildbeeslabs.jentle.collections.tree.node.Node;
+import com.wildbeeslabs.jentle.collections.tree.node.TreeNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,12 +14,12 @@ import static org.junit.Assert.*;
  */
 public class BSTTest {
     public BSTInterface<Integer> bst;
-    public Node<Integer> NIL;
+    public TreeNode<Integer> NIL;
 
     @Before
     public void setUp() throws Exception {
         this.bst = new BSTree<>();
-        this.NIL = new Node<>();
+        this.NIL = new TreeNode<>();
     }
 
     @Test
@@ -182,12 +182,12 @@ public class BSTTest {
 
         this.bst.remove(Integer.valueOf(10));
         assertEquals(Integer.valueOf(15), bst.getRoot().getData());
-        assertEquals(new Node<Integer>(), bst.search(Integer.valueOf(10)));
+        assertEquals(new TreeNode<Integer>(), bst.search(Integer.valueOf(10)));
         this.bst.remove(Integer.valueOf(30));
         assertEquals(Integer.valueOf(15), bst.getRoot().getData());
-        assertEquals(new Node<Integer>(), bst.search(Integer.valueOf(30)));
+        assertEquals(new TreeNode<Integer>(), bst.search(Integer.valueOf(30)));
         this.bst.remove(Integer.valueOf(5));
-        assertEquals(new Node<Integer>(), bst.search(Integer.valueOf(5)));
+        assertEquals(new TreeNode<Integer>(), bst.search(Integer.valueOf(5)));
         assertEquals(Integer.valueOf(7), bst.getRoot().getLeft().getData());
         this.bst.remove(Integer.valueOf(20));
         this.bst.remove(Integer.valueOf(15));

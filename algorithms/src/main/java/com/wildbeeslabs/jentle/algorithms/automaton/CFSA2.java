@@ -239,7 +239,7 @@ public final class CFSA2 extends FSA {
     public int getEndNode(int arc) {
         final int nodeOffset = getDestinationNodeOffset(arc);
         assert nodeOffset != 0 : "Can't follow a terminal arc: " + arc;
-        assert nodeOffset < arcs.length : "Node out of bounds.";
+        assert nodeOffset < arcs.length : "TreeNode out of bounds.";
         return nodeOffset;
     }
 
