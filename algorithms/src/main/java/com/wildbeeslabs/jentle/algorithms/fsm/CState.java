@@ -23,25 +23,19 @@
  */
 package com.wildbeeslabs.jentle.algorithms.fsm;
 
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 /**
- *
  * Custom state implementation
  *
+ * @param <C>
+ * @param <T>
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-07
- * @param <C>
- * @param <T>
  */
 @Data
 @EqualsAndHashCode
@@ -64,11 +58,11 @@ public class CState<C, T extends ICTransition<C, ICState<C, T>>> implements ICSt
     @Override
     public ICState<C, T> transit(final C value) {
         return this.transitions
-                .stream()
-                .filter(t -> t.isPossible(value))
-                .map(ICTransition::state)
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Input not accepted: " + value));
+            .stream()
+            .filter(t -> t.isPossible(value))
+            .map(ICTransition::state)
+            .findAny()
+            .orElseThrow(() -> new IllegalArgumentException("Input not accepted: " + value));
     }
 
     @Override
