@@ -15,10 +15,9 @@ public class Foo extends AbstractFoo implements Serializable {
 
     private void readObject(final ObjectInputStream s) throws IOException, ClassNotFoundException {
         s.defaultReadObject();
-
         int x = s.readInt();
         int y = s.readInt();
-        initialize(x, y);
+        this.initialize(x, y);
     }
 
     private void writeObject(final ObjectOutputStream s) throws IOException {

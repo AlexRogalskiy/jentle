@@ -17,7 +17,7 @@ final class SymmetricCrypto {
     private final Cipher aes;
     private final Random random = new SecureRandom();
 
-    SymmetricCrypto() {
+    public SymmetricCrypto() {
         try {
             aes = Cipher.getInstance("AES/CBC/PKCS5Padding");
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
@@ -25,7 +25,7 @@ final class SymmetricCrypto {
         }
     }
 
-    EncryptionResult encrypt(byte[] plaintext, Key key)
+    EncryptionResult encrypt(final byte[] plaintext, final Key key)
         throws GeneralSecurityException {
 
         byte[] iv = initializationVector();
@@ -36,7 +36,7 @@ final class SymmetricCrypto {
         return new EncryptionResult(ciphertext, iv);
     }
 
-    byte[] decrypt(EncryptionResult enciphered, Key key)
+    byte[] decrypt(final EncryptionResult enciphered, final Key key)
         throws GeneralSecurityException {
 
         aes.init(DECRYPT_MODE, key, new IvParameterSpec(enciphered.iv));

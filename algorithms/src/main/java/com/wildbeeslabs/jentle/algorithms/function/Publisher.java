@@ -25,5 +25,5 @@ public interface Publisher<T> {
      *
      * @param s the {@link Subscriber} that will consume signals from this {@link Publisher}
      */
-    public void subscribe(Subscriber<? super T> s);
+    void subscribe(final Subscriber<? super T> s);
 }

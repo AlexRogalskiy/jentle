@@ -21,12 +21,12 @@ public interface Subscription {
      *
      * @param n the strictly positive number of elements to requests to the upstream {@link Publisher}
      */
-    public void request(long n);
+    void request(long n);
 
     /**
      * Request the {@link Publisher} to stop sending data and clean up resources.
      * <p>
      * Data may still be sent to meet previously signalled demand after calling cancel.
      */
-    public void cancel();
+    void cancel();
 }

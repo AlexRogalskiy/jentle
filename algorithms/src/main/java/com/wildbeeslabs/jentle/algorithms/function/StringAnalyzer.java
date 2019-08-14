@@ -2,7 +2,8 @@ package com.wildbeeslabs.jentle.algorithms.function;
 
 @FunctionalInterface
 public interface StringAnalyzer {
-    public Boolean analyze(String text, String keyword);
+
+    Boolean analyze(final String text, final String keyword);
 }
 
 /*

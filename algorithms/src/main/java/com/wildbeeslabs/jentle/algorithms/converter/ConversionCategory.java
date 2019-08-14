@@ -1,5 +1,8 @@
 package com.wildbeeslabs.jentle.algorithms.converter;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -21,8 +24,9 @@ import java.util.*;
  * ConversionCategory#INT}).
  *
  * @checker_framework.manual #formatter-checker Format String Checker
- * @see Format
  */
+@Getter
+@RequiredArgsConstructor
 public enum ConversionCategory {
     /**
      * Use if the parameter can be of any type. Applicable for conversions b, B, h, H, s, S.
@@ -103,14 +107,7 @@ public enum ConversionCategory {
      */
     UNUSED(null /* everything */, null);
 
-    ConversionCategory(Class<? extends Object>[] types, String chars) {
-        this.types = types;
-        this.chars = chars;
-    }
-
-    @SuppressWarnings("ImmutableEnumChecker") // TODO: clean this up!
     public final Class<? extends Object>[] types;
-
     public final String chars;
 
     /**
@@ -152,7 +149,7 @@ public enum ConversionCategory {
      *
      * </blockquote>
      */
-    public static ConversionCategory intersect(ConversionCategory a, ConversionCategory b) {
+    public static ConversionCategory intersect(final ConversionCategory a, final ConversionCategory b) {
         if (a == UNUSED) {
             return b;
         }
@@ -166,14 +163,11 @@ public enum ConversionCategory {
             return a;
         }
 
-        Set<Class<? extends Object>> as = arrayToSet(a.types);
-        Set<Class<? extends Object>> bs = arrayToSet(b.types);
+        final Set<Class<? extends Object>> as = arrayToSet(a.types);
+        final Set<Class<? extends Object>> bs = arrayToSet(b.types);
         as.retainAll(bs); // intersection
-        for (ConversionCategory v :
-            new ConversionCategory[]{
-                CHAR, INT, FLOAT, TIME, CHAR_AND_INT, INT_AND_TIME, NULL
-            }) {
-            Set<Class<? extends Object>> vs = arrayToSet(v.types);
+        for (final ConversionCategory v : new ConversionCategory[]{CHAR, INT, FLOAT, TIME, CHAR_AND_INT, INT_AND_TIME, NULL}) {
+            final Set<Class<? extends Object>> vs = arrayToSet(v.types);
             if (vs.equals(as)) {
                 return v;
             }
@@ -193,7 +187,7 @@ public enum ConversionCategory {
      *
      * </blockquote>
      */
-    public static ConversionCategory union(ConversionCategory a, ConversionCategory b) {
+    public static ConversionCategory union(final ConversionCategory a, final ConversionCategory b) {
         if (a == UNUSED || b == UNUSED) {
             return UNUSED;
         }
@@ -207,14 +201,11 @@ public enum ConversionCategory {
             return INT;
         }
 
-        Set<Class<? extends Object>> as = arrayToSet(a.types);
-        Set<Class<? extends Object>> bs = arrayToSet(b.types);
+        final Set<Class<? extends Object>> as = arrayToSet(a.types);
+        final Set<Class<? extends Object>> bs = arrayToSet(b.types);
         as.addAll(bs); // union
-        for (ConversionCategory v :
-            new ConversionCategory[]{
-                NULL, CHAR_AND_INT, INT_AND_TIME, CHAR, INT, FLOAT, TIME
-            }) {
-            Set<Class<? extends Object>> vs = arrayToSet(v.types);
+        for (final ConversionCategory v : new ConversionCategory[]{NULL, CHAR_AND_INT, INT_AND_TIME, CHAR, INT, FLOAT, TIME}) {
+            final Set<Class<? extends Object>> vs = arrayToSet(v.types);
             if (vs.equals(as)) {
                 return v;
             }
@@ -256,7 +247,7 @@ public enum ConversionCategory {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(this.name());
+        final StringBuilder sb = new StringBuilder(this.name());
         sb.append(" conversion category (one of: ");
         boolean first = true;
         for (Class<? extends Object> cls : this.types) {

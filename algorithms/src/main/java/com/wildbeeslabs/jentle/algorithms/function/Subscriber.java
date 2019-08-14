@@ -27,14 +27,14 @@ public interface Subscriber<T> {
      *
      * @param s {@link Subscription} that allows requesting data via {@link Subscription#request(long)}
      */
-    public void onSubscribe(Subscription s);
+    void onSubscribe(final Subscription s);
 
     /**
      * Data notification sent by the {@link Publisher} in response to requests to {@link Subscription#request(long)}.
      *
      * @param t the element signaled
      */
-    public void onNext(T t);
+    void onNext(final T t);
 
     /**
      * Failed terminal state.
@@ -43,12 +43,12 @@ public interface Subscriber<T> {
      *
      * @param t the throwable signaled
      */
-    public void onError(Throwable t);
+    void onError(final Throwable t);
 
     /**
      * Successful terminal state.
      * <p>
      * No further events will be sent even if {@link Subscription#request(long)} is invoked again.
      */
-    public void onComplete();
+    void onComplete();
 }
