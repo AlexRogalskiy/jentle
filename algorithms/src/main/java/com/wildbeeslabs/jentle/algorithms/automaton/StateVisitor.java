@@ -7,5 +7,6 @@ package com.wildbeeslabs.jentle.algorithms.automaton;
  * @see FSA#visitInPreOrder(StateVisitor)
  */
 public interface StateVisitor {
-    public boolean accept(int state);
+
+    boolean accept(final int state);
 }

@@ -31,7 +31,7 @@ import java.util.List;
 
 public class CStringBucket extends ACBucket<String> {
 
-    private List<String> list = new ArrayList<>();
+    private final List<String> list = new ArrayList<>();
 
     @Override
     public void add(final Collection<String> args) {
