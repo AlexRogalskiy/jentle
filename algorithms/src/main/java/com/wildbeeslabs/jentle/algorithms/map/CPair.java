@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 @ToString
 public class CPair<L, R> {
-
     private final L left;
     private final R right;
 
