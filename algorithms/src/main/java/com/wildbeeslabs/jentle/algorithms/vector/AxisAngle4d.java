@@ -31,13 +31,6 @@
 //        this.angle = var1.angle;
 //    }
 //
-//    public AxisAngle4d(AxisAngle4f var1) {
-//        this.x = (double) var1.x;
-//        this.y = (double) var1.y;
-//        this.z = (double) var1.z;
-//        this.angle = (double) var1.angle;
-//    }
-//
 //    public AxisAngle4d(Vector3d var1, double var2) {
 //        this.x = var1.x;
 //        this.y = var1.y;
@@ -71,13 +64,6 @@
 //        this.y = var1.y;
 //        this.z = var1.z;
 //        this.angle = var1.angle;
-//    }
-//
-//    public final void set(AxisAngle4f var1) {
-//        this.x = (double) var1.x;
-//        this.y = (double) var1.y;
-//        this.z = (double) var1.z;
-//        this.angle = (double) var1.angle;
 //    }
 //
 //    public final void set(Vector3d var1, double var2) {

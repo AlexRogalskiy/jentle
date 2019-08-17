@@ -62,12 +62,10 @@ public final class FMeasure {
     public double getFMeasure() {
 
         if (getPrecisionScore() + getRecallScore() > 0) {
-            return 2 * (getPrecisionScore() * getRecallScore())
-                / (getPrecisionScore() + getRecallScore());
-        } else {
-            // cannot divide by zero, return error code
-            return -1;
+            return 2 * (getPrecisionScore() * getRecallScore()) / (getPrecisionScore() + getRecallScore());
         }
+        // cannot divide by zero, return error code
+        return -1;
     }
 
     /**
@@ -78,10 +76,9 @@ public final class FMeasure {
      * @param predictions the predicted spans
      */
     public void updateScores(final Object[] references, final Object[] predictions) {
-
-        truePositive += countTruePositives(references, predictions);
-        selected += predictions.length;
-        target += references.length;
+        this.truePositive += countTruePositives(references, predictions);
+        this.selected += predictions.length;
+        this.target += references.length;
     }
 
     /**
@@ -117,7 +114,6 @@ public final class FMeasure {
      * @return number of true positives
      */
     static int countTruePositives(final Object[] references, final Object[] predictions) {
-
         List<Object> predListSpans = new ArrayList<>(predictions.length);
         Collections.addAll(predListSpans, predictions);
         int truePositives = 0;
@@ -146,13 +142,11 @@ public final class FMeasure {
      * @return the precision score or NaN if there are no predicted spans
      */
     public static double precision(final Object[] references, final Object[] predictions) {
-
         if (predictions.length > 0) {
             return countTruePositives(references, predictions)
                 / (double) predictions.length;
-        } else {
-            return Double.NaN;
         }
+        return Double.NaN;
     }
 
     /**
@@ -163,12 +157,10 @@ public final class FMeasure {
      * @return the recall score or NaN if there are no reference spans
      */
     public static double recall(final Object[] references, final Object[] predictions) {
-
         if (references.length > 0) {
             return countTruePositives(references, predictions)
                 / (double) references.length;
-        } else {
-            return Double.NaN;
         }
+        return Double.NaN;
     }
 }

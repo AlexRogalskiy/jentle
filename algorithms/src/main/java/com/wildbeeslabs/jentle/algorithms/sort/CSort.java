@@ -252,6 +252,31 @@ public class CSort {
         return middle;
     }
 
+    public static List quickSortList(final List<Integer> list) {
+        if (list.size() < 1) {
+            return list;
+        }
+
+        final Integer pivot = list.get(0);
+        List<Integer> left = new ArrayList<>();
+        List<Integer> right = new ArrayList<>();
+
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) < pivot) {
+                left.add(list.get(i));
+            } else {
+                right.add(list.get(i));
+            }
+        }
+
+        left = quickSortList(left);
+        right = quickSortList(right);
+
+        left.add(pivot);
+        left.addAll(right);
+        return left;
+    }
+
     /**
      * @param array Input ArrayUtils.
      * @param <T>
@@ -582,6 +607,46 @@ public class CSort {
         CSort.quickSort3(array, 0, array.length - 1, cmp);
     }
 
+
+    public static List mergeSort(final List<Integer> list) {
+        if (list.size() <= 1) {
+            return list;
+        }
+
+        int mid = list.size() / 2;
+        List<Integer> left = list.subList(0, mid);
+        List<Integer> right = list.subList(mid, list.size());
+
+        left = mergeSort(left);
+        right = mergeSort(right);
+
+        return merge(left, right);
+    }
+
+    private static List merge(final List<Integer> left, final List<Integer> right) {
+        List<Integer> sortedList = new ArrayList<>();
+        Integer leftIndex = 0;
+        Integer rightIndex = 0;
+
+        while (leftIndex < left.size() && rightIndex < right.size()) {
+            if (left.get(leftIndex) < right.get(rightIndex)) {
+                sortedList.add(left.get(leftIndex));
+                leftIndex += 1;
+            } else {
+                sortedList.add(right.get(rightIndex));
+                rightIndex += 1;
+            }
+        }
+
+        if (leftIndex < left.size()) {
+            sortedList.addAll(left.subList(leftIndex, left.size()));
+        }
+        if (rightIndex < right.size()) {
+            sortedList.addAll(right.subList(rightIndex, right.size()));
+        }
+        return sortedList;
+    }
+
     /**
      * @param array Input ArrayUtils.
      * @param <T>
@@ -646,6 +711,31 @@ public class CSort {
         for (int i = 0; i <= residue; i++) {
             array[current + i] = temp[tempLeft + i];
         }
+    }
+
+    public static List quickSort(final List<Integer> list) {
+        if (list.size() < 1) {
+            return list;
+        }
+        final Integer pivot = list.get(0);
+        List<Integer> left = new ArrayList<>();
+        List<Integer> right = new ArrayList<>();
+
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) < pivot) {
+                left.add(list.get(i));
+            } else {
+                right.add(list.get(i));
+            }
+        }
+
+        left = quickSort(left);
+        right = quickSort(right);
+
+        left.add(pivot);
+        left.addAll(right);
+
+        return left;
     }
 
     public static <T extends Comparable<? super T>> void sort(final T[] array, int low, int high) {
@@ -957,6 +1047,17 @@ public class CSort {
                 }
             }
         }
+    }
+
+    public static List bubbleSort(final List<Integer> list) {
+        for (int i = list.size() - 1; i > 0; i--) {
+            for (int j = i; j >= 0; j--) {
+                if (list.get(i) < list.get(j)) {
+                    Collections.swap(list, i, j);
+                }
+            }
+        }
+        return list;
     }
 
     /**

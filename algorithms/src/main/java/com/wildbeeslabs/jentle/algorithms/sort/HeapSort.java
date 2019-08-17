@@ -7,14 +7,13 @@ public class HeapSort {
     public static void main(String[] args) {
         heapSort();
 
-        for (int i : array) {
+        for (final int i : array) {
             System.out.println(i);
         }
     }
 
     private static void heapSort() {
         int length = array.length;
-
         buildMaxHeap(array, length);
         for (int i = length - 1; i > 0; i--) {
             int temp = array[0];

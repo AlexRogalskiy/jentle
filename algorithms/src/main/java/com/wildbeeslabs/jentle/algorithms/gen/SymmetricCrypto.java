@@ -1,17 +1,18 @@
 package com.wildbeeslabs.jentle.algorithms.gen;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
 import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 
-import static javax.crypto.Cipher.*;
+import static javax.crypto.Cipher.DECRYPT_MODE;
+import static javax.crypto.Cipher.ENCRYPT_MODE;
 
-final class SymmetricCrypto {
+public final class SymmetricCrypto {
     private static final int KEY_LENGTH = 128;
 
     private final Cipher aes;

@@ -47,7 +47,7 @@ public class CDancingLinkAlgorithm {
 
     private final int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
 
-    public void solve(int[][] board) {
+    public void solve(final int[][] board) {
         boolean[][] cover = initializeExactCoverBoard(board);
         final CDancingLinks dlx = new CDancingLinks(cover);
         dlx.runSolver();
