@@ -157,19 +157,15 @@ public class DbUtils {
      */
     public static boolean loadDriver(String driverClassName) {
         try {
-            Class.forName(driverClassName).newInstance();
+            Class.forName(driverClassName).getConstructor().newInstance();
             return true;
-
         } catch (ClassNotFoundException e) {
             return false;
-
         } catch (IllegalAccessException e) {
             // Constructor is private, OK for DriverManager contract
             return true;
-
         } catch (InstantiationException e) {
             return false;
-
         } catch (Throwable e) {
             return false;
         }

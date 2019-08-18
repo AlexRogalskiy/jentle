@@ -310,13 +310,15 @@ public class BeanProcessor {
      */
     protected Object newInstance(Class c) throws SQLException {
         try {
-            return c.newInstance();
-
+            return c.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new SQLException(
-                "Cannot create " + c.getName() + ": " + e.getMessage());
-
+            throw new SQLException("Cannot create " + c.getName() + ": " + e.getMessage());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**
