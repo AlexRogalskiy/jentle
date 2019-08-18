@@ -5,9 +5,9 @@ import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class NumberUtils {
+public abstract class NumberHelper {
 
-    private static final Logger LOGGER = Logger.getLogger(NumberUtils.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NumberHelper.class.getName());
 
     public static int divideListElements(List<Integer> values, Integer divider) {
         return values.stream()
