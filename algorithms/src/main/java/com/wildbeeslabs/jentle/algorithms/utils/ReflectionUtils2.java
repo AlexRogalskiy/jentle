@@ -1079,7 +1079,7 @@ public class ReflectionUtils2 {
      * implemented by the supplied class which are also <em>visible</em> within
      * the supplied class.
      *
-     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-6.html#d5e9652">Method Visibility</a>
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-6.html#d5e9652">Method Visibility2</a>
      * in the Java Language Specification
      */
     private static List<Method> getDefaultMethods(Class<?> clazz) {
