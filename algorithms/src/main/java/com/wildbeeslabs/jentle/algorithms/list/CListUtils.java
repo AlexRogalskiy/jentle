@@ -149,7 +149,7 @@ public class CListUtils {
         return list.stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    //List<String> result = list.stream().collect(CListUtils.toImmutableList(LinkedList::new));
+    //List<String> result = list.stream().collect(CListUtils.toImmutableList(LinkedList2::new));
     public static <T, A extends List<T>> Collector<T, A, List<T>> toImmutableList(final Supplier<A> supplier) {
         return Collector.of(
             supplier,

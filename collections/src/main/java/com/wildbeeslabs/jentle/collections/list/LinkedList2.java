@@ -9,7 +9,7 @@ import java.util.Iterator;
  * {@link Iterable} linked list {@code T} implementation
  */
 @NoArgsConstructor
-public class LinkedList<E extends Comparable> implements Iterable<E> {
+public class LinkedList2<E extends Comparable> implements Iterable<E> {
     private ListNode<E> firstNode;
     private ListNode<E> lastNode;
 
@@ -27,7 +27,7 @@ public class LinkedList<E extends Comparable> implements Iterable<E> {
     private class LinkListIterator<F extends Comparable> implements Iterator<F> {
         private ListNode<F> currentNode;
 
-        public LinkListIterator(final LinkedList<F> linkedList) {
+        public LinkListIterator(final LinkedList2<F> linkedList) {
             this.currentNode = (ListNode<F>) linkedList.firstNode;
         }
 
