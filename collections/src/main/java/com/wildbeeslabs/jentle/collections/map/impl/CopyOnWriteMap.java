@@ -35,7 +35,7 @@ public abstract class CopyOnWriteMap<K, V> extends AbstractCopyOnWriteMap<K, V, 
     private static final long serialVersionUID = 7935514534647505917L;
 
     /**
-     * Get a {@link Builder} for a CopyOnWriteMap instance.
+     * Get a {@link Builder} for a CopyOnWriteMap2 instance.
      *
      * @param <K> key type
      * @param <V> value type
