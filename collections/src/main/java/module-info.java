@@ -50,4 +50,5 @@ module jentle.collections {
     requires commons.collections4;
     requires stdlib;
     requires org.jsoup;
+    requires jdk.unsupported;
 }

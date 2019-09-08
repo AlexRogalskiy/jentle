@@ -1,6 +1,8 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -81,6 +83,23 @@ public class UrlUtils {
         String directory = "src" + File.separatorChar + "test" + File.separatorChar + "java";
 
         return createPackageFile(name, packageName, directory, outDir);
+    }
+
+    /**
+     * Test if provided location is an absolute URI or not.
+     *
+     * @param location location to check, null = relative, having scheme = absolute
+     * @return true if location is considered absolute
+     */
+    public static boolean isAbsoluteUrl(String location) {
+        if (location != null && location.length() > 0 && location.contains(":")) {
+            try {
+                final URI uri = new URI(location);
+                return uri.getScheme() != null;
+            } catch (URISyntaxException e) {
+            }
+        }
+        return false;
     }
 
     /**
