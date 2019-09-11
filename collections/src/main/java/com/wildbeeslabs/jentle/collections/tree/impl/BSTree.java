@@ -1,6 +1,6 @@
 package com.wildbeeslabs.jentle.collections.tree.impl;
 
-import com.wildbeeslabs.jentle.collections.tree.iface.BSTInterface;
+import com.wildbeeslabs.jentle.collections.tree.iface.tree.BSTInterface;
 import com.wildbeeslabs.jentle.collections.tree.node.TreeNode;
 
 import java.util.ArrayList;

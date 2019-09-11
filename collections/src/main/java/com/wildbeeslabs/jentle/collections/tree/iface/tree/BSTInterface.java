@@ -1,4 +1,4 @@
-package com.wildbeeslabs.jentle.collections.tree.iface; /**
+package com.wildbeeslabs.jentle.collections.tree.iface.tree; /**
  * @author Ionesio Junior
  */
 
