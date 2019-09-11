@@ -6,10 +6,7 @@ import com.wildbeeslabs.jentle.collections.tree.iface.tree.Tree;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class AbstractTree<E> implements Tree<E> {
 
@@ -36,52 +33,52 @@ public abstract class AbstractTree<E> implements Tree<E> {
             return 1 + depth(parent(p));
     }
 
-    public Iterable<Position<E>> positionsPreorder(){
+    public Iterable<Position<E>> positionsPreorder() {
         return preorder();
     }
 
-    public Iterable<Position<E>> preorder(){
+    public Iterable<Position<E>> preorder() {
         List<Position<E>> snapshot = new ArrayList<>();
 
-        if(!isEmpty()){
+        if (!isEmpty()) {
             preorderSubtree(root(), snapshot);
         }
 
         return snapshot;
     }
 
-    private void preorderSubtree(Position<E> p, List<Position<E>> snapshot){
+    private void preorderSubtree(Position<E> p, List<Position<E>> snapshot) {
         snapshot.add(p);
-        for(Position<E> c: children(p))
+        for (Position<E> c : children(p))
             preorderSubtree(c, snapshot);
 
     }
 
-    public Iterable<Position<E>> positionsPostorder(){
+    public Iterable<Position<E>> positionsPostorder() {
         return postorder();
     }
 
-    public Iterable<Position<E>> postorder(){
+    public Iterable<Position<E>> postorder() {
         List<Position<E>> snapshot = new ArrayList<>();
 
-        if(!isEmpty()){
+        if (!isEmpty()) {
             postorderSubtree(root(), snapshot);
         }
 
         return snapshot;
     }
 
-    public void postorderSubtree(Position<E> p, List<Position<E>> snapshot){
-        for(Position<E> c: children(p))
+    public void postorderSubtree(Position<E> p, List<Position<E>> snapshot) {
+        for (Position<E> c : children(p))
             postorderSubtree(c, snapshot);
 
         snapshot.add(p);
     }
 
-    public Iterable<Position<E>> breadthFirst(){
+    public Iterable<Position<E>> breadthFirst() {
         List<Position<E>> snapshot = new ArrayList<>();
 
-        if(!isEmpty()) {
+        if (!isEmpty()) {
             Queue<Position<E>> queue = new ConcurrentLinkedQueue<>();
             queue.offer(root());
             while (!queue.isEmpty()) {

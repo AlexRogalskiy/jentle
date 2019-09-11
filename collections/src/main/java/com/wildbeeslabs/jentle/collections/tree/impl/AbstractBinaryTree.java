@@ -7,9 +7,10 @@ import java.util.List;
 
 /**
  * An abstract class providing some functionality of a BinaryTree interface
+ *
  * @param <E>
  */
-public abstract class AbstractBinaryTree<E> extends AbstractTree<E> implements BinaryTree<E> {
+public abstract class AbstractBinaryTree<E> extends AbstractTree<E> implements com.wildbeeslabs.jentle.collections.tree.iface.tree.BinaryTree<E> {
 
     @Override
     public Position<E> sibling(Position<E> p) throws IllegalArgumentException {
@@ -55,27 +56,26 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E> implements B
         return null;
     }
 
-    public Iterable<Position<E>> inorder(){
+    public Iterable<Position<E>> inorder() {
         List<Position<E>> snapshot = new ArrayList<>();
 
-        if(!isEmpty())
+        if (!isEmpty())
             inorderSubtree(root(), snapshot);
 
         return snapshot;
     }
 
-    private void inorderSubtree(Position<E> p, List<Position<E>> snapshot){
+    private void inorderSubtree(Position<E> p, List<Position<E>> snapshot) {
 
-        if(left(p) != null)
+        if (left(p) != null)
             inorderSubtree(left(p), snapshot);
 
         snapshot.add(p);
 
-        if(right(p) != null)
+        if (right(p) != null)
             inorderSubtree(right(p), snapshot);
 
     }
-
 
 
 }
