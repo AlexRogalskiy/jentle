@@ -31,6 +31,7 @@ import lombok.NonNull;
 import lombok.ToString;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Range;
 
 import java.math.BigDecimal;
@@ -790,5 +791,99 @@ public class CNumericUtils {
 
     public static Integer parse(final Predicate<Integer> predicate, final Integer... values) {
         return Arrays.asList(values).stream().filter(predicate).mapToInt(Integer::intValue).sum();
+    }
+
+    public static boolean isPerfectSquareDurron(long n) {
+        if (n < 0) return false;
+        if (n == 0) return true;
+
+        long x = n;
+        // This is faster because a number is divisible by 16 only 6% of the time
+        // and more than that a vanishingly small percentage.
+        while ((x & 0x3) == 0) x >>= 2;
+        // This is effectively the same as the switch-case statement used in the original
+        // answer.
+        if ((x & 0x7) == 1) {
+
+            long sqrt;
+            if (x < 410881L) {
+                int i;
+                float x2, y;
+
+                x2 = x * 0.5F;
+                y = x;
+                i = Float.floatToRawIntBits(y);
+                i = 0x5f3759df - (i >> 1);
+                y = Float.intBitsToFloat(i);
+                y = y * (1.5F - (x2 * y * y));
+
+                sqrt = (long) (1.0F / y);
+            } else {
+                sqrt = (long) Math.sqrt(x);
+            }
+            return sqrt * sqrt == x;
+        }
+        return false;
+    }
+
+    public static boolean isPerfectSquareDurronTwo(long n) {
+        if (n < 0) return false;
+        // Needed to prevent infinite loop
+        if (n == 0) return true;
+
+        long x = n;
+        while ((x & 0x3) == 0) x >>= 2;
+        if ((x & 0x7) == 1) {
+            long sqrt;
+            if (x < 41529141369L) {
+                int i;
+                float x2, y;
+
+                x2 = x * 0.5F;
+                y = x;
+                i = Float.floatToRawIntBits(y);
+                //using the magic number from
+                //http://www.lomont.org/Math/Papers/2003/InvSqrt.pdf
+                //since it more accurate
+                i = 0x5f375a86 - (i >> 1);
+                y = Float.intBitsToFloat(i);
+                y = y * (1.5F - (x2 * y * y));
+                y = y * (1.5F - (x2 * y * y)); //Newton iteration, more accurate
+                sqrt = (long) ((1.0F / y) + 0.2);
+            } else {
+                //Carmack hack gives incorrect answer for n >= 41529141369.
+                sqrt = (long) Math.sqrt(x);
+            }
+            return sqrt * sqrt == x;
+        }
+        return false;
+    }
+
+    /**
+     * Returns an enum value for the given id, or the default value if null is passed or there are no enum values with
+     * the given id.
+     *
+     * @return enum value
+     */
+    public static <T extends Enum<T>> T fromNameOrDefault(final Class<T> e, final String name, final T defaultValue) {
+        if (Objects.isNull(name)) {
+            return defaultValue;
+        }
+        return Arrays.stream(e.getEnumConstants())
+            .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(name))
+            .findFirst()
+            .orElse(defaultValue);
+    }
+
+    public static <T extends Enum<T>> T random(final Class<T> clazz) {
+        Objects.requireNonNull(clazz, "Class should not be null");
+        return random(clazz.getEnumConstants());
+    }
+
+    public static <T> T random(final T[] values) {
+        if (ArrayUtils.isNotEmpty(values)) {
+            return values[new Random().nextInt(values.length)];
+        }
+        return null;
     }
 }
