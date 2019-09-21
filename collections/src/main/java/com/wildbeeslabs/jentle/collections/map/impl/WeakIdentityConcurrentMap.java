@@ -24,8 +24,6 @@
 package com.wildbeeslabs.jentle.collections.map.impl;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
@@ -43,8 +41,6 @@ import java.util.concurrent.ConcurrentMap;
  * @author Alex Snaps
  */
 @Data
-@EqualsAndHashCode
-@ToString
 public final class WeakIdentityConcurrentMap<K, V> {
 
     private final ConcurrentMap<WeakReference<K>, V> map = new ConcurrentHashMap<>();

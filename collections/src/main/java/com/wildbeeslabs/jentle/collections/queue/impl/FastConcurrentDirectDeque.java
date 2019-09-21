@@ -61,6 +61,7 @@ import java.util.function.Consumer;
  * @author Jason T. Grene
  * @since 1.7
  */
+@SuppressWarnings("unsafe")
 public class FastConcurrentDirectDeque<E> extends ConcurrentDirectDeque<E> implements Deque<E>, Serializable {
 
     /*
