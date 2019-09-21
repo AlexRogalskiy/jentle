@@ -11,6 +11,7 @@ import java.security.PrivilegedAction;
 /**
  * {@link DirectByteBufferDeallocator} Utility class used to free direct buffer memory.
  */
+@SuppressWarnings("unsafe")
 public final class DirectByteBufferDeallocator {
     private static final boolean SUPPORTED;
     private static final Method cleaner;

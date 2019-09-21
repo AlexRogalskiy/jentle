@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
  *
  * @author Henri Tremblay
  */
+@SuppressWarnings("unsafe")
 @UtilityClass
 public class UnsafeUtils {
 
