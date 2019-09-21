@@ -1,5 +1,9 @@
 package com.wildbeeslabs.jentle.collections.list.impl;
 
+
+import com.wildbeeslabs.jentle.collections.list.iface.Position;
+import com.wildbeeslabs.jentle.collections.list.iface.PositionalList;
+
 public class LinkedPositionalList<E> implements PositionalList<E> {
 
     private static class Node<E> implements Position<E> {
