@@ -24,11 +24,9 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * Custom enum utilities implementation
@@ -75,36 +73,5 @@ public class CEnumUtils {
             .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(name))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException(String.format("Can't parse {%s} from name {%s}", e.getSimpleName(), name)));
-    }
-
-    /**
-     * Returns an enum value for the given id, or the default value if null is passed or there are no enum values with
-     * the given id.
-     *
-     * @param e            enum class
-     * @param id           id
-     * @param defaultValue the value to return if null is passed as id or if there are no enum values with the given id
-     * @return enum value
-     */
-    public static <T extends Enum<T>> T fromNameOrDefault(final Class<T> e, final String name, final T defaultValue) {
-        if (Objects.isNull(name)) {
-            return defaultValue;
-        }
-        return Arrays.stream(e.getEnumConstants())
-            .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(name))
-            .findFirst()
-            .orElse(defaultValue);
-    }
-
-    public static <T extends Enum<T>> T random(final Class<T> clazz) {
-        Objects.requireNonNull(clazz, "Class should not be null");
-        return random(clazz.getEnumConstants());
-    }
-
-    public static <T> T random(final T[] values) {
-        if (ArrayUtils.isNotEmpty(values)) {
-            return values[new Random().nextInt(values.length)];
-        }
-        return null;
     }
 }
