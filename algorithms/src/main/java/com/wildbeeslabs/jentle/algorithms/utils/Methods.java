@@ -1,6 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import com.wildbeeslabs.jentle.algorithms.string.HttpString;
+import lombok.experimental.UtilityClass;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,11 +12,8 @@ import java.util.Map;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Deprecated
-public final class Methods {
-
-    private Methods() {
-    }
+@UtilityClass
+public class Methods {
 
     public static final String OPTIONS_STRING = "OPTIONS";
     public static final String GET_STRING = "GET";
