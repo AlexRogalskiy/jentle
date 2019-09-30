@@ -1,121 +1,75 @@
 package com.wildbeeslabs.jentle.algorithms.utils;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.arch.Processor;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
 
-/**
- * An utility class for the os.arch System Property. The class defines methods for
- * identifying the architecture of the current JVM.
- * <p>
- * Important: The os.arch System Property returns the architecture used by the JVM
- * not of the operating system.
- * </p>
- *
- * @since 3.6
- */
 @UtilityClass
 public class ArchUtils {
 
-    private static final Map<String, Processor> ARCH_TO_PROCESSOR;
-
-    static {
-        ARCH_TO_PROCESSOR = new HashMap<>();
-        init();
-    }
-
-    private static void init() {
-        init_X86_32Bit();
-        init_X86_64Bit();
-        init_IA64_32Bit();
-        init_IA64_64Bit();
-        init_PPC_32Bit();
-        init_PPC_64Bit();
-    }
-
-    private static void init_X86_32Bit() {
-        final Processor processor = new Processor(Processor.Arch.BIT_32, Processor.Type.X86);
-        addProcessors(processor, "x86", "i386", "i486", "i586", "i686", "pentium");
-    }
-
-    private static void init_X86_64Bit() {
-        final Processor processor = new Processor(Processor.Arch.BIT_64, Processor.Type.X86);
-        addProcessors(processor, "x86_64", "amd64", "em64t", "universal");
-    }
-
-    private static void init_IA64_32Bit() {
-        final Processor processor = new Processor(Processor.Arch.BIT_32, Processor.Type.IA_64);
-        addProcessors(processor, "ia64_32", "ia64n");
-    }
-
-    private static void init_IA64_64Bit() {
-        final Processor processor = new Processor(Processor.Arch.BIT_64, Processor.Type.IA_64);
-        addProcessors(processor, "ia64", "ia64w");
-    }
-
-    private static void init_PPC_32Bit() {
-        final Processor processor = new Processor(Processor.Arch.BIT_32, Processor.Type.PPC);
-        addProcessors(processor, "ppc", "power", "powerpc", "power_pc", "power_rs");
-    }
-
-    private static void init_PPC_64Bit() {
-        final Processor processor = new Processor(Processor.Arch.BIT_64, Processor.Type.PPC);
-        addProcessors(processor, "ppc64", "power64", "powerpc64", "power_pc64", "power_rs64");
-    }
-
-    /**
-     * Adds the given {@link Processor} with the given key {@link String} to the map.
-     *
-     * @param key       The key as {@link String}.
-     * @param processor The {@link Processor} to add.
-     * @throws IllegalStateException If the key already exists.
-     */
-    private static void addProcessor(final String key, final Processor processor) {
-        if (ARCH_TO_PROCESSOR.containsKey(key)) {
-            throw new IllegalStateException("Key " + key + " already exists in processor map");
+    public static String normalize(String archName) {
+        if (StringUtils.isBlank(archName)) {
+            throw new IllegalStateException("No architecture detected");
         }
-        ARCH_TO_PROCESSOR.put(key, processor);
-    }
 
-    /**
-     * Adds the given {@link Processor} with the given keys to the map.
-     *
-     * @param keys      The keys.
-     * @param processor The {@link Processor} to add.
-     * @throws IllegalStateException If the key already exists.
-     */
-    private static void addProcessors(final Processor processor, final String... keys) {
-        for (final String key : keys) {
-            addProcessor(key, processor);
+        String arch = lowerCase(archName).replaceAll("[^a-z0-9]+", "");
+
+        if (arch.matches("^(x8664|amd64|ia32e|em64t|x64)$")) {
+            return "x86_64";
         }
-    }
+        if (arch.matches("^(x8632|x86|i[3-6]86|ia32|x32)$")) {
+            return "x86_32";
+        }
+        if (arch.matches("^(ia64w?|itanium64)$")) {
+            return "itanium_64";
+        }
+        if ("ia64n".equals(arch)) {
+            return "itanium_32";
+        }
+        if (arch.matches("^(sparcv9|sparc64)$")) {
+            return "sparc_64";
+        }
+        if (arch.matches("^(sparc|sparc32)$")) {
+            return "sparc_32";
+        }
+        if (arch.matches("^(aarch64|armv8|arm64).*$")) {
+            return "arm_64";
+        }
+        if (arch.matches("^(arm|arm32).*$")) {
+            return "arm_32";
+        }
+        if (arch.matches("^(mips|mips32)$")) {
+            return "mips_32";
+        }
+        if (arch.matches("^(mipsel|mips32el)$")) {
+            return "mipsel_32";
+        }
+        if ("mips64".equals(arch)) {
+            return "mips_64";
+        }
+        if ("mips64el".equals(arch)) {
+            return "mipsel_64";
+        }
+        if (arch.matches("^(ppc|ppc32)$")) {
+            return "ppc_32";
+        }
+        if (arch.matches("^(ppcle|ppc32le)$")) {
+            return "ppcle_32";
+        }
+        if ("ppc64".equals(arch)) {
+            return "ppc_64";
+        }
+        if ("ppc64le".equals(arch)) {
+            return "ppcle_64";
+        }
+        if ("s390".equals(arch)) {
+            return "s390_32";
+        }
+        if ("s390x".equals(arch)) {
+            return "s390_64";
+        }
 
-    /**
-     * Returns a {@link Processor} object of the current JVM.
-     *
-     * <p>
-     * Important: The os.arch System Property returns the architecture used by the JVM
-     * not of the operating system.
-     * </p>
-     *
-     * @return A {@link Processor} when supported, else <code>null</code>.
-     */
-    public static Processor getProcessor() {
-        return getProcessor(SystemUtils.OS_ARCH);
+        throw new IllegalStateException("Unsupported architecture: " + archName);
     }
-
-    /**
-     * Returns a {@link Processor} object the given value {@link String}. The {@link String} must be
-     * like a value returned by the os.arch System Property.
-     *
-     * @param value A {@link String} like a value returned by the os.arch System Property.
-     * @return A {@link Processor} when it exists, else <code>null</code>.
-     */
-    public static Processor getProcessor(final String value) {
-        return ARCH_TO_PROCESSOR.get(value);
-    }
-
 }

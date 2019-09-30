@@ -1,286 +1,352 @@
 package com.wildbeeslabs.jentle.collections.list.impl;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.util.*;
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.RandomAccess;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
-public class FastList<E> extends AbstractList<E> implements Externalizable {
-    private E[] elements;
-    private int size = 0;
-    private boolean updated = false;
+/**
+ * Fast list without range checking.
+ *
+ * @author Brett Wooldridge
+ */
+public final class FastList<T> implements List<T>, RandomAccess, Serializable
+{
+   private static final long serialVersionUID = -4598088075242913858L;
 
-    public FastList(int size) {
-        elements = (E[]) new Object[size == 0 ? 1 : size];
-    }
+   private final Class<?> clazz;
+   private T[] elementData;
+   private int size;
 
-    public FastList(E[] elements) {
-        this.size = (this.elements = elements).length;
-    }
+   /**
+    * Construct a FastList with a default size of 32.
+    * @param clazz the Class stored in the collection
+    */
+   @SuppressWarnings("unchecked")
+   public FastList(Class<?> clazz)
+   {
+      this.elementData = (T[]) Array.newInstance(clazz, 32);
+      this.clazz = clazz;
+   }
 
-    public FastList() {
-        this(10);
-    }
+   /**
+    * Construct a FastList with a specified size.
+    * @param clazz the Class stored in the collection
+    * @param capacity the initial size of the FastList
+    */
+   @SuppressWarnings("unchecked")
+   public FastList(Class<?> clazz, int capacity)
+   {
+      this.elementData = (T[]) Array.newInstance(clazz, capacity);
+      this.clazz = clazz;
+   }
 
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeInt(size);
-        for (int i = 0; i < size; i++) {
-            out.writeObject(elements[i]);
-        }
-    }
+   /**
+    * Add an element to the tail of the FastList.
+    *
+    * @param element the element to add
+    */
+   @Override
+   public boolean add(T element)
+   {
+      if (size < elementData.length) {
+         elementData[size++] = element;
+      }
+      else {
+         // overflow-conscious code
+         final int oldCapacity = elementData.length;
+         final int newCapacity = oldCapacity << 1;
+         @SuppressWarnings("unchecked")
+         final T[] newElementData = (T[]) Array.newInstance(clazz, newCapacity);
+         System.arraycopy(elementData, 0, newElementData, 0, oldCapacity);
+         newElementData[size++] = element;
+         elementData = newElementData;
+      }
 
-    public void readExternal(ObjectInput in) throws IOException,
-        ClassNotFoundException {
-        elements = (E[]) new Object[size = in.readInt()];
-        for (int i = 0; i < size; i++) {
-            elements[i] = (E) in.readObject();
-        }
-    }
+      return true;
+   }
 
-    public E get(int index) {
-        return (E) elements[index];
-    }
+   /**
+    * Get the element at the specified index.
+    *
+    * @param index the index of the element to get
+    * @return the element, or ArrayIndexOutOfBounds is thrown if the index is invalid
+    */
+   @Override
+   public T get(int index)
+   {
+      return elementData[index];
+   }
 
-    public int size() {
-        return size;
-    }
+   /**
+    * Remove the last element from the list.  No bound check is performed, so if this
+    * method is called on an empty list and ArrayIndexOutOfBounds exception will be
+    * thrown.
+    *
+    * @return the last element of the list
+    */
+   public T removeLast()
+   {
+      T element = elementData[--size];
+      elementData[size] = null;
+      return element;
+   }
 
-    public boolean add(E o) {
-        if (size == elements.length) {
-            increaseSize(elements.length * 2);
-        }
-
-        elements[size++] = o;
-        return true;
-    }
-
-    public E set(int i, E o) {
-        if (!updated) copyArray();
-        E old = elements[i];
-        elements[i] = o;
-        return old;
-    }
-
-    public void add(int i, E o) {
-        if (size == elements.length) {
-            increaseSize(elements.length * 2);
-        }
-
-        for (int c = size; c != i; c--) {
-            elements[c] = elements[c - 1];
-        }
-        elements[i] = o;
-        size++;
-    }
-
-    public E remove(int i) {
-        E old = elements[i];
-        for (int c = i + 1; c < size; c++) {
-            elements[c - 1] = elements[c];
-            elements[c] = null;
-        }
-        size--;
-        return old;
-    }
-
-    public int indexOf(Object o) {
-        if (o == null) return -1;
-        for (int i = 0; i < elements.length; i++) {
-            if (o.equals(elements[i])) return i;
-        }
-        return -1;
-    }
-
-    public int lastIndexOf(Object o) {
-        if (o == null) return -1;
-        for (int i = elements.length - 1; i != -1; i--) {
-            if (o.equals(elements[i])) return i;
-        }
-        return -1;
-    }
-
-    public void clear() {
-        elements = (E[]) new Object[1];
-        size = 0;
-    }
-
-    public boolean addAll(int i, Collection<? extends E> collection) {
-        int offset = collection.size();
-        ensureCapacity(offset + size);
-
-        if (i != 0) {
-            // copy forward all elements that the insertion is occuring before
-            for (int c = i; c != (i + offset); c++) {
-                elements[c + offset + 1] = elements[c];
+   /**
+    * This remove method is most efficient when the element being removed
+    * is the last element.  Equality is identity based, not equals() based.
+    * Only the first matching element is removed.
+    *
+    * @param element the element to remove
+    */
+   @Override
+   public boolean remove(Object element)
+   {
+      for (int index = size - 1; index >= 0; index--) {
+         if (element == elementData[index]) {
+            final int numMoved = size - index - 1;
+            if (numMoved > 0) {
+               System.arraycopy(elementData, index + 1, elementData, index, numMoved);
             }
-        }
-
-        int c = size == 0 ? -1 : 0;
-        for (E o : collection) {
-            elements[offset + c++] = o;
-        }
-
-        size += offset;
-
-        return true;
-    }
-
-    public Iterator iterator() {
-        final int size = this.size;
-        return new Iterator() {
-            private int cursor = 0;
-
-            public boolean hasNext() {
-                return cursor < size;
-            }
-
-            public Object next() {
-                return elements[cursor++];
-            }
-
-            public void remove() {
-                throw new IllegalArgumentException("cannot change elements in immutable list");
-            }
-        };
-
-    }
-
-    public ListIterator<E> listIterator() {
-        return new ListIterator<E>() {
-            private int i = 0;
-
-            public boolean hasNext() {
-                return i < size;
-            }
-
-            public E next() {
-                return elements[i++];
-            }
-
-            public boolean hasPrevious() {
-                return i > 0;
-            }
-
-            public E previous() {
-                return elements[i--];
-            }
-
-            public int nextIndex() {
-                return i++;
-            }
-
-            public int previousIndex() {
-                return i--;
-            }
-
-            public void remove() {
-                throw new java.lang.UnsupportedOperationException();
-            }
-
-            public void set(E o) {
-                elements[i] = o;
-            }
-
-            public void add(Object o) {
-                throw new java.lang.UnsupportedOperationException();
-            }
-        };
-    }
-
-    public ListIterator listIterator(int i) {
-        return super.listIterator(i);
-    }
-
-    public List subList(int i, int i1) {
-        return super.subList(i, i1);
-    }
-
-    public boolean equals(Object o) {
-        if (o == this)
+            elementData[--size] = null;
             return true;
-        if (!(o instanceof List))
-            return false;
+         }
+      }
 
-        ListIterator e1 = listIterator();
-        ListIterator e2 = ((List) o).listIterator();
-        while (e1.hasNext() && e2.hasNext()) {
-            Object o1 = e1.next();
-            Object o2 = e2.next();
-            if (!(o1 == null ? o2 == null : o1.equals(o2)))
-                return false;
-        }
-        return !(e1.hasNext() || e2.hasNext());
-    }
+      return false;
+   }
 
-    public int hashCode() {
-        return super.hashCode();
-    }
+   /**
+    * Clear the FastList.
+    */
+   @Override
+   public void clear()
+   {
+      for (int i = 0; i < size; i++) {
+         elementData[i] = null;
+      }
 
-    protected void removeRange(int i, int i1) {
-        throw new RuntimeException("not implemented");
-    }
+      size = 0;
+   }
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
+   /**
+    * Get the current number of elements in the FastList.
+    *
+    * @return the number of current elements
+    */
+   @Override
+   public int size()
+   {
+      return size;
+   }
 
-    public boolean contains(Object o) {
-        return indexOf(o) != -1;
-    }
+   /** {@inheritDoc} */
+   @Override
+   public boolean isEmpty()
+   {
+      return size == 0;
+   }
 
-    public Object[] toArray() {
-        return toArray(new Object[size]);
-    }
+   /** {@inheritDoc} */
+   @Override
+   public T set(int index, T element)
+   {
+      T old = elementData[index];
+      elementData[index] = element;
+      return old;
+   }
 
-    public Object[] toArray(Object[] objects) {
-        if (objects.length < size) objects = new Object[size];
-        for (int i = 0; i < size; i++) {
-            objects[i] = elements[i];
-        }
-        return objects;
-    }
+   /** {@inheritDoc} */
+   @Override
+   public T remove(int index)
+   {
+      if (size == 0) {
+         return null;
+      }
 
-    public boolean remove(Object o) {
-        throw new RuntimeException("not implemented");
-    }
+      final T old = elementData[index];
 
-    public boolean containsAll(Collection collection) {
-        throw new RuntimeException("not implemented");
-    }
+      final int numMoved = size - index - 1;
+      if (numMoved > 0) {
+         System.arraycopy(elementData, index + 1, elementData, index, numMoved);
+      }
 
-    public boolean addAll(Collection collection) {
-        return addAll(size, collection);
-    }
+      elementData[--size] = null;
 
-    public boolean removeAll(Collection collection) {
-        throw new RuntimeException("not implemented");
-    }
+      return old;
+   }
 
-    public boolean retainAll(Collection collection) {
-        throw new RuntimeException("not implemented");
-    }
+   /** {@inheritDoc} */
+   @Override
+   public boolean contains(Object o)
+   {
+      throw new UnsupportedOperationException();
+   }
 
-    private void ensureCapacity(int additional) {
-        if ((size + additional) > elements.length) increaseSize((size + additional) * 2);
-    }
+   /** {@inheritDoc} */
+   @Override
+   public Iterator<T> iterator()
+   {
+      return new Iterator<T>() {
+         private int index;
 
-    private void copyArray() {
-        increaseSize(elements.length);
-    }
+         @Override
+         public boolean hasNext()
+         {
+            return index < size;
+         }
 
-    private void increaseSize(int newSize) {
-        E[] newElements = (E[]) new Object[newSize];
-        for (int i = 0; i < elements.length; i++)
-            newElements[i] = elements[i];
+         @Override
+         public T next()
+         {
+            if (index < size) {
+               return elementData[index++];
+            }
 
-        elements = newElements;
+            throw new NoSuchElementException("No more elements in FastList"); 
+         }
+      };
+   }
 
-        updated = true;
-    }
+   /** {@inheritDoc} */
+   @Override
+   public Object[] toArray()
+   {
+      throw new UnsupportedOperationException();
+   }
 
+   /** {@inheritDoc} */
+   @Override
+   public <E> E[] toArray(E[] a)
+   {
+      throw new UnsupportedOperationException();
+   }
 
-    public String toString() {
-        return super.toString();
-    }
+   /** {@inheritDoc} */
+   @Override
+   public boolean containsAll(Collection<?> c)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public boolean addAll(Collection<? extends T> c)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public boolean addAll(int index, Collection<? extends T> c)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public boolean removeAll(Collection<?> c)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public boolean retainAll(Collection<?> c)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public void add(int index, T element)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public int indexOf(Object o)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public int lastIndexOf(Object o)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public ListIterator<T> listIterator()
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public ListIterator<T> listIterator(int index)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public List<T> subList(int fromIndex, int toIndex)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public Object clone()
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public void forEach(Consumer<? super T> action)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public Spliterator<T> spliterator()
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public boolean removeIf(Predicate<? super T> filter)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public void replaceAll(UnaryOperator<T> operator)
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public void sort(Comparator<? super T> c)
+   {
+      throw new UnsupportedOperationException();
+   }
 }

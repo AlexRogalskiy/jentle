@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 /**
  * Custom property utilities implementation
@@ -40,6 +41,7 @@ import java.util.Properties;
  */
 @Slf4j
 public class CPropertiesUtils {
+    private static final Pattern GETTER_PATTERN = Pattern.compile("(get|is)[A-Z].+");
 
     private static CPropertiesUtils ourInstance = new CPropertiesUtils();
     private static final String DEFAULT_PROPERTIES_PATH = "/default.properties";
