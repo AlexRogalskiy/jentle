@@ -142,4 +142,17 @@ public class CUtils {
         }
         return null;
     }
+
+    public static int hashCodeIgnoreCase(final String s) {
+        if (s == null) {
+            return 0;
+        }
+        int hash = 0;
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            char c = Character.toLowerCase(s.charAt(i));
+            hash = 31 * hash + c;
+        }
+        return hash;
+    }
 }

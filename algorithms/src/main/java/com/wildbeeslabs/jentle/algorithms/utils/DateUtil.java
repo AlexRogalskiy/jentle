@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.*;
@@ -44,6 +45,18 @@ public class DateUtil {
     public static DateFormat newIsoDateFormat() {
         return strictDateFormatForPattern("yyyy-MM-dd");
     }
+
+    private static final String days = "(monday|mon|tuesday|tues|tue|wednesday|wed|thursday|thur|thu|friday|fri|saturday|sat|sunday|sun)"; // longer before shorter matters
+    private static final String mos = "(Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)";
+    private static final Pattern datePattern1 = Pattern.compile("(\\d{4})[./-](\\d{1,2})[./-](\\d{1,2})");
+    private static final Pattern datePattern2 = Pattern.compile("(\\d{1,2})[./-](\\d{1,2})[./-](\\d{4})");
+    private static final Pattern datePattern3 = Pattern.compile(mos + "[ ]*[,]?[ ]*(\\d{1,2})(st|nd|rd|th|)[ ]*[,]?[ ]*(\\d{4})", Pattern.CASE_INSENSITIVE);
+    private static final Pattern datePattern4 = Pattern.compile("(\\d{1,2})(st|nd|rd|th|)[ ]*[,]?[ ]*" + mos + "[ ]*[,]?[ ]*(\\d{4})", Pattern.CASE_INSENSITIVE);
+    private static final Pattern datePattern5 = Pattern.compile("(\\d{4})[ ]*[,]?[ ]*" + mos + "[ ]*[,]?[ ]*(\\d{1,2})(st|nd|rd|th|)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern datePattern6 = Pattern.compile(days+"[ ]+" + mos + "[ ]+(\\d{1,2})[ ]+(\\d{2}:\\d{2}:\\d{2})[ ]+[A-Z]{1,3}\\s+(\\d{4})", Pattern.CASE_INSENSITIVE);
+    private static final Pattern timePattern1 = Pattern.compile("(\\d{2})[:.](\\d{2})[:.](\\d{2})[.](\\d{1,10})([+-]\\d{2}[:]?\\d{2}|Z)?");
+    private static final Pattern timePattern2 = Pattern.compile("(\\d{2})[:.](\\d{2})[:.](\\d{2})([+-]\\d{2}[:]?\\d{2}|Z)?");
+    private static final Pattern timePattern3 = Pattern.compile("(\\d{2})[:.](\\d{2})([+-]\\d{2}[:]?\\d{2}|Z)?");
 
     /**
      * ISO 8601 date-time format with UTC time zone (yyyy-MM-dd'T'HH:mm:ssX), example :
