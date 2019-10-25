@@ -16,7 +16,7 @@ public class OrElseAndOrElseGet {
 
     public String getRandomName() {
         LOG.info("getRandomName() method - start");
-        Random random = new Random();
+        final Random random = new Random();
         int index = random.nextInt(5);
         LOG.info("getRandomName() method - end");
         return names.get(index);
@@ -29,6 +29,6 @@ public class OrElseAndOrElseGet {
 
     public String getNameUsingOrElseGet(String name) {
         return Optional.ofNullable(name)
-            .orElseGet(() -> getRandomName());
+            .orElseGet(this::getRandomName);
     }
 }
