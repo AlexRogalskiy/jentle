@@ -1,6 +1,7 @@
 package com.wildbeeslabs.jentle.collections.queue.impl;
 
 import java.io.Serializable;
+import java.util.Queue;
 import java.util.*;
 
 public final class ZeroQueue<T> implements Queue<T>, Serializable {
