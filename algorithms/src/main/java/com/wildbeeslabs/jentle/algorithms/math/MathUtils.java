@@ -1,5 +1,7 @@
 package com.wildbeeslabs.jentle.algorithms.math;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 /**
@@ -43,6 +45,26 @@ public final class MathUtils {
     static public Random random = new RandomXS128();
 
     // ---
+    public static BigDecimal arctan(final long inverseX, int scale, final RoundingMode roundingMode) {
+        BigDecimal result, numer, term;
+        BigDecimal invX = BigDecimal.valueOf(inverseX);
+        BigDecimal invX2 = BigDecimal.valueOf(inverseX * inverseX);
+        numer = BigDecimal.ONE.divide(invX, scale, roundingMode);
+        result = numer;
+        int i = 1;
+        do {
+            numer = numer.divide(invX2, scale, roundingMode);
+            int denom = 2 * i + 1;
+            term = numer.divide(BigDecimal.valueOf(denom), scale, roundingMode);
+            if ((i % 2) != 0)
+                result = result.subtract(term);
+            else
+                result = result.add(term);
+            i++;
+        }
+        while (term.compareTo(BigDecimal.ZERO) != 0);
+        return result;
+    }
 
     /**
      * Returns the sine in radians from a lookup table.
