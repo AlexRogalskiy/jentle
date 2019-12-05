@@ -1,7 +1,5 @@
 package com.wildbeeslabs.jentle.collections.map;
 
-import com.izforge.izpack.util.config.base.spi.Warnings;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -118,7 +116,6 @@ public class BasicMultiMap<K, V> implements MultiMap<K, V>, Serializable {
         return getList(key, false).set(index, value);
     }
 
-    @SuppressWarnings(Warnings.UNCHECKED)
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
         if (map instanceof MultiMap) {
@@ -186,7 +183,6 @@ public class BasicMultiMap<K, V> implements MultiMap<K, V>, Serializable {
         return all;
     }
 
-    @SuppressWarnings(Warnings.UNCHECKED)
     private List<V> getList(Object key, boolean create) {
         List<V> values = _impl.get(key);
 
