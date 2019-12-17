@@ -1,99 +1,103 @@
 package com.wildbeeslabs.jentle.collections.list;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public class LinkedList2<T> {
+    private int length = 0;
 
-import java.util.Iterator;
+    private LinkedListNode head;
 
-/**
- * {@link Iterable} linked list {@code T} implementation
- */
-@NoArgsConstructor
-public class LinkedList2<E extends Comparable> implements Iterable<E> {
-    private ListNode<E> firstNode;
-    private ListNode<E> lastNode;
-
-    @Data
-    public class ListNode<E extends Comparable> {
-        private ListNode<E> prev;
-        private ListNode<E> next;
-        private E value;
-
-        public ListNode(final E value) {
-            this.value = value;
-        }
+    public LinkedList2() {
+        this.length = 0;
     }
 
-    private class LinkListIterator<F extends Comparable> implements Iterator<F> {
-        private ListNode<F> currentNode;
-
-        public LinkListIterator(final LinkedList2<F> linkedList) {
-            this.currentNode = (ListNode<F>) linkedList.firstNode;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return this.currentNode != null;
-        }
-
-        @Override
-        public F next() {
-            final ListNode<F> returnNode = this.currentNode;
-            this.currentNode = returnNode.next;
-            return returnNode.value;
-        }
-
-        @Override
-        public void remove() {
-            final ListNode<F> newCurrent = this.currentNode.prev;
-            newCurrent.next = this.currentNode.next;
-            this.currentNode.next.prev = newCurrent;
-            this.currentNode = newCurrent;
-        }
+    //insertion methods
+    public void insertAtBeginning(T data) {
+        LinkedListNode<T> node = new LinkedListNode<>(data);
+        node.setNext(head);
+        head = node;
+        length++;
     }
 
-    @Override
-    public Iterator<E> iterator() {
-        return new LinkListIterator<>(this);
-    }
+    public void insertAtEnd(T data) {
+        LinkedListNode currentNode = head;
 
-
-    public void add(final E value) {
-        final ListNode<E> listNode = new ListNode<E>(value);
-        this.addNodeAfter(this.lastNode, listNode);
-    }
-
-    public E get(final int index) {
-        return getNodeAt(index, this.firstNode).value;
-    }
-
-    private ListNode<E> getNodeAt(int index) {
-        ListNode<E> node = this.firstNode;
-        for (int i = 0; i < index; i++) {
-            node = node.next;
+        while (currentNode.getNext() != null) {
+            currentNode = currentNode.getNext();
         }
-        return node;
+
+        LinkedListNode<T> node = new LinkedListNode<>(data);
+
+        node.setNext(null);
+        currentNode.setNext(node);
+        length++;
     }
 
-    private ListNode<E> getNodeAt(final int index, final ListNode<E> node) {
-        if (index == 0) {
-            return node;
+    public int insertAtPosition(T data, int position) {
+
+        if (position > length + 1) {
+            return -1;
         }
-        return getNodeAt(index - 1, node.next);
+
+        LinkedListNode currentNode = head;
+
+        for (int i = 1; i <= position - 2; i++) {
+            currentNode = currentNode.getNext();
+        }
+
+        LinkedListNode<T> node = new LinkedListNode<>(data);
+
+        if (currentNode.getNext() != null) {
+            node.setNext(currentNode.getNext());
+        }
+        currentNode.setNext(node);
+        length++;
+
+        return 1;
+    }
+
+    //display linked list
+    public void displayLinkedList() {
+
+        LinkedListNode currentNode = head;
+
+
+        while (currentNode != null) {
+            System.out.print(currentNode.getData() + "->");
+            currentNode = currentNode.getNext();
+        }
+
+        System.out.print("null");
+        System.out.println("\n");
+    }
+
+    public int getLinkedListLength() {
+        return this.length;
     }
 
 
-    private void addNodeAfter(final ListNode<E> prevNode, final ListNode<E> newNode) {
-        if (this.firstNode == null) {
-            this.firstNode = newNode;
-            this.lastNode = newNode;
-        } else {
-            newNode.next = prevNode.next;
-            prevNode.next = newNode;
-            newNode.prev = prevNode;
-            if (newNode.next == null) {
-                this.lastNode = newNode;
-            }
+    private static class LinkedListNode<T> {
+
+        private T data;
+
+        private LinkedListNode next;
+
+        public LinkedListNode(T data) {
+            this.data = data;
+        }
+
+        public void setData(T data) {
+            this.data = data;
+        }
+
+        public T getData() {
+            return this.data;
+        }
+
+        public void setNext(LinkedListNode next) {
+            this.next = next;
+        }
+
+        public LinkedListNode getNext() {
+            return this.next;
         }
     }
 }

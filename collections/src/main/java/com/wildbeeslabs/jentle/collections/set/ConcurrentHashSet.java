@@ -11,8 +11,7 @@ import java.util.concurrent.ConcurrentMap;
  * implementation to provide a simple ConcurrentHashSet ADT, which is
  * sadly lacking from Java.
  */
-public class ConcurrentHashSet<E>
-    extends AbstractSet<E>
+public class ConcurrentHashSet<E> extends AbstractSet<E>
     implements Set<E> {
     /**
      * The ConcurrentMap that's used to implement the
