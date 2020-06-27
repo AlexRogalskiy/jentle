@@ -38,7 +38,6 @@ import lombok.ToString;
 import lombok.experimental.UtilityClass;
 
 import java.io.Serializable;
-import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -1482,5 +1481,52 @@ public class CTreeUtils {
         public String toFormatString() {
             return this.root.toString();
         }
+    }
+
+    public static void spiralOrZigzagLevelOrder(final TreeNode root) {
+        if (root == null) return;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+
+        boolean directionflag = false;
+        while (!stack.isEmpty()) {
+            final Stack<TreeNode> tempStack = new Stack<>();
+            while (!stack.isEmpty()) {
+                final TreeNode tempNode = stack.pop();
+                System.out.printf("%d ", tempNode.data);
+                if (!directionflag) {
+                    if (tempNode.left != null)
+                        tempStack.push(tempNode.left);
+                    if (tempNode.right != null)
+                        tempStack.push(tempNode.right);
+                } else {
+                    if (tempNode.right != null)
+                        tempStack.push(tempNode.right);
+                    if (tempNode.left != null)
+                        tempStack.push(tempNode.left);
+                }
+            }
+            directionflag = !directionflag;
+            stack = tempStack;
+        }
+    }
+
+    public static void printVertivalSumOfBinaryTree(final TreeNode startNode,
+                                                    final TreeMap<Integer, Integer> treeNodeMap,
+                                                    final int level) {
+        if (startNode == null) {
+            return;
+        }
+        // Decrease level by 1 when iterating left child
+        this.printVertivalSumOfBinaryTree(startNode.left, treeNodeMap, level - 1);
+        if (treeNodeMap.get(level) != null) {
+            final Integer sum = treeNodeMap.get(level) + startNode.data;
+            // Adding current node data to previous stored value to get the sum
+            treeNodeMap.put(level, sum);
+        } else {
+            treeNodeMap.put(level, startNode.data);
+        }
+        // Increase level by 1 when iterating left child
+        this.printVertivalSumOfBinaryTree(startNode.right, treeNodeMap, level + 1);
     }
 }

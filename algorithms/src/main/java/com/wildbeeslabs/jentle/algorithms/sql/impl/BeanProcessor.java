@@ -95,12 +95,9 @@ public class BeanProcessor {
      * @throws SQLException if a database access error occurs
      */
     public Object toBean(ResultSet rs, Class type) throws SQLException {
-
         PropertyDescriptor[] props = this.propertyDescriptors(type);
-
         ResultSetMetaData rsmd = rs.getMetaData();
         int[] columnToProperty = this.mapColumnsToProperties(rsmd, props);
-
         return this.createBean(rs, type, props, columnToProperty);
     }
 
@@ -263,7 +260,6 @@ public class BeanProcessor {
         // Do object check first, then primitives
         if (value == null || type.isInstance(value)) {
             return true;
-
         } else if (
             type.equals(Integer.TYPE) && value instanceof Integer) {
             return true;
@@ -315,7 +311,6 @@ public class BeanProcessor {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new SQLException(
                 "Cannot create " + c.getName() + ": " + e.getMessage());
-
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
