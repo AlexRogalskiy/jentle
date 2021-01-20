@@ -35,7 +35,7 @@
         <logback.version>1.2.3</logback.version>
         <lombok.version>1.18.6</lombok.version>
         <jackson-mapper.version>1.9.13</jackson-mapper.version>
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
 
         <junit.version>4.12</junit.version>
         <junit-jupiter.version>5.4.1</junit-jupiter.version>
