@@ -35,7 +35,7 @@
         <pl.allergro.finance.tradukisto.version>1.8.0</pl.allergro.finance.tradukisto.version>
         <org.jgrapht.core.version>1.0.1</org.jgrapht.core.version>
         <org.squirrelframework.version>0.3.8</org.squirrelframework.version>
-        <com.google.guava.version>27.0-jre</com.google.guava.version>
+        <com.google.guava.version>29.0-jre</com.google.guava.version>
         <com.vdurmont.emoji.version>4.0.0</com.vdurmont.emoji.version>
         <org.jsoup.version>1.11.3</org.jsoup.version>
         <com.opencsv.version>4.5</com.opencsv.version>
